@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useLanguage } from "@/contexts/language-context"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { ServiceCard } from "@/components/service-card"
-import { serviceCategories } from "@/lib/services-data"
+import { useLanguage } from "@/contexts/language-context";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ServiceCard } from "@/components/service-card";
+import { serviceCategories } from "@/lib/services-data";
 import {
   Scale,
   Heart,
@@ -43,9 +43,44 @@ import {
   ExternalLink,
   Phone,
   Zap,
-} from "lucide-react"
-import { useState, useMemo } from "react"
-import { Input } from "@/components/ui/input"
+} from "lucide-react";
+import { useState, useMemo } from "react";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+
+// خريطة ربط الفئات بالصفحات الداخلية (جميع المعرفات موجودة الآن)
+const categoryPageMap: Record<string, string> = {
+  bills: "/categories/bills.html",
+  mobile: "/categories/mobile.html",
+  post: "/categories/post.html",
+  telecom: "/categories/telecom.html",
+  education: "/categories/education.html",
+  university: "/categories/university.html",
+  vocational: "/categories/vocational.html",
+  interior: "/categories/interior.html",
+  aadl: "/categories/aadl.html",
+  enpi: "/categories/enpi.html",
+  tax: "/categories/tax.html",
+  justice: "/categories/justice.html",
+  publicContracts: "/categories/publicContracts.html",
+  realEstate: "/categories/realEstate.html",
+  foreignAffairs: "/categories/foreignAffairs.html",
+  socialSecurity: "/categories/socialSecurity.html",
+  health: "/categories/health.html",
+  vehicles: "/categories/vehicles.html",
+  transport: "/categories/transport.html",
+  employment: "/categories/employment.html",
+  commerce: "/categories/commerce.html",
+  customs: "/categories/customs.html",
+  autoEntrepreneur: "/categories/autoEntrepreneur.html",
+  hajj: "/categories/hajj.html",
+  investment: "/categories/investment.html",
+  elections: "/categories/elections.html",
+  police: "/categories/police.html",
+  arpce: "/categories/arpce.html",
+  insurance: "/categories/insurance.html",
+  banking: "/categories/banking.html",
+};
 
 const iconMap: Record<string, React.ElementType> = {
   Scale,
@@ -79,7 +114,7 @@ const iconMap: Record<string, React.ElementType> = {
   ShieldCheck,
   Radio,
   ShieldPlus,
-}
+};
 
 // Quick links for most popular services
 const quickLinks = [
@@ -91,40 +126,38 @@ const quickLinks = [
   { key: "quickLinks.unemployment", url: "https://minha.anem.dz", icon: Banknote },
   { key: "quickLinks.bac", url: "https://bac.onec.dz/resultats", icon: GraduationCap },
   { key: "quickLinks.bem", url: "https://bem.onec.dz/resultats", icon: School },
-]
+];
 
 export function CategoriesSection() {
-  const { t, language, dir } = useLanguage()
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set())
-  const [searchQuery, setSearchQuery] = useState("")
+  const { t, language, dir } = useLanguage();
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleCategory = (id: string) => {
     setExpandedCategories((prev) => {
-      const next = new Set(prev)
+      const next = new Set(prev);
       if (next.has(id)) {
-        next.delete(id)
+        next.delete(id);
       } else {
-        next.add(id)
+        next.add(id);
       }
-      return next
-    })
-  }
+      return next;
+    });
+  };
 
+  // تصفية الفئات والخدمات بناءً على نص البحث
   const filteredCategories = useMemo(() => {
-    if (!searchQuery.trim()) return serviceCategories
+    if (!searchQuery.trim()) return [];
 
-    const query = searchQuery.toLowerCase()
+    const query = searchQuery.toLowerCase();
     return serviceCategories
       .map((category) => {
-        // Filter main services
         const filteredServices = category.services.filter(
           (service) =>
             service.name.ar.toLowerCase().includes(query) ||
             service.name.en.toLowerCase().includes(query) ||
             service.url.toLowerCase().includes(query)
-        )
-        
-        // Filter subcategory services
+        );
         const filteredSubCategories = category.subCategories?.map((sub) => ({
           ...sub,
           services: sub.services.filter(
@@ -133,28 +166,24 @@ export function CategoriesSection() {
               service.name.en.toLowerCase().includes(query) ||
               service.url.toLowerCase().includes(query)
           ),
-        })).filter((sub) => sub.services.length > 0)
+        })).filter((sub) => sub.services.length > 0);
 
         return {
           ...category,
           services: filteredServices,
           subCategories: filteredSubCategories,
-        }
+        };
       })
-      .filter((category) => 
-        category.services.length > 0 || 
-        (category.subCategories && category.subCategories.length > 0)
-      )
-  }, [searchQuery])
+      .filter((category) => category.services.length > 0 || (category.subCategories && category.subCategories.length > 0));
+  }, [searchQuery]);
 
-  // Calculate total services
   const totalServices = serviceCategories.reduce((acc, cat) => {
-    let count = cat.services.length
+    let count = cat.services.length;
     if (cat.subCategories) {
-      count += cat.subCategories.reduce((subAcc, sub) => subAcc + sub.services.length, 0)
+      count += cat.subCategories.reduce((subAcc, sub) => subAcc + sub.services.length, 0);
     }
-    return acc + count
-  }, 0)
+    return acc + count;
+  }, 0);
 
   return (
     <section id="services" className="py-20 bg-muted/30" dir={dir}>
@@ -186,7 +215,7 @@ export function CategoriesSection() {
           <h3 className="mb-4 text-lg font-semibold text-center">{t("quickLinks.title")}</h3>
           <div className="flex flex-wrap justify-center gap-3">
             {quickLinks.map((link) => {
-              const IconComponent = link.icon
+              const IconComponent = link.icon;
               return (
                 <a
                   key={link.key}
@@ -199,7 +228,7 @@ export function CategoriesSection() {
                   {t(link.key)}
                   <ExternalLink className="h-3 w-3 opacity-50 transition-opacity group-hover:opacity-100" />
                 </a>
-              )
+              );
             })}
           </div>
         </div>
@@ -218,176 +247,128 @@ export function CategoriesSection() {
           </div>
         </div>
 
-        {/* Category Icons Grid */}
+        {/* Category Icons Grid (internal links) */}
         <div className="mb-12 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10">
           {serviceCategories.map((category) => {
-            const IconComponent = iconMap[category.icon]
-            const isExpanded = expandedCategories.has(category.id)
-            
+            const IconComponent = iconMap[category.icon];
+            const pageUrl = categoryPageMap[category.id] || "/categories/coming-soon.html";
             return (
-              <button
+              <Link
                 key={category.id}
-                onClick={() => toggleCategory(category.id)}
-                className={`group flex flex-col items-center gap-2 rounded-xl p-3 transition-all duration-300 ${
-                  isExpanded
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "bg-card hover:bg-accent hover:shadow-md border border-border/50"
-                }`}
+                href={pageUrl}
+                className="group flex flex-col items-center gap-2 rounded-xl p-3 transition-all duration-300 bg-card hover:bg-accent hover:shadow-md border border-border/50"
               >
                 <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-lg transition-all duration-300 ${
-                    isExpanded
-                      ? "bg-primary-foreground/20"
-                      : "bg-gradient-to-br " + category.color + " text-white"
-                  }`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br ${category.color} text-white shadow-md transition-all duration-300 group-hover:scale-105`}
                 >
                   {IconComponent && <IconComponent className="h-5 w-5" />}
                 </div>
                 <span className="text-xs font-medium text-center leading-tight line-clamp-2">
                   {t(category.nameKey)}
                 </span>
-              </button>
-            )
+              </Link>
+            );
           })}
         </div>
 
-        {/* Expanded Category Services */}
-        <div className="space-y-6">
-          {filteredCategories.map((category) => {
-            const isExpanded = expandedCategories.has(category.id) || searchQuery.trim()
-            const IconComponent = iconMap[category.icon]
-            const hasServices = category.services.length > 0
-            const hasSubCategories = category.subCategories && category.subCategories.length > 0
+        {/* نتائج البحث (تظهر فقط عند وجود searchQuery) */}
+        {searchQuery.trim() && filteredCategories.length > 0 && (
+          <div className="space-y-6 mt-8">
+            <h3 className="text-xl font-semibold text-center mb-4">نتائج البحث لـ "{searchQuery}"</h3>
+            {filteredCategories.map((category) => {
+              const IconComponent = iconMap[category.icon];
+              const hasServices = category.services.length > 0;
+              const hasSubCategories = category.subCategories && category.subCategories.length > 0;
 
-            if (!isExpanded) return null
-            if (!hasServices && !hasSubCategories) return null
-
-            return (
-              <Card
-                key={category.id}
-                className="overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm"
-              >
-                {/* Category Header */}
-                <div className="flex items-center justify-between border-b border-border/50 p-4 bg-muted/30">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${category.color} text-white shadow-lg`}
-                    >
-                      {IconComponent && <IconComponent className="h-6 w-6" />}
-                    </div>
-                    <div className="text-start">
-                      <h3 className="font-bold text-lg">{t(category.nameKey)}</h3>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        {category.officialSite && (
-                          <a
-                            href={category.officialSite}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 hover:text-primary transition-colors"
-                          >
-                            <Globe className="h-3 w-3" />
-                            {t("services.official")}
-                          </a>
-                        )}
-                        {category.phone && (
-                          <a
-                            href={`tel:${category.phone}`}
-                            className="inline-flex items-center gap-1 hover:text-primary transition-colors"
-                          >
-                            <Phone className="h-3 w-3" />
-                            {category.phone}
-                          </a>
-                        )}
+              return (
+                <Card
+                  key={category.id}
+                  className="overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm"
+                >
+                  <div className="flex items-center justify-between border-b border-border/50 p-4 bg-muted/30">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${category.color} text-white shadow-lg`}
+                      >
+                        {IconComponent && <IconComponent className="h-6 w-6" />}
+                      </div>
+                      <div className="text-start">
+                        <h3 className="font-bold text-lg">{t(category.nameKey)}</h3>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          {category.officialSite && (
+                            <a
+                              href={category.officialSite}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 hover:text-primary transition-colors"
+                            >
+                              <Globe className="h-3 w-3" />
+                              {t("services.official")}
+                            </a>
+                          )}
+                          {category.phone && (
+                            <a
+                              href={`tel:${category.phone}`}
+                              className="inline-flex items-center gap-1 hover:text-primary transition-colors"
+                            >
+                              <Phone className="h-3 w-3" />
+                              {category.phone}
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                  {!searchQuery.trim() && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => toggleCategory(category.id)}
-                    >
-                      <ChevronUp className="h-5 w-5" />
-                    </Button>
-                  )}
-                </div>
 
-                {/* Services Content */}
-                <div className="p-4">
-                  {/* Main Services */}
-                  {hasServices && (
-                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                      {category.services.map((service, index) => (
-                        <ServiceCard
-                          key={index}
-                          name={service.name}
-                          url={service.url}
-                          isApp={service.isApp}
-                        />
-                      ))}
-                    </div>
-                  )}
+                  <div className="p-4">
+                    {hasServices && (
+                      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {category.services.map((service, index) => (
+                          <ServiceCard
+                            key={index}
+                            name={service.name}
+                            url={service.url}
+                            isApp={service.isApp}
+                          />
+                        ))}
+                      </div>
+                    )}
 
-                  {/* Subcategories */}
-                  {hasSubCategories && (
-                    <div className="space-y-6 mt-4">
-                      {category.subCategories!.map((subCategory, subIndex) => (
-                        <div key={subIndex}>
-                          <h4 className="mb-3 font-semibold text-sm text-muted-foreground border-b border-border/50 pb-2">
-                            {t(subCategory.nameKey)}
-                          </h4>
-                          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                            {subCategory.services.map((service, serviceIndex) => (
-                              <ServiceCard
-                                key={serviceIndex}
-                                name={service.name}
-                                url={service.url}
-                                isApp={service.isApp}
-                              />
-                            ))}
+                    {hasSubCategories && (
+                      <div className="space-y-6 mt-4">
+                        {category.subCategories!.map((subCategory, subIndex) => (
+                          <div key={subIndex}>
+                            <h4 className="mb-3 font-semibold text-sm text-muted-foreground border-b border-border/50 pb-2">
+                              {t(subCategory.nameKey)}
+                            </h4>
+                            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                              {subCategory.services.map((service, serviceIndex) => (
+                                <ServiceCard
+                                  key={serviceIndex}
+                                  name={service.name}
+                                  url={service.url}
+                                  isApp={service.isApp}
+                                />
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </Card>
-            )
-          })}
-        </div>
-
-        {/* Show All Button */}
-        {!searchQuery.trim() && expandedCategories.size === 0 && (
-          <div className="mt-10 text-center">
-            <Button
-              size="lg"
-              onClick={() => {
-                const allIds = new Set(serviceCategories.map((c) => c.id))
-                setExpandedCategories(allIds)
-              }}
-              className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg"
-            >
-              {t("services.viewAll")}
-              <ChevronDown className="h-4 w-4 ms-2" />
-            </Button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         )}
 
-        {/* Collapse All Button */}
-        {!searchQuery.trim() && expandedCategories.size > 0 && (
-          <div className="mt-10 text-center">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => setExpandedCategories(new Set())}
-              className="border-primary/30 hover:bg-primary/10"
-            >
-              {t("common.collapse")}
-              <ChevronUp className="h-4 w-4 ms-2" />
-            </Button>
+        {/* رسالة في حالة عدم وجود نتائج */}
+        {searchQuery.trim() && filteredCategories.length === 0 && (
+          <div className="text-center py-10">
+            <p className="text-muted-foreground">عذراً، لم يتم العثور على خدمات تطابق "{searchQuery}".</p>
           </div>
         )}
       </div>
     </section>
-  )
+  );
 }

@@ -15,7 +15,7 @@ const translations: Record<Language, Record<string, string>> = {
   ar: {
     // Brand
     "brand.name": "رقمنة",
-    "brand.tagline": "البوابة الجزائرية للخدمات الرقمية",
+    "brand.tagline": "منصة إرشادية مستقلة للخدمات الرقمية - غير حكومية ",
     
     // Navigation
     "nav.home": "الرئيسية",
@@ -27,7 +27,7 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Hero
     "hero.title": "مستقبل الخدمات الرقمية",
-    "hero.subtitle": "اكتشف أكثر من 280 خدمة رقمية حكومية في مكان واحد. البوابة الجزائرية للخدمات الرقمية هي منصة إلكترونية وطنية موحّدة، تهدف إلى تمكين المواطنين الجزائريين من الوصول السريع والآمن إلى مختلف الخدمات الحكومية.",
+    "hero.subtitle": "اكتشف الكثير من الخدمات الرقمية الحكومية في مكان واحد. بوابة مستقلة غير حكومية للخدمات الرقمية هي منصة إلكترونية وطنية موحّدة، تهدف إلى تمكين المواطنين الجزائريين من الوصول السريع والآمن إلى مختلف الخدمات الحكومية وتوعيتهم بمختلف الخدمات الرقمية و  الولوج للعالم الرقمي  .",
     "hero.cta": "استكشف الخدمات",
     "hero.secondary": "المساعد الذكي",
     
@@ -180,8 +180,8 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.directory": "Main Directory",
     
     // Hero
-    "hero.title": "The Future of Digital Services",
-    "hero.subtitle": "Discover over 280 government digital services in one place. The Algerian Digital Services Portal is a unified national electronic platform that enables Algerian citizens to quickly and securely access various government services.",
+    "hero.title": "Independent Digital Services Guidance Platform - Non-Governmental",
+    "hero.subtitle": "Discover many government digital services in one place. This independent non-governmental digital services portal is a unified national platform designed to help Algerian citizens access government services quickly and safely, while raising awareness of digital services and opening the door to the digital world.",
     "hero.cta": "Explore Services",
     "hero.secondary": "AI Assistant",
     

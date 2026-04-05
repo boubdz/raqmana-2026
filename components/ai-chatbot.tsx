@@ -1,272 +1,173 @@
-"use client"
+"use client";
 
-import { useLanguage } from "@/contexts/language-context"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Bot, Send, X, Minimize2, Maximize2 } from "lucide-react"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect } from "react";
+import { Bot, Send, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 interface Message {
-  id: string
-  role: "assistant" | "user"
-  content: string
-}
-
-const quickReplies = {
-  ar: [
-    "كيف أستخرج شهادة ميلاد؟",
-    "أريد تجديد جواز السفر",
-    "كيف أسجل في البكالوريا؟",
-    "أين أجد فاتورة الكهرباء؟",
-  ],
-  en: [
-    "How to get a birth certificate?",
-    "I want to renew my passport",
-    "How to register for Baccalaureate?",
-    "Where to find electricity bill?",
-  ],
-}
-
-const assistantResponses: Record<string, { ar: string; en: string }> = {
-  "شهادة ميلاد": {
-    ar: "للحصول على شهادة ميلاد، يمكنك زيارة بوابة الحالة المدنية على الرابط: etatcivil.interieur.gov.dz أو التوجه إلى البلدية التابعة لمحل إقامتك.",
-    en: "To get a birth certificate, visit the Civil Status portal at etatcivil.interieur.gov.dz or go to your local municipality.",
-  },
-  "birth certificate": {
-    ar: "للحصول على شهادة ميلاد، يمكنك زيارة بوابة الحالة المدنية على الرابط: etatcivil.interieur.gov.dz أو التوجه إلى البلدية التابعة لمحل إقامتك.",
-    en: "To get a birth certificate, visit the Civil Status portal at etatcivil.interieur.gov.dz or go to your local municipality.",
-  },
-  "جواز السفر": {
-    ar: "لتجديد جواز السفر، توجه إلى بوابة passeport.interieur.gov.dz للتقديم إلكترونياً. ستحتاج صور بيومترية ووثائق الهوية.",
-    en: "To renew your passport, visit passeport.interieur.gov.dz for online application. You'll need biometric photos and ID documents.",
-  },
-  passport: {
-    ar: "لتجديد جواز السفر، توجه إلى بوابة passeport.interieur.gov.dz للتقديم إلكترونياً. ستحتاج صور بيومترية ووثائق الهوية.",
-    en: "To renew your passport, visit passeport.interieur.gov.dz for online application. You'll need biometric photos and ID documents.",
-  },
-  "البكالوريا": {
-    ar: "للتسجيل في امتحان البكالوريا، قم بزيارة bac.onec.dz خلال فترة التسجيل المحددة من وزارة التربية الوطنية.",
-    en: "To register for the Baccalaureate exam, visit bac.onec.dz during the registration period set by the Ministry of Education.",
-  },
-  baccalaureate: {
-    ar: "للتسجيل في امتحان البكالوريا، قم بزيارة bac.onec.dz خلال فترة التسجيل المحددة من وزارة التربية الوطنية.",
-    en: "To register for the Baccalaureate exam, visit bac.onec.dz during the registration period set by the Ministry of Education.",
-  },
-  "الكهرباء": {
-    ar: "لدفع فاتورة الكهرباء أو الاطلاع عليها، يمكنك استخدام تطبيق سونلغاز أو زيارة موقع sonelgaz.dz",
-    en: "To pay or view your electricity bill, use the Sonelgaz app or visit sonelgaz.dz",
-  },
-  electricity: {
-    ar: "لدفع فاتورة الكهرباء أو الاطلاع عليها، يمكنك استخدام تطبيق سونلغاز أو زيارة موقع sonelgaz.dz",
-    en: "To pay or view your electricity bill, use the Sonelgaz app or visit sonelgaz.dz",
-  },
+  id: string;
+  role: "assistant" | "user";
+  content: string;
 }
 
 export function AIChatbot() {
-  const { t, language, dir } = useLanguage()
-  const [isOpen, setIsOpen] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput] = useState("")
-  const [isTyping, setIsTyping] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [mounted, setMounted] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "1",
+      role: "assistant",
+      content:
+        "مرحباً! أنا مساعد رقمنة الذكي 🇩🇿\nأستطيع مساعدتك في الخدمات الإدارية والرقمية الجزائرية.\nاكتب اسم الخدمة (مثل: جواز السفر، شهادة الميلاد، فاتورة الكهرباء).",
+    },
+  ]);
+  const [keywordToUrl, setKeywordToUrl] = useState<Record<string, string>>({});
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      setMessages([
-        {
-          id: "welcome",
-          role: "assistant",
-          content: t("chatbot.greeting"),
-        },
-      ])
+    setMounted(true);
+    fetch("/knowledge-base.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setKeywordToUrl(data);
+        console.log("✅ تم تحميل", Object.keys(data).length, "كلمة مفتاحية من JSON");
+      })
+      .catch((err) => console.error("فشل تحميل قاعدة المعرفة:", err));
+  }, []);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [isOpen, messages.length, t])
+  }, [messages]);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
+  const formatMessage = (text: string) => {
+    return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, linkText, url) => {
+      let cleanUrl = url;
+      if (cleanUrl.startsWith("/categories/") && !cleanUrl.endsWith(".html")) {
+        cleanUrl += ".html";
+      }
+      return `<a href="${cleanUrl}" style="color: #2563eb; text-decoration: underline;" target="_blank">${linkText}</a>`;
+    });
+  };
 
-  const findResponse = (query: string): string => {
-    const lowerQuery = query.toLowerCase()
-    
-    for (const [key, response] of Object.entries(assistantResponses)) {
-      if (lowerQuery.includes(key.toLowerCase())) {
-        return response[language]
+  const findBestMatch = (query: string): { url: string; keyword: string } | null => {
+    const normalized = query.toLowerCase().trim();
+    let bestMatch = { url: "", keyword: "", length: 0 };
+
+    for (const [keyword, url] of Object.entries(keywordToUrl)) {
+      if (normalized.includes(keyword) && keyword.length > bestMatch.length) {
+        bestMatch = { url, keyword, length: keyword.length };
       }
     }
-    
-    // Default response
-    return language === "ar"
-      ? "شكراً لسؤالك! يمكنك تصفح فئات الخدمات أعلاه للعثور على ما تبحث عنه، أو زيارة البوابة الرسمية للخدمة المطلوبة."
-      : "Thanks for your question! You can browse the service categories above to find what you're looking for, or visit the official portal for your needed service."
-  }
 
-  const handleSend = () => {
-    if (!input.trim()) return
+    if (bestMatch.url) {
+      return { url: bestMatch.url, keyword: bestMatch.keyword };
+    }
+    return null;
+  };
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
       content: input,
+    };
+    setMessages((prev) => [...prev, userMessage]);
+    const query = input.trim();
+    setInput("");
+
+    const match = findBestMatch(query);
+    let botText = "";
+
+    if (match) {
+      botText = `للاستفادة من خدمة "${match.keyword}"، تفضل بزيارة هذا القسم: [${match.keyword}](${match.url})`;
+    } else {
+      botText = "عذراً، لم أتعرف على هذه الخدمة. يمكنك البحث عنها في قائمة الخدمات الرئيسية في موقعنا.";
     }
 
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
-    setIsTyping(true)
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now().toString(), role: "assistant", content: botText },
+    ]);
+  };
 
-    // Simulate AI response
-    setTimeout(() => {
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: findResponse(input),
-      }
-      setMessages((prev) => [...prev, assistantMessage])
-      setIsTyping(false)
-    }, 1000)
-  }
+  const suggestions = [
+    "جواز السفر",
+    "شهادة الميلاد",
+    "فاتورة الكهرباء",
+    "ذهبية",
+  ];
 
-  const handleQuickReply = (reply: string) => {
-    setInput(reply)
-    handleSend()
-  }
+  if (!mounted) return null;
 
   if (!isOpen) {
     return (
-      <button
+      <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-110 glow-primary end-6"
-        aria-label="Open chatbot"
+        className="fixed bottom-6 right-6 rounded-full h-14 w-14 shadow-lg z-50 bg-primary"
       >
-        <Bot className="h-6 w-6" />
-      </button>
-    )
+        <Bot className="h-6 w-6 text-white" />
+      </Button>
+    );
   }
 
   return (
-    <Card
-      className={`fixed bottom-6 z-50 flex flex-col overflow-hidden border-border/50 bg-card/95 backdrop-blur-xl shadow-2xl transition-all duration-300 end-6 ${
-        isMinimized ? "h-14 w-72" : "h-[500px] w-[360px]"
-      }`}
-      dir={dir}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border/50 bg-primary/5 px-4 py-3">
+    <Card className="fixed bottom-6 right-6 z-50 flex flex-col h-[550px] w-[400px] shadow-2xl overflow-hidden border-2 bg-white">
+      <div className="bg-primary p-3 text-white flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <Bot className="h-4 w-4" />
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold">
-              {language === "ar" ? "المساعد الرقمي" : "Digital Assistant"}
-            </h3>
-            <p className="text-xs text-muted-foreground">
-              {language === "ar" ? "متصل الآن" : "Online now"}
-            </p>
-          </div>
+          <Bot className="h-5 w-5" />
+          <span className="text-sm font-bold">مساعد رقمنة</span>
         </div>
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => setIsMinimized(!isMinimized)}
-          >
-            {isMinimized ? (
-              <Maximize2 className="h-4 w-4" />
-            ) : (
-              <Minimize2 className="h-4 w-4" />
-            )}
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => setIsOpen(false)}
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
+        <X className="h-4 w-4 cursor-pointer" onClick={() => setIsOpen(false)} />
       </div>
 
-      {!isMinimized && (
-        <>
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${
-                  message.role === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground rounded-ee-sm"
-                      : "bg-muted text-foreground rounded-es-sm"
-                  }`}
-                >
-                  {message.content}
-                </div>
-              </div>
-            ))}
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="flex gap-1 rounded-2xl bg-muted px-4 py-3 rounded-es-sm">
-                  <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/50" style={{ animationDelay: "0ms" }} />
-                  <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/50" style={{ animationDelay: "150ms" }} />
-                  <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/50" style={{ animationDelay: "300ms" }} />
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+        {messages.map((m) => (
+          <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+            <div
+              className={`max-w-[85%] p-3 rounded-2xl text-sm ${
+                m.role === "user" ? "bg-primary text-white" : "bg-white border text-slate-800"
+              }`}
+              dangerouslySetInnerHTML={{ __html: formatMessage(m.content) }}
+            />
           </div>
+        ))}
+      </div>
 
-          {/* Quick Replies */}
-          {messages.length === 1 && (
-            <div className="px-4 pb-2">
-              <div className="flex flex-wrap gap-2">
-                {quickReplies[language].map((reply, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setInput(reply)
-                      setTimeout(handleSend, 100)
-                    }}
-                    className="rounded-full bg-muted px-3 py-1.5 text-xs transition-colors hover:bg-primary/10 hover:text-primary"
-                  >
-                    {reply}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+      <div className="px-3 pt-2 pb-1 flex flex-wrap gap-2 border-t">
+        {suggestions.map((s, idx) => (
+          <button
+            key={idx}
+            onClick={() => {
+              setInput(s);
+              handleSend();
+            }}
+            className="text-xs bg-gray-100 hover:bg-gray-200 text-slate-700 px-3 py-1 rounded-full transition"
+          >
+            {s}
+          </button>
+        ))}
+      </div>
 
-          {/* Input */}
-          <div className="border-t border-border/50 p-4">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                handleSend()
-              }}
-              className="flex gap-2"
-            >
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={t("chatbot.placeholder")}
-                className="flex-1 bg-muted/50"
-              />
-              <Button type="submit" size="icon" disabled={!input.trim()}>
-                <Send className="h-4 w-4" />
-              </Button>
-            </form>
-          </div>
-        </>
-      )}
+      <div className="p-3 border-t bg-white flex gap-2">
+        <Input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+          placeholder="اكتب اسم الخدمة..."
+          dir="rtl"
+          className="text-right h-10"
+        />
+        <Button size="icon" onClick={handleSend} className="h-10 w-10">
+          <Send className="h-4 w-4" />
+        </Button>
+      </div>
     </Card>
-  )
+  );
 }

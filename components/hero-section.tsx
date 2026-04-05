@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useLanguage } from "@/contexts/language-context"
-import { Button } from "@/components/ui/button"
-import { ArrowDown, Bot, Sparkles } from "lucide-react"
-import Image from "next/image"
+import { useLanguage } from "@/contexts/language-context";
+import { Button } from "@/components/ui/button";
+import { ArrowDown, Bot, Sparkles } from "lucide-react";
+import Image from "next/image";
 
 export function HeroSection() {
-  const { t, dir } = useLanguage()
+  const { t, dir } = useLanguage();
 
   return (
     <section className="relative min-h-screen overflow-hidden" dir={dir}>
@@ -114,7 +114,7 @@ export function HeroSection() {
             className="h-14 px-10 text-base font-semibold rounded-xl border-primary/40 bg-background/30 backdrop-blur-md hover:bg-primary/10 hover:border-primary/60 transition-all duration-300 hover:scale-105" 
             asChild
           >
-            <a href="#assistant">
+            <a href="/document-assistant">
               <Bot className="h-5 w-5 me-2" />
               {t("hero.secondary")}
             </a>
@@ -139,5 +139,5 @@ export function HeroSection() {
       <div className="pointer-events-none absolute -bottom-60 -left-60 h-[500px] w-[500px] rounded-full bg-primary/10 blur-[100px]" />
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full bg-accent/5 blur-[120px]" />
     </section>
-  )
+  );
 }
