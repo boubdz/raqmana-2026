@@ -1,14 +1,13 @@
-// app/robots.ts
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://raqmana.vercel.app'; // ⚠️ استبدل برابط موقعك بعد النشر
+  const baseUrl = 'https://raqmana.vercel.app'; // استبدل برابطك
 
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/_next/'],
+      disallow: ['/api/', '/_next/', '/private/'],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   };

@@ -1,10 +1,10 @@
-// app/sitemap.ts
 import { MetadataRoute } from 'next';
 import { serviceCategories } from '@/lib/services-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://raqmana.vercel.app'; // استبدل برابط موقعك
+  const baseUrl = 'https://raqmana.vercel.app'; // ⚠️ استبدل هذا لاحقاً برابطك النهائي
 
+  // 1. الصفحة الرئيسية
   const routes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -12,8 +12,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1.0,
     },
+    {
+      url: `${baseUrl}/document-assistant`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/feedback`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
   ];
 
+  // 2. صفحات الخدمات (من serviceCategories) - أكثر من 30 صفحة
   const categoryRoutes = serviceCategories.map((category) => ({
     url: `${baseUrl}/categories/${category.id}`,
     lastModified: new Date(),
@@ -21,20 +34,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const extraRoutes: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/document-assistant`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/feedback`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.4,
-    },
-  ];
-
-  return [...routes, ...categoryRoutes, ...extraRoutes];
+  return [...routes, ...categoryRoutes];
 }
