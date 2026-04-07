@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Noto_Sans_Arabic } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/contexts/theme-context'
 import { LanguageProvider } from '@/contexts/language-context'
+import InstallButton from '@/components/InstallButton'
 import './globals.css'
 
 const geist = Geist({ 
@@ -62,6 +63,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#0d1520" />
+      </head>
       <body className={`${geist.variable} ${geistMono.variable} ${notoArabic.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LanguageProvider>
@@ -69,6 +74,7 @@ export default function RootLayout({
           </LanguageProvider>
         </ThemeProvider>
         <Analytics />
+        <InstallButton />
       </body>
     </html>
   )
