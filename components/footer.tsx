@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Globe, Phone, ExternalLink } from "lucide-react";
 import ViewsCounter from "@/components/ViewsCounter";
 import { SocialLinks } from "@/components/SocialLinks";
-import { DownloadButtons } from "@/components/DownloadButtons"; // <-- أضف هذا السطر
+import { DownloadButtons } from "@/components/DownloadButtons";
 
 export function Footer() {
   const { t, language, dir } = useLanguage();
@@ -41,7 +41,6 @@ export function Footer() {
     <footer className="border-t border-border/50 bg-card/50" dir={dir}>
       {/* Sitemap Section */}
       <div id="sitemap" className="border-b border-border/50 py-16 bg-muted/20">
-        {/* ... (محتويات هذا القسم كما هي دون تغيير) ... */}
         <div className="container mx-auto px-4">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold mb-2">{t("footer.sitemap")}</h2>

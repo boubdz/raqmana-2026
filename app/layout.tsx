@@ -1,68 +1,75 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/contexts/theme-context";
-import { LanguageProvider } from "@/contexts/language-context";
-import { AIChatbot } from "@/components/ai-chatbot";
-import "./globals.css";
+import type { Metadata, Viewport } from 'next'
+import { Geist, Geist_Mono, Noto_Sans_Arabic } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
+import { ThemeProvider } from '@/contexts/theme-context'
+import { LanguageProvider } from '@/contexts/language-context'
+import './globals.css'
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const geist = Geist({ 
+  subsets: ["latin"],
+  variable: "--font-geist",
+})
+
+const geistMono = Geist_Mono({ 
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+})
+
+const notoArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  variable: "--font-noto-arabic",
+  weight: ["400", "500", "600", "700"],
+})
 
 export const metadata: Metadata = {
-  title: {
-    default: "رَقمنة | دليلك للخدمات الرقمية في الجزائر",
-    template: "%s | رَقمنة",
+  title: 'Raqmana - رقمنة | البوابة الجزائرية للخدمات الرقمية',
+  description: 'اكتشف أكثر من 280 خدمة رقمية حكومية في مكان واحد. Discover over 280 Algerian government digital services in one place.',
+  generator: 'Raqmana',
+  keywords: ['Algeria', 'digital services', 'government', 'e-government', 'الجزائر', 'خدمات رقمية', 'حكومة إلكترونية'],
+  authors: [{ name: 'Raqmana' }],
+  icons: {
+    icon: [
+      {
+        url: '/icon-light-32x32.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/icon-dark-32x32.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    apple: '/apple-icon.png',
   },
-  description:
-    "منصة إرشادية مستقلة للخدمات الرقمية في الجزائر. دليلك لاستخراج جواز السفر، شهادة الميلاد، دفع الفواتير، والخدمات الإدارية بسهولة.",
-  keywords: [
-    "خدمات رقمية الجزائر",
-    "جواز سفر",
-    "شهادة ميلاد",
-    "سونلغاز",
-    "بريد الجزائر",
-    "رخصة السياقة",
-    "رَقمنة",
-    "الخدمات الإلكترونية الجزائر",
-    "دفع الفواتير أونلاين",
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8fafb' },
+    { media: '(prefers-color-scheme: dark)', color: '#0d1520' },
   ],
-  authors: [{ name: "رَقمنة" }],
-  metadataBase: new URL("https://raqmana.vercel.app"), // ⚠️ استبدل برابطك
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    title: "رَقمنة | دليلك للخدمات الرقمية في الجزائر",
-    description:
-      "منصة إرشادية مستقلة للخدمات الرقمية في الجزائر. دليلك لاستخراج جواز السفر، شهادة الميلاد، دفع الفواتير، والخدمات الإدارية.",
-    url: "https://raqmana.vercel.app",
-    siteName: "رَقمنة",
-    locale: "ar_DZ",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "رَقمنة | دليلك للخدمات الرقمية في الجزائر",
-    description:
-      "منصة إرشادية مستقلة للخدمات الرقمية في الجزائر. دليلك لاستخراج الوثائق الإدارية ومختلف الإدارات الرقمية.",
-  },
-};
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geist.variable} ${geistMono.variable} ${notoArabic.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LanguageProvider>
             {children}
-            <AIChatbot />
           </LanguageProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
-  );
+  )
 }
