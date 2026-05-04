@@ -19,6 +19,8 @@ export interface ServiceCategory {
   phone?: string
   services: ServiceLink[]
   subCategories?: SubCategory[]
+  descriptionAr?: string
+  usageGuides?: { title: string, steps: string[] }[]
 }
 
 export const serviceCategories: ServiceCategory[] = [
@@ -28,6 +30,19 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.bills",
     icon: "Receipt",
     color: "from-emerald-500 to-green-600",
+    descriptionAr: "دليل الدفع الإلكتروني للفواتير في الجزائر: سدد فاتورة الماء ADE، الكهرباء والغاز Sonelgaz، وكراء عدل AADL و OPGI عبر الإنترنت وبكل سهولة باستخدام البطاقة الذهبية أو البنكية CIB.",
+    usageGuides: [
+      {
+        title: "خطوات دفع الفواتير بالبطاقة الذهبية",
+        steps: [
+          "اختيار الشركة المعنية (سونلغاز، ADE، أو SEAAL).",
+          "إدخال رقم الفاتورة ورمز المنطقة الموضح في وصل الدفع.",
+          "إدخال معلومات البطاقة الذهبية (الرقم، تاريخ الانتهاء، ورمز CVV).",
+          "استقبال رمز التأكيد عبر SMS وإدخاله لإتمام العملية.",
+          "تحميل وصل الدفع الإلكتروني كإثبات للعملية."
+        ]
+      }
+    ],
     services: [],
     subCategories: [
       {
@@ -77,6 +92,19 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.mobile",
     icon: "Smartphone",
     color: "from-violet-500 to-purple-600",
+    descriptionAr: "خدمات تعبئة الرصيد ودفع الفواتير لمتعاملي الهاتف النقال (موبيليس، جيزي، أوريدو) عبر الإنترنت باستخدام البطاقة الذهبية وبطاقات البنكية CIB.",
+    usageGuides: [
+      {
+        title: "تعبئة الرصيد (Flexy) عبر الإنترنت",
+        steps: [
+          "الدخول لمنصة التعبئة الخاصة بمتعاملك (موبيليس، جيزي، أو أوريدو).",
+          "إدخال رقم الهاتف المراد تعبئته والمبلغ.",
+          "اختيار وسيلة الدفع (البطاقة الذهبية أو CIB).",
+          "تأكيد العملية عبر الرمز المرسل لهاتفك.",
+          "سيتم شحن الرصيد فوراً وتلقي رسالة تأكيد."
+        ]
+      }
+    ],
     services: [],
     subCategories: [
       {
@@ -107,9 +135,32 @@ export const serviceCategories: ServiceCategory[] = [
     id: "post",
     nameKey: "category.post",
     icon: "Mail",
-    color: "from-amber-500 to-yellow-600",
+    color: "from-amber-600 to-yellow-700",
     officialSite: "https://www.poste.dz",
     phone: "1530",
+    descriptionAr: "كافة الخدمات الرقمية لبريد الجزائر: تطبيق بريدي موب BaridiMob، طلب وتتبع البطاقة الذهبية، والاطلاع على الرصيد ECCP.",
+    usageGuides: [
+      {
+        title: "دليل تفعيل تطبيق BaridiMob",
+        steps: [
+          "الحصول على البطاقة الذهبية وتفعيلها في الصراف الآلي.",
+          "تحميل تطبيق BaridiMob من المتجر الرسمي.",
+          "إدخال رقم البطاقة الذهبية وتاريخ انتهائها.",
+          "استقبال رمز التفعيل على رقم الهاتف المرتبط بالبطاقة.",
+          "تعيين اسم مستخدم وكلمة سر للدخول الدائم."
+        ]
+      },
+      {
+        title: "طلب البطاقة الذهبية لأول مرة",
+        steps: [
+          "الدخول لموقع (edahabia.poste.dz).",
+          "إدخال معلومات الحساب الجاري (RIP) والمعلومات الشخصية.",
+          "اختيار مكتب البريد لاستلام البطاقة.",
+          "تأكيد الطلب عبر الرمز المرسل للهاتف.",
+          "تتبع حالة الطلب عبر الموقع حتى وصولها."
+        ]
+      }
+    ],
     services: [],
     subCategories: [
       {
@@ -143,6 +194,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-sky-500 to-blue-600",
     officialSite: "https://www.algerietelecom.dz",
     phone: "12",
+    descriptionAr: "بوابة اتصالات الجزائر الرقمية: تعبئة إنترنت Idoom (ADSL, Fiber, 4G)، الاطلاع على الفواتير، وطلب خطوط جديدة عبر الإنترنت.",
+    usageGuides: [
+      {
+        title: "تعبئة إنترنت Idoom (ADSL / Fiber)",
+        steps: [
+          "الدخول لموقع (client.algerietelecom.dz) أو تطبيق MyIdoom.",
+          "إدخال رقم الهاتف الثابت المراد تعبئته.",
+          "اختيار 'تعبئة الرصيد' وتحديد المبلغ أو العرض.",
+          "إدخال معلومات البطاقة الذهبية أو CIB وتأكيد الرمز.",
+          "الاستفادة من 'التعبئة الاحتياطية' (Idoomly) في حالة انقطاع الإنترنت."
+        ]
+      }
+    ],
     services: [],
     subCategories: [
       {
@@ -172,6 +236,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-blue-500 to-indigo-600",
     officialSite: "https://www.education.gov.dz",
     phone: "+213 23 52 72 27",
+    descriptionAr: "الخدمات الرقمية لقطاع التربية الوطنية: فضاء الأولياء، رقمنة المسار الدراسي، والاطلاع على نتائج الامتحانات الرسمية (BEM, BAC).",
+    usageGuides: [
+      {
+        title: "التسجيل في فضاء الأولياء والاطلاع على النتائج",
+        steps: [
+          "الولوج لموقع (awlyaa.education.gov.dz).",
+          "اختيار 'تسجيل جديد' أو تسجيل الدخول بحسابك.",
+          "إدخال معلومات التلميذ (رقم التسجيل المدرسي).",
+          "تأكيد التسجيل من طرف مدير المؤسسة التربوية.",
+          "الاطلاع على كشوف النقاط، الغيابات، وجدول التوقيت."
+        ]
+      }
+    ],
     services: [],
     subCategories: [
       {
@@ -221,6 +298,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-indigo-500 to-violet-600",
     officialSite: "https://www.mesrs.dz",
     phone: "+213 23 93 91 32",
+    descriptionAr: "بوابة التعليم العالي: التسجيلات الجامعية الأولية، منصة Progres لمتابعة المسار الجامعي، وخدمات الإيواء والمنحة الجامعية.",
+    usageGuides: [
+      {
+        title: "دليل استخدام منصة Progres للطلبة",
+        steps: [
+          "الدخول للمنصة (progres.mesrs.dz/webetu).",
+          "إدخال رقم البكالوريا وسنة الحصول عليها كاسم مستخدم.",
+          "إدخال الرقم السري الموجود في كشف نقاط البكالوريا.",
+          "الاطلاع على الجدول الزمني، المحاضرات، وكشوف النقاط.",
+          "دفع حقوق التسجيل السنوية عبر البطاقة الذهبية مباشرة."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "التسجيل الأولي الجامعي", en: "University Pre-registration" }, url: "https://www.orientation.esi.dz" },
       { name: { ar: "منصة Progres", en: "Progres Platform" }, url: "https://progres.mesrs.dz" },
@@ -252,6 +342,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-slate-500 to-gray-600",
     officialSite: "https://www.interieur.gov.dz",
     phone: "1100",
+    descriptionAr: "الخدمات الرقمية لوزارة الداخلية والبلديات: استخراج شهادة الميلاد، عقد الزواج، شهادة الوفاة، وتجديد جواز السفر البيومتري وبطاقة التعريف الوطنية والحصول على بطاقة رمادية (البطاقة الرمادية).",
+    usageGuides: [
+      {
+        title: "كيفية استخراج شهادة الميلاد S12 عبر الإنترنت",
+        steps: [
+          "الدخول للموقع الرسمي (etatcivil.interieur.gov.dz).",
+          "إدخال المعلومات الشخصية (الاسم، اللقب، وتاريخ الميلاد).",
+          "إدخال رقم التعريف الوطني (NIN) المكون من 18 رقماً.",
+          "تحديد بلدية الميلاد وتأكيد المعلومات.",
+          "تحميل الشهادة مباشرة وطباعتها."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "استخراج شهادة الميلاد", en: "Birth Certificate" }, url: "https://etatcivil.interieur.gov.dz" },
       { name: { ar: "استخراج عقد الزواج", en: "Marriage Certificate" }, url: "https://etatcivil.interieur.gov.dz/mariage" },
@@ -272,6 +375,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-teal-500 to-emerald-600",
     officialSite: "https://www.aadl.com.dz",
     phone: "3040",
+    descriptionAr: "وكالة عدل AADL: منصة التسجيل في سكنات عدل 3، دفع مستحقات الكراء الشهرية، وتتبع ملفات السكن إلكترونياً.",
+    usageGuides: [
+      {
+        title: "دليل التسجيل في منصة عدل 3 (AADL 3)",
+        steps: [
+          "الدخول للموقع الرسمي (aadl3.aadl.com.dz) عند فتح الاكتتاب.",
+          "إدخال رقم التعريف الوطني (NIN) ورقم الضمان الاجتماعي.",
+          "ملء استمارة المعلومات الشخصية والمهنية بدقة.",
+          "تأكيد الطلب واستخراج وصل التسجيل الخاص بك.",
+          "تتبع حالة الملف والنتائج عبر نفس المنصة لاحقاً."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "تسجيل الدخول لمنصة عدل 3", en: "AADL 3 Platform Login" }, url: "https://aadl3.aadl.com.dz" },
       { name: { ar: "دفع فاتورة تكاليف الكراء", en: "Rent Payment" }, url: "https://www.aadl.com.dz/paiement" },
@@ -286,6 +402,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-cyan-500 to-teal-600",
     officialSite: "https://www.enpi.dz",
     phone: "+21323536722",
+    descriptionAr: "المؤسسة الوطنية للترقية العقارية ENPI: التسجيل لاقتناء سكنات الترقوي العمومي LPP، والسكن الترقوي الحر LPL، ومتابعة ملفات المكتتبين.",
+    usageGuides: [
+      {
+        title: "كيفية التسجيل لاقتناء سكن LPP",
+        steps: [
+          "الولوج للموقع الرسمي (lpp.enpi.dz).",
+          "إنشاء حساب جديد باستخدام البريد الإلكتروني.",
+          "اختيار المشروع السكني والولاية المطلوبة.",
+          "تحميل الوثائق المطلوبة (شهادة الميلاد، كشف الراتب، إلخ).",
+          "تأكيد الطلب وانتظار دراسة الملف من طرف اللجنة."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "التسجيل لاقتناء سكن LPP", en: "LPP Housing Registration" }, url: "https://lpp.enpi.dz" },
       { name: { ar: "التسجيل لاقتناء سكن LPL", en: "LPL Housing Registration" }, url: "https://lpl.enpi.dz" },
@@ -327,6 +456,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-amber-500 to-orange-600",
     officialSite: "https://www.mjustice.dz",
     phone: "1078",
+    descriptionAr: "خدمات وزارة العدل الجزائرية الرقمية: استخراج صحيفة السوابق القضائية (رقم 3)، شهادة الجنسية، وتتبع ملفات القضايا والعرائض عن بعد دون التنقل للمحكمة.",
+    usageGuides: [
+      {
+        title: "خطوات استخراج صحيفة السوابق القضائية (Casier)",
+        steps: [
+          "الولوج لمنصة (casier.mjustice.dz).",
+          "إدخال رقم التعريف الوطني (NIN) ورقم الهاتف المحمول.",
+          "استقبال رمز التفعيل عبر رسالة نصية (SMS) وإدخاله في الموقع.",
+          "تأكيد الهوية وتحديد سبب طلب الصحيفة.",
+          "تحميل الوثيقة بصيغة PDF فوراً."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "استخراج صحيفة السوابق القضائية", en: "Criminal Record (Casier Judiciaire)" }, url: "https://casier.mjustice.dz" },
       { name: { ar: "استخراج الجنسية الجزائرية", en: "Algerian Nationality Certificate" }, url: "https://nationalite.mjustice.dz" },
@@ -360,6 +502,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-stone-500 to-zinc-600",
     officialSite: "https://www.dgdn.dz",
     phone: "+213 21 59 51 51",
+    descriptionAr: "بوابة الأملاك العقارية الرقمية: طلب الدفتر العقاري، استخراج المصفوفة المسحية، ومتابعة ملفات الملكية العقارية إلكترونياً.",
+    usageGuides: [
+      {
+        title: "خطوات طلب الدفتر العقاري إلكترونياً",
+        steps: [
+          "الدخول لمنصة (tasjil.dgdn.dz).",
+          "اختيار خدمة 'طلب الدفتر العقاري'.",
+          "إدخال معلومات العقار (رقم القسم، رقم القطعة، والبلدية).",
+          "رفع الوثائق الثبوتية بصيغة PDF.",
+          "متابعة حالة الطلب عبر رقم التسجيل المستلم."
+        ]
+      }
+    ],
     services: [],
     subCategories: [
       {
@@ -390,6 +545,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-blue-600 to-indigo-700",
     officialSite: "https://www.mae.gov.dz",
     phone: "+213 21 50 45 45",
+    descriptionAr: "خدمات وزارة الشؤون الخارجية: طلب تصديق الوثائق (Apostille) الموجهة للخارج، وتتبع وضعية الجالية الجزائرية.",
+    usageGuides: [
+      {
+        title: "كيفية طلب تصديق الوثائق (Apostille)",
+        steps: [
+          "الولوج لموقع (apostille.mae.gov.dz).",
+          "ملء استمارة طلب التصديق بالمعلومات المطلوبة.",
+          "تحديد نوع الوثيقة المراد تصديقها والجهة المصدرة.",
+          "اختيار موعد لإيداع الوثائق الأصلية.",
+          "التوجه للمصالح القنصلية أو الوزارة في الموعد المحدد."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "ترحيل الوثائق للتصديق", en: "Document Apostille" }, url: "https://apostille.mae.gov.dz" },
       { name: { ar: "كاتب الدولة للجالية بالخارج", en: "Diaspora Secretary" }, url: "https://jaliya.mae.gov.dz" },
@@ -405,6 +573,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-rose-500 to-pink-600",
     officialSite: "https://www.mtess.gov.dz",
     phone: "3010",
+    descriptionAr: "الخدمات الرقمية للضمان الاجتماعي: فضاء الهناء CNAS، شهادات الانتساب، وخدمات التقاعد CNR والعمل غير الأجير CASNOS.",
+    usageGuides: [
+      {
+        title: "التسجيل في فضاء الهناء CNAS",
+        steps: [
+          "تحميل تطبيق 'الهناء' أو الدخول للموقع الرسمي.",
+          "إدخال رقم الضمان الاجتماعي المكتوب في بطاقة الشفاء.",
+          "إدخال البريد الإلكتروني وتعيين كلمة سر.",
+          "تفعيل الحساب عبر الرابط المرسل لبريدك.",
+          "تحميل شهادة الانتساب والاطلاع على تعويضات الأدوية."
+        ]
+      }
+    ],
     services: [],
     subCategories: [
       {
@@ -487,6 +668,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-violet-500 to-purple-600",
     officialSite: "https://www.anem.dz",
     phone: "3005",
+    descriptionAr: "الوكالة الوطنية للتشغيل ANEM: التسجيل في منحة البطالة، طلب العمل، وتجديد طلبات التشغيل عن بعد.",
+    usageGuides: [
+      {
+        title: "دليل التسجيل في منحة البطالة 2026",
+        steps: [
+          "الدخول لمنصة (minha.anem.dz).",
+          "إدخال رقم بطاقة طالب العمل ورقم التعريف الوطني.",
+          "حجز موعد للمقابلة مع مستشار التشغيل.",
+          "طباعة وصل الحجز وتجهيز الملف الورقي.",
+          "التوجه لملحقة التشغيل في الموعد المحدد للتفعيل."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "التسجيل في منحة البطالة", en: "Unemployment Allowance Registration" }, url: "https://minha.anem.dz" },
       { name: { ar: "تمديد طلب العمل", en: "Job Request Extension" }, url: "https://www.anem.dz/extension" },
@@ -503,6 +697,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-fuchsia-500 to-pink-600",
     officialSite: "https://www.commerce.gov.dz",
     phone: "1020",
+    descriptionAr: "خدمات وزارة التجارة الجزائرية: بوابة جباية تيك للتصريح الجبائي، تتبع أسعار المواد الاستهلاكية، وتقديم الشكاوى الخاصة بحماية المستهلك.",
+    usageGuides: [
+      {
+        title: "خطوات التصريح الجبائي عبر Jibayatic",
+        steps: [
+          "الدخول لمنصة (jibayatic.mf.gov.dz).",
+          "إنشاء حساب للمكلف بالضريبة باستخدام رقم التعريف الجبائي (NIF).",
+          "اختيار نوع التصريح (شهري، فصلي، أو سنوي).",
+          "ملء استمارة المداخيل والضرائب المستحقة بدقة.",
+          "تأكيد التصريح واستخراج وصل الدفع الإلكتروني."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "الصندوق الخاص لترقية الصادرات", en: "Export Promotion Fund" }, url: "https://fspe.commerce.gov.dz" },
       { name: { ar: "جباية تيك Jibayatic", en: "Jibayatic Declaration" }, url: "https://jibayatic.mf.gov.dz" },
@@ -517,6 +724,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-amber-600 to-orange-700",
     officialSite: "https://www.douane.gov.dz",
     phone: "1023",
+    descriptionAr: "المديرية العامة للجمارك: منصة المعلومة التعريفية، متابعة ملفات الجمركة، والتواصل مع خلية الإصغاء للمتعاملين الاقتصاديين.",
+    usageGuides: [
+      {
+        title: "كيفية الحصول على المعلومة التعريفية (RTC)",
+        steps: [
+          "الدخول لمنصة (rtc.douane.gov.dz).",
+          "تقديم وصف دقيق للبضاعة المراد جمركتها.",
+          "تحميل الوثائق التقنية الخاصة بالمنتج.",
+          "انتظار دراسة الملف من طرف مصالح الجمارك.",
+          "الحصول على الرمز التعريفي الملزم للبضاعة لتسهيل الجمركة."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "المعلومة التعريفية الملزمة RTC", en: "Binding Tariff Information" }, url: "https://rtc.douane.gov.dz" },
       { name: { ar: "خلية الاستماع للجمارك", en: "Customs Support Hotline" }, url: "https://www.douane.gov.dz/contact" },
@@ -530,6 +750,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-emerald-500 to-teal-600",
     officialSite: "https://ae.andi.dz",
     phone: "1071",
+    descriptionAr: "الوكالة الوطنية للمقاول الذاتي: منصة طلب بطاقة المقاول الذاتي، الاستفادة من الامتيازات الجبائية، والضمان الاجتماعي للأعمال الحرة.",
+    usageGuides: [
+      {
+        title: "كيفية الحصول على بطاقة المقاول الذاتي",
+        steps: [
+          "الولوج للموقع الرسمي (anaem.dz) أو (ae.andi.dz).",
+          "التسجيل باستخدام البريد الإلكتروني وتأكيد الحساب.",
+          "إدخال المعلومات الشخصية واختيار رمز النشاط الاقتصادي.",
+          "رفع صورة شمسية ونسخة من بطاقة التعريف.",
+          "انتظار الموافقة وطباعة بطاقة المقاول الذاتي الرقمية."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "طلب بطاقة المقاول الذاتي", en: "Auto-Entrepreneur Card Request" }, url: "https://ae.andi.dz" },
     ],
@@ -542,6 +775,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-emerald-600 to-green-700",
     officialSite: "https://www.onpo.dz",
     phone: "+213 23 77 78 62",
+    descriptionAr: "الديوان الوطني للحج والعمرة: التسجيل في قرعة الحج، حجز تذاكر الطيران والغرف، وتتبع وكالات العمرة المعتمدة.",
+    usageGuides: [
+      {
+        title: "خطوات حجز غرفة الحج عبر البوابة الرسمية",
+        steps: [
+          "انتظار صدور القوائم النهائية للفائزين بقرعة الحج.",
+          "الدخول لبوابة الحج الجزائرية (hajj.onpo.dz).",
+          "إدخال رقم جواز السفر وتأكيد الهوية.",
+          "اختيار الفندق والغرفة المناسبة في مكة والمدينة.",
+          "دفع التكاليف واستلام وصل الحجز الإلكتروني."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "التسجيل في قرعة الحج", en: "Hajj Lottery Registration" }, url: "https://hajj.onpo.dz" },
       { name: { ar: "البوابة الجزائرية للحج", en: "Algeria Hajj Portal" }, url: "https://www.onpo.dz/hajj" },
@@ -556,6 +802,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-blue-500 to-cyan-600",
     officialSite: "https://www.aapi.dz",
     phone: "+213 23 83 30 30",
+    descriptionAr: "الوكالة الجزائرية لترقية الاستثمار: بوابة المستثمر الرقمية للتسجيل، الحصول على الامتيازات، ومتابعة المشاريع الاستثمارية.",
+    usageGuides: [
+      {
+        title: "خطوات التسجيل في بوابة المستثمر",
+        steps: [
+          "الولوج لموقع (investor.aapi.dz).",
+          "إنشاء حساب مستخدم جديد وتأكيده.",
+          "ملء استمارة المشروع الاستثماري وتحديد طبيعته.",
+          "اختيار العقار الاقتصادي المطلوب عبر المنصة الرقمية.",
+          "إيداع الملف الرقمي والحصول على رقم التسجيل الوطني."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "التسجيل في وكالة ترقية الاستثمار", en: "Investment Agency Registration" }, url: "https://www.aapi.dz/inscription" },
       { name: { ar: "بوابة المستثمر", en: "Investor Portal" }, url: "https://investor.aapi.dz" },
@@ -570,6 +829,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-red-600 to-rose-700",
     officialSite: "https://www.anie.dz",
     phone: "+21321376874",
+    descriptionAr: "السلطة الوطنية للانتخابات: التسجيل في القوائم الانتخابية، التأكد من مركز التصويت، وتغيير مكان الإقامة إلكترونياً.",
+    usageGuides: [
+      {
+        title: "كيفية التأكد من التسجيل في القوائم الانتخابية",
+        steps: [
+          "الدخول لموقع (verification.anie.dz).",
+          "إدخال رقم التعريف الوطني (NIN).",
+          "تحديد ولاية وبلدية الإقامة الحالية.",
+          "الضغط على 'بحث' لإظهار مركز ومكتب التصويت الخاص بك.",
+          "يمكنك طلب تغيير العنوان إذا انتقلت لمكان إقامة جديد."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "التسجيل في القوائم الانتخابية", en: "Electoral Registration" }, url: "https://inscription.anie.dz" },
       { name: { ar: "طلب نسخة من بطاقة الناخب", en: "Voter Card Copy" }, url: "https://carte.anie.dz" },
@@ -584,7 +856,20 @@ export const serviceCategories: ServiceCategory[] = [
     icon: "ShieldCheck",
     color: "from-blue-700 to-indigo-800",
     officialSite: "https://www.dgsn.dz",
-    phone: "1584",
+    phone: "1548",
+    descriptionAr: "خدمات الأمن الوطني الجزائري الرقمية: التصريح بضياع الوثائق، الإبلاغ عن الحوادث، وطلب المساعدة عبر تطبيق ألو شرطة.",
+    usageGuides: [
+      {
+        title: "التصريح بضياع الوثائق عبر الإنترنت",
+        steps: [
+          "الدخول لموقع (perte.dgsn.dz).",
+          "اختيار نوع الوثيقة الضائعة (بطاقة تعريف، جواز سفر، إلخ).",
+          "إدخال المعلومات الشخصية وظروف ضياع الوثيقة.",
+          "تأكيد الطلب واستخراج وصل التصريح الأولي.",
+          "التوجه لأقرب مركز شرطة لتأكيد التصريح النهائي."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "التصريح بضياع الوثائق", en: "Lost Document Declaration" }, url: "https://perte.dgsn.dz" },
       { name: { ar: "إدلاء بشهادة", en: "Give Testimony" }, url: "https://temoignage.dgsn.dz" },
@@ -601,6 +886,19 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-indigo-500 to-violet-600",
     officialSite: "https://www.arpce.dz",
     phone: "3333",
+    descriptionAr: "سلطة ضبط البريد والاتصالات: التأكد من عدد الشرائح المسجلة باسمك، تقديم الشكاوي ضد المتعاملين، وقياس جودة الإنترنت.",
+    usageGuides: [
+      {
+        title: "كيفية معرفة عدد شرائح الهاتف المسجلة باسمك",
+        steps: [
+          "استعمال الكود الموحد (*254#) من أي هاتف.",
+          "اختيار الرقم (1) لإظهار كافة الأرقام المرتبطة بـ NIN الخاص بك.",
+          "في حال وجود رقم لا تعرفه، توجه للمتعامل المعني لفسخ العقد.",
+          "يمكنك أيضاً تقديم شكوى عبر موقع (reclamation.arpce.dz).",
+          "تأكد دائماً من أن أرقامك مسجلة بهويتك الحقيقية."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "طلب خدمة عبر الموقع", en: "Online Service Request" }, url: "https://www.arpce.dz/demande" },
       { name: { ar: "إيداع شكوى", en: "File Complaint" }, url: "https://reclamation.arpce.dz" },
@@ -615,6 +913,19 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.insurance",
     icon: "ShieldPlus",
     color: "from-teal-500 to-cyan-600",
+    descriptionAr: "خدمات التأمين في الجزائر: تأمين السيارات، السكن، السفر، والتأمين الصحي عبر كبرى الشركات (SAA, CAAR, Alliance) مع إمكانية الدفع والتجديد إلكترونياً.",
+    usageGuides: [
+      {
+        title: "خطوات تجديد تأمين السيارة عبر الإنترنت",
+        steps: [
+          "الدخول لموقع شركة التأمين الخاصة بك (مثلاً SAA أو أليانس).",
+          "اختيار خدمة 'تجديد التأمين' وإدخال رقم العقد الحالي.",
+          "تأكيد المعلومات التقنية للمركبة وتحديث مدة التأمين.",
+          "دفع المستحقات عبر البطاقة الذهبية أو CIB.",
+          "تحميل شهادة التأمين المؤقتة بصيغة PDF."
+        ]
+      }
+    ],
     services: [
       { name: { ar: "الشركة الجزائرية للتأمينات SAA", en: "SAA Insurance" }, url: "https://www.saa.dz", phone: "+213 21 22 50 00" },
       { name: { ar: "شركة CAAR للتأمين", en: "CAAR Insurance" }, url: "https://www.caar.dz", phone: "+213 22 16 32 07" },
@@ -631,6 +942,19 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.banking",
     icon: "Landmark",
     color: "from-emerald-600 to-green-700",
+    descriptionAr: "الخدمات المصرفية الرقمية: إدارة الحسابات البنكية، تتبع الرصيد، التحويلات المالية، وطلب البطاقات البنكية CIB عبر تطبيقات البنوك العمومية والخاصة.",
+    usageGuides: [
+      {
+        title: "كيفية تفعيل الخدمات البنكية عبر الإنترنت",
+        steps: [
+          "التوجه للوكالة البنكية لطلب تفعيل خدمة E-Banking.",
+          "استلام اسم المستخدم وكلمة السر الأولية.",
+          "تحميل تطبيق البنك (مثلاً BNA.dz أو BEA Mobile).",
+          "تغيير كلمة السر عند أول دخول وتفعيل البصمة.",
+          "يمكنك الآن تحويل الأموال ودفع الفواتير من هاتفك."
+        ]
+      }
+    ],
     services: [],
     subCategories: [
       {
@@ -652,6 +976,45 @@ export const serviceCategories: ServiceCategory[] = [
           { name: { ar: "البنك العربي", en: "Arab Bank" }, url: "https://www.arabbank.dz" },
           { name: { ar: "سوسيتي جنرال الجزائر", en: "Société Générale Algeria" }, url: "https://www.societegenerale.dz" },
           { name: { ar: "بنك BNP باريبا", en: "BNP Paribas Algeria" }, url: "https://www.bnpparibas.dz" },
+        ],
+      },
+    ],
+  },
+  // 31. الفلاحة والصيد البحري
+  {
+    id: "agriculture",
+    nameKey: "category.agriculture",
+    icon: "Wheat",
+    color: "from-amber-600 to-green-700",
+    officialSite: "http://madrp.gov.dz",
+    phone: "023.50.32.38",
+    descriptionAr: "بوابة الفلاحة والصيد البحري: حجز أضاحي العيد 2026 عبر منصة أضاحي، خدمات وزارة الفلاحة، رخص الصيد، وتطبيقات الإرشاد الفلاحي (فيلاحي ورصد) لخدمة الفلاحين.",
+    usageGuides: [
+      {
+        title: "دليل حجز أضحية العيد عبر منصة أضاحي",
+        steps: [
+          "الدخول للموقع الرسمي (adhahi.dz) خلال فترة الفتح.",
+          "التسجيل بإدخال البريد الإلكتروني وكلمة السر.",
+          "إدخال رقم التعريف الوطني (NIN) لتأكيد هويتك.",
+          "اختيار الموال أو نقطة البيع القريبة منك وتحديد الأضحية.",
+          "تأكيد الحجز وطباعة الوصل للتوجه به لنقطة الاستلام."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "منصة أضاحي - حجز أضحية العيد", en: "Adhahi Platform - Eid Sacrifice" }, url: "https://adhahi.dz" },
+      { name: { ar: "البوابة الرسمية لوزارة الفلاحة", en: "Ministry of Agriculture Portal" }, url: "http://madrp.gov.dz" },
+      { name: { ar: "بوابة الصيد البحري وتربية المائيات", en: "Fisheries & Aquaculture Portal" }, url: "https://mpeche.gov.dz" },
+      { name: { ar: "الغرفة الوطنية للفلاحة", en: "National Chamber of Agriculture" }, url: "https://cna.dz" },
+      { name: { ar: "الديوان الوطني المهني للحبوب", en: "National Cereals Office" }, url: "https://oaic.dz" },
+      { name: { ar: "بوابة المستثمر الفلاحي", en: "Agricultural Investor Portal" }, url: "https://invest.madrp.gov.dz" },
+    ],
+    subCategories: [
+      {
+        nameKey: "subcategory.agricultureApps",
+        services: [
+          { name: { ar: "تطبيق فيلاحي Filahi (للإرشاد)", en: "Filahi App (Extension)" }, url: "https://play.google.com/store/apps/details?id=dz.madrp.filahi", isApp: true },
+          { name: { ar: "تطبيق رصد - رصد الأمراض النباتية", en: "Rasd App - Plant Diseases" }, url: "https://play.google.com/store/apps/details?id=dz.madrp.rasd", isApp: true },
         ],
       },
     ],

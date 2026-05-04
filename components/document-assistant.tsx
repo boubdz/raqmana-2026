@@ -119,80 +119,119 @@ export function DocumentAssistant() {
   return (
     <div className="space-y-8">
       {/* خيارات المستخدم */}
-      <Card>
-        <CardHeader>
-          <CardTitle>⚙️ خيارات الوثيقة</CardTitle>
+      <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-xl overflow-hidden relative group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
+        <CardHeader className="relative">
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Zap className="h-5 w-5" />
+            </div>
+            ⚙️ خيارات الوثيقة
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 relative">
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label>نوع الوثيقة</Label>
+            <div className="space-y-3">
+              <Label className="text-sm font-bold text-muted-foreground flex items-center gap-2">
+                <FileText className="h-4 w-4" /> نوع الوثيقة
+              </Label>
               <Select value={docType} onValueChange={setDocType}>
-                <SelectTrigger>
+                <SelectTrigger className="h-12 bg-background/50 border-border/50 hover:border-primary transition-colors">
                   <SelectValue placeholder="اختر نوع الوثيقة" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="request">طلب</SelectItem>
-                  <SelectItem value="petition">عريضة</SelectItem>
-                  <SelectItem value="complaint">شكوى</SelectItem>
-                  <SelectItem value="affidavit">تصريح</SelectItem>
+                  <SelectItem value="request">طلب إداري</SelectItem>
+                  <SelectItem value="petition">عريضة قانونية</SelectItem>
+                  <SelectItem value="complaint">شكوى رسمية</SelectItem>
+                  <SelectItem value="affidavit">تصريح شرفي</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label>اللهجة</Label>
+            <div className="space-y-3">
+              <Label className="text-sm font-bold text-muted-foreground flex items-center gap-2">
+                <Sparkles className="h-4 w-4" /> اللهجة / الأسلوب
+              </Label>
               <Select value={tone} onValueChange={setTone}>
-                <SelectTrigger>
+                <SelectTrigger className="h-12 bg-background/50 border-border/50 hover:border-primary transition-colors">
                   <SelectValue placeholder="اختر اللهجة" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="formal">رسمية</SelectItem>
-                  <SelectItem value="normal">عادية</SelectItem>
-                  <SelectItem value="legal">قانونية</SelectItem>
+                  <SelectItem value="formal">رسمية (إدارية)</SelectItem>
+                  <SelectItem value="normal">عادية (بسيطة)</SelectItem>
+                  <SelectItem value="legal">قانونية (رصينة)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-6">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap gap-8 pt-4 border-t border-border/30">
+            <div className="flex items-center space-x-3 space-x-reverse group cursor-pointer">
               <Checkbox
                 id="includeDate"
                 checked={includeDate}
                 onCheckedChange={(checked) => setIncludeDate(!!checked)}
+                className="h-5 w-5 rounded-md border-primary/30 data-[state=checked]:bg-primary"
               />
-              <Label htmlFor="includeDate">إضافة التاريخ تلقائياً</Label>
+              <Label htmlFor="includeDate" className="text-sm font-medium cursor-pointer transition-colors group-hover:text-primary">إضافة التاريخ تلقائياً</Label>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3 space-x-reverse group cursor-pointer">
               <Checkbox
                 id="includeSignature"
                 checked={includeSignature}
                 onCheckedChange={(checked) => setIncludeSignature(!!checked)}
+                className="h-5 w-5 rounded-md border-primary/30 data-[state=checked]:bg-primary"
               />
-              <Label htmlFor="includeSignature">إضافة توقيع (للطباعة)</Label>
+              <Label htmlFor="includeSignature" className="text-sm font-medium cursor-pointer transition-colors group-hover:text-primary">إضافة خانة التوقيع (للطباعة)</Label>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* إدخال الوصف */}
-      <Card>
+      <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-xl overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-24 h-24 bg-accent/5 rounded-full -ml-12 -mt-12"></div>
         <CardHeader>
-          <CardTitle>📝 صف ما تريد تحريره</CardTitle>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
+              <Sparkles className="h-5 w-5" />
+            </div>
+            📝 صِف طلبك بكلماتك الخاصة
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <Textarea
-            placeholder="مثال: أريد تقديم طلب نقل إلى قسم آخر بسبب ظروف صحية. أو: أريد كتابة عريضة شكر للمدير على جهوده."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={4}
-          />
-          <Button onClick={handleGenerate} disabled={isGenerating}>
-            <Sparkles className="ml-2 h-4 w-4" />
-            {isGenerating ? "جاري التوليد..." : "توليد النص بالذكاء الاصطناعي"}
-          </Button>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+        <CardContent className="space-y-6 relative">
+          <div className="relative group">
+            <div className="absolute inset-0 -m-1 bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
+            <Textarea
+              placeholder="مثال بالدارجة: باغي ندفع طلب رخصة بناء ومحتاج نص رسمي.. أو: حبيت نشكي من انقطاع الماء في الحي نتاعنا."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={5}
+              className="relative h-40 text-lg p-6 bg-background/50 border-border/50 focus:border-primary/50 transition-all rounded-xl"
+            />
+          </div>
+          
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <p className="text-sm text-muted-foreground flex items-center gap-2">
+              <Info className="h-4 w-4" />
+              سيقوم الذكاء الاصطناعي بصياغة النص بدقة واحترافية عالية.
+            </p>
+            <Button 
+              onClick={handleGenerate} 
+              disabled={isGenerating}
+              className="w-full md:w-auto h-14 px-10 text-lg font-bold rounded-xl bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-primary/20"
+            >
+              <Sparkles className="ml-3 h-5 w-5 animate-pulse" />
+              {isGenerating ? "جاري التوليد بذكاء..." : "توليد النص الإداري"}
+            </Button>
+          </div>
+          
+          {error && (
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-destructive/10 text-destructive border border-destructive/20">
+              <AlertCircle className="h-5 w-5" />
+              <p className="font-medium">{error}</p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

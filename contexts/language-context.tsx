@@ -62,6 +62,7 @@ const translations: Record<Language, Record<string, string>> = {
     "category.arpce": "سلطة ضبط الاتصالات",
     "category.insurance": "التأمينات",
     "category.banking": "الخدمات البنكية",
+    "category.agriculture": "الفلاحة والصيد البحري",
     
     // Subcategories
     "subcategory.ade": "الجزائرية للمياه ADE",
@@ -88,8 +89,10 @@ const translations: Record<Language, Record<string, string>> = {
     "subcategory.cnas": "CNAS - العمال الأجراء",
     "subcategory.casnos": "CASNOS - غير الأجراء",
     "subcategory.cnr": "CNR - التقاعد",
+    "category.banking": "الخدمات البنكية",
     "subcategory.publicBanks": "البنوك العمومية",
     "subcategory.privateBanks": "البنوك الخاصة",
+    "subcategory.agricultureApps": "تطبيقات الفلاحة",
     
     // Categories Section
     "categories.title": "الفهرس الشامل للخدمات",
@@ -216,6 +219,7 @@ const translations: Record<Language, Record<string, string>> = {
     "category.arpce": "Telecom Regulatory",
     "category.insurance": "Insurance",
     "category.banking": "Banking Services",
+    "category.agriculture": "Agriculture & Fisheries",
     
     // Subcategories
     "subcategory.ade": "ADE Water",
@@ -244,6 +248,7 @@ const translations: Record<Language, Record<string, string>> = {
     "subcategory.cnr": "CNR - Retirement",
     "subcategory.publicBanks": "Public Banks",
     "subcategory.privateBanks": "Private Banks",
+    "subcategory.agricultureApps": "Agricultural Apps",
     
     // Categories Section
     "categories.title": "Complete Services Directory",
