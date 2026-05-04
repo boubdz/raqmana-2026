@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -13,18 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Printer, Download, Sparkles } from "lucide-react";
+import { Printer, Download, Sparkles, FileText, Settings, Zap, Info, AlertCircle, ChevronRight } from "lucide-react";
 
 export function DocumentAssistant() {
-  // الحالة الأساسية
   const [description, setDescription] = useState("");
   const [generatedText, setGeneratedText] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-
-  // الخيارات الإضافية
-  const [docType, setDocType] = useState("request"); // request, petition, complaint, affidavit
-  const [tone, setTone] = useState("formal"); // formal, normal, legal
+  const [docType, setDocType] = useState("request");
+  const [tone, setTone] = useState("formal");
   const [includeSignature, setIncludeSignature] = useState(false);
   const [includeDate, setIncludeDate] = useState(true);
 
@@ -83,213 +80,171 @@ export function DocumentAssistant() {
     const element = document.getElementById("document-preview");
     if (!element) return;
     try {
-      const canvas = await html2canvas(element, { scale: 2 });
+      const canvas = await html2canvas(element, { scale: 3 });
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 210;
-      const pageHeight = 297;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-      pdf.save(`${getDocTypeName()}.pdf`);
+      pdf.addImage(imgData, "PNG", 0, 0, 210, (canvas.height * 210) / canvas.width);
+      pdf.save(`Raqmana_${getDocTypeName()}.pdf`);
     } catch (error) {
       console.error("Error generating PDF", error);
     }
   };
 
-  const handlePrint = () => {
-    const printContent = document.getElementById("document-preview");
-    if (printContent) {
-      const originalContents = document.body.innerHTML;
-      document.body.innerHTML = printContent.innerHTML;
-      window.print();
-      document.body.innerHTML = originalContents;
-      window.location.reload();
-    }
-  };
-
   return (
-    <div className="space-y-8">
-      {/* خيارات المستخدم */}
-      <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-xl overflow-hidden relative group">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
-        <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Zap className="h-5 w-5" />
-            </div>
-            ⚙️ خيارات الوثيقة
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6 relative">
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-3">
-              <Label className="text-sm font-bold text-muted-foreground flex items-center gap-2">
-                <FileText className="h-4 w-4" /> نوع الوثيقة
-              </Label>
-              <Select value={docType} onValueChange={setDocType}>
-                <SelectTrigger className="h-12 bg-background/50 border-border/50 hover:border-primary transition-colors">
-                  <SelectValue placeholder="اختر نوع الوثيقة" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="request">طلب إداري</SelectItem>
-                  <SelectItem value="petition">عريضة قانونية</SelectItem>
-                  <SelectItem value="complaint">شكوى رسمية</SelectItem>
-                  <SelectItem value="affidavit">تصريح شرفي</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+    <div className="space-y-12 max-w-6xl mx-auto pb-20" dir="rtl">
+      
+      {/* Editor Section */}
+      <div className="grid gap-8 lg:grid-cols-5">
+        
+        {/* Sidebar Controls */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white dark:bg-[#0c0c0c] border border-black/5 dark:border-white/5 rounded-[2.5rem] p-8 shadow-sm">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-8 flex items-center gap-2">
+              <Settings className="h-4 w-4" /> إعدادات الوثيقة
+            </h3>
+            
+            <div className="space-y-8">
+              <div className="space-y-3">
+                <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">نوع الوثيقة</Label>
+                <Select value={docType} onValueChange={setDocType}>
+                  <SelectTrigger className="h-14 rounded-2xl bg-[#f5f5f5] dark:bg-white/5 border-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-black/5 dark:border-white/5">
+                    <SelectItem value="request">طلب إداري</SelectItem>
+                    <SelectItem value="petition">عريضة قانونية</SelectItem>
+                    <SelectItem value="complaint">شكوى رسمية</SelectItem>
+                    <SelectItem value="affidavit">تصريح شرفي</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div className="space-y-3">
-              <Label className="text-sm font-bold text-muted-foreground flex items-center gap-2">
-                <Sparkles className="h-4 w-4" /> اللهجة / الأسلوب
-              </Label>
-              <Select value={tone} onValueChange={setTone}>
-                <SelectTrigger className="h-12 bg-background/50 border-border/50 hover:border-primary transition-colors">
-                  <SelectValue placeholder="اختر اللهجة" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="formal">رسمية (إدارية)</SelectItem>
-                  <SelectItem value="normal">عادية (بسيطة)</SelectItem>
-                  <SelectItem value="legal">قانونية (رصينة)</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="space-y-3">
+                <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">أسلوب الكتابة</Label>
+                <Select value={tone} onValueChange={setTone}>
+                  <SelectTrigger className="h-14 rounded-2xl bg-[#f5f5f5] dark:bg-white/5 border-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl border-black/5 dark:border-white/5">
+                    <SelectItem value="formal">رسمية (إدارية)</SelectItem>
+                    <SelectItem value="normal">عادية (بسيطة)</SelectItem>
+                    <SelectItem value="legal">قانونية (رصينة)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="pt-6 border-t border-black/5 dark:border-white/5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="includeDate" className="text-sm font-bold cursor-pointer">إضافة التاريخ تلقائياً</Label>
+                  <Checkbox id="includeDate" checked={includeDate} onCheckedChange={(c) => setIncludeDate(!!c)} className="rounded-full h-6 w-6 border-black/10 dark:border-white/10" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="includeSignature" className="text-sm font-bold cursor-pointer">خانة التوقيع</Label>
+                  <Checkbox id="includeSignature" checked={includeSignature} onCheckedChange={(c) => setIncludeSignature(!!c)} className="rounded-full h-6 w-6 border-black/10 dark:border-white/10" />
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-8 pt-4 border-t border-border/30">
-            <div className="flex items-center space-x-3 space-x-reverse group cursor-pointer">
-              <Checkbox
-                id="includeDate"
-                checked={includeDate}
-                onCheckedChange={(checked) => setIncludeDate(!!checked)}
-                className="h-5 w-5 rounded-md border-primary/30 data-[state=checked]:bg-primary"
-              />
-              <Label htmlFor="includeDate" className="text-sm font-medium cursor-pointer transition-colors group-hover:text-primary">إضافة التاريخ تلقائياً</Label>
-            </div>
-            <div className="flex items-center space-x-3 space-x-reverse group cursor-pointer">
-              <Checkbox
-                id="includeSignature"
-                checked={includeSignature}
-                onCheckedChange={(checked) => setIncludeSignature(!!checked)}
-                className="h-5 w-5 rounded-md border-primary/30 data-[state=checked]:bg-primary"
-              />
-              <Label htmlFor="includeSignature" className="text-sm font-medium cursor-pointer transition-colors group-hover:text-primary">إضافة خانة التوقيع (للطباعة)</Label>
-            </div>
+          <div className="bg-primary/5 rounded-[2rem] p-8">
+             <div className="flex items-start gap-4 text-primary">
+                <Info className="h-5 w-5 mt-1" />
+                <p className="text-sm font-medium leading-relaxed">
+                  مساعد الوثائق يستخدم الذكاء الاصطناعي لصياغة نصوص رسمية تتوافق مع المعايير الإدارية الجزائرية لعام 2026.
+                </p>
+             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
-      {/* إدخال الوصف */}
-      <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-xl overflow-hidden relative">
-        <div className="absolute top-0 left-0 w-24 h-24 bg-accent/5 rounded-full -ml-12 -mt-12"></div>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            📝 صِف طلبك بكلماتك الخاصة
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6 relative">
-          <div className="relative group">
-            <div className="absolute inset-0 -m-1 bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
+        {/* Input Area */}
+        <div className="lg:col-span-3 space-y-6">
+          <div className="bg-white dark:bg-[#0c0c0c] border border-black/5 dark:border-white/5 rounded-[2.5rem] p-10 shadow-sm relative overflow-hidden h-full flex flex-col">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-8 flex items-center gap-2">
+              <FileText className="h-4 w-4" /> محتوى الوثيقة
+            </h3>
+            
             <Textarea
-              placeholder="مثال بالدارجة: باغي ندفع طلب رخصة بناء ومحتاج نص رسمي.. أو: حبيت نشكي من انقطاع الماء في الحي نتاعنا."
+              placeholder="اكتب هنا ما تريد قوله بكلماتك البسيطة.. وسأقوم أنا بالباقي."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              rows={5}
-              className="relative h-40 text-lg p-6 bg-background/50 border-border/50 focus:border-primary/50 transition-all rounded-xl"
+              className="flex-1 min-h-[300px] text-xl font-medium p-0 bg-transparent border-none focus-visible:ring-0 resize-none leading-relaxed placeholder:text-muted-foreground/20"
             />
-          </div>
-          
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <p className="text-sm text-muted-foreground flex items-center gap-2">
-              <Info className="h-4 w-4" />
-              سيقوم الذكاء الاصطناعي بصياغة النص بدقة واحترافية عالية.
-            </p>
-            <Button 
-              onClick={handleGenerate} 
-              disabled={isGenerating}
-              className="w-full md:w-auto h-14 px-10 text-lg font-bold rounded-xl bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-primary/20"
-            >
-              <Sparkles className="ml-3 h-5 w-5 animate-pulse" />
-              {isGenerating ? "جاري التوليد بذكاء..." : "توليد النص الإداري"}
-            </Button>
-          </div>
-          
-          {error && (
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-destructive/10 text-destructive border border-destructive/20">
-              <AlertCircle className="h-5 w-5" />
-              <p className="font-medium">{error}</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
-      {/* النص المُولّد */}
+            <div className="mt-10 pt-10 border-t border-black/5 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+               {error && (
+                 <div className="flex items-center gap-2 text-destructive font-bold text-xs">
+                    <AlertCircle className="h-4 w-4" /> {error}
+                 </div>
+               )}
+               <div className="flex-1" />
+               <Button 
+                onClick={handleGenerate} 
+                disabled={isGenerating}
+                className="h-16 px-12 rounded-full bg-[#1a1a1a] dark:bg-white text-white dark:text-black font-black text-lg shadow-2xl hover:scale-105 transition-all group"
+               >
+                 {isGenerating ? "جاري المعالجة..." : "توليد الوثيقة"}
+                 <Sparkles className="ms-3 h-5 w-5 animate-pulse" />
+               </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Generated Preview - High End Paper Style */}
       {generatedText && (
-        <>
-          <Card>
-            <CardHeader>
-              <CardTitle>📄 النص المُولّد</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-muted p-4 rounded-lg whitespace-pre-wrap">
+        <div className="mt-20 animate-in fade-in slide-in-from-bottom-10 duration-700">
+          <div className="mb-8 flex items-center justify-between">
+             <h3 className="text-2xl font-black uppercase tracking-tighter">المعاينة النهائية</h3>
+             <div className="flex gap-4">
+                <Button onClick={() => window.print()} variant="outline" className="rounded-full h-12 px-6">
+                  <Printer className="me-2 h-4 w-4" /> طباعة
+                </Button>
+                <Button onClick={generatePDF} className="rounded-full h-12 px-8 bg-primary">
+                  <Download className="me-2 h-4 w-4" /> تحميل PDF
+                </Button>
+             </div>
+          </div>
+
+          <Card className="rounded-[3rem] border-black/5 dark:border-white/5 bg-gray-200/50 dark:bg-white/5 p-8 md:p-16">
+            <div
+              id="document-preview"
+              className="bg-white text-black mx-auto shadow-2xl p-16 md:p-24 min-h-[1000px] max-w-[800px] relative"
+              style={{ direction: "rtl", fontFamily: "'Times New Roman', serif" }}
+            >
+              {/* Official Algerian Header */}
+              <div className="text-center mb-16 space-y-2 border-b-2 border-black/10 pb-10">
+                <h2 className="text-2xl font-bold tracking-tight">الجمهورية الجزائرية الديمقراطية الشعبية</h2>
+                <h3 className="text-lg font-medium opacity-60">وزارة الإدارة والرقمنة</h3>
+                <div className="pt-4 flex justify-between items-center text-sm font-bold opacity-40 uppercase tracking-widest">
+                  <span>Official Document</span>
+                  <div className="h-px bg-black/10 flex-1 mx-4" />
+                  <span>{getDocTypeName()} إداري</span>
+                </div>
+              </div>
+
+              {/* Main Content */}
+              <div className="text-xl leading-[2] text-justify whitespace-pre-wrap font-serif">
                 {generatedText}
               </div>
-              <div className="flex justify-end gap-3">
-                <Button onClick={handlePrint} variant="outline">
-                  <Printer className="ml-2 h-4 w-4" /> طباعة
-                </Button>
-                <Button onClick={generatePDF}>
-                  <Download className="ml-2 h-4 w-4" /> تحميل PDF
-                </Button>
+
+              {/* Footer Section */}
+              <div className="mt-20 pt-10 border-t border-black/5 flex justify-between items-end">
+                <div className="space-y-4">
+                  {includeDate && <p className="text-sm font-bold opacity-60">حرر بـ : ................... في : {new Date().toLocaleDateString("ar-DZ")}</p>}
+                  {includeSignature && <p className="text-sm font-bold opacity-60">توقيع المعني:</p>}
+                </div>
+                <div className="h-24 w-24 rounded-full border-4 border-dashed border-black/5 flex items-center justify-center text-[10px] font-black opacity-10 uppercase -rotate-12">
+                   Raqmana Seal
+                </div>
               </div>
-            </CardContent>
+
+              {/* Watermark */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none">
+                 <span className="text-[12rem] font-black uppercase -rotate-45">RAQMANA</span>
+              </div>
+            </div>
           </Card>
-
-          {/* عنصر مخفي للمعاينة (للطباعة و PDF) - مع ترويسة محسنة */}
-          <div
-            id="document-preview"
-            className="hidden bg-white p-8 rounded-lg shadow-md"
-            style={{ direction: "rtl", fontFamily: "Arial, sans-serif" }}
-          >
-            {/* الترويسة */}
-            <div className="text-center border-b-2 border-gray-300 pb-4 mb-6">
-              <h1 className="text-2xl font-bold">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
-              <p className="text-sm text-gray-600">People's Democratic Republic of Algeria</p>
-              <p className="text-sm text-gray-600 mt-1">{getDocTypeName()} رسمي</p>
-            </div>
-
-            {/* المحتوى */}
-            <div className="whitespace-pre-wrap leading-relaxed text-base">
-              {generatedText}
-            </div>
-
-            {/* التوقيع والتاريخ */}
-            <div className="mt-12 pt-6 border-t border-gray-200">
-              {includeDate && (
-                <p className="text-sm text-gray-600">
-                  التاريخ: {new Date().toLocaleDateString("ar-DZ")}
-                </p>
-              )}
-              {includeSignature && (
-                <p className="text-sm text-gray-600 mt-2">
-                  التوقيع: ____________________
-                </p>
-              )}
-            </div>
-          </div>
-        </>
+        </div>
       )}
     </div>
   );

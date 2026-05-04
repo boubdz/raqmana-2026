@@ -108,7 +108,9 @@
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Noto Sans Arabic', 'Geist Fallback', system-ui, sans-serif;
+  --font-alexandria: 'Alexandria', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-sans: var(--font-alexandria), var(--font-inter), system-ui, sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -199,17 +201,25 @@
       linear-gradient(90deg, oklch(0.55 0.18 145 / 0.05) 1px, transparent 1px);
     background-size: 40px 40px;
   }
-  
-  .dark .bg-grid {
-    background-image: 
-      linear-gradient(oklch(0.75 0.15 195 / 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(0.75 0.15 195 / 0.08) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
 }
-.service-card { background: #f9f9f9; border-radius: 8px; padding: 12px; border: 1px solid #e0e0e0; }
-.service-card a { text-decoration: none; display: block; }
-.service-name { font-weight: bold; color: #0055aa; }
-.service-url { font-size: 12px; color: #555; word-break: break-all; }
-.service-phone { font-size: 12px; color: #2c7a4d; margin-top: 5px; }
-.app-badge { background: #4caf50; color: white; font-size: 10px; padding: 2px 6px; border-radius: 12px; display: inline-block; margin-top: 5px; }
+
+/* Force Animations to Work */
+.animate-marquee {
+  display: flex !important;
+  animation: marquee-scroll 60s linear infinite !important;
+}
+
+.animate-marquee-reverse {
+  display: flex !important;
+  animation: marquee-scroll-reverse 60s linear infinite !important;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-scroll-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}

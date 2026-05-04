@@ -1,25 +1,20 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono, Noto_Sans_Arabic } from 'next/font/google'
+import { Inter, Alexandria } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/contexts/theme-context'
 import { LanguageProvider } from '@/contexts/language-context'
 import InstallButton from '@/components/InstallButton'
 import './globals.css'
 
-const geist = Geist({ 
+const inter = Inter({ 
   subsets: ["latin"],
-  variable: "--font-geist",
+  variable: "--font-inter",
 })
 
-const geistMono = Geist_Mono({ 
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-})
-
-const notoArabic = Noto_Sans_Arabic({
+const alexandria = Alexandria({
   subsets: ["arabic"],
-  variable: "--font-noto-arabic",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-alexandria",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 })
 
 export const metadata: Metadata = {
@@ -69,8 +64,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f8fafb' },
-    { media: '(prefers-color-scheme: dark)', color: '#0d1520' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#050505' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -85,9 +80,9 @@ export default function RootLayout({
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
-        <meta name="theme-color" content="#0d1520" />
+        <meta name="theme-color" content="#ffffff" />
       </head>
-      <body className={`${geist.variable} ${geistMono.variable} ${notoArabic.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${alexandria.variable} font-alexandria antialiased`}>
         <ThemeProvider>
           <LanguageProvider>
             {children}

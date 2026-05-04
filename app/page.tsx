@@ -3,6 +3,7 @@
 
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
+import { ServicesMarquee } from "@/components/services-marquee";
 import { CategoriesSection } from "@/components/categories-section";
 // import { DocumentAssistant } from "@/components/document-assistant"; // <-- علق أو احذف هذا السطر
 import { AIChatbot } from "@/components/ai-chatbot";
