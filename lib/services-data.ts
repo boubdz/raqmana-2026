@@ -174,6 +174,7 @@ export const serviceCategories: ServiceCategory[] = [
           { name: { ar: "طلب البطاقة الذهبية", en: "Golden Card Request" }, url: "https://eccp.poste.dz/commande-edahabia" },
           { name: { ar: "بريدي ويب BaridiWeb", en: "BaridiWeb" }, url: "https://baridiweb.poste.dz" },
           { name: { ar: "تطبيق بريدي موب BaridiMob", en: "BaridiMob App" }, url: "https://play.google.com/store/apps/details?id=dz.poste.baridimob", isApp: true },
+          { name: { ar: "تطبيق بريدي باي BaridiPay (QR)", en: "BaridiPay App (QR)" }, url: "https://play.google.com/store/apps/details?id=dz.poste.baridipay", isApp: true },
           { name: { ar: "تتبع الطرود البريدية", en: "Track Parcels" }, url: "https://www.poste.dz/tracking" },
           { name: { ar: "تقديم شكاوي ومتابعتها", en: "Submit Complaints" }, url: "https://reclamation.poste.dz" },
           { name: { ar: "البحث عن مكاتب البريد", en: "Find Post Offices" }, url: "https://www.poste.dz/bureaux" },
@@ -666,6 +667,8 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "مواقيت القطارات SNTF", en: "SNTF Train Schedules" }, url: "https://www.sntf.dz" },
       { name: { ar: "تطبيق محطتي SOGRAL", en: "Mahattati SOGRAL App" }, url: "https://play.google.com/store/apps/details?id=dz.sogral.mahattati", isApp: true },
       { name: { ar: "تطبيق ETUSA Mob", en: "ETUSA Mob App" }, url: "https://play.google.com/store/apps/details?id=dz.etusa.mob", isApp: true },
+      { name: { ar: "تطبيق يسير Yassir (نقل)", en: "Yassir App (Transport)" }, url: "https://play.google.com/store/apps/details?id=com.yassir.user", isApp: true },
+      { name: { ar: "تطبيق هيتش Heetch", en: "Heetch App" }, url: "https://play.google.com/store/apps/details?id=com.heetch", isApp: true },
     ],
   },
   // 20. الوكالة الوطنية للتشغيل ANEM
@@ -721,6 +724,8 @@ export const serviceCategories: ServiceCategory[] = [
     services: [
       { name: { ar: "الصندوق الخاص لترقية الصادرات", en: "Export Promotion Fund" }, url: "https://fspe.commerce.gov.dz" },
       { name: { ar: "جباية تيك Jibayatic", en: "Jibayatic Declaration" }, url: "https://jibayatic.mf.gov.dz" },
+      { name: { ar: "تطبيق جوميا Jumia (تسوق)", en: "Jumia App (Shopping)" }, url: "https://play.google.com/store/apps/details?id=com.jumia.android", isApp: true },
+      { name: { ar: "تطبيق يسير إكسبريس (توصيل)", en: "Yassir Express (Delivery)" }, url: "https://play.google.com/store/apps/details?id=com.yassir.food", isApp: true },
       { name: { ar: "خلية الإصغاء", en: "Consumer Hotline" }, url: "https://www.commerce.gov.dz/contact" },
     ],
   },
@@ -800,6 +805,7 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "التسجيل في قرعة الحج", en: "Hajj Lottery Registration" }, url: "https://hajj.onpo.dz" },
       { name: { ar: "البوابة الجزائرية للحج", en: "Algeria Hajj Portal" }, url: "https://www.onpo.dz/hajj" },
       { name: { ar: "البوابة الجزائرية للعمرة", en: "Algeria Umrah Portal" }, url: "https://www.onpo.dz/omra" },
+      { name: { ar: "تطبيق نسك Nusuk (للعمرة والزيارة)", en: "Nusuk App (Umrah & Ziarah)" }, url: "https://play.google.com/store/apps/details?id=com.haj.nusuk", isApp: true },
     ],
   },
   // 25. ترقية الاستثمار
@@ -1270,6 +1276,24 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "وكالة الأنباء الجزائرية APS", en: "APS News Agency" }, url: "https://www.aps.dz" },
       { name: { ar: "سلطة ضبط الصحافة المكتوبة ARPE", en: "ARPE Press Authority" }, url: "https://www.arpe.dz" },
       { name: { ar: "تطبيق ENTV Live", en: "ENTV Live App" }, url: "https://play.google.com/store/apps/details?id=dz.entv.live", isApp: true },
+    ],
+  },
+  // 40. البنوك والمالية
+  {
+    id: "finance",
+    nameKey: "category.finance",
+    icon: "Wallet",
+    color: "from-blue-600 to-indigo-700",
+    officialSite: "https://www.bank-of-algeria.dz",
+    phone: "+213 21 23 00 23",
+    descriptionAr: "بوابة الخدمات البنكية والمالية: الدفع الإلكتروني، التطبيقات البنكية (Banxy, Wimpay)، وأسعار الصرف الرسمية.",
+    services: [
+      { name: { ar: "بنك الجزائر - البوابة الرسمية", en: "Bank of Algeria Official" }, url: "https://www.bank-of-algeria.dz" },
+      { name: { ar: "تطبيق Banxy (Natixis)", en: "Banxy App (Natixis)" }, url: "https://play.google.com/store/apps/details?id=com.natixis.banxy", isApp: true },
+      { name: { ar: "تطبيق Wimpay BNA", en: "Wimpay BNA App" }, url: "https://play.google.com/store/apps/details?id=com.wimpay.bna", isApp: true },
+      { name: { ar: "تطبيق MyLeasing (البركة)", en: "MyLeasing App (Al Baraka)" }, url: "https://play.google.com/store/apps/details?id=com.albarakadz.myleasing", isApp: true },
+      { name: { ar: "بوابة بنك التنمية المحلية BDL", en: "BDL Bank Portal" }, url: "https://www.bdl.dz" },
+      { name: { ar: "بوابة البنك الوطني الجزائري BNA", en: "BNA Bank Portal" }, url: "https://www.bna.dz" },
     ],
   },
 ]
