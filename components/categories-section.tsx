@@ -43,6 +43,9 @@ import {
   ExternalLink,
   Phone,
   Zap,
+  Leaf,
+  Droplets,
+  Sparkles,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
@@ -80,13 +83,21 @@ const categoryPageMap: Record<string, string> = {
   insurance: "/categories/insurance",
   banking: "/categories/banking",
   agriculture: "/categories/agriculture",
+  cnrc: "/categories/cnrc",
+  youth: "/categories/youth",
+  culture: "/categories/culture",
+  tourism: "/categories/tourism",
+  water: "/categories/water",
+  industry: "/categories/industry",
+  environment: "/categories/environment",
+  media: "/categories/media",
 };
 
 const iconMap: Record<string, React.ElementType> = {
-  Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi, 
-  Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench, 
-  Building, FileText, Landmark, Globe, Shield, Plane, Package, UserCheck, Moon, 
-  TrendingUp, Vote, ShieldCheck, Radio, ShieldPlus,
+  Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi,
+  Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench,
+  Building, FileText, Landmark, Globe, Shield, Plane, Package, UserCheck, Moon,
+  TrendingUp, Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, Sparkles,
 };
 
 const quickLinks = [
@@ -106,7 +117,7 @@ export function CategoriesSection() {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
     return serviceCategories.map((category) => {
-      const filteredServices = category.services.filter(s => 
+      const filteredServices = category.services.filter(s =>
         s.name.ar.toLowerCase().includes(query) || s.name.en.toLowerCase().includes(query)
       );
       return { ...category, services: filteredServices };
@@ -116,7 +127,7 @@ export function CategoriesSection() {
   return (
     <section id="services" className="py-32 bg-white dark:bg-[#080808]" dir={dir}>
       <div className="container mx-auto px-6">
-        
+
         {/* Section Header - Antigravity Style */}
         <div className="mb-24 text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-[#1a1a1a] dark:text-white uppercase">
@@ -176,7 +187,7 @@ export function CategoriesSection() {
                   {Icon && <Icon className="h-8 w-8" />}
                 </div>
                 <div className="text-center">
-                   <span className="text-sm font-black uppercase tracking-widest text-[#1a1a1a] dark:text-white/90">
+                  <span className="text-sm font-black uppercase tracking-widest text-[#1a1a1a] dark:text-white/90">
                     {t(category.nameKey)}
                   </span>
                   <div className="mt-2 h-1 w-0 bg-primary mx-auto transition-all duration-500 group-hover:w-8 rounded-full" />
@@ -191,21 +202,24 @@ export function CategoriesSection() {
           <div className="mt-20 space-y-12 animate-in fade-in duration-500">
             <h3 className="text-2xl font-black text-center uppercase tracking-tighter">Results for "{searchQuery}"</h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredCategories.map((category) => (
-                <Card key={category.id} className="p-6 rounded-3xl border-black/5 dark:border-white/5 bg-white dark:bg-[#111] shadow-xl">
-                  <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-                    <div className={`h-8 w-8 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center text-white`}>
-                      {iconMap[category.icon] && <category.icon className="h-4 w-4" />}
-                    </div>
-                    {t(category.nameKey)}
-                  </h4>
+              {filteredCategories.map((category) => {
+                const Icon = iconMap[category.icon];
+                return (
+                  <Card key={category.id} className="p-6 rounded-3xl border-black/5 dark:border-white/5 bg-white dark:bg-[#111] shadow-xl">
+                    <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
+                      <div className={`h-8 w-8 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center text-white`}>
+                        {Icon && <Icon className="h-4 w-4" />}
+                      </div>
+                      {t(category.nameKey)}
+                    </h4>
                   <div className="space-y-3">
                     {category.services.map((s, idx) => (
                       <ServiceCard key={idx} name={s.name} url={s.url} isApp={s.isApp} />
                     ))}
                   </div>
                 </Card>
-              ))}
+              );
+            })}
             </div>
           </div>
         )}

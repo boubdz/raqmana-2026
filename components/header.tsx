@@ -12,6 +12,7 @@ import {
 import { Sun, Moon, Monitor, Languages, Menu, X, ArrowUpRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { NotificationManager } from "./notification-manager"
 
 export function Header() {
   const { language, setLanguage, t, dir } = useLanguage()
@@ -80,6 +81,8 @@ export function Header() {
             <Languages className="h-4 w-4 me-2" />
             {language === "ar" ? "English" : "العربية"}
           </Button>
+          
+          <NotificationManager />
 
           {/* Theme Toggle */}
           <Button
@@ -92,15 +95,15 @@ export function Header() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           </Button>
 
-          {/* Premium CTA Button */}
+          {/* Premium CTA Button - Suggestion */}
           <Button 
-            className="hidden lg:flex h-10 px-6 rounded-full bg-[#1a1a1a] dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg"
+            className="hidden lg:flex h-10 px-6 rounded-full bg-primary text-white font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg hover:shadow-primary/20"
             asChild
           >
-            <a href="https://github.com/boubdz/raqmana-2026" target="_blank">
-              Source
+            <Link href="/feedback">
+              {language === 'ar' ? 'اقتراح خدمة' : 'Suggest Service'}
               <ArrowUpRight className="ms-2 h-3 w-3" />
-            </a>
+            </Link>
           </Button>
 
           {/* Mobile Menu Button */}

@@ -3,6 +3,7 @@ export interface ServiceLink {
   url: string
   phone?: string
   isApp?: boolean
+  status?: "active" | "slow" | "down"
 }
 
 export interface SubCategory {
@@ -19,7 +20,8 @@ export interface ServiceCategory {
   phone?: string
   services: ServiceLink[]
   subCategories?: SubCategory[]
-  descriptionAr?: string
+  descriptionAr?: string;
+  status?: "active" | "slow" | "down";
   usageGuides?: { title: string, steps: string[] }[]
 }
 
@@ -139,6 +141,7 @@ export const serviceCategories: ServiceCategory[] = [
     officialSite: "https://www.poste.dz",
     phone: "1530",
     descriptionAr: "كافة الخدمات الرقمية لبريد الجزائر: تطبيق بريدي موب BaridiMob، طلب وتتبع البطاقة الذهبية، والاطلاع على الرصيد ECCP.",
+    status: "active",
     usageGuides: [
       {
         title: "دليل تفعيل تطبيق BaridiMob",
@@ -153,7 +156,7 @@ export const serviceCategories: ServiceCategory[] = [
       {
         title: "طلب البطاقة الذهبية لأول مرة",
         steps: [
-          "الدخول لموقع (edahabia.poste.dz).",
+          "الدخول لموقع (eccp.poste.dz/commande-edahabia).",
           "إدخال معلومات الحساب الجاري (RIP) والمعلومات الشخصية.",
           "اختيار مكتب البريد لاستلام البطاقة.",
           "تأكيد الطلب عبر الرمز المرسل للهاتف.",
@@ -168,7 +171,7 @@ export const serviceCategories: ServiceCategory[] = [
         services: [
           { name: { ar: "فتح حساب بريدي", en: "Open Postal Account" }, url: "https://www.poste.dz/services/ccp" },
           { name: { ar: "الاطلاع على رصيد CCP", en: "Check CCP Balance" }, url: "https://eccp.poste.dz" },
-          { name: { ar: "طلب البطاقة الذهبية", en: "Golden Card Request" }, url: "https://www.poste.dz/services/carte-edahabia" },
+          { name: { ar: "طلب البطاقة الذهبية", en: "Golden Card Request" }, url: "https://eccp.poste.dz/commande-edahabia" },
           { name: { ar: "بريدي ويب BaridiWeb", en: "BaridiWeb" }, url: "https://baridiweb.poste.dz" },
           { name: { ar: "تطبيق بريدي موب BaridiMob", en: "BaridiMob App" }, url: "https://play.google.com/store/apps/details?id=dz.poste.baridimob", isApp: true },
           { name: { ar: "تتبع الطرود البريدية", en: "Track Parcels" }, url: "https://www.poste.dz/tracking" },
@@ -317,8 +320,11 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "دفع حقوق إعادة التسجيل", en: "Re-registration Fee Payment" }, url: "https://progres.mesrs.dz/paiement" },
       { name: { ar: "دفع حقوق الإيواء", en: "Accommodation Fee Payment" }, url: "https://progres.mesrs.dz/hebergement" },
       { name: { ar: "طلبات الإيواء", en: "Accommodation Requests" }, url: "https://progres.mesrs.dz/demande-hebergement" },
-      { name: { ar: "تطبيق Progres", en: "Progres App" }, url: "https://play.google.com/store/apps/details?id=dz.mesrs.progres", isApp: true },
       { name: { ar: "التحويلات الجامعية", en: "University Transfers" }, url: "https://progres.mesrs.dz/transfert" },
+      { name: { ar: "بوابة الدكتوراه والبحث العلمي", en: "PhD & Research Portal" }, url: "https://www.dgrsdt.dz" },
+      { name: { ar: "منصة تمويل البحث العلمي PNR", en: "PNR Research Funding" }, url: "https://pnr.mesrs.dz" },
+      { name: { ar: "مسابقات التوظيف - الأساتذة", en: "Teaching Staff Competitions" }, url: "https://concours.mesrs.dz" },
+      { name: { ar: "تطبيق Progres", en: "Progres App" }, url: "https://play.google.com/store/apps/details?id=dz.mesrs.progres", isApp: true },
     ],
   },
   // 7. التكوين والتعليم المهنيين
@@ -330,8 +336,8 @@ export const serviceCategories: ServiceCategory[] = [
     officialSite: "https://www.mfep.gov.dz",
     phone: "+213 23 25 52 66",
     services: [
-      { name: { ar: "التسجيل في التكوين المهني", en: "Vocational Training Registration" }, url: "https://mihnati.mfep.gov.dz" },
-      { name: { ar: "تسجيلات الامتحانات المهنية", en: "Professional Exam Registration" }, url: "https://dfep.mfep.gov.dz" },
+      { name: { ar: "التسجيل في التكوين المهني", en: "Vocational Training Registration" }, url: "https://www.takwin.dz" },
+      { name: { ar: "بوابة وزارة التكوين المهني", en: "Ministry Portal" }, url: "https://www.mfep.gov.dz" },
     ],
   },
   // 8. خدمات الإدارة المحلية
@@ -373,14 +379,15 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.aadl",
     icon: "Home",
     color: "from-teal-500 to-emerald-600",
-    officialSite: "https://www.aadl.com.dz",
+    officialSite: "https://www.aadl.dz",
     phone: "3040",
     descriptionAr: "وكالة عدل AADL: منصة التسجيل في سكنات عدل 3، دفع مستحقات الكراء الشهرية، وتتبع ملفات السكن إلكترونياً.",
+    status: "slow",
     usageGuides: [
       {
         title: "دليل التسجيل في منصة عدل 3 (AADL 3)",
         steps: [
-          "الدخول للموقع الرسمي (aadl3.aadl.com.dz) عند فتح الاكتتاب.",
+          "الدخول للموقع الرسمي (aadl.dz) عند فتح الاكتتاب.",
           "إدخال رقم التعريف الوطني (NIN) ورقم الضمان الاجتماعي.",
           "ملء استمارة المعلومات الشخصية والمهنية بدقة.",
           "تأكيد الطلب واستخراج وصل التسجيل الخاص بك.",
@@ -389,8 +396,8 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "تسجيل الدخول لمنصة عدل 3", en: "AADL 3 Platform Login" }, url: "https://aadl3.aadl.com.dz" },
-      { name: { ar: "دفع فاتورة تكاليف الكراء", en: "Rent Payment" }, url: "https://www.aadl.com.dz/paiement" },
+      { name: { ar: "تسجيل الدخول لمنصة عدل", en: "AADL Platform Login" }, url: "https://www.aadl.dz" },
+      { name: { ar: "دفع فاتورة تكاليف الكراء", en: "Rent Payment" }, url: "https://www.aadl.dz/paiement" },
       { name: { ar: "تطبيق AADL Mobile", en: "AADL Mobile App" }, url: "https://play.google.com/store/apps/details?id=dz.aadl.mobile", isApp: true },
     ],
   },
@@ -435,15 +442,7 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.taxStamps",
         services: [
-          { name: { ar: "إقتناء حقوق الطابع الجبائي", en: "Fiscal Stamp Purchase" }, url: "https://timbres.mf.gov.dz" },
-          { name: { ar: "إعادة إقتناء حقوق الطابع", en: "Stamp Repurchase" }, url: "https://timbres.mf.gov.dz/repurchase" },
-        ],
-      },
-      {
-        nameKey: "subcategory.taxVignette",
-        services: [
-          { name: { ar: "إقتناء قسيمة السيارات", en: "Vehicle Tax Vignette" }, url: "https://vignette.mf.gov.dz" },
-          { name: { ar: "إعادة إصدار قسيمة السيارات", en: "Vignette Reissue" }, url: "https://vignette.mf.gov.dz/reissue" },
+          { name: { ar: "جباية تيك - كافة الخدمات", en: "Jibayatic Services" }, url: "https://jibayatic.mf.gov.dz" },
         ],
       },
     ],
@@ -470,7 +469,8 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "استخراج صحيفة السوابق القضائية", en: "Criminal Record (Casier Judiciaire)" }, url: "https://casier.mjustice.dz" },
+      { name: { ar: "استخراج صحيفة السوابق القضائية", en: "Criminal Record (Casier Judiciaire)" }, url: "https://e-casier.mjustice.dz" },
+      { name: { ar: "بوابة الخدمات الإلكترونية للعدالة", en: "E-Justice Services Portal" }, url: "https://portail.mjustice.dz" },
       { name: { ar: "استخراج الجنسية الجزائرية", en: "Algerian Nationality Certificate" }, url: "https://nationalite.mjustice.dz" },
       { name: { ar: "طلب مستخرج الوجود بالسجن إبان الثورة", en: "Revolution Prison Record" }, url: "https://www.mjustice.dz/prison-revolution" },
       { name: { ar: "طلب نسخة من عقود المحاكم", en: "Court Document Copy" }, url: "https://www.mjustice.dz/documents" },
@@ -591,22 +591,26 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.cnas",
         services: [
-          { name: { ar: "شهادة الانتساب CNAS", en: "CNAS Membership Certificate" }, url: "https://telemactik.cnas.dz/attestation" },
-          { name: { ar: "شهادة عدم الانتساب CNAS", en: "CNAS Non-Membership Certificate" }, url: "https://telemactik.cnas.dz/non-affiliation" },
+          { name: { ar: "فضاء الهناء - البوابة الرقمية الشاملة", en: "El Hanaa Digital Portal" }, url: "https://elhanaa.cnas.dz" },
+          { name: { ar: "استخراج شهادة الانتساب (للمؤمنين)", en: "CNAS Membership Certificate" }, url: "https://elhanaa.cnas.dz" },
+          { name: { ar: "استخراج شهادة عدم الانتساب", en: "Non-Membership Certificate" }, url: "https://elhanaa.cnas.dz" },
           { name: { ar: "تطبيق فضاء الهناء", en: "El Hanaa App" }, url: "https://play.google.com/store/apps/details?id=dz.cnas.elhanaa", isApp: true },
         ],
       },
       {
         nameKey: "subcategory.casnos",
         services: [
-          { name: { ar: "شهادة عدم الانتساب CASNOS", en: "CASNOS Non-Membership" }, url: "https://www.casnos.com.dz/attestation" },
-          { name: { ar: "شهادة الانتساب CASNOS", en: "CASNOS Membership" }, url: "https://www.casnos.com.dz/affiliation" },
-          { name: { ar: "طلب الانتساب CASNOS", en: "CASNOS Registration" }, url: "https://www.casnos.com.dz/demande" },
+          { name: { ar: "بوابة ضمانكم - كافة الخدمات", en: "Damancom Portal" }, url: "https://damancom.casnos.dz" },
+          { name: { ar: "استخراج شهادة عدم الانتساب CASNOS", en: "CASNOS Non-Membership" }, url: "https://damancom.casnos.dz/non-affiliation" },
+          { name: { ar: "شهادة الانتساب CASNOS (للمؤمنين)", en: "CASNOS Membership" }, url: "https://damancom.casnos.dz" },
+          { name: { ar: "طلب الانتساب CASNOS", en: "CASNOS Registration" }, url: "https://damancom.casnos.dz/affiliation" },
         ],
       },
       {
         nameKey: "subcategory.cnr",
         services: [
+          { name: { ar: "الزيادات في المعاشات - 2026", en: "Pension Increases - 2026" }, url: "https://reval.cnr.dz" },
+          { name: { ar: "الموقع الرسمي للصندوق", en: "Official CNR Portal" }, url: "https://www.cnr.dz" },
           { name: { ar: "تطبيق المتقاعد CNR", en: "CNR Retiree App" }, url: "https://play.google.com/store/apps/details?id=dz.cnr.retraite", isApp: true },
         ],
       },
@@ -623,6 +627,10 @@ export const serviceCategories: ServiceCategory[] = [
     services: [
       { name: { ar: "منصة التكوين - الشبه طبي", en: "Paramedical Training" }, url: "https://formation.sante.gov.dz" },
       { name: { ar: "العيادة الرقمية", en: "Digital Clinic" }, url: "https://clinique.sante.gov.dz" },
+      { name: { ar: "الوكالة الوطنية للأدوية ANPP", en: "ANPP Pharmaceutical Agency" }, url: "https://www.anpp.dz" },
+      { name: { ar: "ترخيص الصيدليات والعيادات", en: "Pharmacy & Clinic Licensing" }, url: "https://www.anpp.dz/autorisation" },
+      { name: { ar: "حجز موعد طبي - الشفاء الرقمي", en: "Medical Appointment Booking" }, url: "https://www.shifaa.dz" },
+      { name: { ar: "التسجيل في تكوين البارامبريكال", en: "Paramedical Training Registration" }, url: "https://formation.sante.gov.dz/inscription" },
       { name: { ar: "تطبيق أطباء الجزائر", en: "Algeria Doctors App" }, url: "https://play.google.com/store/apps/details?id=dz.doctors", isApp: true },
       { name: { ar: "تطبيق بنك الدم الجزائري", en: "Algeria Blood Bank App" }, url: "https://play.google.com/store/apps/details?id=dz.bloodbank", isApp: true },
     ],
@@ -654,9 +662,9 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "حجز طيران الطاسيلي", en: "Tassili Airlines Booking" }, url: "https://www.tassiliairlines.dz" },
       { name: { ar: "تتبع حركة الملاحة الجوية", en: "Flight Tracking" }, url: "https://www.flightradar24.com/35.72,3.25/7" },
       { name: { ar: "تطبيق تواصل للترامواي", en: "Tawasol Tramway App" }, url: "https://play.google.com/store/apps/details?id=dz.tramway.tawasol", isApp: true },
-      { name: { ar: "تطبيق محطتي SOGRAL", en: "Mahattati SOGRAL App" }, url: "https://play.google.com/store/apps/details?id=dz.sogral.mahattati", isApp: true },
-      { name: { ar: "النقل البحري للمسافرين", en: "Maritime Passenger Transport" }, url: "https://www.entmv.dz" },
+      { name: { ar: "حجز محطتي - SOGRAL", en: "Bus Tickets - SOGRAL" }, url: "https://www.sogral.dz" },
       { name: { ar: "مواقيت القطارات SNTF", en: "SNTF Train Schedules" }, url: "https://www.sntf.dz" },
+      { name: { ar: "تطبيق محطتي SOGRAL", en: "Mahattati SOGRAL App" }, url: "https://play.google.com/store/apps/details?id=dz.sogral.mahattati", isApp: true },
       { name: { ar: "تطبيق ETUSA Mob", en: "ETUSA Mob App" }, url: "https://play.google.com/store/apps/details?id=dz.etusa.mob", isApp: true },
     ],
   },
@@ -748,14 +756,14 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.autoEntrepreneur",
     icon: "UserCheck",
     color: "from-emerald-500 to-teal-600",
-    officialSite: "https://ae.andi.dz",
+    officialSite: "https://www.anae.dz",
     phone: "1071",
     descriptionAr: "الوكالة الوطنية للمقاول الذاتي: منصة طلب بطاقة المقاول الذاتي، الاستفادة من الامتيازات الجبائية، والضمان الاجتماعي للأعمال الحرة.",
     usageGuides: [
       {
         title: "كيفية الحصول على بطاقة المقاول الذاتي",
         steps: [
-          "الولوج للموقع الرسمي (anaem.dz) أو (ae.andi.dz).",
+          "الولوج للموقع الرسمي (anae.dz).",
           "التسجيل باستخدام البريد الإلكتروني وتأكيد الحساب.",
           "إدخال المعلومات الشخصية واختيار رمز النشاط الاقتصادي.",
           "رفع صورة شمسية ونسخة من بطاقة التعريف.",
@@ -764,7 +772,7 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "طلب بطاقة المقاول الذاتي", en: "Auto-Entrepreneur Card Request" }, url: "https://ae.andi.dz" },
+      { name: { ar: "طلب بطاقة المقاول الذاتي", en: "Auto-Entrepreneur Card Request" }, url: "https://www.anae.dz" },
     ],
   },
   // 24. الحج والعمرة
@@ -1017,6 +1025,251 @@ export const serviceCategories: ServiceCategory[] = [
           { name: { ar: "تطبيق رصد - رصد الأمراض النباتية", en: "Rasd App - Plant Diseases" }, url: "https://play.google.com/store/apps/details?id=dz.madrp.rasd", isApp: true },
         ],
       },
+    ],
+  },
+  // 32. السجل التجاري CNRC
+  {
+    id: "cnrc",
+    nameKey: "category.cnrc",
+    icon: "Briefcase",
+    color: "from-blue-600 to-indigo-700",
+    officialSite: "https://www.cnrc.dz",
+    phone: "3200",
+    descriptionAr: "المركز الوطني للسجل التجاري: تسجيل النشاطات التجارية، استخراج السجل التجاري، تعديله أو شطبه، والحصول على مستخرجات رقمية معتمدة دون التنقل.",
+    usageGuides: [
+      {
+        title: "خطوات تسجيل نشاط تجاري عبر الإنترنت",
+        steps: [
+          "الدخول لمنصة CNRC الإلكترونية (cnrc.dz).",
+          "إنشاء حساب جديد بالبريد الإلكتروني وتأكيده.",
+          "ملء استمارة التسجيل: نوع النشاط، العنوان، الشركاء.",
+          "رفع الوثائق المطلوبة (عقد الإيجار، هوية المسير، القانون الأساسي).",
+          "دفع رسوم التسجيل إلكترونياً واستلام وصل الإيداع.",
+          "انتظار الموافقة واستلام السجل التجاري الرقمي."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "تسجيل نشاط تجاري", en: "Business Registration" }, url: "https://www.cnrc.dz/inscription" },
+      { name: { ar: "استخراج مستخرج السجل التجاري", en: "Extract Commercial Registry" }, url: "https://www.cnrc.dz/extrait" },
+      { name: { ar: "تعديل السجل التجاري", en: "Modify Commercial Registry" }, url: "https://www.cnrc.dz/modification" },
+      { name: { ar: "شطب السجل التجاري", en: "Cancel Commercial Registry" }, url: "https://www.cnrc.dz/radiation" },
+      { name: { ar: "البحث عن سجل تجاري", en: "Search Commercial Registry" }, url: "https://www.cnrc.dz/recherche" },
+      { name: { ar: "سجل المعلومات القانونية والتجارية RILE", en: "RILE Legal Info Registry" }, url: "https://rile.cnrc.dz" },
+      { name: { ar: "تطبيق CNRC Mobile", en: "CNRC Mobile App" }, url: "https://play.google.com/store/apps/details?id=dz.cnrc.mobile", isApp: true },
+    ],
+  },
+  // 33. الشباب والرياضة
+  {
+    id: "youth",
+    nameKey: "category.youth",
+    icon: "Users",
+    color: "from-orange-500 to-red-500",
+    officialSite: "https://www.mjs.gov.dz",
+    phone: "+213 21 66 19 39",
+    descriptionAr: "وزارة الشباب والرياضة: التسجيل في دور الشباب، المخيمات الصيفية، بطاقة الشباب الدولية، وخدمات الجمعيات الرياضية والتراخيص الرياضية.",
+    usageGuides: [
+      {
+        title: "كيفية الحصول على بطاقة الشباب الدولية",
+        steps: [
+          "الدخول لموقع وزارة الشباب والرياضة (mjs.gov.dz).",
+          "التوجه لأقرب دار شباب أو مركز ترقية الشباب.",
+          "تقديم صورة شمسية وبطاقة التعريف ووصل دفع الرسوم.",
+          "استلام البطاقة خلال 10 أيام عمل.",
+          "الاستفادة من التخفيضات الدولية في وسائل النقل والسياحة."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "بوابة وزارة الشباب والرياضة", en: "MJS Portal" }, url: "https://www.mjs.gov.dz" },
+      { name: { ar: "التسجيل في دور الشباب", en: "Youth Centers Registration" }, url: "https://www.mjs.gov.dz/maisons-jeunes" },
+      { name: { ar: "المخيمات الصيفية INJEP", en: "Summer Camps INJEP" }, url: "https://www.injep.dz" },
+      { name: { ar: "الجمعية الجزائرية للرياضة المدرسية", en: "School Sports Association" }, url: "https://www.asas.dz" },
+      { name: { ar: "الاتحاد الجزائري لكرة القدم FAF", en: "FAF Football Federation" }, url: "https://www.faf.dz" },
+      { name: { ar: "الألعاب الأولمبية الجزائرية COA", en: "Algeria Olympic Committee" }, url: "https://www.coa.dz" },
+    ],
+  },
+  // 34. الثقافة والفنون
+  {
+    id: "culture",
+    nameKey: "category.culture",
+    icon: "Sparkles",
+    color: "from-purple-600 to-pink-600",
+    officialSite: "https://www.m-culture.gov.dz",
+    phone: "+213 21 67 14 14",
+    descriptionAr: "وزارة الثقافة والفنون: حقوق المؤلف وحماية الملكية الفكرية عبر ONDA، تراخيص الأنشطة الثقافية، والتسجيل في المهرجانات الوطنية.",
+    usageGuides: [
+      {
+        title: "كيفية تسجيل حقوق المؤلف عبر ONDA",
+        steps: [
+          "الدخول لموقع الديوان الوطني لحقوق المؤلف (onda.dz).",
+          "إنشاء حساب وتأكيد البريد الإلكتروني.",
+          "تحميل العمل الفني أو الأدبي المراد تسجيله.",
+          "ملء استمارة التسجيل ودفع الرسوم إلكترونياً.",
+          "استلام شهادة الحماية الرقمية."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "ديوان حقوق المؤلف ONDA", en: "ONDA Copyright Office" }, url: "https://www.onda.dz" },
+      { name: { ar: "تسجيل حقوق المؤلف", en: "Copyright Registration" }, url: "https://www.onda.dz/inscription" },
+      { name: { ar: "المكتبة الوطنية الجزائرية", en: "National Library" }, url: "https://www.biblionat.dz" },
+      { name: { ar: "الديوان الوطني للثقافة والإعلام", en: "National Culture Office" }, url: "https://www.onci.dz" },
+      { name: { ar: "المتحف الوطني الجزائري", en: "National Museum" }, url: "https://www.musee-bardo.dz" },
+      { name: { ar: "تراخيص الأنشطة الثقافية", en: "Cultural Activity Licenses" }, url: "https://www.m-culture.gov.dz/licences" },
+    ],
+  },
+  // 35. السياحة
+  {
+    id: "tourism",
+    nameKey: "category.tourism",
+    icon: "Globe",
+    color: "from-teal-500 to-emerald-600",
+    officialSite: "https://www.mta.gov.dz",
+    phone: "+213 21 43 40 06",
+    descriptionAr: "وزارة السياحة والصناعة التقليدية: تراخيص الوكالات السياحية، الفندقية، والحرف التقليدية. بوابة SPA للتسجيل ومتابعة ملفات السياح.",
+    usageGuides: [
+      {
+        title: "الحصول على ترخيص وكالة سياحية",
+        steps: [
+          "الدخول للبوابة الإلكترونية لوزارة السياحة (mta.gov.dz).",
+          "تحديد نوع الرخصة (وكالة سياحة، مرشد، فندق).",
+          "رفع الوثائق المطلوبة: السجل التجاري، الكفاءة المهنية.",
+          "دفع الرسوم ومتابعة الملف إلكترونياً.",
+          "استلام الترخيص ورمز QR للتحقق منه."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "البوابة الرسمية للسياحة", en: "Algeria Tourism Portal" }, url: "https://www.mta.gov.dz" },
+      { name: { ar: "الديوان الوطني للسياحة ONT", en: "National Tourism Office" }, url: "https://www.ont.dz" },
+      { name: { ar: "ترخيص الوكالة السياحية", en: "Tourism Agency License" }, url: "https://www.mta.gov.dz/agences" },
+      { name: { ar: "الفندقة والإيواء السياحي", en: "Hotels & Tourist Accommodation" }, url: "https://www.mta.gov.dz/hebergement" },
+      { name: { ar: "الصناعة التقليدية والحرف", en: "Traditional Crafts" }, url: "https://www.msatf.gov.dz" },
+      { name: { ar: "الديوان الوطني للحرف التقليدية ONAT", en: "ONAT Traditional Crafts" }, url: "https://www.onat.dz" },
+    ],
+  },
+  // 36. الموارد المائية
+  {
+    id: "water",
+    nameKey: "category.water",
+    icon: "Droplets",
+    color: "from-cyan-500 to-blue-500",
+    officialSite: "https://www.mre.gov.dz",
+    phone: "+213 21 82 54 00",
+    descriptionAr: "وزارة الموارد المائية: طلب الربط بشبكة المياه الصالحة للشرب، رخص الحفر واستغلال المياه الجوفية، وخدمات الهيئة الوطنية للمياه.",
+    usageGuides: [
+      {
+        title: "كيفية طلب الربط بشبكة المياه",
+        steps: [
+          "التوجه للشركة الجهوية للمياه المعنية (ADE، SEAAL، إلخ).",
+          "تقديم طلب الربط مع مستند الملكية أو عقد الإيجار.",
+          "دفع رسوم الربط وانتظار دراسة الملف التقني.",
+          "موعد تدخل فريق التقنيين لإتمام الربط.",
+          "استلام فاتورة الاشتراك وبدء الدفع الدوري."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "بوابة وزارة الموارد المائية", en: "Water Resources Ministry Portal" }, url: "https://www.mre.gov.dz" },
+      { name: { ar: "الجزائرية للمياه ADE", en: "ADE Algeria Waters" }, url: "https://www.ade.dz" },
+      { name: { ar: "SEAAL - مياه وصرف الجزائر", en: "SEAAL Algiers Water" }, url: "https://www.seaal.dz" },
+      { name: { ar: "SEOR - مياه وصرف الشرق", en: "SEOR East Water" }, url: "https://www.seor.dz" },
+      { name: { ar: "SDE - مياه وصرف الشرق الكبير", en: "SDE Greater East Water" }, url: "https://www.sde.dz" },
+      { name: { ar: "ONA - الديوان الوطني للتطهير", en: "ONA National Sanitation" }, url: "https://www.ona-dz.org" },
+      { name: { ar: "رخصة استغلال المياه الجوفية", en: "Groundwater Exploitation License" }, url: "https://www.mre.gov.dz/autorisation" },
+    ],
+  },
+  // 37. الصناعة
+  {
+    id: "industry",
+    nameKey: "category.industry",
+    icon: "Building2",
+    color: "from-zinc-600 to-slate-700",
+    officialSite: "https://www.industrie.gov.dz",
+    phone: "+213 21 65 55 20",
+    descriptionAr: "وزارة الصناعة: دعم إنشاء المؤسسات الصناعية، رخص الاستيراد، شهادات المطابقة، ومنصة ANADE لمرافقة المقاولين الشباب.",
+    usageGuides: [
+      {
+        title: "التسجيل في منصة ANADE لدعم المقاولين",
+        steps: [
+          "الدخول لموقع الوكالة الوطنية (anade.dz).",
+          "إنشاء حساب واختيار برنامج الدعم المناسب.",
+          "ملء ملف المشروع: الطبيعة، التكلفة، التمويل.",
+          "تحديد موعد مع مستشار لمرافقة الملف.",
+          "الحصول على قرار التمويل والدعم المقدم."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "وكالة دعم المقاولاتية ANADE", en: "ANADE Entrepreneurship Agency" }, url: "https://www.anade.dz" },
+      { name: { ar: "الوكالة الوطنية للاستثمار AAPI", en: "AAPI Investment Agency" }, url: "https://www.aapi.dz" },
+      { name: { ar: "المعهد الجزائري للتقييس IANOR", en: "IANOR Standardization" }, url: "https://www.ianor.dz" },
+      { name: { ar: "شهادة المطابقة والجودة", en: "Quality Compliance Certificate" }, url: "https://www.ianor.dz/certification" },
+      { name: { ar: "مجمع صيدال للدواء", en: "SAIDAL Pharmaceutical Group" }, url: "https://www.saidal.dz" },
+      { name: { ar: "المناطق الصناعية - ANIREF", en: "ANIREF Industrial Zones" }, url: "https://www.aniref.dz" },
+      { name: { ar: "بوابة رخص الاستيراد والتصدير", en: "Import/Export Licenses" }, url: "https://www.industrie.gov.dz/licences" },
+    ],
+  },
+  // 38. البيئة
+  {
+    id: "environment",
+    nameKey: "category.environment",
+    icon: "Leaf",
+    color: "from-green-600 to-emerald-700",
+    officialSite: "https://www.environment.gov.dz",
+    phone: "+213 21 60 64 44",
+    descriptionAr: "وزارة البيئة وترقية الطاقات المتجددة: دراسات التأثير البيئي، رخص النشاط البيئي، ومنصات الطاقة الشمسية والطاقات المتجددة.",
+    usageGuides: [
+      {
+        title: "كيفية الحصول على رخصة النشاط البيئي",
+        steps: [
+          "الدخول لبوابة وزارة البيئة (environment.gov.dz).",
+          "تحديد نوع النشاط وتصنيفه البيئي (A، B، أو C).",
+          "إيداع ملف دراسة التأثير على البيئة.",
+          "انتظار التحقيق العمومي ومراجعة المصالح التقنية.",
+          "استلام قرار الترخيص أو طلب تعديل الملف."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "بوابة وزارة البيئة", en: "Environment Ministry Portal" }, url: "https://www.environment.gov.dz" },
+      { name: { ar: "الوكالة الوطنية للنفايات AND", en: "AND National Waste Agency" }, url: "https://www.and.dz" },
+      { name: { ar: "الوكالة الوطنية للتغيرات المناخية ANCC", en: "ANCC Climate Change Agency" }, url: "https://www.ancc.dz" },
+      { name: { ar: "المركز الوطني لتكنولوجيا الإنتاج CNPBR", en: "Cleaner Production Center" }, url: "https://www.cnpbr.dz" },
+      { name: { ar: "الطاقة الشمسية - SONELGAZ", en: "Solar Energy - SONELGAZ" }, url: "https://www.sonelgaz.dz/solaire" },
+      { name: { ar: "برنامج كهرباء الريف الشمسي", en: "Rural Solar Electrification" }, url: "https://www.urer.dz" },
+    ],
+  },
+  // 39. الإعلام والاتصال
+  {
+    id: "media",
+    nameKey: "category.media",
+    icon: "Radio",
+    color: "from-rose-500 to-red-600",
+    officialSite: "https://www.micom.gov.dz",
+    phone: "+213 21 48 15 15",
+    descriptionAr: "وزارة الاتصال: اعتماد الصحفيين، تراخيص الإعلام والنشر، المراسيم الخاصة بالإعلام الإلكتروني، والوصول لخدمات التلفزيون والإذاعة الوطنية.",
+    usageGuides: [
+      {
+        title: "كيفية طلب اعتماد صحفي",
+        steps: [
+          "الدخول لبوابة وزارة الاتصال (micom.gov.dz).",
+          "ملء استمارة طلب الاعتماد الصحفي الرسمي.",
+          "تقديم الوثائق: عقد العمل، شهادة الكفاءة المهنية.",
+          "انتظار مراجعة الملف من لجنة الاعتماد.",
+          "استلام بطاقة الصحفي المعتمد وتجديدها سنوياً."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "بوابة وزارة الاتصال", en: "Ministry of Communication Portal" }, url: "https://www.micom.gov.dz" },
+      { name: { ar: "سلطة ضبط السمعي البصري ARPA", en: "ARPA Audiovisual Authority" }, url: "https://www.arpa.dz" },
+      { name: { ar: "التلفزيون الجزائري ENTV", en: "Algerian TV ENTV" }, url: "https://www.entv.dz" },
+      { name: { ar: "إذاعة الجزائر", en: "Radio Algérie" }, url: "https://www.radioalgerie.dz" },
+      { name: { ar: "وكالة الأنباء الجزائرية APS", en: "APS News Agency" }, url: "https://www.aps.dz" },
+      { name: { ar: "سلطة ضبط الصحافة المكتوبة ARPE", en: "ARPE Press Authority" }, url: "https://www.arpe.dz" },
+      { name: { ar: "تطبيق ENTV Live", en: "ENTV Live App" }, url: "https://play.google.com/store/apps/details?id=dz.entv.live", isApp: true },
     ],
   },
 ]

@@ -206,12 +206,23 @@
 /* Force Animations to Work */
 .animate-marquee {
   display: flex !important;
-  animation: marquee-scroll 60s linear infinite !important;
+  animation: marquee-scroll 400s linear infinite !important;
 }
 
 .animate-marquee-reverse {
   display: flex !important;
-  animation: marquee-scroll-reverse 60s linear infinite !important;
+  animation: marquee-scroll-reverse 400s linear infinite !important;
+}
+
+.animate-marquee-fast {
+  display: flex !important;
+  animation: marquee-scroll 60s linear infinite !important;
+}
+
+.animate-marquee:hover,
+.animate-marquee-reverse:hover,
+.animate-marquee-fast:hover {
+  animation-play-state: paused !important;
 }
 
 @keyframes marquee-scroll {

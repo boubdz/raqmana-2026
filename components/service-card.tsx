@@ -10,11 +10,14 @@ interface ServiceCardProps {
   name: { ar: string; en: string }
   url: string
   isApp?: boolean
+  status?: "active" | "slow" | "down"
 }
 
-export function ServiceCard({ name, url, isApp }: ServiceCardProps) {
+export function ServiceCard({ name, url, isApp, status: initialStatus }: ServiceCardProps) {
   const { language, t } = useLanguage()
   const [imgError, setImgError] = useState(false)
+  const [status, setStatus] = useState(initialStatus || "active")
+  const [hasReported, setHasReported] = useState(false)
   
   // Extract domain for display
   let domain = ""
@@ -61,17 +64,52 @@ export function ServiceCard({ name, url, isApp }: ServiceCardProps) {
 
         {/* Text Content */}
         <div className="mt-auto">
-          <div className="mb-2">
+          <div className="mb-4 flex items-center justify-between">
             <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${isApp ? 'text-primary' : 'text-muted-foreground/50'}`}>
               {isApp ? t("services.app") : "Official Portal"}
             </span>
+            
+            {/* Status Indicator */}
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/[0.03] dark:bg-white/[0.03]">
+              <div className={`h-1.5 w-1.5 rounded-full animate-pulse ${
+                status === "active" ? "bg-emerald-500" : 
+                status === "slow" ? "bg-amber-500" : "bg-red-500"
+              }`} />
+              <span className="text-[8px] font-black uppercase tracking-widest opacity-60">
+                {status === "active" ? (language === "ar" ? "يعمل" : "Live") : 
+                 status === "slow" ? (language === "ar" ? "ضغط عالٍ" : "Slow") : 
+                 (language === "ar" ? "متوقف" : "Down")}
+              </span>
+            </div>
           </div>
           <h3 className="text-lg font-bold text-[#1a1a1a] dark:text-white/90 leading-tight group-hover:text-primary transition-colors line-clamp-2">
             {name[language]}
           </h3>
-          <p className="mt-2 text-xs font-bold text-muted-foreground/40 truncate tracking-wide">
-            {domain}
-          </p>
+          
+          <div className="mt-4 flex items-center justify-between">
+            <p className="text-xs font-bold text-muted-foreground/40 truncate tracking-wide max-w-[60%]">
+              {domain}
+            </p>
+            
+            {!isApp && (
+              <div className="flex gap-1">
+                {!hasReported ? (
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setStatus("slow");
+                      setHasReported(true);
+                    }}
+                    className="h-6 px-2 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] text-[8px] font-black uppercase tracking-widest hover:bg-amber-500/10 hover:text-amber-600 transition-all"
+                  >
+                    Report Slow
+                  </button>
+                ) : (
+                  <span className="text-[8px] font-black uppercase tracking-widest text-emerald-500">Thanks!</span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </a>

@@ -5,6 +5,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ServiceCard } from "@/components/service-card";
 import { ParticlesBackground } from "@/components/particles-background";
+import { Button } from "@/components/ui/button";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -24,7 +25,7 @@ import {
   Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi, 
   Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench, 
   Building, Landmark, Shield, Plane, Package, UserCheck, Moon, 
-  Vote, ShieldCheck, Radio, ShieldPlus 
+  Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets
 } from "lucide-react";
 
 // Map icons for dynamic rendering
@@ -32,11 +33,45 @@ const iconMap: Record<string, React.ElementType> = {
   Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi, 
   Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench, 
   Building, FileText, Landmark, Globe, Shield, Plane, Package, UserCheck, Moon, 
-  Vote, ShieldCheck, Radio, ShieldPlus 
+  Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, Sparkles
 };
 
 type Props = {
   params: { id: string };
+};
+
+// Arabic translations for sub-categories
+const subCategoryNamesAr: Record<string, string> = {
+  // bills
+  "subcategory.ade": "المياه - ADE",
+  "subcategory.sonelgaz": "الكهرباء والغاز - سونلغاز",
+  "subcategory.opgi": "سكنات OPGI",
+  "subcategory.internet": "الإنترنت والاتصالات",
+  // mobile
+  "subcategory.djezzy": "جازي",
+  "subcategory.mobilis": "موبيليس",
+  "subcategory.ooredoo": "أوريدو",
+  // education
+  "subcategory.eduTeacher": "منصات الأساتذة",
+  "subcategory.eduParent": "فضاء الأولياء",
+  "subcategory.eduDistance": "التعليم عن بُعد",
+  "subcategory.eduExams": "تسجيل الامتحانات",
+  "subcategory.eduResults": "نتائج الامتحانات",
+  // tax
+  "subcategory.taxStamps": "الطوابع الجبائية",
+  "subcategory.taxVignette": "قسيمة السيارة",
+  // real estate
+  "subcategory.realEstatePublic": "خدمات الأفراد",
+  "subcategory.realEstatePro": "خدمات المهنيين",
+  // social security
+  "subcategory.cnas": "CNAS - الأجراء",
+  "subcategory.casnos": "CASNOS - غير الأجراء",
+  "subcategory.cnr": "CNR - التقاعد",
+  // banking
+  "subcategory.publicBanks": "البنوك العمومية",
+  "subcategory.privateBanks": "البنوك الخاصة",
+  // agriculture
+  "subcategory.agricultureApps": "تطبيقات الفلاحة",
 };
 
 export async function generateStaticParams() {
@@ -76,6 +111,56 @@ const categoryNamesAr: Record<string, string> = {
   insurance: "التأمينات",
   banking: "الخدمات البنكية",
   agriculture: "الفلاحة والصيد البحري",
+  cnrc: "السجل التجاري CNRC",
+  youth: "الشباب والرياضة",
+  culture: "الثقافة والفنون",
+  tourism: "السياحة",
+  water: "الموارد المائية",
+  industry: "الصناعة",
+  environment: "البيئة",
+  media: "الإعلام والاتصال",
+};
+
+const trendingKeywordsMap: Record<string, string[]> = {
+  bills: ["دفع فواتير سونلغاز", "SEAAL", "ADE", "تطبيق تسديد", "فاتورة الكهرباء", "كراء عدل", "كراء OPGI", "البطاقة الذهبية", "CIB"],
+  mobile: ["فليكسي", "تعبئة موبيليس", "تعبئة جيزي", "تعبئة أوريدو", "Flexy", "دفع فواتير الهاتف", "MobiSpace", "MyOoredoo", "Djezzy App"],
+  post: ["بريد الجزائر", "البطاقة الذهبية", "تطبيق بريدي موب", "BaridiMob", "كشف رصيد CCP", "ECCP", "كشف الحساب البريدي", "تتبع الطرود"],
+  telecom: ["إنترنت اتصالات الجزائر", "Idoom ADSL", "Idoom 4G", "تعبئة إنترنت", "فضاء الزبون اتصالات الجزائر", "Fiber Optic", "MyIdoom"],
+  education: ["فضاء الأولياء", "وزارة التربية الوطنية", "نتائج البكالوريا", "نتائج التعليم المتوسط", "BEM", "BAC", "رقم التعريف المدرسي", "التسجيل المدرسي"],
+  university: ["منصة بروغرس", "progress mesrs", "التسجيلات الجامعية", "المنحة الجامعية", "الإيواء الجامعي", "التحويلات الجامعية", "WebEtu"],
+  vocational: ["التكوين المهني", "تسجيلات التكوين المهني", "مهنتي", "Mihnati", "شهادة الدولة", "التكوين عن بعد"],
+  interior: ["S12", "جواز السفر البيومتري", "بطاقة التعريف الوطنية البيومترية", "استخراج شهادة الميلاد", "عقد الزواج", "الحالة المدنية الجزائر"],
+  aadl: ["عدل 3", "اكتتاب عدل", "التسجيل في سكنات عدل", "الوكالة الوطنية لتحسين السكن", "دفع كراء عدل", "AADL Mobile"],
+  enpi: ["سكنات LPP", "سكنات LPL", "الترقية العقارية ENPI", "التسجيل في ENPI", "سكنات الترقوي العمومي"],
+  tax: ["mf.gov.dz", "الضرائب الجزائر", "الخدمات الجبائية", "الرقم الجبائي NIF", "قسيمة السيارات", "الطوابع الجبائية", "Jibayatic"],
+  justice: ["السوابق القضائية", "صحيفة السوابق", "شهادة الجنسية الجزائرية", "العدالة الجزائر", "Casier Judiciaire", "AdalaTic"],
+  publicContracts: ["الصفقات العمومية", "بوابة الصفقات", "ضمان الصفقات", "BAOSEM", "قانون الصفقات العمومية"],
+  realEstate: ["منصة أملاك", "الرقمنة العقارية", "استخراج الدفتر العقاري الإلكتروني", "المحافظة العقارية", "مسح الأراضي", "الوكالة الوطنية لمسح الأراضي"],
+  foreignAffairs: ["تصديق الوثائق", "Apostille", "وزارة الشؤون الخارجية", "القنصلية الجزائرية", "جالية الجزائر بالخارج"],
+  socialSecurity: ["cnas.dz", "الصندوق الوطني للتأمينات الاجتماعية", "فضاء الهناء", "بطاقة الشفاء", "التصريح بالأجور", "CNR", "CASNOS"],
+  health: ["الموعد الطبي الإلكتروني", "وزارة الصحة", "تلقيح الأطفال", "أطباء الجزائر", "بنك الدم الجزائري", "الشفاء الرقمي"],
+  vehicles: ["فحص المركبات", "مركبتي", "تصاريح الاستيراد", "وزارة الطاقة والمناجم", "البطاقة الرمادية"],
+  transport: ["حجز الجوية الجزائرية", "طاسيلي للطيران", "مواقيت القطارات SNTF", "SOGRAL", "حجز حافلات", "Yassir", "Heetch"],
+  employment: ["anem.dz", "الوكالة الوطنية للتشغيل", "منحة البطالة", "تجديد بطاقة العمل", "منصة منحة", "طلب عمل في الجزائر"],
+  commerce: ["وزارة التجارة", "حماية المستهلك", "أسعار السلع في الجزائر", "سجل تجاري", "Jibayatic"],
+  customs: ["الجمارك الجزائرية", "تعريفة الجمارك", "طرود الجمارك", "قانون الجمارك", "خلية الإصغاء للجمارك"],
+  autoEntrepreneur: ["المقاول الذاتي", "بطاقة المقاول الذاتي", "العمل الحر في الجزائر", "الامتيازات الجبائية للمقاول"],
+  hajj: ["قرعة الحج", "بوابة الحج الجزائرية", "حجز العمرة", "الديوان الوطني للحج والعمرة", "تذاكر الحج"],
+  investment: ["بوابة المستثمر", "ترقية الاستثمار AAPI", "مشروع استثماري", "العقار الاقتصادي", "قانون الاستثمار الجديد"],
+  elections: ["القوائم الانتخابية", "بطاقة الناخب", "سلطة الانتخابات ANIE", "التصويت في الجزائر", "مركز التصويت"],
+  police: ["الأمن الوطني", "ألو شرطة", "التصريح بضياع الوثائق", "شرطة الجزائر", "الإبلاغ عن الحوادث"],
+  arpce: ["سلطة ضبط الاتصالات", "معرفة الشرائح المسجلة باسمك", "قياس سرعة الإنترنت", "جودتي", "reclamation arpce"],
+  insurance: ["تأمين السيارات الجزائر", "SAA", "CAAR", "أليانس للتأمينات", "تجديد التأمين إلكترونياً", "تأمين السفر"],
+  banking: ["البنوك الجزائرية", "CIB", "تطبيق BNA", "تطبيق BEA", "فتح حساب بنكي", "البنك الوطني الجزائري"],
+  agriculture: ["أضاحي 2026", "حجز الأضاحي", "موال جزائري", "الغرفة الفلاحية", "وزارة الفلاحة", "منصة أضاحي"],
+  cnrc: ["السجل التجاري", "المركز الوطني للسجل التجاري", "استخراج سجل تجاري", "تعديل سجل تجاري", "تسمية تجارية"],
+  youth: ["وزارة الشباب والرياضة", "بطاقة الشباب", "دور الشباب", "مخيمات صيفية", "الاتحاد الجزائري لكرة القدم"],
+  culture: ["وزارة الثقافة", "حقوق المؤلف ONDA", "المكتبة الوطنية", "المهرجانات الثقافية", "تراخيص ثقافية"],
+  tourism: ["وزارة السياحة", "وكالة سياحية", "الفنادق في الجزائر", "الصناعة التقليدية", "بوابة السياحة الجزائرية"],
+  water: ["الجزائرية للمياه ADE", "SEAAL", "فاتورة الماء", "رخصة حفر بئر", "الموارد المائية"],
+  industry: ["وزارة الصناعة", "دعم المقاولاتية ANADE", "المؤسسات الناشئة", "المطابقة والجودة", "المناطق الصناعية"],
+  environment: ["وزارة البيئة", "النفايات", "التغير المناخي", "الطاقة الشمسية في الجزائر", "رخصة النشاط البيئي"],
+  media: ["وزارة الاتصال", "اعتماد صحفي", "الصحافة الإلكترونية", "الإذاعة الوطنية", "التلفزيون الجزائري"],
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -87,27 +172,58 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   const categoryName = categoryNamesAr[id] || category.nameKey;
-  const title = `${categoryName} في الجزائر 2026 | الدليل الرقمي والروابط الرسمية`;
-  const description = category.descriptionAr || `استكشف كافة الخدمات الرقمية لقطاع ${categoryName} في الجزائر. روابط مباشرة لمنصات التسجيل، دفع الفواتير، وتحميل التطبيقات الرسمية لعام 2026. وفر وقتك مع منصة رقمنة.`;
+  const title = `خدمات ${categoryName} الرقمية في الجزائر 2026 | روابط التسجيل والمنصات الرسمية`;
+  const description = category.descriptionAr || `دليلك الشامل لخدمات قطاع ${categoryName} في الجزائر لعام 2026. تصفح الروابط المباشرة لشهادات الميلاد، منصات الدفع الإلكتروني، وتطبيقات الهاتف الرسمية. وفر وقتك واصل للخدمة بضغطة واحدة.`;
+
+  // Extract specific service names for keywords
+  const serviceNames = [
+    ...(category.services?.map(s => s.name.ar) || []),
+    ...(category.subCategories?.flatMap(sub => sub.services.map(s => s.name.ar)) || [])
+  ];
+
+  const trendingKeywords = trendingKeywordsMap[id] || [];
 
   return {
     title,
     description,
-    keywords: [categoryName, "رقمنة الجزائر", "خدمات رقمية", "الجزائر 2026", "روابط رسمية", "دليل المستخدم", id],
+    keywords: [
+      categoryName, 
+      "رقمنة الجزائر", 
+      "خدمات رقمية", 
+      "الجزائر 2026", 
+      "روابط رسمية", 
+      "منصة رقمنة",
+      ...trendingKeywords,
+      ...serviceNames.slice(0, 10),
+      id
+    ],
     openGraph: {
       title,
       description,
-      type: "website",
+      type: "article",
       locale: "ar_DZ",
       siteName: "رقمنة - Raqmana",
+      images: [
+        {
+          url: `/og-image-${id}.png`, // Placeholder for specific OG images
+          width: 1200,
+          height: 630,
+          alt: `خدمات ${categoryName} في الجزائر`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [`/og-image-${id}.png`],
     },
     alternates: {
       canonical: `https://raqmana.vercel.app/categories/${id}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -121,14 +237,53 @@ export default async function CategoryPage({ params }: Props) {
   const isAgriculture = id === "agriculture";
   const categoryName = categoryNamesAr[id] || id;
 
+  const faqSchema = category.usageGuides ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": category.usageGuides.map(guide => ({
+      "@type": "Question",
+      "name": guide.title,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": guide.steps.join(" ")
+      }
+    }))
+  } : null;
+
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": `خدمات ${categoryName} الرقمية في الجزائر`,
-      "description": `دليل الخدمات الرقمية لقطاع ${categoryName} في الجزائر`,
-      "publisher": { "@type": "Organization", "name": "رقمنة - Raqmana" }
-    }
+      "name": `خدمات ${categoryName} الرقمية في الجزائر 2026`,
+      "description": `دليل الخدمات الرقمية لقطاع ${categoryName} في الجزائر لعام 2026`,
+      "publisher": { 
+        "@type": "Organization", 
+        "name": "رقمنة - Raqmana",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://raqmana.vercel.app/logo.png"
+        }
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://raqmana.vercel.app"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": categoryName,
+          "item": `https://raqmana.vercel.app/categories/${id}`
+        }
+      ]
+    },
+    ...(faqSchema ? [faqSchema] : [])
   ];
 
   return (
@@ -179,18 +334,97 @@ export default async function CategoryPage({ params }: Props) {
             {/* Main Guides & Services */}
             <div className="lg:col-span-2 space-y-16">
               
-              {/* Services Grid */}
-              <div>
-                <div className="mb-10 flex items-center gap-4 border-b border-black/5 dark:border-white/5 pb-6">
-                  <h3 className="text-2xl font-black uppercase tracking-tighter">الخدمات الرقمية</h3>
-                  <div className="h-px flex-1 bg-black/5 dark:bg-white/5"></div>
-                </div>
-                <div className="grid gap-6 sm:grid-cols-2">
-                  {category.services?.map((service, idx) => (
-                    <ServiceCard key={idx} name={service.name} url={service.url} isApp={service.isApp} />
-                  ))}
-                </div>
-              </div>
+              {/* Services Grid — web portals only (no apps) */}
+              {(() => {
+                const flatPortals = (category.services ?? []).filter(s => !s.isApp);
+                const subPortals = (category.subCategories ?? [])
+                  .map(sub => ({ ...sub, services: sub.services.filter(s => !s.isApp) }))
+                  .filter(sub => sub.services.length > 0);
+                const hasPortals = flatPortals.length > 0 || subPortals.length > 0;
+
+                // All apps collected from everywhere
+                const allApps = [
+                  ...(category.services ?? []).filter(s => s.isApp),
+                  ...(category.subCategories ?? []).flatMap(sub => sub.services.filter(s => s.isApp)),
+                ];
+
+                return (
+                  <>
+                    {hasPortals && (
+                      <div>
+                        <div className="mb-10 flex items-center gap-4 border-b border-black/5 dark:border-white/5 pb-6">
+                          <h3 className="text-2xl font-black uppercase tracking-tighter">الخدمات الرقمية</h3>
+                          <div className="h-px flex-1 bg-black/5 dark:bg-white/5"></div>
+                        </div>
+
+                        {flatPortals.length > 0 && (
+                          <div className="grid gap-6 sm:grid-cols-2 mb-12">
+                            {flatPortals.map((service, idx) => (
+                              <ServiceCard key={idx} name={service.name} url={service.url} status={service.status} />
+                            ))}
+                          </div>
+                        )}
+
+                        {subPortals.map((sub, subIdx) => (
+                          <div key={subIdx} className="mb-10">
+                            <div className="mb-6 flex items-center gap-3">
+                              <span className="h-2 w-2 rounded-full bg-primary"></span>
+                              <h4 className="text-base font-black uppercase tracking-widest text-muted-foreground/60">
+                                {subCategoryNamesAr[sub.nameKey] ?? sub.nameKey}
+                              </h4>
+                              <div className="h-px flex-1 bg-black/5 dark:bg-white/5"></div>
+                            </div>
+                            <div className="grid gap-6 sm:grid-cols-2">
+                              {sub.services.map((service, idx) => (
+                                <ServiceCard key={idx} name={service.name} url={service.url} status={service.status} />
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Apps Section */}
+                    {allApps.length > 0 && (
+                      <div>
+                        <div className="mb-10 flex items-center gap-4 border-b border-black/5 dark:border-white/5 pb-6">
+                          <h3 className="text-2xl font-black uppercase tracking-tighter flex items-center gap-3">
+                            <Smartphone className="h-6 w-6 text-primary" />
+                            التطبيقات الرسمية
+                          </h3>
+                          <div className="h-px flex-1 bg-black/5 dark:bg-white/5"></div>
+                        </div>
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                          {allApps.map((app, idx) => (
+                            <a
+                              key={idx}
+                              href={app.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group flex items-center gap-4 rounded-2xl bg-white dark:bg-[#0c0c0c] border border-black/[0.03] dark:border-white/[0.03] p-5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                            >
+                              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                <Smartphone className="h-6 w-6" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">تطبيق رسمي</p>
+                                <p className="text-sm font-bold text-[#1a1a1a] dark:text-white line-clamp-2 group-hover:text-primary transition-colors">
+                                  {app.name.ar}
+                                </p>
+                              </div>
+                              <ArrowRight className="h-4 w-4 text-muted-foreground/40 shrink-0 group-hover:text-primary transition-colors" />
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {!hasPortals && allApps.length === 0 && (
+                      <p className="text-muted-foreground text-center py-12">لا توجد خدمات متاحة حالياً لهذا القسم.</p>
+                    )}
+                  </>
+                );
+              })()}
 
               {/* Educational Guides */}
               {category.usageGuides && category.usageGuides.length > 0 && (

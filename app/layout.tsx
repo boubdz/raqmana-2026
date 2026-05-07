@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/contexts/theme-context'
 import { LanguageProvider } from '@/contexts/language-context'
 import InstallButton from '@/components/InstallButton'
+import Script from 'next/script'
 import './globals.css'
 
 const inter = Inter({ 
@@ -18,12 +19,20 @@ const alexandria = Alexandria({
 })
 
 export const metadata: Metadata = {
-  title: 'رقمنة 2026 | دليل الخدمات الرقمية والمنصات الحكومية الجزائرية',
-  description: 'أكبر دليل مستقل للخدمات الرقمية في الجزائر (أكثر من 280 خدمة). استخراج الوثائق، حجز الأضاحي، التسجيل في عدل 3، وخدمات بريد الجزائر. روابط مباشرة وتحديثات يومية.',
+  title: {
+    default: 'رقمنة 2026 | دليل الخدمات الرقمية والمنصات الحكومية الجزائرية',
+    template: '%s | رقمنة 2026'
+  },
+  description: 'البوابة الشاملة للوصول إلى أكثر من 280 خدمة رقمية حكومية في الجزائر. استخراج الوثائق (S12, جواز سفر), منصة أضاحي 2026, تسجيلات عدل 3, بريد الجزائر, واتصالات الجزائر. روابط مباشرة وتحديثات يومية فورية.',
   generator: 'Raqmana',
+  applicationName: 'رقمنة',
+  referrer: 'origin-when-cross-origin',
   keywords: [
-    'الجزائر', 'خدمات رقمية', 'حكومة إلكترونية', 'استخراج شهادة الميلاد', 'منصة أضاحي 2026', 'بريد الجزائر', 
-    'عدل 3', 'جواز السفر', 'البوابة الرقمية الجزائر', 'رابط مباشر', 'تطبيقات حكومية'
+    'الجزائر', 'خدمات رقمية', 'حكومة إلكترونية', 'استخراج شهادة الميلاد S12', 'منصة أضاحي 2026', 'بريد الجزائر', 
+    'عدل 3', 'جواز السفر البيومتري', 'البوابة الرقمية الجزائر', 'رابط مباشر', 'تطبيقات حكومية', 'منصة فضاء الأولياء',
+    'استخراج السوابق القضائية', 'حجز تذاكر الجوية الجزائرية', 'دفع فواتير سونلغاز', 'اتصالات الجزائر 4G',
+    'البوابة الوطنية للخدمات الرقمية', 'Dzair Digital Services', 'التوقيع الإلكتروني e-Tawki3', 'الهوية الرقمية الجزائرية',
+    'الجزائر 2030', 'تطبيق بريد موب', 'تجديد منحة البطالة', 'فضاء الهناء CNAS'
   ],
   authors: [{ name: 'Raqmana Team' }],
   creator: 'Raqmana',
@@ -33,6 +42,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  metadataBase: new URL('https://raqmana.vercel.app'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'ar-DZ': '/ar',
+      'en-US': '/en',
+    },
+  },
   openGraph: {
     title: 'رقمنة 2026 | دليلك الشامل للخدمات الرقمية في الجزائر',
     description: 'كل المنصات الحكومية الجزائرية في تطبيق واحد. روابط مباشرة، تحديثات 2026، وسهولة تامة في الوصول.',
@@ -40,25 +57,35 @@ export const metadata: Metadata = {
     siteName: 'رقمنة - Raqmana',
     locale: 'ar_DZ',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'رقمنة 2026 - دليل الخدمات الرقمية الجزائرية',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'رقمنة 2026 | دليل الخدمات الرقمية الجزائرية',
     description: 'أكثر من 280 خدمة رقمية حكومية بين يديك الآن بروابط مباشرة.',
     creator: '@raqmana',
+    images: ['/og-image.png'],
   },
-  alternates: {
-    canonical: 'https://raqmana.vercel.app',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
-  icons: {
-    icon: [
-      { url: '/favicon.ico' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png' },
-    ],
+  verification: {
+    google: 'G-TWMTPY4E30', // Using the tag ID as a placeholder if no specific token provided
   },
 }
 
@@ -79,7 +106,10 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
-        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="theme-color" content="#ffffff" />
       </head>
       <body className={`${inter.variable} ${alexandria.variable} font-alexandria antialiased`}>
@@ -88,6 +118,40 @@ export default function RootLayout({
             {children}
           </LanguageProvider>
         </ThemeProvider>
+        
+        {/* PWA Service Worker Registration */}
+        <Script id="register-sw" strategy="afterInteractive">
+          {`
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(
+                  function(registration) {
+                    console.log('Service Worker registration successful with scope: ', registration.scope);
+                  },
+                  function(err) {
+                    console.log('Service Worker registration failed: ', err);
+                  }
+                );
+              });
+            }
+          `}
+        </Script>
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-TWMTPY4E30"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-TWMTPY4E30');
+          `}
+        </Script>
+
         <Analytics />
         <InstallButton />
       </body>

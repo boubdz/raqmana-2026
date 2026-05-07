@@ -5,6 +5,7 @@ import { Bot, Send, X, Sparkles, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/contexts/language-context";
 
 interface Message {
   id: string;
@@ -13,6 +14,7 @@ interface Message {
 }
 
 export function AIChatbot() {
+  const { language } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -43,7 +45,8 @@ export function AIChatbot() {
 
   const formatMessage = (text: string) => {
     return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, linkText, url) => {
-      return `<a href="${url}" style="color: #000; font-weight: 800; text-decoration: underline;" target="_blank">${linkText}</a>`;
+      const isInternal = url.startsWith("/");
+      return `<a href="${url}" style="color: #000; font-weight: 800; text-decoration: underline;" ${isInternal ? "" : 'target="_blank" rel="noopener noreferrer"'}>${linkText}</a>`;
     });
   };
 
@@ -57,15 +60,23 @@ export function AIChatbot() {
 
     let bestMatch = { url: "", keyword: "", length: 0 };
     for (const [keyword, url] of Object.entries(keywordToUrl)) {
-      if (query.includes(keyword) && keyword.length > bestMatch.length) {
+      if (query.includes(keyword.toLowerCase()) && keyword.length > bestMatch.length) {
         bestMatch = { url, keyword, length: keyword.length };
       }
     }
 
     setTimeout(() => {
-      let botText = bestMatch.url 
-        ? `بخصوص "${bestMatch.keyword}"، يمكنك الوصول للخدمة مباشرة من هنا: [انقر هنا](${bestMatch.url})`
-        : "عذراً، لم أتعرف على هذه الخدمة بدقة. جرب كتابة اسم الخدمة بوضوح (مثلاً: جواز سفر، عدل، فاتورة).";
+      let botText = "";
+      if (bestMatch.url) {
+        const isInternal = bestMatch.url.startsWith("/");
+        botText = language === "ar" 
+          ? `بخصوص "${bestMatch.keyword}"، يمكنك الاطلاع على كافة التفاصيل والروابط في صفحتنا المخصصة: [اضغط هنا](${bestMatch.url})`
+          : `Regarding "${bestMatch.keyword}", you can find all details and links on our dedicated page: [Click Here](${bestMatch.url})`;
+      } else {
+        botText = language === "ar"
+          ? "عذراً، لم أتعرف على هذه الخدمة بدقة. جرب كتابة اسم الخدمة بوضوح (مثلاً: جواز سفر، عدل، فاتورة)."
+          : "Sorry, I couldn't identify this service clearly. Try typing the service name clearly (e.g., passport, AADL, bill).";
+      }
       
       setMessages((prev) => [...prev, { id: Date.now().toString(), role: "assistant", content: botText }]);
     }, 500);
@@ -74,18 +85,18 @@ export function AIChatbot() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed bottom-8 right-8 z-[100]" dir="rtl">
+    <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[100]" dir="rtl">
       {!isOpen ? (
         <Button
           onClick={() => setIsOpen(true)}
-          className="h-16 w-16 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.2)] bg-[#1a1a1a] dark:bg-white text-white dark:text-black hover:scale-110 transition-all duration-300 group"
+          className="h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.2)] bg-[#1a1a1a] dark:bg-white text-white dark:text-black hover:scale-110 transition-all duration-300 group"
         >
-          <MessageCircle className="h-7 w-7 transition-transform group-hover:rotate-12" />
+          <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7 transition-transform group-hover:rotate-12" />
         </Button>
       ) : (
-        <Card className="flex flex-col h-[600px] w-[380px] sm:w-[420px] shadow-[0_30px_100px_rgba(0,0,0,0.2)] rounded-[2.5rem] border-none bg-white/95 dark:bg-[#0c0c0c]/95 backdrop-blur-2xl animate-in fade-in zoom-in duration-300">
+        <Card className="flex flex-col h-[85vh] w-[calc(100vw-32px)] sm:h-[600px] sm:w-[420px] shadow-[0_30px_100px_rgba(0,0,0,0.2)] rounded-[2rem] sm:rounded-[2.5rem] border-none bg-white/95 dark:bg-[#0c0c0c]/95 backdrop-blur-2xl animate-in fade-in zoom-in duration-300 overflow-hidden">
           {/* Header */}
-          <div className="p-6 border-b border-black/5 dark:border-white/5 flex justify-between items-center bg-[#1a1a1a] dark:bg-white rounded-t-[2.5rem]">
+          <div className="p-5 sm:p-6 border-b border-black/5 dark:border-white/5 flex justify-between items-center bg-[#1a1a1a] dark:bg-white">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-white/20 dark:bg-black/10 flex items-center justify-center">
                 <Sparkles className="h-5 w-5 text-white dark:text-black" />
