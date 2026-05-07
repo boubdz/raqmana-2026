@@ -7,11 +7,15 @@ import { useLanguage } from "@/contexts/language-context";
 export function DailyUtilities() {
   const { language } = useLanguage();
   const [time, setTime] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  if (!mounted) return <div className="h-[300px] animate-pulse bg-black/[0.02] dark:bg-white/[0.02] rounded-[2rem]" />;
 
   // Simulated Prayer Times for Algiers (Standard for Algeria portal)
   const prayerTimes = [
