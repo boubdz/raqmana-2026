@@ -13,6 +13,8 @@ export function Footer() {
   const navLinks = [
     { key: "nav.home", href: "/" },
     { key: "nav.services", href: "/#services" },
+    { key: "nav.directory", href: "/#directory" },
+    { key: "nav.documentGuide", href: "/#document-guide" },
     { key: "nav.assistant", href: "/document-assistant" },
   ];
 

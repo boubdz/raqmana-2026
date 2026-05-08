@@ -18,7 +18,8 @@ import {
   TrendingUp,
   LayoutGrid,
   FileText,
-  Sparkles
+  Sparkles,
+  Wallet
 } from "lucide-react";
 import { Metadata } from "next";
 import { 
@@ -33,7 +34,7 @@ const iconMap: Record<string, React.ElementType> = {
   Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi, 
   Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench, 
   Building, FileText, Landmark, Globe, Shield, Plane, Package, UserCheck, Moon, 
-  Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, Sparkles
+  Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, Sparkles, Wallet
 };
 
 type Props = {
@@ -72,6 +73,7 @@ const subCategoryNamesAr: Record<string, string> = {
   "subcategory.privateBanks": "البنوك الخاصة",
   // agriculture
   "subcategory.agricultureApps": "تطبيقات الفلاحة",
+  "subcategory.mobileApps": "تطبيقات الهاتف",
 };
 
 export async function generateStaticParams() {
@@ -119,6 +121,7 @@ const categoryNamesAr: Record<string, string> = {
   industry: "الصناعة",
   environment: "البيئة",
   media: "الإعلام والاتصال",
+  finance: "البنوك والمالية",
 };
 
 const trendingKeywordsMap: Record<string, string[]> = {

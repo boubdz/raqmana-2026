@@ -46,10 +46,12 @@ import {
   Leaf,
   Droplets,
   Sparkles,
+  Wallet,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const categoryPageMap: Record<string, string> = {
   bills: "/categories/bills",
@@ -91,27 +93,21 @@ const categoryPageMap: Record<string, string> = {
   industry: "/categories/industry",
   environment: "/categories/environment",
   media: "/categories/media",
+  finance: "/categories/finance",
 };
 
 const iconMap: Record<string, React.ElementType> = {
   Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi,
   Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench,
   Building, FileText, Landmark, Globe, Shield, Plane, Package, UserCheck, Moon,
-  TrendingUp, Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, Sparkles,
+  TrendingUp, Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, Sparkles, Wallet
 };
 
-const quickLinks = [
-  { key: "quickLinks.s12", url: "https://etatcivil.interieur.gov.dz/s12", icon: FileText },
-  { key: "quickLinks.casier", url: "https://casier.mjustice.dz", icon: Scale },
-  { key: "quickLinks.passport", url: "https://passeport.interieur.gov.dz", icon: Globe },
-  { key: "quickLinks.cni", url: "https://passeport.interieur.gov.dz/cni", icon: ShieldCheck },
-  { key: "quickLinks.unemployment", url: "https://minha.anem.dz", icon: Banknote },
-  { key: "quickLinks.bac", url: "https://bac.onec.dz/resultats", icon: GraduationCap },
-];
 
 export function CategoriesSection() {
   const { t, language, dir } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return [];
@@ -123,6 +119,23 @@ export function CategoriesSection() {
       return { ...category, services: filteredServices };
     }).filter(c => c.services.length > 0);
   }, [searchQuery]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    const query = searchQuery.toLowerCase();
+    // Find the first category that matches or contains matching services
+    const match = serviceCategories.find(c => 
+      t(c.nameKey).toLowerCase().includes(query) ||
+      c.services.some(s => s.name.ar.toLowerCase().includes(query) || s.name.en.toLowerCase().includes(query)) ||
+      (c.subCategories?.some(sub => sub.services.some(s => s.name.ar.toLowerCase().includes(query) || s.name.en.toLowerCase().includes(query))))
+    );
+
+    if (match) {
+      router.push(categoryPageMap[match.id]);
+    }
+  };
 
   return (
     <section id="services" className="py-32 bg-white dark:bg-[#080808]" dir={dir}>
@@ -140,7 +153,7 @@ export function CategoriesSection() {
 
         {/* Search Bar - Sleek & Modern */}
         <div className="mx-auto mb-20 max-w-2xl">
-          <div className="relative group">
+          <form onSubmit={handleSearch} className="relative group">
             <Search className="absolute top-1/2 h-6 w-6 -translate-y-1/2 text-muted-foreground/50 start-5 transition-colors group-focus-within:text-primary" />
             <Input
               type="search"
@@ -149,28 +162,9 @@ export function CategoriesSection() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="h-16 ps-14 text-lg bg-[#f5f5f5] dark:bg-[#111] border-none rounded-2xl focus-visible:ring-2 focus-visible:ring-primary/20 transition-all shadow-sm"
             />
-          </div>
+          </form>
         </div>
 
-        {/* Quick Access Pills */}
-        <div className="mb-24 flex flex-wrap justify-center gap-3">
-          {quickLinks.map((link) => {
-            const Icon = link.icon;
-            return (
-              <a
-                key={link.key}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 rounded-full bg-white dark:bg-[#111] border border-black/5 dark:border-white/5 px-6 py-3 text-sm font-bold text-[#1a1a1a] dark:text-white transition-all hover:bg-[#1a1a1a] hover:text-white dark:hover:bg-white dark:hover:text-black shadow-sm"
-              >
-                <Icon className="h-4 w-4" />
-                {t(link.key)}
-                <ExternalLink className="h-3 w-3 opacity-30 group-hover:opacity-100" />
-              </a>
-            );
-          })}
-        </div>
 
         {/* Main Grid - High End Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
@@ -200,7 +194,10 @@ export function CategoriesSection() {
         {/* Search Results Display */}
         {searchQuery.trim() && filteredCategories.length > 0 && (
           <div className="mt-20 space-y-12 animate-in fade-in duration-500">
-            <h3 className="text-2xl font-black text-center uppercase tracking-tighter">Results for "{searchQuery}"</h3>
+            <div className="flex items-center justify-between">
+               <h3 className="text-2xl font-black uppercase tracking-tighter">Results for "{searchQuery}"</h3>
+               <p className="text-xs font-bold text-muted-foreground animate-pulse">Press Enter to visit first result</p>
+            </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredCategories.map((category) => {
                 const Icon = iconMap[category.icon];

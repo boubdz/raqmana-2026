@@ -5,7 +5,7 @@ import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
 import { ServicesMarquee } from "@/components/services-marquee";
 import { CategoriesSection } from "@/components/categories-section";
-// import { DocumentAssistant } from "@/components/document-assistant"; // <-- علق أو احذف هذا السطر
+
 import { NewsTicker } from "@/components/news-ticker";
 import { Footer } from "@/components/footer";
 import { AIChatbot } from "@/components/ai-chatbot";
@@ -13,6 +13,7 @@ import { SeasonalEvents } from "@/components/seasonal-events";
 import { SolutionsHub } from "@/components/solutions-hub";
 import { DigitalDirectory } from "@/components/digital-directory";
 import { DailyUtilities } from "@/components/daily-utilities";
+import { DocumentGuide } from "@/components/document-guide";
 import { useLanguage } from "@/contexts/language-context";
 
 export default function Home() {
@@ -61,8 +62,9 @@ export default function Home() {
         <ServicesMarquee />
         <NewsTicker />
         <SeasonalEvents />
-        <div className="container mx-auto px-6 py-12">
+        <div className="container mx-auto px-6 py-12 space-y-24">
           <DailyUtilities />
+          <DocumentGuide />
         </div>
         <CategoriesSection />
         <SolutionsHub />

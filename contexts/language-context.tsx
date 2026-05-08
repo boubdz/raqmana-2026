@@ -21,6 +21,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.home": "الرئيسية",
     "nav.services": "الخدمات",
     "nav.assistant": "المساعد الذكي",
+    "nav.documentGuide": "دليل الوثائق",
     "nav.sitemap": "خريطة الموقع",
     "nav.about": "حول",
     "nav.directory": "الفهرس الشامل",
@@ -71,6 +72,7 @@ const translations: Record<Language, Record<string, string>> = {
     "category.industry": "الصناعة",
     "category.environment": "البيئة",
     "category.media": "الإعلام والاتصال",
+    "category.finance": "البنوك والمالية",
 
     // Subcategories
     "subcategory.ade": "الجزائرية للمياه ADE",
@@ -184,6 +186,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.home": "Home",
     "nav.services": "Services",
     "nav.assistant": "AI Assistant",
+    "nav.documentGuide": "Document Guide",
     "nav.sitemap": "Sitemap",
     "nav.about": "About",
     "nav.directory": "Main Directory",
@@ -234,6 +237,7 @@ const translations: Record<Language, Record<string, string>> = {
     "category.industry": "Industry",
     "category.environment": "Environment",
     "category.media": "Media & Communication",
+    "category.finance": "Banks & Finance",
 
     // Subcategories
     "subcategory.ade": "ADE Water",

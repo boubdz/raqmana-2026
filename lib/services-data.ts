@@ -53,16 +53,14 @@ export const serviceCategories: ServiceCategory[] = [
           { name: { ar: "فاتورة ADE", en: "ADE Bill Payment" }, url: "https://www.ade.dz" },
           { name: { ar: "فضاء الزبون الجزائرية للمياه", en: "ADE Customer Space" }, url: "https://www.ade.dz/espace-client" },
           { name: { ar: "محاكاة الفاتورة", en: "Bill Simulator" }, url: "https://www.ade.dz/simulateur" },
-          { name: { ar: "تطبيق Miyahimob", en: "Miyahimob App" }, url: "https://play.google.com/store/apps/details?id=dz.ade.miyahimob", isApp: true },
         ],
       },
       {
         nameKey: "subcategory.sonelgaz",
         services: [
           { name: { ar: "فاتورة الكهرباء والغاز", en: "Electricity & Gas Bill" }, url: "https://www.sonelgaz.dz" },
-          { name: { ar: "تصفح فاتورتك عبر الأنترنت", en: "View Bill Online" }, url: "https://www.sonelgaz.dz/fr/espace-client" },
+          { name: { ar: "فضاء الزبون سونلغاز", en: "Sonelgaz Customer Space" }, url: "https://www.sonelgaz.dz/fr/espace-client" },
           { name: { ar: "محاكاة فاتورتك", en: "Bill Simulator" }, url: "https://www.sonelgaz.dz/fr/simulateur" },
-          { name: { ar: "تطبيق Sonelgaz Mobile", en: "Sonelgaz Mobile App" }, url: "https://play.google.com/store/apps/details?id=dz.sonelgaz.mobile", isApp: true },
         ],
       },
       {
@@ -70,20 +68,26 @@ export const serviceCategories: ServiceCategory[] = [
         services: [
           { name: { ar: "فاتورة المياه SEAAL", en: "SEAAL Water Bill" }, url: "https://www.seaal.dz" },
           { name: { ar: "الوكالة الرقمية", en: "Digital Agency" }, url: "https://www.seaal.dz/agence-virtuelle" },
-          { name: { ar: "تطبيق SEAAL Mobile", en: "SEAAL Mobile App" }, url: "https://play.google.com/store/apps/details?id=dz.seaal.mobile", isApp: true },
         ],
       },
       {
         nameKey: "subcategory.aadl",
         services: [
           { name: { ar: "فاتورة كراء عدل", en: "AADL Rent Bill" }, url: "https://www.aadl.com.dz" },
-          { name: { ar: "تطبيق AADL Mobile", en: "AADL Mobile App" }, url: "https://play.google.com/store/apps/details?id=dz.aadl.mobile", isApp: true },
         ],
       },
       {
         nameKey: "subcategory.opgi",
         services: [
           { name: { ar: "فاتورة كراء OPGI", en: "OPGI Rent Bill" }, url: "https://www.opgi.dz" },
+        ],
+      },
+      {
+        nameKey: "subcategory.mobileApps",
+        services: [
+          { name: { ar: "تطبيق مياهي موب Miyahimob (مياه الجزائر)", en: "Miyahimob App (ADE)" }, url: "https://play.google.com/store/search?q=dz.ade.miyahimob&c=apps", isApp: true },
+          { name: { ar: "تطبيق وكالتي WAKALATI (سيال)", en: "Wakalati App (SEAAL)" }, url: "https://play.google.com/store/apps/details?id=dz.seaalappli.wakalati", isApp: true },
+          { name: { ar: "تطبيق عدل AADL 3", en: "AADL 3 App" }, url: "https://apps.apple.com/dz/app/aadl3/id6505109085", isApp: true },
         ],
       },
     ],
@@ -113,21 +117,26 @@ export const serviceCategories: ServiceCategory[] = [
         nameKey: "subcategory.mobilis",
         services: [
           { name: { ar: "تعبئة الرصيد - موبيليس", en: "Mobilis Recharge" }, url: "https://www.mobilis.dz/flexy" },
-          { name: { ar: "تطبيق MobiSpace", en: "MobiSpace App" }, url: "https://play.google.com/store/apps/details?id=dz.mobilis.mobispace", isApp: true },
         ],
       },
       {
         nameKey: "subcategory.djezzy",
         services: [
           { name: { ar: "تعبئة الرصيد - جيزي", en: "Djezzy Recharge" }, url: "https://www.djezzy.dz/flexy" },
-          { name: { ar: "تطبيق Djezzy", en: "Djezzy App" }, url: "https://play.google.com/store/apps/details?id=com.djezzy.selfcare", isApp: true },
         ],
       },
       {
         nameKey: "subcategory.ooredoo",
         services: [
           { name: { ar: "تعبئة الرصيد - أوريدو", en: "Ooredoo Recharge" }, url: "https://www.ooredoo.dz/flexy" },
-          { name: { ar: "تطبيق My Ooredoo", en: "My Ooredoo App" }, url: "https://play.google.com/store/apps/details?id=com.ooredoo.selfcare", isApp: true },
+        ],
+      },
+      {
+        nameKey: "subcategory.mobileApps",
+        services: [
+          { name: { ar: "تطبيق MobiSpace (موبيليس)", en: "MobiSpace App" }, url: "https://play.google.com/store/apps/details?id=com.segmatek.mobilis", isApp: true },
+          { name: { ar: "تطبيق جيزي Djezzy", en: "Djezzy App" }, url: "https://play.google.com/store/apps/details?id=com.djezzy.internet", isApp: true },
+          { name: { ar: "تطبيق My Ooredoo", en: "My Ooredoo App" }, url: "https://play.google.com/store/apps/details?id=com.algeria.selfcare.app.android", isApp: true },
         ],
       },
     ],
@@ -169,15 +178,13 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.postIndividual",
         services: [
-          { name: { ar: "فتح حساب بريدي", en: "Open Postal Account" }, url: "https://www.poste.dz/services/ccp" },
-          { name: { ar: "الاطلاع على رصيد CCP", en: "Check CCP Balance" }, url: "https://eccp.poste.dz" },
+          { name: { ar: "فتح حساب بريدي", en: "Open Postal Account" }, url: "https://ccpnet.poste.dz/" },
+          { name: { ar: "الاطلاع على رصيد CCP (موقع)", en: "Check CCP Balance (Web)" }, url: "https://eccp.poste.dz" },
           { name: { ar: "طلب البطاقة الذهبية", en: "Golden Card Request" }, url: "https://eccp.poste.dz/commande-edahabia" },
           { name: { ar: "بريدي ويب BaridiWeb", en: "BaridiWeb" }, url: "https://baridiweb.poste.dz" },
-          { name: { ar: "تطبيق بريدي موب BaridiMob", en: "BaridiMob App" }, url: "https://play.google.com/store/apps/details?id=dz.poste.baridimob", isApp: true },
-          { name: { ar: "تطبيق بريدي باي BaridiPay (QR)", en: "BaridiPay App (QR)" }, url: "https://play.google.com/store/apps/details?id=dz.poste.baridipay", isApp: true },
-          { name: { ar: "تتبع الطرود البريدية", en: "Track Parcels" }, url: "https://www.poste.dz/tracking" },
+          { name: { ar: "تتبع الطرود البريدية", en: "Track Parcels" }, url: "https://www.4tracking.net/fr/carriers/algeria-post" },
           { name: { ar: "تقديم شكاوي ومتابعتها", en: "Submit Complaints" }, url: "https://reclamation.poste.dz" },
-          { name: { ar: "البحث عن مكاتب البريد", en: "Find Post Offices" }, url: "https://www.poste.dz/bureaux" },
+          { name: { ar: "البحث عن مكاتب البريد", en: "Find Post Offices" }, url: "https://baridimap.poste.dz/" },
         ],
       },
       {
@@ -186,6 +193,13 @@ export const serviceCategories: ServiceCategory[] = [
           { name: { ar: "تحقق من كشوفات الحسابات - Tikka", en: "Verify Statements - Tikka" }, url: "https://tikka.poste.dz" },
           { name: { ar: "الحساب البريدي للأعمال - Cashless", en: "Business Account - Cashless" }, url: "https://cashless.poste.dz" },
           { name: { ar: "خدمات التوصيل - Amantec", en: "Delivery Services - Amantec" }, url: "https://amantec.poste.dz" },
+        ],
+      },
+      {
+        nameKey: "subcategory.mobileApps",
+        services: [
+          { name: { ar: "تطبيق بريدي موب BaridiMob", en: "BaridiMob App" }, url: "https://play.google.com/store/apps/details?id=ru.bpc.mobilebank.bpc", isApp: true },
+          { name: { ar: "تطبيق ECCP الرسمي", en: "ECCP Official App" }, url: "https://play.google.com/store/apps/details?id=dz.poste.eccp", isApp: true },
         ],
       },
     ],
@@ -216,18 +230,23 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.telecomPayment",
         services: [
-          { name: { ar: "تسديد فواتير الهاتف الثابت", en: "Pay Fixed Phone Bills" }, url: "https://www.algerietelecom.dz/paiement" },
-          { name: { ar: "تعبئة حساب الانترنت", en: "Internet Account Recharge" }, url: "https://www.algerietelecom.dz/recharge" },
-          { name: { ar: "تعبئة IDOOM 4G LTE", en: "IDOOM 4G LTE Recharge" }, url: "https://www.algerietelecom.dz/idoom4g" },
+          { name: { ar: "تسديد فواتير الهاتف الثابت", en: "Pay Fixed Phone Bills" }, url: "https://paiement.at.dz/index.php?p=dette_paiement" },
+          { name: { ar: "تعبئة حساب الانترنت", en: "Internet Account Recharge" }, url: "https://paiement.at.dz/index.php?p=voucher_internet&produit=in" },
+          { name: { ar: "تعبئة IDOOM 4G LTE", en: "IDOOM 4G LTE Recharge" }, url: "https://paiement.at.dz/index.php?p=voucher_internet&produit=4g" },
         ],
       },
       {
         nameKey: "subcategory.telecomServices",
         services: [
-          { name: { ar: "طلب التحويل للألياف البصرية", en: "Fiber Optic Transfer" }, url: "https://ftth.algerietelecom.dz" },
-          { name: { ar: "فضاء الزبون", en: "Customer Space" }, url: "https://espace.algerietelecom.dz" },
-          { name: { ar: "الإبلاغ عن عطب", en: "Report Issue" }, url: "https://www.algerietelecom.dz/signaler" },
-          { name: { ar: "تطبيق My IDOOM", en: "My IDOOM App" }, url: "https://play.google.com/store/apps/details?id=dz.algerietelecom.myidoom", isApp: true },
+          { name: { ar: "طلب التحويل للألياف البصرية", en: "Fiber Optic Transfer" }, url: "https://www.algerietelecom.dz/ar/page/migration-p232" },
+          { name: { ar: "فضاء الزبون", en: "Customer Space" }, url: "https://client.at.dz/ar" },
+          { name: { ar: "الإبلاغ عن عطب", en: "Report Issue" }, url: "https://www.algerietelecom.dz/ar/derangements" },
+        ],
+      },
+      {
+        nameKey: "subcategory.mobileApps",
+        services: [
+          { name: { ar: "تطبيق My IDOOM الرسمي", en: "My IDOOM App" }, url: "https://play.google.com/store/apps/details?id=com.at.dz", isApp: true },
         ],
       },
     ],
@@ -258,23 +277,23 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.eduTeacher",
         services: [
-          { name: { ar: "المنصة الرقمية للأساتذة", en: "Teacher Platform" }, url: "https://ostad.education.gov.dz" },
-          { name: { ar: "تقييم المكتسبات", en: "Learning Assessment" }, url: "https://evaluation.education.gov.dz" },
-          { name: { ar: "توظيف الأساتذة المتعاقدين", en: "Contract Teacher Recruitment" }, url: "https://tawdif.education.gov.dz" },
+          { name: { ar: "المنصة الرقمية للأساتذة", en: "Teacher Platform" }, url: "https://ostadeducationdz.com/" },
+          { name: { ar: "تقييم المكتسبات", en: "Learning Assessment" }, url: "hhttps://taqiim.education.dz/auth" },
+          { name: { ar: "توظيف الأساتذة المتعاقدين", en: "Contract Teacher Recruitment" }, url: "https://tawdif.education.dz/" },
         ],
       },
       {
         nameKey: "subcategory.eduParent",
         services: [
           { name: { ar: "فضاء أولياء التلاميذ", en: "Parents Portal" }, url: "https://awlyaa.education.gov.dz" },
-          { name: { ar: "تحضير الفروض والاختبارات", en: "Exam Preparation" }, url: "https://dzexams.com" },
+          { name: { ar: "تحضر الفروض والاختبارات", en: "Exam Preparation" }, url: "https://dzexams.com" },
         ],
       },
       {
         nameKey: "subcategory.eduDistance",
         services: [
           { name: { ar: "التسجيل في التعليم عن بعد", en: "Distance Learning Registration" }, url: "https://onefd.edu.dz" },
-          { name: { ar: "شهادة إثبات المستوى", en: "Level Certificate" }, url: "https://onefd.edu.dz/attestation" },
+          { name: { ar: "شهادة إثبات المستوى", en: "Level Certificate" }, url: "https://www.onefd.edu.dz/att_niv_2025/" },
         ],
       },
       {
@@ -282,7 +301,7 @@ export const serviceCategories: ServiceCategory[] = [
         services: [
           { name: { ar: "تسجيل شهادة التعليم المتوسط BEM", en: "BEM Registration" }, url: "https://bem.onec.dz" },
           { name: { ar: "تسجيل شهادة البكالوريا BAC", en: "BAC Registration" }, url: "https://bac.onec.dz" },
-          { name: { ar: "الدفع الإلكتروني لمستحقات الامتحانات", en: "Exam Fee Payment" }, url: "https://tarbiapay.education.gov.dz" },
+          { name: { ar: "الدفع الإلكتروني لمستحقات الامتحانات", en: "Exam Fee Payment" }, url: "https://epay.education.gov.dz/" },
         ],
       },
       {
@@ -290,6 +309,12 @@ export const serviceCategories: ServiceCategory[] = [
         services: [
           { name: { ar: "نتائج شهادة التعليم المتوسط", en: "BEM Results" }, url: "https://bem.onec.dz/resultats" },
           { name: { ar: "نتائج شهادة البكالوريا", en: "BAC Results" }, url: "https://bac.onec.dz/resultats" },
+        ],
+      },
+      {
+        nameKey: "subcategory.mobileApps",
+        services: [
+          { name: { ar: "تطبيق فضاء الأولياء Tharwa", en: "Tharwa App" }, url: "https://play.google.com/store/apps/details?id=com.htech.awlyaa", isApp: true },
         ],
       },
     ],
@@ -325,7 +350,7 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "بوابة الدكتوراه والبحث العلمي", en: "PhD & Research Portal" }, url: "https://www.dgrsdt.dz" },
       { name: { ar: "منصة تمويل البحث العلمي PNR", en: "PNR Research Funding" }, url: "https://pnr.mesrs.dz" },
       { name: { ar: "مسابقات التوظيف - الأساتذة", en: "Teaching Staff Competitions" }, url: "https://concours.mesrs.dz" },
-      { name: { ar: "تطبيق Progres", en: "Progres App" }, url: "https://play.google.com/store/apps/details?id=dz.mesrs.progres", isApp: true },
+      { name: { ar: "تطبيق PROGRES WebEtu (التعليم العالي)", en: "PROGRES WebEtu App" }, url: "https://play.google.com/store/apps/details?id=app.progres.webetu", isApp: true },
     ],
   },
   // 7. التكوين والتعليم المهنيين
@@ -334,10 +359,10 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.vocational",
     icon: "Wrench",
     color: "from-orange-500 to-red-600",
-    officialSite: "https://www.mfep.gov.dz",
+    officialSite: "https://services.mvet.dz/",
     phone: "+213 23 25 52 66",
     services: [
-      { name: { ar: "التسجيل في التكوين المهني", en: "Vocational Training Registration" }, url: "https://www.takwin.dz" },
+      { name: { ar: "التسجيل في التكوين المهني", en: "Vocational Training Registration" }, url: "https://www.takwin.dz/" },
       { name: { ar: "بوابة وزارة التكوين المهني", en: "Ministry Portal" }, url: "https://www.mfep.gov.dz" },
     ],
   },
@@ -364,14 +389,14 @@ export const serviceCategories: ServiceCategory[] = [
     ],
     services: [
       { name: { ar: "استخراج شهادة الميلاد", en: "Birth Certificate" }, url: "https://etatcivil.interieur.gov.dz" },
-      { name: { ar: "استخراج عقد الزواج", en: "Marriage Certificate" }, url: "https://etatcivil.interieur.gov.dz/mariage" },
-      { name: { ar: "استخراج شهادة الميلاد S12", en: "S12 Birth Certificate" }, url: "https://etatcivil.interieur.gov.dz/s12" },
-      { name: { ar: "استخراج شهادة الوفاة", en: "Death Certificate" }, url: "https://etatcivil.interieur.gov.dz/deces" },
-      { name: { ar: "طلب بطاقة التعريف البيومترية", en: "Biometric ID Card" }, url: "https://passeport.interieur.gov.dz/cni" },
-      { name: { ar: "طلب جواز السفر البيومتري", en: "Biometric Passport" }, url: "https://passeport.interieur.gov.dz" },
-      { name: { ar: "الشباك عن بعد", en: "Remote Counter" }, url: "https://guichet.interieur.gov.dz" },
-      { name: { ar: "طلب منحة رمضان", en: "Ramadan Solidarity Grant" }, url: "https://minha.interieur.gov.dz" },
-      { name: { ar: "العرائض والشكاوى", en: "Petitions & Complaints" }, url: "https://reclamation.interieur.gov.dz" },
+      { name: { ar: "استخراج عقد الزواج", en: "Marriage Certificate" }, url: "https://etatcivil.interieur.gov.dz/ActeMariage/" },
+      { name: { ar: "استخراج شهادة الميلاد S12", en: "S12 Birth Certificate" }, url: "https://demande12s.interieur.gov.dz/Ar/default.aspx" },
+      { name: { ar: "استخراج شهادة الوفاة", en: "Death Certificate" }, url: "https://etatcivil.interieur.gov.dz/ActeDeces/" },
+      { name: { ar: "طلب بطاقة التعريف البيومترية", en: "Biometric ID Card" }, url: "https://passeport.interieur.gov.dz/fr/DemandeCNIBE_Fr/Demander%20la%20carte%20d'identit%C3%A9%20en%20ligne" },
+      { name: { ar: "طلب جواز السفر البيومتري", en: "Biometric Passport" }, url: "https://passeport.interieur.gov.dz/fr/DemandeCNIBE_Fr/Demander%20la%20carte%20d'identit%C3%A9%20en%20ligne" },
+      { name: { ar: "الشباك عن بعد", en: "Remote Counter" }, url: "https://prestations.interieur.gov.dz/guichet/LOGIN" },
+      { name: { ar: "طلب منحة رمضان", en: "Ramadan Solidarity Grant" }, url: "https://interieur.gov.dz/2024/12/09/%d8%a8%d9%8a%d8%a7%d9%86-%d8%a8%d8%ae%d8%b5%d9%88%d8%b5-%d8%a7%d9%84%d8%a5%d8%b9%d8%a7%d9%86%d8%a9-%d8%a7%d9%84%d9%85%d8%a7%d9%84%d9%8a%d8%a9-%d8%a7%d9%84%d8%aa%d8%b6%d8%a7%d9%85%d9%86%d9%8a%d8%a9/" },
+      { name: { ar: "العرائض والشكاوى", en: "Petitions & Complaints" }, url: "https://services.interieur.gov.dz/ar/%d8%b4%d9%83%d8%a7%d9%88%d9%8a-%d9%88%d8%b9%d8%b1%d8%a7%d8%a6%d8%b6/" },
     ],
   },
   // 9. وكالة عدل AADL
@@ -399,7 +424,6 @@ export const serviceCategories: ServiceCategory[] = [
     services: [
       { name: { ar: "تسجيل الدخول لمنصة عدل", en: "AADL Platform Login" }, url: "https://www.aadl.dz" },
       { name: { ar: "دفع فاتورة تكاليف الكراء", en: "Rent Payment" }, url: "https://www.aadl.dz/paiement" },
-      { name: { ar: "تطبيق AADL Mobile", en: "AADL Mobile App" }, url: "https://play.google.com/store/apps/details?id=dz.aadl.mobile", isApp: true },
     ],
   },
   // 10. المؤسسة الوطنية للترقية العقارية ENPI
@@ -424,10 +448,10 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "التسجيل لاقتناء سكن LPP", en: "LPP Housing Registration" }, url: "https://lpp.enpi.dz" },
+      { name: { ar: "التسجيل لاقتناء سكن LPP", en: "LPP Housing Registration" }, url: "https://www.enpi-net.dz/ENPI/Inscription.php" },
       { name: { ar: "التسجيل لاقتناء سكن LPL", en: "LPL Housing Registration" }, url: "https://lpl.enpi.dz" },
-      { name: { ar: "التسجيل لاقتناء محل تجاري", en: "Commercial Property Registration" }, url: "https://local.enpi.dz" },
-      { name: { ar: "فضاء الزبائن", en: "Customer Space" }, url: "https://espace.enpi.dz" },
+      { name: { ar: "التسجيل لاقتناء محل تجاري", en: "Commercial Property Registration" }, url: "https://www.enpi-net.dz/LocauxEnpi/" },
+      { name: { ar: "فضاء الزبائن", en: "Customer Space" }, url: "https://www.enpi-net.dz/lpp_consultation/" },
     ],
   },
   // 11. خدمات جبائية إلكترونية
@@ -472,13 +496,13 @@ export const serviceCategories: ServiceCategory[] = [
     services: [
       { name: { ar: "استخراج صحيفة السوابق القضائية", en: "Criminal Record (Casier Judiciaire)" }, url: "https://e-casier.mjustice.dz" },
       { name: { ar: "بوابة الخدمات الإلكترونية للعدالة", en: "E-Justice Services Portal" }, url: "https://portail.mjustice.dz" },
-      { name: { ar: "استخراج الجنسية الجزائرية", en: "Algerian Nationality Certificate" }, url: "https://nationalite.mjustice.dz" },
-      { name: { ar: "طلب مستخرج الوجود بالسجن إبان الثورة", en: "Revolution Prison Record" }, url: "https://www.mjustice.dz/prison-revolution" },
-      { name: { ar: "طلب نسخة من عقود المحاكم", en: "Court Document Copy" }, url: "https://www.mjustice.dz/documents" },
-      { name: { ar: "رخص الاتصال بالمحبوسين", en: "Prisoner Visitation Permit" }, url: "https://www.mjustice.dz/visite" },
-      { name: { ar: "النيابة الإلكترونية - تسجيل شكوى", en: "E-Prosecution - File Complaint" }, url: "https://e-niyaba.mjustice.dz" },
-      { name: { ar: "النيابة الإلكترونية - متابعة شكوى", en: "E-Prosecution - Track Complaint" }, url: "https://e-niyaba.mjustice.dz/suivi" },
-      { name: { ar: "تطبيق AdalaTic", en: "AdalaTic App" }, url: "https://play.google.com/store/apps/details?id=dz.mjustice.adalatic", isApp: true },
+      { name: { ar: "استخراج الجنسية الجزائرية", en: "Algerian Nationality Certificate" }, url: "https://portail.mjustice.dz/remote/login?lang=fr" },
+      { name: { ar: "طلب مستخرج الوجود بالسجن إبان الثورة", en: "Revolution Prison Record" }, url: "https://www.mjustice.gov.dz/ar/archive/" },
+      { name: { ar: "طلب نسخة من عقود المحاكم", en: "Court Document Copy" }, url: "https://portail.mjustice.dz/remote/login?lang=fr" },
+      { name: { ar: "رخص الاتصال بالمحبوسين", en: "Prisoner Visitation Permit" }, url: "https://ziyarati.mjustice.dz/" },
+      { name: { ar: "النيابة الإلكترونية - تسجيل شكوى", en: "E-Prosecution - File Complaint" }, url: "https://e-nyaba.mjustice.dz/choix.php" },
+      { name: { ar: "النيابة الإلكترونية - متابعة شكوى", en: "E-Prosecution - Track Complaint" }, url: "https://e-nyaba.mjustice.dz/login.php" },
+      { name: { ar: "تطبيق AdalaTic (بوابة وزارة العدل)", en: "AdalaTic App (Justice)" }, url: "https://play.google.com/store/apps/details?id=dz.mjustice.e_service", isApp: true },
     ],
   },
   // 13. الصفقات العمومية
@@ -490,9 +514,9 @@ export const serviceCategories: ServiceCategory[] = [
     officialSite: "https://www.mf.gov.dz",
     phone: "+21321595151",
     services: [
-      { name: { ar: "بوابة الصفقات العمومية", en: "Public Contracts Portal" }, url: "https://baosem.mf.gov.dz" },
-      { name: { ar: "صندوق ضمان الصفقات العمومية", en: "Contract Guarantee Fund" }, url: "https://cgmp.mf.gov.dz" },
-      { name: { ar: "محاكاة ضمان الصفقات", en: "Contract Guarantee Simulator" }, url: "https://cgmp.mf.gov.dz/simulation" },
+      { name: { ar: "بوابة الصفقات العمومية", en: "Public Contracts Portal" }, url: "https://www.mf.gov.dz/index.php/ar/activites-ar/1460-2023-11-19-14-20-31" },
+      { name: { ar: "صندوق ضمان الصفقات العمومية", en: "Contract Guarantee Fund" }, url: "https://www.cgmp.dz/ar/" },
+      { name: { ar: "محاكاة ضمان الصفقات", en: "Contract Guarantee Simulator" }, url: "https://www.cgmp.dz/fr/simulateur/" },
     ],
   },
   // 14. خدمات الأملاك العقارية
@@ -501,7 +525,7 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.realEstate",
     icon: "Landmark",
     color: "from-stone-500 to-zinc-600",
-    officialSite: "https://www.dgdn.dz",
+    officialSite: "https://www.dgdn.gov.dz/",
     phone: "+213 21 59 51 51",
     descriptionAr: "بوابة الأملاك العقارية الرقمية: طلب الدفتر العقاري، استخراج المصفوفة المسحية، ومتابعة ملفات الملكية العقارية إلكترونياً.",
     usageGuides: [
@@ -531,9 +555,9 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.realEstatePro",
         services: [
-          { name: { ar: "فضاء المحافظ العقاري", en: "Property Registrar Space" }, url: "https://conservateur.dgdn.dz" },
-          { name: { ar: "فضاء المفتشين العقاريين", en: "Property Inspector Space" }, url: "https://inspecteur.dgdn.dz" },
-          { name: { ar: "فضاء الموثقين", en: "Notary Space" }, url: "https://notaire.dgdn.dz" },
+          { name: { ar: "فضاء المحافظ العقاري", en: "Property Registrar Space" }, url: "https://fadaeldjazair.mf.gov.dz/lf/demander_lf" },
+          { name: { ar: "فضاء المفتشين العقاريين", en: "Property Inspector Space" }, url: "https://fadaeldjazair.mf.gov.dz" },
+          { name: { ar: "فضاء الموثقين", en: "Notary Space" }, url: "https://www.cn-notaires.dz/" },
         ],
       },
     ],
@@ -544,7 +568,7 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.foreignAffairs",
     icon: "Globe",
     color: "from-blue-600 to-indigo-700",
-    officialSite: "https://www.mae.gov.dz",
+    officialSite: "https://www.mfa.gov.dz/ar",
     phone: "+213 21 50 45 45",
     descriptionAr: "خدمات وزارة الشؤون الخارجية: طلب تصديق الوثائق (Apostille) الموجهة للخارج، وتتبع وضعية الجالية الجزائرية.",
     usageGuides: [
@@ -560,10 +584,10 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "ترحيل الوثائق للتصديق", en: "Document Apostille" }, url: "https://apostille.mae.gov.dz" },
-      { name: { ar: "كاتب الدولة للجالية بالخارج", en: "Diaspora Secretary" }, url: "https://jaliya.mae.gov.dz" },
+      { name: { ar: "ترحيل الوثائق للتصديق", en: "Document Apostille" }, url: "https://aptracking.poste.dz//" },
+      { name: { ar: "كاتب الدولة للجالية بالخارج", en: "Diaspora Secretary" }, url: "https://www.mfa.gov.dz/ar/contact" },
       { name: { ar: "الممثليات الدبلوماسية الجزائرية", en: "Algerian Embassies" }, url: "https://www.mae.gov.dz/ambassades" },
-      { name: { ar: "الممثليات الأجنبية بالجزائر", en: "Foreign Embassies in Algeria" }, url: "https://www.mae.gov.dz/ambassades-etrangeres" },
+      { name: { ar: "الممثليات الأجنبية بالجزائر", en: "Foreign Embassies in Algeria" }, url: "https://www.mfa.gov.dz/ar/foreign-diplomatic-and-consular-representations-in-algeria" },
     ],
   },
   // 16. خدمات الضمان الاجتماعي
@@ -594,8 +618,7 @@ export const serviceCategories: ServiceCategory[] = [
         services: [
           { name: { ar: "فضاء الهناء - البوابة الرقمية الشاملة", en: "El Hanaa Digital Portal" }, url: "https://elhanaa.cnas.dz" },
           { name: { ar: "استخراج شهادة الانتساب (للمؤمنين)", en: "CNAS Membership Certificate" }, url: "https://elhanaa.cnas.dz" },
-          { name: { ar: "استخراج شهادة عدم الانتساب", en: "Non-Membership Certificate" }, url: "https://elhanaa.cnas.dz" },
-          { name: { ar: "تطبيق فضاء الهناء", en: "El Hanaa App" }, url: "https://play.google.com/store/apps/details?id=dz.cnas.elhanaa", isApp: true },
+          { name: { ar: "استخراج شهادة عدم الانتساب", en: "Non-Membership Certificate" }, url: "https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml" },
         ],
       },
       {
@@ -612,7 +635,6 @@ export const serviceCategories: ServiceCategory[] = [
         services: [
           { name: { ar: "الزيادات في المعاشات - 2026", en: "Pension Increases - 2026" }, url: "https://reval.cnr.dz" },
           { name: { ar: "الموقع الرسمي للصندوق", en: "Official CNR Portal" }, url: "https://www.cnr.dz" },
-          { name: { ar: "تطبيق المتقاعد CNR", en: "CNR Retiree App" }, url: "https://play.google.com/store/apps/details?id=dz.cnr.retraite", isApp: true },
         ],
       },
     ],
@@ -632,8 +654,7 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "ترخيص الصيدليات والعيادات", en: "Pharmacy & Clinic Licensing" }, url: "https://www.anpp.dz/autorisation" },
       { name: { ar: "حجز موعد طبي - الشفاء الرقمي", en: "Medical Appointment Booking" }, url: "https://www.shifaa.dz" },
       { name: { ar: "التسجيل في تكوين البارامبريكال", en: "Paramedical Training Registration" }, url: "https://formation.sante.gov.dz/inscription" },
-      { name: { ar: "تطبيق أطباء الجزائر", en: "Algeria Doctors App" }, url: "https://play.google.com/store/apps/details?id=dz.doctors", isApp: true },
-      { name: { ar: "تطبيق بنك الدم الجزائري", en: "Algeria Blood Bank App" }, url: "https://play.google.com/store/apps/details?id=dz.bloodbank", isApp: true },
+      { name: { ar: "تطبيق El Hanaa (الضمان الاجتماعي)", en: "El Hanaa App" }, url: "https://play.google.com/store/apps/details?id=dz.cnas.mobile_elhanaa", isApp: true },
     ],
   },
   // 18. فحص المركبات
@@ -645,9 +666,9 @@ export const serviceCategories: ServiceCategory[] = [
     officialSite: "https://www.mem.gov.dz",
     phone: "+21321488522",
     services: [
-      { name: { ar: "مركبتي لفحص المركبات", en: "Vehicle Inspection - Markabati" }, url: "https://markabati.mem.gov.dz" },
-      { name: { ar: "تصاريح الاستيراد", en: "Import Permits" }, url: "https://import.mem.gov.dz" },
-      { name: { ar: "خلية الاستماع", en: "Support Hotline" }, url: "https://www.mem.gov.dz/contact" },
+      { name: { ar: "مركبتي لفحص المركبات", en: "Vehicle Inspection - Markabati" }, url: "https://elamane.elit.dz/remote/login?lang=fr" },
+      { name: { ar: "تصاريح الاستيراد", en: "Import Permits" }, url: "https://import.mcepe.gov.dz/" },
+      { name: { ar: "خلية الاستماع", en: "Support Hotline" }, url: "https://www.mcepe.gov.dz/contact" },
     ],
   },
   // 19. النقل وحجز التذاكر
@@ -659,16 +680,10 @@ export const serviceCategories: ServiceCategory[] = [
     officialSite: "https://www.mt.gov.dz",
     phone: "+21323059385",
     services: [
-      { name: { ar: "حجز الخطوط الجوية الجزائرية", en: "Air Algerie Booking" }, url: "https://www.airalgerie.dz" },
-      { name: { ar: "حجز طيران الطاسيلي", en: "Tassili Airlines Booking" }, url: "https://www.tassiliairlines.dz" },
-      { name: { ar: "تتبع حركة الملاحة الجوية", en: "Flight Tracking" }, url: "https://www.flightradar24.com/35.72,3.25/7" },
-      { name: { ar: "تطبيق تواصل للترامواي", en: "Tawasol Tramway App" }, url: "https://play.google.com/store/apps/details?id=dz.tramway.tawasol", isApp: true },
-      { name: { ar: "حجز محطتي - SOGRAL", en: "Bus Tickets - SOGRAL" }, url: "https://www.sogral.dz" },
-      { name: { ar: "مواقيت القطارات SNTF", en: "SNTF Train Schedules" }, url: "https://www.sntf.dz" },
-      { name: { ar: "تطبيق محطتي SOGRAL", en: "Mahattati SOGRAL App" }, url: "https://play.google.com/store/apps/details?id=dz.sogral.mahattati", isApp: true },
-      { name: { ar: "تطبيق ETUSA Mob", en: "ETUSA Mob App" }, url: "https://play.google.com/store/apps/details?id=dz.etusa.mob", isApp: true },
-      { name: { ar: "تطبيق يسير Yassir (نقل)", en: "Yassir App (Transport)" }, url: "https://play.google.com/store/apps/details?id=com.yassir.user", isApp: true },
-      { name: { ar: "تطبيق هيتش Heetch", en: "Heetch App" }, url: "https://play.google.com/store/apps/details?id=com.heetch", isApp: true },
+      { name: { ar: "تطبيق الجوية الجزائرية", en: "Air Algerie App" }, url: "https://play.google.com/store/apps/details?id=com.amadeus.merci.ah", isApp: true },
+      { name: { ar: "تطبيق محطتي SOGRAL (الحافلات)", en: "Mahattati App" }, url: "https://play.google.com/store/apps/details?id=com.sogral.mobile", isApp: true },
+      { name: { ar: "تطبيق SNTF (القطارات)", en: "SNTF App" }, url: "https://play.google.com/store/apps/details?id=com.trackalgeriantrain", isApp: true },
+      { name: { ar: "تطبيق يسير Yassir (نقل)", en: "Yassir App" }, url: "https://play.google.com/store/apps/details?id=com.yatechnologies.yassir_rider", isApp: true },
     ],
   },
   // 20. الوكالة الوطنية للتشغيل ANEM
@@ -695,9 +710,9 @@ export const serviceCategories: ServiceCategory[] = [
     services: [
       { name: { ar: "التسجيل في منحة البطالة", en: "Unemployment Allowance Registration" }, url: "https://minha.anem.dz" },
       { name: { ar: "تمديد طلب العمل", en: "Job Request Extension" }, url: "https://www.anem.dz/extension" },
-      { name: { ar: "فرصتي - التقدم لعروض العمل", en: "Forsati - Job Applications" }, url: "https://forsati.anem.dz" },
-      { name: { ar: "فرص عمل وإعلانات", en: "Job Opportunities" }, url: "https://www.anem.dz/offres" },
-      { name: { ar: "تطبيق ANEM-Dz", en: "ANEM-Dz App" }, url: "https://play.google.com/store/apps/details?id=dz.anem.app", isApp: true },
+      { name: { ar: "فرصتي - التقدم لعروض العمل", en: "Forsati - Job Applications" }, url: "https://wassitonline.anem.dz/postulation/LandingPage" },
+      { name: { ar: "فرص عمل وإعلانات", en: "Job Opportunities" }, url: "https://www.anem.dz/opportunites/ar.html" },
+      { name: { ar: "تطبيق Wassit ANEM (التشغيل)", en: "Wassit ANEM App" }, url: "https://play.google.com/store/apps/details?id=com.htech.wassit", isApp: true },
     ],
   },
   // 21. خدمات وزارة التجارة
@@ -724,8 +739,6 @@ export const serviceCategories: ServiceCategory[] = [
     services: [
       { name: { ar: "الصندوق الخاص لترقية الصادرات", en: "Export Promotion Fund" }, url: "https://fspe.commerce.gov.dz" },
       { name: { ar: "جباية تيك Jibayatic", en: "Jibayatic Declaration" }, url: "https://jibayatic.mf.gov.dz" },
-      { name: { ar: "تطبيق جوميا Jumia (تسوق)", en: "Jumia App (Shopping)" }, url: "https://play.google.com/store/apps/details?id=com.jumia.android", isApp: true },
-      { name: { ar: "تطبيق يسير إكسبريس (توصيل)", en: "Yassir Express (Delivery)" }, url: "https://play.google.com/store/apps/details?id=com.yassir.food", isApp: true },
       { name: { ar: "خلية الإصغاء", en: "Consumer Hotline" }, url: "https://www.commerce.gov.dz/contact" },
     ],
   },
@@ -751,8 +764,8 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "المعلومة التعريفية الملزمة RTC", en: "Binding Tariff Information" }, url: "https://rtc.douane.gov.dz" },
-      { name: { ar: "خلية الاستماع للجمارك", en: "Customs Support Hotline" }, url: "https://www.douane.gov.dz/contact" },
+      { name: { ar: "المعلومة التعريفية الملزمة RTC", en: "Binding Tariff Information" }, url: "https://www.douane.gov.dz/?page=reclamation&type_service=information&lang=ar" },
+      { name: { ar: "خلية الاستماع للجمارك", en: "Customs Support Hotline" }, url: "https://www.douane.gov.dz/spip.php?rubrique53" },
     ],
   },
   // 23. المقاول الذاتي
@@ -802,10 +815,9 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "التسجيل في قرعة الحج", en: "Hajj Lottery Registration" }, url: "https://hajj.onpo.dz" },
-      { name: { ar: "البوابة الجزائرية للحج", en: "Algeria Hajj Portal" }, url: "https://www.onpo.dz/hajj" },
-      { name: { ar: "البوابة الجزائرية للعمرة", en: "Algeria Umrah Portal" }, url: "https://www.onpo.dz/omra" },
-      { name: { ar: "تطبيق نسك Nusuk (للعمرة والزيارة)", en: "Nusuk App (Umrah & Ziarah)" }, url: "https://play.google.com/store/apps/details?id=com.haj.nusuk", isApp: true },
+      { name: { ar: "التسجيل في قرعة الحج", en: "Hajj Lottery Registration" }, url: "https://bawabetelhadj.dz/Account/Register" },
+      { name: { ar: "البوابة الجزائرية للحج", en: "Algeria Hajj Portal" }, url: "https://bawabetelhadj.dz/Account/Login?ReturnUrl=%2F" },
+      { name: { ar: "البوابة الجزائرية للعمرة", en: "Algeria Umrah Portal" }, url: "https://bawabetelomra.dz/" },
     ],
   },
   // 25. ترقية الاستثمار
@@ -831,8 +843,8 @@ export const serviceCategories: ServiceCategory[] = [
     ],
     services: [
       { name: { ar: "التسجيل في وكالة ترقية الاستثمار", en: "Investment Agency Registration" }, url: "https://www.aapi.dz/inscription" },
-      { name: { ar: "بوابة المستثمر", en: "Investor Portal" }, url: "https://investor.aapi.dz" },
-      { name: { ar: "حامل مشروع", en: "Project Holder" }, url: "https://projet.aapi.dz" },
+      { name: { ar: "بوابة المستثمر", en: "Investor Portal" }, url: "https://invest.gov.dz/" },
+      { name: { ar: "حامل مشروع", en: "Project Holder" }, url: "https://invest.gov.dz/check/realms/INVEST-REALM/protocol/openid-connect/auth?client_id=invest-backend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Finvest.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar&state=TZU26TBhAsOvEFf6-kznze3suj8Xg4JYnmVrByw_4Bw&code_challenge=tzx1DNwm9Q1IoW0IdsgOZtRmhyACyR2rVFCFwKgLvJo&code_challenge_method=S256" },
     ],
   },
   // 26. السلطة الوطنية للانتخابات
@@ -841,7 +853,7 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.elections",
     icon: "Vote",
     color: "from-red-600 to-rose-700",
-    officialSite: "https://www.anie.dz",
+    officialSite: "https://ina-elections.dz/",
     phone: "+21321376874",
     descriptionAr: "السلطة الوطنية للانتخابات: التسجيل في القوائم الانتخابية، التأكد من مركز التصويت، وتغيير مكان الإقامة إلكترونياً.",
     usageGuides: [
@@ -857,10 +869,10 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "التسجيل في القوائم الانتخابية", en: "Electoral Registration" }, url: "https://inscription.anie.dz" },
-      { name: { ar: "طلب نسخة من بطاقة الناخب", en: "Voter Card Copy" }, url: "https://carte.anie.dz" },
-      { name: { ar: "هل أنت مسجل؟", en: "Check Registration" }, url: "https://verification.anie.dz" },
-      { name: { ar: "طلب تغيير مكان الإقامة", en: "Change Residence" }, url: "https://changement.anie.dz" },
+      { name: { ar: "التسجيل في القوائم الانتخابية", en: "Electoral Registration" }, url: "https://services.ina-elections.dz/services" },
+      { name: { ar: "طلب نسخة من بطاقة الناخب", en: "Voter Card Copy" }, url: "https://services.ina-elections.dz/services/duplicata" },
+      { name: { ar: "هل أنت مسجل؟", en: "Check Registration" }, url: "https://services.ina-elections.dz/services/orientation" },
+      { name: { ar: "طلب تغيير مكان الإقامة", en: "Change Residence" }, url: "https://services.ina-elections.dz/services" },
     ],
   },
   // 27. الأمن الوطني
@@ -886,10 +898,9 @@ export const serviceCategories: ServiceCategory[] = [
     ],
     services: [
       { name: { ar: "التصريح بضياع الوثائق", en: "Lost Document Declaration" }, url: "https://perte.dgsn.dz" },
-      { name: { ar: "إدلاء بشهادة", en: "Give Testimony" }, url: "https://temoignage.dgsn.dz" },
+      { name: { ar: "إدلاء بشهادة", en: "Give Testimony" }, url: "https://www.dgsn.dz/?-%D8%A5%D8%AF%D9%84%D8%A7%D8%A1-%D8%A8%D8%B4%D9%87%D8%A7%D8%AF%D8%A9,583-" },
       { name: { ar: "بحث في فائدة العائلات", en: "Family Search" }, url: "https://recherche.dgsn.dz" },
-      { name: { ar: "الدليل الهاتفي", en: "Phone Directory" }, url: "https://annuaire.dgsn.dz" },
-      { name: { ar: "تطبيق ألو الشرطة", en: "Allo Police App" }, url: "https://play.google.com/store/apps/details?id=dz.dgsn.allopolice", isApp: true },
+      { name: { ar: "الدليل الهاتفي", en: "Phone Directory" }, url: "https://www.dgsn.dz/?-%D8%AF%D9%84%D9%8A%D9%84-" },
     ],
   },
   // 28. سلطة ضبط البريد والاتصالات
@@ -914,11 +925,10 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "طلب خدمة عبر الموقع", en: "Online Service Request" }, url: "https://www.arpce.dz/demande" },
-      { name: { ar: "إيداع شكوى", en: "File Complaint" }, url: "https://reclamation.arpce.dz" },
-      { name: { ar: "دفع فاتورة سلطة الضبط", en: "ARPCE Bill Payment" }, url: "https://paiement.arpce.dz" },
+      { name: { ar: "طلب خدمة عبر الموقع", en: "Online Service Request" }, url: "https://esvc.arpce.dz/" },
+      { name: { ar: "إيداع شكوى", en: "File Complaint" }, url: "https://www.arpce.dz/ar/claim" },
+      { name: { ar: "دفع فاتورة سلطة الضبط", en: "ARPCE Bill Payment" }, url: "https://epay.arpce.dz/" },
       { name: { ar: "التحقق من الشرائح SIM المسجلة *254#", en: "Check Registered SIMs *254#" }, url: "tel:*254%23" },
-      { name: { ar: "تطبيق جودتي", en: "Jawdati App" }, url: "https://play.google.com/store/apps/details?id=dz.arpce.jawdati", isApp: true },
     ],
   },
   // 29. التأمينات
@@ -974,22 +984,28 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.publicBanks",
         services: [
-          { name: { ar: "بنك الجزائر الخارجي BEA", en: "BEA Bank" }, url: "https://www.bea.dz", phone: "+213 21 43 60 00" },
-          { name: { ar: "البنك الوطني الجزائري BNA", en: "BNA Bank" }, url: "https://www.bna.dz", phone: "3020" },
-          { name: { ar: "بنك الفلاحة والتنمية الريفية BADR", en: "BADR Bank" }, url: "https://www.badr-bank.dz" },
+          { name: { ar: "البنك الوطني الجزائري BNA", en: "BNA Bank" }, url: "https://www.bna.dz" },
+          { name: { ar: "بنك الجزائر الخارجي BEA", en: "BEA Bank" }, url: "https://www.bea.dz" },
+          { name: { ar: "بنك التنمية المحلية BDL", en: "BDL Bank" }, url: "https://www.bdl.dz" },
           { name: { ar: "القرض الشعبي الجزائري CPA", en: "CPA Bank" }, url: "https://www.cpa-bank.dz" },
-          { name: { ar: "الصندوق الوطني للتوفير CNEP", en: "CNEP Bank" }, url: "https://www.cnepbanque.dz" },
-          { name: { ar: "البنك الوطني للإسكان BNH", en: "BNH Bank" }, url: "https://www.bnh.dz" },
         ],
       },
       {
         nameKey: "subcategory.privateBanks",
         services: [
           { name: { ar: "بنك الخليج الجزائر AGB", en: "AGB Bank" }, url: "https://www.agb.dz" },
-          { name: { ar: "بنك ABC الجزائر", en: "ABC Bank Algeria" }, url: "https://www.bank-abc.com/dz" },
-          { name: { ar: "البنك العربي", en: "Arab Bank" }, url: "https://www.arabbank.dz" },
-          { name: { ar: "سوسيتي جنرال الجزائر", en: "Société Générale Algeria" }, url: "https://www.societegenerale.dz" },
-          { name: { ar: "بنك BNP باريبا", en: "BNP Paribas Algeria" }, url: "https://www.bnpparibas.dz" },
+          { name: { ar: "سوسيتي جنرال الجزائر", en: "Société Générale" }, url: "https://www.societegenerale.dz" },
+          { name: { ar: "بنك BNP باريبا", en: "BNP Paribas" }, url: "https://www.bnpparibas.dz" },
+        ],
+      },
+      {
+        nameKey: "subcategory.mobileApps",
+        services: [
+          { name: { ar: "تطبيق BNAtic (البنك الوطني)", en: "BNAtic App" }, url: "https://play.google.com/store/apps/details?id=com.aebs.p2b_bna", isApp: true },
+          { name: { ar: "تطبيق BEA Mobile (الخارجي)", en: "BEA App" }, url: "https://play.google.com/store/apps/details?id=com.aebs.p2bbea", isApp: true },
+          { name: { ar: "تطبيق DIGIT BDL (التنمية)", en: "BDL App" }, url: "https://play.google.com/store/apps/details?id=com.aebs.p2bbdl", isApp: true },
+          { name: { ar: "تطبيق CPA Mobile", en: "CPA App" }, url: "https://play.google.com/store/apps/details?id=com.beyn.sela.cpa", isApp: true },
+          { name: { ar: "تطبيق Banxy (Natixis)", en: "Banxy App" }, url: "https://play.google.com/store/apps/details?id=dz.natixis.prod", isApp: true },
         ],
       },
     ],
@@ -1025,10 +1041,10 @@ export const serviceCategories: ServiceCategory[] = [
     ],
     subCategories: [
       {
-        nameKey: "subcategory.agricultureApps",
+        nameKey: "subcategory.mobileApps",
         services: [
-          { name: { ar: "تطبيق فيلاحي Filahi (للإرشاد)", en: "Filahi App (Extension)" }, url: "https://play.google.com/store/apps/details?id=dz.madrp.filahi", isApp: true },
-          { name: { ar: "تطبيق رصد - رصد الأمراض النباتية", en: "Rasd App - Plant Diseases" }, url: "https://play.google.com/store/apps/details?id=dz.madrp.rasd", isApp: true },
+          { name: { ar: "تطبيق فيلاحي FILAHI (الإرشاد الفلاحي)", en: "FILAHI App" }, url: "https://play.google.com/store/apps/details?id=dz.madrp.filahi", isApp: true },
+          { name: { ar: "تطبيق رصد RASD (رصد الأمراض النباتية)", en: "RASD App" }, url: "https://play.google.com/store/apps/details?id=dz.madrp.rasd", isApp: true },
         ],
       },
     ],
@@ -1039,14 +1055,14 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.cnrc",
     icon: "Briefcase",
     color: "from-blue-600 to-indigo-700",
-    officialSite: "https://www.cnrc.dz",
+    officialSite: "https://sidjilcom.cnrc.dz/ar/home",
     phone: "3200",
     descriptionAr: "المركز الوطني للسجل التجاري: تسجيل النشاطات التجارية، استخراج السجل التجاري، تعديله أو شطبه، والحصول على مستخرجات رقمية معتمدة دون التنقل.",
     usageGuides: [
       {
         title: "خطوات تسجيل نشاط تجاري عبر الإنترنت",
         steps: [
-          "الدخول لمنصة CNRC الإلكترونية (cnrc.dz).",
+          "الدخول لمنصة CNRC الإلكترونية (sidjilcom.cnrc.dz).",
           "إنشاء حساب جديد بالبريد الإلكتروني وتأكيده.",
           "ملء استمارة التسجيل: نوع النشاط، العنوان، الشركاء.",
           "رفع الوثائق المطلوبة (عقد الإيجار، هوية المسير، القانون الأساسي).",
@@ -1056,13 +1072,12 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "تسجيل نشاط تجاري", en: "Business Registration" }, url: "https://www.cnrc.dz/inscription" },
-      { name: { ar: "استخراج مستخرج السجل التجاري", en: "Extract Commercial Registry" }, url: "https://www.cnrc.dz/extrait" },
-      { name: { ar: "تعديل السجل التجاري", en: "Modify Commercial Registry" }, url: "https://www.cnrc.dz/modification" },
-      { name: { ar: "شطب السجل التجاري", en: "Cancel Commercial Registry" }, url: "https://www.cnrc.dz/radiation" },
-      { name: { ar: "البحث عن سجل تجاري", en: "Search Commercial Registry" }, url: "https://www.cnrc.dz/recherche" },
-      { name: { ar: "سجل المعلومات القانونية والتجارية RILE", en: "RILE Legal Info Registry" }, url: "https://rile.cnrc.dz" },
-      { name: { ar: "تطبيق CNRC Mobile", en: "CNRC Mobile App" }, url: "https://play.google.com/store/apps/details?id=dz.cnrc.mobile", isApp: true },
+      { name: { ar: "تسجيل نشاط تجاري", en: "Business Registration" }, url: "https://sidjilcom.cnrc.dz/ar/web/sidjilcom/login?p_p_id=com_liferay_login_web_portlet_LoginPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&saveLastPath=false&_com_liferay_login_web_portlet_LoginPortlet_mvcRenderCommandName=%2Flogin%2Fcreate_account" },
+      { name: { ar: "استخراج مستخرج السجل التجاري", en: "Extract Commercial Registry" }, url: "https://sidjilcom.cnrc.dz/ar/web/sidjilcom/login?p_p_id=com_liferay_login_web_portlet_LoginPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&saveLastPath=false&_com_liferay_login_web_portlet_LoginPortlet_mvcRenderCommandName=%2Flogin%2Fcreate_account" },
+      { name: { ar: "تعديل السجل التجاري", en: "Modify Commercial Registry" }, url: "https://sidjilcom.cnrc.dz" },
+      { name: { ar: "شطب السجل التجاري", en: "Cancel Commercial Registry" }, url: "https://sidjilcom.cnrc.dz" },
+      { name: { ar: "البحث عن سجل تجاري", en: "Search Commercial Registry" }, url: "https://sidjilcom.cnrc.dz" },
+      { name: { ar: "سجل المعلومات القانونية والتجارية RILE", en: "RILE Legal Info Registry" }, url: "https://sidjilcom.cnrc.dz" },
     ],
   },
   // 33. الشباب والرياضة
@@ -1212,7 +1227,6 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "الوكالة الوطنية للاستثمار AAPI", en: "AAPI Investment Agency" }, url: "https://www.aapi.dz" },
       { name: { ar: "المعهد الجزائري للتقييس IANOR", en: "IANOR Standardization" }, url: "https://www.ianor.dz" },
       { name: { ar: "شهادة المطابقة والجودة", en: "Quality Compliance Certificate" }, url: "https://www.ianor.dz/certification" },
-      { name: { ar: "مجمع صيدال للدواء", en: "SAIDAL Pharmaceutical Group" }, url: "https://www.saidal.dz" },
       { name: { ar: "المناطق الصناعية - ANIREF", en: "ANIREF Industrial Zones" }, url: "https://www.aniref.dz" },
       { name: { ar: "بوابة رخص الاستيراد والتصدير", en: "Import/Export Licenses" }, url: "https://www.industrie.gov.dz/licences" },
     ],
@@ -1275,7 +1289,6 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "إذاعة الجزائر", en: "Radio Algérie" }, url: "https://www.radioalgerie.dz" },
       { name: { ar: "وكالة الأنباء الجزائرية APS", en: "APS News Agency" }, url: "https://www.aps.dz" },
       { name: { ar: "سلطة ضبط الصحافة المكتوبة ARPE", en: "ARPE Press Authority" }, url: "https://www.arpe.dz" },
-      { name: { ar: "تطبيق ENTV Live", en: "ENTV Live App" }, url: "https://play.google.com/store/apps/details?id=dz.entv.live", isApp: true },
     ],
   },
   // 40. البنوك والمالية
@@ -1289,11 +1302,10 @@ export const serviceCategories: ServiceCategory[] = [
     descriptionAr: "بوابة الخدمات البنكية والمالية: الدفع الإلكتروني، التطبيقات البنكية (Banxy, Wimpay)، وأسعار الصرف الرسمية.",
     services: [
       { name: { ar: "بنك الجزائر - البوابة الرسمية", en: "Bank of Algeria Official" }, url: "https://www.bank-of-algeria.dz" },
-      { name: { ar: "تطبيق Banxy (Natixis)", en: "Banxy App (Natixis)" }, url: "https://play.google.com/store/apps/details?id=com.natixis.banxy", isApp: true },
-      { name: { ar: "تطبيق Wimpay BNA", en: "Wimpay BNA App" }, url: "https://play.google.com/store/apps/details?id=com.wimpay.bna", isApp: true },
-      { name: { ar: "تطبيق MyLeasing (البركة)", en: "MyLeasing App (Al Baraka)" }, url: "https://play.google.com/store/apps/details?id=com.albarakadz.myleasing", isApp: true },
       { name: { ar: "بوابة بنك التنمية المحلية BDL", en: "BDL Bank Portal" }, url: "https://www.bdl.dz" },
       { name: { ar: "بوابة البنك الوطني الجزائري BNA", en: "BNA Bank Portal" }, url: "https://www.bna.dz" },
+      { name: { ar: "تطبيق Banxy (Natixis)", en: "Banxy App" }, url: "https://play.google.com/store/apps/details?id=dz.natixis.prod", isApp: true },
+      { name: { ar: "تطبيق Wimpay BNA (الدفع)", en: "Wimpay App" }, url: "https://play.google.com/store/apps/details?id=com.beyn.bna.wimpay.customer", isApp: true },
     ],
   },
 ]

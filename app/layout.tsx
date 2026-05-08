@@ -20,10 +20,10 @@ const alexandria = Alexandria({
 
 export const metadata: Metadata = {
   title: {
-    default: 'رقمنة 2026 | دليل الخدمات الرقمية والمنصات الحكومية الجزائرية',
+    default: 'رقمنة 2026 | المنصة الشاملة للخدمات الرقمية في الجزائر (روابط مباشرة)',
     template: '%s | رقمنة 2026'
   },
-  description: 'البوابة الشاملة للوصول إلى أكثر من 280 خدمة رقمية حكومية في الجزائر. استخراج الوثائق (S12, جواز سفر), منصة أضاحي 2026, تسجيلات عدل 3, بريد الجزائر, واتصالات الجزائر. روابط مباشرة وتحديثات يومية فورية.',
+  description: 'بوابة مستقلة توفر روابط مباشرة ومحدثة لأكثر من 280 خدمة رقمية حكومية في الجزائر. أنجز معاملاتك (S12، عدل 3، أضاحي 2026، بريدي موب) في ثوانٍ. دليلك الموثوق للرقمنة.',
   generator: 'Raqmana',
   applicationName: 'رقمنة',
   referrer: 'origin-when-cross-origin',
@@ -111,6 +111,38 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="theme-color" content="#ffffff" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "رقمنة 2026",
+              "url": "https://raqmana.vercel.app",
+              "logo": "https://raqmana.vercel.app/logo.png",
+              "description": "المنصة الشاملة للخدمات الرقمية في الجزائر",
+              "sameAs": [
+                "https://facebook.com/raqmana",
+                "https://twitter.com/raqmana"
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "url": "https://raqmana.vercel.app",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://raqmana.vercel.app/services?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }}
+        />
       </head>
       <body className={`${inter.variable} ${alexandria.variable} font-alexandria antialiased`}>
         <ThemeProvider>
