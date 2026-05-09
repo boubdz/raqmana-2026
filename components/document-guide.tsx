@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-export function DocumentGuide() {
+export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) {
   const { language, t, dir } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDoc, setSelectedDoc] = useState<RequiredDocument | null>(null);
@@ -42,10 +42,11 @@ export function DocumentGuide() {
   };
 
   return (
-    <section id="document-guide" className="py-24 bg-white dark:bg-[#080808]" dir={dir}>
-      <div className="container mx-auto px-6">
+    <section id="document-guide" className={hideHeader ? "" : "py-24 bg-white dark:bg-[#080808]"} dir={dir}>
+      <div className={hideHeader ? "" : "container mx-auto px-6"}>
         
         {/* Header */}
+        {!hideHeader && (
         <div className="mb-16 text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest mb-6">
             <ClipboardList className="h-3 w-3" />
@@ -60,6 +61,7 @@ export function DocumentGuide() {
               : 'Interactive guide for required documents in Algerian administrations, updated with the latest 2026 ministerial instructions.'}
           </p>
         </div>
+        )}
 
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           
