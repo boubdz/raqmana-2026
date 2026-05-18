@@ -45,10 +45,6 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://raqmana.vercel.app'),
   alternates: {
     canonical: '/',
-    languages: {
-      'ar-DZ': '/ar',
-      'en-US': '/en',
-    },
   },
   openGraph: {
     title: 'رقمنة 2026 | دليلك الشامل للخدمات الرقمية في الجزائر',
@@ -96,6 +92,10 @@ export const viewport: Viewport = {
   ],
   width: 'device-width',
   initialScale: 1,
+  // ✅ iOS safe-area support (notch/Dynamic Island)
+  viewportFit: 'cover',
+  // ✅ Prevent iOS auto-zoom on input focus (font-size ≥ 16px enforced via CSS)
+  maximumScale: 5,
 }
 
 export default function RootLayout({
@@ -169,18 +169,17 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Google Analytics */}
+        {/* Google Analytics — lazyOnload: defers until page is idle, reduces TBT */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-TWMTPY4E30"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-
-            gtag('config', 'G-TWMTPY4E30');
+            gtag('config', 'G-TWMTPY4E30', { send_page_view: false });
           `}
         </Script>
 

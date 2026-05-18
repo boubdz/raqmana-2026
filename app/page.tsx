@@ -1,20 +1,58 @@
-// app/page.tsx (بعد التعديل)
+// app/page.tsx — Performance Optimized
 "use client";
 
+import dynamic from "next/dynamic";
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
-import { ServicesMarquee } from "@/components/services-marquee";
-import { CategoriesSection } from "@/components/categories-section";
-
-import { NewsTicker } from "@/components/news-ticker";
-import { Footer } from "@/components/footer";
-import { AIChatbot } from "@/components/ai-chatbot";
-import { SeasonalEvents } from "@/components/seasonal-events";
-import { SolutionsHub } from "@/components/solutions-hub";
-import { DigitalDirectory } from "@/components/digital-directory";
-import { DailyUtilities } from "@/components/daily-utilities";
-
 import { useLanguage } from "@/contexts/language-context";
+
+// ✅ PERFORMANCE: Lazy load below-the-fold heavy components
+// This splits them into separate JS chunks loaded only when needed
+
+const ServicesMarquee = dynamic(
+  () => import("@/components/services-marquee").then(m => ({ default: m.ServicesMarquee })),
+  { ssr: false }
+);
+
+const NewsTicker = dynamic(
+  () => import("@/components/news-ticker").then(m => ({ default: m.NewsTicker })),
+  { ssr: false }
+);
+
+const SeasonalEvents = dynamic(
+  () => import("@/components/seasonal-events").then(m => ({ default: m.SeasonalEvents })),
+  { ssr: false }
+);
+
+const DailyUtilities = dynamic(
+  () => import("@/components/daily-utilities").then(m => ({ default: m.DailyUtilities })),
+  { ssr: false }
+);
+
+const CategoriesSection = dynamic(
+  () => import("@/components/categories-section").then(m => ({ default: m.CategoriesSection })),
+  { ssr: false }
+);
+
+const SolutionsHub = dynamic(
+  () => import("@/components/solutions-hub").then(m => ({ default: m.SolutionsHub })),
+  { ssr: false }
+);
+
+const DigitalDirectory = dynamic(
+  () => import("@/components/digital-directory").then(m => ({ default: m.DigitalDirectory })),
+  { ssr: false }
+);
+
+const Footer = dynamic(
+  () => import("@/components/footer").then(m => ({ default: m.Footer })),
+  { ssr: false }
+);
+
+const AIChatbot = dynamic(
+  () => import("@/components/ai-chatbot").then(m => ({ default: m.AIChatbot })),
+  { ssr: false }
+);
 
 export default function Home() {
   const { dir } = useLanguage();
@@ -58,7 +96,10 @@ export default function Home() {
       />
       <Header />
       <main>
+        {/* Above-the-fold: loaded immediately */}
         <HeroSection />
+
+        {/* Below-the-fold: lazy loaded */}
         <ServicesMarquee />
         <NewsTicker />
         <SeasonalEvents />

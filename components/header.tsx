@@ -86,15 +86,19 @@ export function Header() {
           
           <NotificationManager />
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle — aria-label + 44px touch target */}
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="h-10 w-10 rounded-full border border-black/5 dark:border-white/5"
+            aria-label={theme === 'dark'
+              ? (language === 'ar' ? 'تفعيل الوضع الفاتح' : 'Switch to light mode')
+              : (language === 'ar' ? 'تفعيل الوضع المظلم' : 'Switch to dark mode')
+            }
+            className="h-11 w-11 rounded-full border border-black/5 dark:border-white/5"
           >
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" aria-hidden="true" />
+            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" aria-hidden="true" />
           </Button>
 
           {/* Premium CTA Button - Suggestion */}
@@ -108,35 +112,60 @@ export function Header() {
             </Link>
           </Button>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button — aria-expanded + aria-controls + 44px touch target */}
           <Button
             variant="ghost"
             size="icon"
-            className="h-10 w-10 rounded-full md:hidden border border-black/5 dark:border-white/5"
+            aria-label={mobileMenuOpen
+              ? (language === 'ar' ? 'إغلاق القائمة' : 'Close menu')
+              : (language === 'ar' ? 'فتح القائمة' : 'Open menu')
+            }
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav"
+            className="h-11 w-11 rounded-full md:hidden border border-black/5 dark:border-white/5"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </Button>
         </div>
       </div>
 
-      {/* Mobile Menu - Minimal Fullscreen Feel */}
+      {/* Mobile Menu — role=dialog + aria-modal + id for aria-controls */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 top-[72px] z-40 bg-white/90 dark:bg-black/90 backdrop-blur-2xl md:hidden animate-in fade-in slide-in-from-top-4 duration-300">
-          <nav className="container mx-auto flex flex-col gap-6 p-10 items-center">
+        <div
+          id="mobile-nav"
+          role="dialog"
+          aria-modal="true"
+          aria-label={language === 'ar' ? 'القائمة الرئيسية' : 'Main navigation'}
+          className="fixed inset-0 top-[72px] z-40 bg-white/95 dark:bg-black/95 backdrop-blur-2xl md:hidden animate-in fade-in slide-in-from-top-4 duration-200"
+        >
+          <nav
+            aria-label={language === 'ar' ? 'روابط التنقل' : 'Navigation links'}
+            className="container mx-auto flex flex-col gap-1 p-6 items-center"
+          >
             {navItems.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
-                className="text-2xl font-black uppercase tracking-tighter text-[#1a1a1a] dark:text-white transition-all hover:text-primary"
+                className={[
+                  "w-full text-center text-xl font-black uppercase tracking-tighter",
+                  "text-[#1a1a1a] dark:text-white transition-colors",
+                  "rounded-2xl py-4 px-6 hover:bg-black/5 dark:hover:bg-white/5",
+                  "min-h-[56px] flex items-center justify-center", // ✅ Touch target ≥48px
+                ].join(' ')}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t(item.key)}
               </Link>
             ))}
-            <div className="mt-8 flex gap-4">
-               <Button onClick={() => setLanguage(language === "ar" ? "en" : "ar")} variant="outline" className="rounded-full px-8">
-                  {language === "ar" ? "English" : "العربية"}
+            <div className="mt-6 flex gap-4">
+               <Button
+                 onClick={() => setLanguage(language === "ar" ? "en" : "ar")}
+                 variant="outline"
+                 aria-label={language === 'ar' ? 'Switch to English' : 'التحويل للعربية'}
+                 className="rounded-full px-8 h-11"
+               >
+                 {language === "ar" ? "English" : "العربية"}
                </Button>
             </div>
           </nav>

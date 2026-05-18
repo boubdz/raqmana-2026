@@ -818,6 +818,7 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "التسجيل في قرعة الحج", en: "Hajj Lottery Registration" }, url: "https://bawabetelhadj.dz/Account/Register" },
       { name: { ar: "البوابة الجزائرية للحج", en: "Algeria Hajj Portal" }, url: "https://bawabetelhadj.dz/Account/Login?ReturnUrl=%2F" },
       { name: { ar: "البوابة الجزائرية للعمرة", en: "Algeria Umrah Portal" }, url: "https://bawabetelomra.dz/" },
+      { name: { ar: "تطبيق نسك Nusuk (للحج والعمرة)", en: "Nusuk App" }, url: "https://play.google.com/store/apps/details?id=com.sejel.eatmarna", isApp: true },
     ],
   },
   // 25. ترقية الاستثمار
@@ -901,6 +902,7 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "إدلاء بشهادة", en: "Give Testimony" }, url: "https://www.dgsn.dz/?-%D8%A5%D8%AF%D9%84%D8%A7%D8%A1-%D8%A8%D8%B4%D9%87%D8%A7%D8%AF%D8%A9,583-" },
       { name: { ar: "بحث في فائدة العائلات", en: "Family Search" }, url: "https://recherche.dgsn.dz" },
       { name: { ar: "الدليل الهاتفي", en: "Phone Directory" }, url: "https://www.dgsn.dz/?-%D8%AF%D9%84%D9%8A%D9%84-" },
+      { name: { ar: "تطبيق ألو شرطة Allo Chorta", en: "Allo Chorta App" }, url: "https://play.google.com/store/apps/details?id=dz.dgsn.allochorta", isApp: true },
     ],
   },
   // 28. سلطة ضبط البريد والاتصالات

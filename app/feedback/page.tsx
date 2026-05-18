@@ -61,17 +61,21 @@ export default function FeedbackPage() {
               </div>
             </div>
             
-            <div className="relative min-h-[600px] bg-white">
-              <iframe 
-                src={formUrl} 
-                width="100%" 
-                height="800" 
-                frameBorder="0" 
-                title="نموذج الملاحظات"
-                className="w-full h-[800px]"
+            <div className="relative min-h-[300px] bg-white flex flex-col items-center justify-center p-10 text-center">
+              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+                <MessageSquare className="h-10 w-10 text-primary" />
+              </div>
+              <h2 className="mb-4 text-2xl font-bold">نحن نستمع إليك!</h2>
+              <p className="mb-8 text-muted-foreground max-w-lg">
+                نواجه حالياً عطلاً مؤقتاً في نموذج المراسلة. ولكن يسعدنا جداً استقبال ملاحظاتك، اقتراحاتك، أو الإبلاغ عن أي أخطاء مباشرة عبر البريد الإلكتروني.
+              </p>
+              <a 
+                href="mailto:contact@raqmana.dz?subject=ملاحظات حول بوابة رقمنة 2026" 
+                className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
               >
-                جاري التحميل...
-              </iframe>
+                <Send className="mr-2 h-4 w-4 ml-2" />
+                إرسال رسالة عبر البريد الإلكتروني
+              </a>
             </div>
           </div>
           

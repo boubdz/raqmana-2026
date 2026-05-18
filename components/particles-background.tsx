@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Particle {
   x: number;
@@ -15,9 +15,17 @@ interface Particle {
 
 export const ParticlesBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouse = useRef({ x: 0, y: 0, active: false });
+  const mouse = useRef({ x: 0, y: 0 });
+  const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
+    // ✅ PERFORMANCE: Disable on mobile/low-end devices entirely
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isMobile || prefersReduced) return;
+
+    setIsEnabled(true);
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -26,9 +34,8 @@ export const ParticlesBackground: React.FC = () => {
 
     let animationFrameId: number;
     let particles: Particle[] = [];
-    // Colors from the Antigravity screenshot
     const colors = ['#ff3b3b', '#8b5cf6', '#3b82f6', '#ec4899', '#6366f1'];
-    
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -37,82 +44,74 @@ export const ParticlesBackground: React.FC = () => {
 
     const initParticles = () => {
       particles = [];
-      const numberOfParticles = 250; // Dense enough for the effect
-      
-      for (let i = 0; i < numberOfParticles; i++) {
-        // Create organic distribution
+      // ✅ PERFORMANCE: Reduced from 250 to 80 particles on desktop
+      const count = 80;
+      for (let i = 0; i < count; i++) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
-        
         particles.push({
-          x: x,
-          y: y,
-          baseX: x,
-          baseY: y,
-          size: Math.random() * 2 + 1,
+          x, y, baseX: x, baseY: y,
+          size: Math.random() * 1.5 + 0.5,
           color: colors[Math.floor(Math.random() * colors.length)],
           angle: Math.random() * Math.PI * 2,
-          velocity: Math.random() * 0.5 + 0.2
+          velocity: Math.random() * 0.3 + 0.1,
         });
       }
     };
 
+    let lastTime = 0;
+    const TARGET_FPS = 30; // ✅ Throttle to 30fps instead of 60fps
+    const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
     const drawParticles = (time: number) => {
+      animationFrameId = requestAnimationFrame(drawParticles);
+
+      // Throttle to 30fps
+      if (time - lastTime < FRAME_INTERVAL) return;
+      lastTime = time;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
+        p.angle += 0.008;
+        const fluidX = Math.cos(p.angle) * 1.5;
+        const fluidY = Math.sin(p.angle) * 1.5;
 
-        // Fluid motion - Floating like water
-        p.angle += 0.01;
-        const fluidX = Math.cos(p.angle) * 2;
-        const fluidY = Math.sin(p.angle) * 2;
-
-        // Mouse Ripple Interaction
         const dx = mouse.current.x - p.x;
         const dy = mouse.current.y - p.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const maxDist = 250; // Ripple radius
+        const distSq = dx * dx + dy * dy; // ✅ Avoid sqrt when not needed
+        const maxDistSq = 200 * 200;
 
-        if (distance < maxDist) {
-          const force = (maxDist - distance) / maxDist;
-          // Displacement like a wave
-          const directionX = (dx / distance) * force * 50;
-          const directionY = (dy / distance) * force * 50;
-          
-          p.x -= directionX;
-          p.y -= directionY;
+        if (distSq < maxDistSq) {
+          const dist = Math.sqrt(distSq);
+          const force = (200 - dist) / 200;
+          p.x -= (dx / dist) * force * 30;
+          p.y -= (dy / dist) * force * 30;
         } else {
-          // Smoothly return to base position + fluid drift
           p.x += (p.baseX + fluidX - p.x) * 0.03;
           p.y += (p.baseY + fluidY - p.y) * 0.03;
         }
 
-        // Pulse size like breathing
-        const pulse = Math.sin(time * 0.002 + i) * 0.5 + 1;
-
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * pulse, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        // Subtle opacity
-        ctx.globalAlpha = distance < maxDist ? 0.5 : 0.2;
+        ctx.globalAlpha = 0.18;
         ctx.fill();
       }
-
-      animationFrameId = requestAnimationFrame(drawParticles);
+      ctx.globalAlpha = 1;
     };
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
-      mouse.current.active = true;
     };
 
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('mousemove', handleMouseMove);
-    
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
     resizeCanvas();
-    requestAnimationFrame(drawParticles);
+    animationFrameId = requestAnimationFrame(drawParticles);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
@@ -121,10 +120,13 @@ export const ParticlesBackground: React.FC = () => {
     };
   }, []);
 
+  if (!isEnabled) return null;
+
   return (
     <canvas
       ref={canvasRef}
       className="absolute inset-0 pointer-events-none z-0"
+      aria-hidden="true"
     />
   );
 };

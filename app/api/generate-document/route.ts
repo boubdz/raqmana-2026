@@ -1,11 +1,19 @@
 import { NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
 
-const groq = new Groq({ apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY });
+// ✅ FIX: Lazy initialization — prevents build-time crash when env var is absent
 
 export async function POST(req: Request) {
+  const apiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ error: 'خدمة الذكاء الاصطناعي غير متاحة حالياً' }, { status: 503 });
+  }
+  // Lazy init: only runs at request time, not build time
+  const groq = new Groq({ apiKey });
+
   try {
     const { description, docType, toneInstruction } = await req.json();
+
 
     if (!description) {
       return NextResponse.json({ error: 'الوصف مطلوب' }, { status: 400 });

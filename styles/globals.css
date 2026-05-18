@@ -123,3 +123,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================================
+   GPU-ACCELERATED MARQUEE ANIMATIONS
+   Uses translateX only — composited layer, zero layout/paint
+   ============================================================ */
+@keyframes marquee-ltr {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes marquee-rtl {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
