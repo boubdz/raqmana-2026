@@ -125,7 +125,7 @@ const categoryNamesAr: Record<string, string> = {
 };
 
 const trendingKeywordsMap: Record<string, string[]> = {
-  bills: ["دفع فواتير سونلغاز", "SEAAL", "ADE", "تطبيق تسديد", "فاتورة الكهرباء", "كراء عدل", "كراء OPGI", "البطاقة الذهبية", "CIB"],
+  bills: ["دفع فواتير سونلغاز", "منصة إي طاقتي سونلغاز", "منصة e-taqaty", "تطبيق إي طاقتي", "e-taqaty sonelgaz", "SEAAL", "ADE", "تطبيق تسديد", "فاتورة الكهرباء", "كراء عدل", "كراء OPGI", "البطاقة الذهبية", "CIB"],
   mobile: ["فليكسي", "تعبئة موبيليس", "تعبئة جيزي", "تعبئة أوريدو", "Flexy", "دفع فواتير الهاتف", "MobiSpace", "MyOoredoo", "Djezzy App"],
   post: ["بريد الجزائر", "البطاقة الذهبية", "تطبيق بريدي موب", "BaridiMob", "كشف رصيد CCP", "ECCP", "كشف الحساب البريدي", "تتبع الطرود"],
   telecom: ["إنترنت اتصالات الجزائر", "Idoom ADSL", "Idoom 4G", "تعبئة إنترنت", "فضاء الزبون اتصالات الجزائر", "Fiber Optic", "MyIdoom"],

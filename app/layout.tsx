@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'رقمنة 2026 | البوابة الجزائرية للخدمات الرقمية المستقلة',
-    description: 'أكثر من 280 خدمة رقمية حكومية جزائرية بين يديك الآن بروابط مباشرة وبدون إعلانات.',
+    description: 'أكثر من 300 خدمة رقمية حكومية جزائرية بين يديك الآن بروابط مباشرة وبدون إعلانات.',
     creator: '@raqmana',
     images: ['/og-image.png'],
   },

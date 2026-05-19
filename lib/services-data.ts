@@ -32,7 +32,7 @@ export const serviceCategories: ServiceCategory[] = [
     nameKey: "category.bills",
     icon: "Receipt",
     color: "from-emerald-500 to-green-600",
-    descriptionAr: "دليل الدفع الإلكتروني للفواتير في الجزائر: سدد فاتورة الماء ADE، الكهرباء والغاز Sonelgaz، وكراء عدل AADL و OPGI عبر الإنترنت وبكل سهولة باستخدام البطاقة الذهبية أو البنكية CIB.",
+    descriptionAr: "دليل الدفع الإلكتروني للفواتير في الجزائر: سدد فاتورتك عبر منصة إي-طاقتي (E-Taqaty) سونلغاز الجديدة، فاتورة الماء ADE، وكراء عدل AADL و OPGI بالبطاقة الذهبية أو CIB بكل سهولة وبدون تعقيد.",
     usageGuides: [
       {
         title: "خطوات دفع الفواتير بالبطاقة الذهبية",
@@ -58,6 +58,7 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.sonelgaz",
         services: [
+          { name: { ar: "منصة إي-طاقتي الجديدة (E-Taqaty)", en: "E-Taqaty New Platform (Sonelgaz)" }, url: "https://e-taqaty.sonelgaz.dz/pages/application/se_connecter.xhtml" },
           { name: { ar: "فاتورة الكهرباء والغاز", en: "Electricity & Gas Bill" }, url: "https://www.sonelgaz.dz" },
           { name: { ar: "فضاء الزبون سونلغاز", en: "Sonelgaz Customer Space" }, url: "https://www.sonelgaz.dz/fr/espace-client" },
           { name: { ar: "محاكاة فاتورتك", en: "Bill Simulator" }, url: "https://www.sonelgaz.dz/fr/simulateur" },
