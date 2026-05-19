@@ -34,7 +34,7 @@ export function DigitalDirectory() {
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 mb-16">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-700 dark:text-red-400 text-[10px] font-black uppercase tracking-widest mb-6">
               <HeartPulse className="h-3 w-3" />
               <span>{language === "ar" ? "أرقام تهمك" : "Essential Numbers"}</span>
             </div>

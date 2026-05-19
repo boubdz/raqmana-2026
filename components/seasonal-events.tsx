@@ -46,7 +46,7 @@ export function SeasonalEvents() {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/10 dark:bg-primary/10 text-emerald-800 dark:text-primary text-[10px] font-black uppercase tracking-widest mb-6">
               <Zap className="h-3 w-3" />
               <span>{language === "ar" ? "تنبيهات ذكية" : "Smart Alerts"}</span>
             </div>
@@ -88,7 +88,7 @@ export function SeasonalEvents() {
                     <Calendar className="h-6 w-6" />
                   </div>
                   {event.isLive && (
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                       {language === "ar" ? "نشط الآن" : "Active Now"}
                     </div>
@@ -134,7 +134,12 @@ export function SeasonalEvents() {
                       className="h-12 w-12 rounded-2xl border-black/5 dark:border-white/5"
                       asChild
                     >
-                      <a href={event.link} target="_blank" rel="noopener noreferrer">
+                      <a 
+                        href={event.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        aria-label={language === "ar" ? `زيارة موقع ${event.title.ar}` : `Visit ${event.title.en} website`}
+                      >
                         <ExternalLink className="h-4 w-4" />
                       </a>
                     </Button>

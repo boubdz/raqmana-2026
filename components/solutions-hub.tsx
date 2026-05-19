@@ -35,7 +35,7 @@ export function SolutionsHub() {
     <section className="py-24 bg-[#fafafa] dark:bg-[#080808]" id="solutions-hub">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-950/10 dark:bg-primary/10 text-emerald-800 dark:text-primary text-xs font-black uppercase tracking-widest mb-6">
             <HelpCircle className="h-4 w-4" />
             <span>{language === "ar" ? "مركز الحلول الذكية" : "Smart Solutions Hub"}</span>
           </div>
@@ -114,10 +114,16 @@ export function SolutionsHub() {
                     {language === "ar" ? "المصدر:" : "Source:"} {article.source}
                   </div>
                   <div className="flex gap-4">
-                    <button className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+                    <button 
+                      aria-label={language === "ar" ? "مشاركة الحل" : "Share solution"}
+                      className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all"
+                    >
                       <Share2 className="h-4 w-4" />
                     </button>
-                    <button className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+                    <button 
+                      aria-label={language === "ar" ? "تعليق أو استفسار" : "Comment or inquire"}
+                      className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all"
+                    >
                       <MessageSquare className="h-4 w-4" />
                     </button>
                   </div>

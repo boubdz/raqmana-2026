@@ -36,7 +36,7 @@ export function NotificationManager() {
             icon: "/icon-192x192.png",
             badge: "/favicon-32x32.png",
             vibrate: [200, 100, 200],
-          }
+          } as NotificationOptions & { vibrate?: number[] }
         );
       }
     }
@@ -63,6 +63,7 @@ export function NotificationManager() {
             permission === "denied" ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/10 hover:text-primary"
           }`}
           title={language === "ar" ? "تفعيل التنبيهات" : "Enable Notifications"}
+          aria-label={language === "ar" ? "تفعيل التنبيهات" : "Enable Alerts"}
         >
           {permission === "denied" ? (
             <BellOff className="h-4 w-4" />

@@ -68,7 +68,10 @@ export function Footer() {
                   placeholder={language === 'ar' ? 'بريدك الإلكتروني' : 'your@email.com'}
                   className="w-full bg-transparent border-b border-black/10 dark:border-white/10 py-3 text-center text-xs font-bold focus:outline-none focus:border-primary transition-colors uppercase tracking-widest"
                 />
-                <button className="absolute right-0 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform">
+                 <button 
+                  aria-label={language === 'ar' ? 'اشترك في النشرة البريدية' : 'Subscribe to newsletter'}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform"
+                >
                   <ArrowUpRight className="h-4 w-4" />
                 </button>
               </div>

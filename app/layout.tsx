@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/contexts/theme-context'
 import { LanguageProvider } from '@/contexts/language-context'
 import InstallButton from '@/components/InstallButton'
+import { SiteShare } from '@/components/site-share'
 import Script from 'next/script'
 import './globals.css'
 
@@ -185,6 +186,7 @@ export default function RootLayout({
 
         <Analytics />
         <InstallButton />
+        <SiteShare />
       </body>
     </html>
   )

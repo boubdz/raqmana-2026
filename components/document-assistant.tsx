@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Printer, Download, Sparkles, FileText, Settings, Zap, Info, AlertCircle, ChevronRight } from "lucide-react";
+import { Printer, Download, Sparkles, FileText, Settings, Info, AlertCircle } from "lucide-react";
 
 export function DocumentAssistant() {
   const [description, setDescription] = useState("");

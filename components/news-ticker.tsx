@@ -36,7 +36,7 @@ export function NewsTicker() {
     <div className="w-full bg-primary/10 dark:bg-primary/5 border-b border-primary/10 py-2 overflow-hidden select-none" dir={dir}>
       <div className="container mx-auto px-6 flex items-center gap-4">
         {/* Label */}
-        <div className="flex items-center gap-2 bg-primary text-white px-3 py-1 rounded-full shrink-0 animate-pulse z-10">
+        <div className="flex items-center gap-2 bg-emerald-950 dark:bg-white text-white dark:text-black px-3 py-1 rounded-full shrink-0 z-10">
           <Bell size={12} className="fill-current" />
           <span className="text-[10px] font-black uppercase tracking-widest">
             {language === 'ar' ? 'آخر الأخبار' : 'Latest News'}

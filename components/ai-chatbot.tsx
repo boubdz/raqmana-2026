@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bot, Send, X, Sparkles, MessageCircle } from "lucide-react";
+import { Send, X, Sparkles, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -89,6 +89,7 @@ export function AIChatbot() {
       {!isOpen ? (
         <Button
           onClick={() => setIsOpen(true)}
+          aria-label={language === "ar" ? "فتح المساعد الذكي" : "Open smart assistant"}
           className="h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.2)] bg-[#1a1a1a] dark:bg-white text-white dark:text-black hover:scale-110 transition-all duration-300 group"
         >
           <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7 transition-transform group-hover:rotate-12" />
@@ -109,7 +110,13 @@ export function AIChatbot() {
                 </div>
               </div>
             </div>
-            <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="rounded-full text-white dark:text-black hover:bg-white/10 dark:hover:bg-black/10">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setIsOpen(false)} 
+              aria-label={language === "ar" ? "إغلاق" : "Close"}
+              className="rounded-full text-white dark:text-black hover:bg-white/10 dark:hover:bg-black/10"
+            >
               <X className="h-5 w-5" />
             </Button>
           </div>
@@ -143,6 +150,7 @@ export function AIChatbot() {
               <Button 
                 size="icon" 
                 onClick={handleSend} 
+                aria-label={language === "ar" ? "إرسال رسالة" : "Send message"}
                 className="absolute right-2 h-10 w-10 rounded-xl bg-[#1a1a1a] dark:bg-white text-white dark:text-black hover:scale-105"
               >
                 <Send className="h-4 w-4" />

@@ -34,7 +34,7 @@ export function DailyUtilities() {
             <Clock className="h-5 w-5" />
           </div>
           <div>
-            <div className="text-[10px] font-black uppercase tracking-widest opacity-40">
+            <div className="text-[10px] font-black uppercase tracking-widest opacity-70 text-muted-foreground">
               {language === "ar" ? "الوقت الحالي" : "Current Time"}
             </div>
             <div className="text-xl font-black tabular-nums">
@@ -49,7 +49,7 @@ export function DailyUtilities() {
       </div>
 
       <div className="space-y-4">
-        <h4 className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-4">
+        <h4 className="text-[10px] font-black uppercase tracking-widest opacity-70 text-muted-foreground mb-4">
           {language === "ar" ? "مواقيت الصلاة" : "Prayer Times"}
         </h4>
         <div className="grid grid-cols-5 gap-2">
