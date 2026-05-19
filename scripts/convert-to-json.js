@@ -5,30 +5,24 @@ const path = require('path');
 const tsPath = path.join(__dirname, '../lib/services-data.ts');
 let content = fs.readFileSync(tsPath, 'utf8');
 
-// إزالة جميع الأسطر التي تبدأ بـ "import" أو "export interface" أو "export type"
-const lines = content.split('\n');
-const filteredLines = lines.filter(line => {
-  const trimmed = line.trim();
-  return !trimmed.startsWith('import ') &&
-         !trimmed.startsWith('export interface') &&
-         !trimmed.startsWith('export type') &&
-         !trimmed.startsWith('type ') &&
-         !trimmed.startsWith('interface ') &&
-         !trimmed.includes('ServiceCategory') &&
-         !trimmed.includes('SubCategory') &&
-         !trimmed.includes('ServiceLink');
-});
+// البحث عن بداية تعريف مصفوفة التصنيفات وتخطي جميع الـ interfaces
+const startIndex = content.indexOf('export const serviceCategories');
+if (startIndex === -1) {
+  console.error('❌ لم يتم العثور على export const serviceCategories في ملف TS!');
+  process.exit(1);
+}
 
-let jsContent = filteredLines.join('\n');
+// أخذ الجزء الخاص بالبيانات فقط وتجاهل الواجهات بالكامل
+let jsContent = content.substring(startIndex);
 
-// استبدال export const serviceCategories = const serviceCategories =
-jsContent = jsContent.replace('export const serviceCategories', 'const serviceCategories');
+// استبدال تعريف التصدير في تيب سكريبت إلى جافا سكريبت عادية
+jsContent = jsContent.replace(/export\s+const\s+serviceCategories(:\s*\w+\[\])?\s*=/, 'const serviceCategories =');
 
-// إضافة تصدير CommonJS في النهاية
+// إضافة تصدير CommonJS المتوافق في النهاية
 jsContent += '\n\nmodule.exports = { serviceCategories };';
 
-// حفظ كملف JS مؤقت
+// حفظ كملف JS المولد النظيف والخالي من أخطاء بناء الجملة للـ Typescript
 const jsPath = path.join(__dirname, '../lib/services-data.generated.js');
 fs.writeFileSync(jsPath, jsContent, 'utf8');
 
-console.log('✅ تم تحويل الملف إلى JavaScript في lib/services-data.generated.js');
+console.log('✅ تم تحويل الملف بنجاح وخلوه من أخطاء الأنواع: lib/services-data.generated.js');

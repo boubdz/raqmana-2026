@@ -66,16 +66,19 @@ export default function FeedbackPage() {
                 <MessageSquare className="h-10 w-10 text-primary" />
               </div>
               <h2 className="mb-4 text-2xl font-bold">نحن نستمع إليك!</h2>
-              <p className="mb-8 text-muted-foreground max-w-lg">
-                نواجه حالياً عطلاً مؤقتاً في نموذج المراسلة. ولكن يسعدنا جداً استقبال ملاحظاتك، اقتراحاتك، أو الإبلاغ عن أي أخطاء مباشرة عبر البريد الإلكتروني.
+              <p className="mb-6 text-muted-foreground max-w-lg">
+                نواجه حالياً عطلاً مؤقتاً في نموذج المراسلة. ولكن يسعدنا جداً استقبال ملاحظاتك، اقتراحاتك، أو الإبلاغ عن أي أخطاء مباشرة عبر البريد الإلكتروني:
               </p>
               <a 
-                href="mailto:contact@raqmana.dz?subject=ملاحظات حول بوابة رقمنة 2026" 
+                href="mailto:newera28026@gmail.com?subject=ملاحظات حول بوابة رقمنة 2026" 
                 className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
               >
                 <Send className="mr-2 h-4 w-4 ml-2" />
                 إرسال رسالة عبر البريد الإلكتروني
               </a>
+              <div className="mt-4 text-sm font-medium text-primary bg-primary/5 px-4 py-2 rounded-full border border-primary/10">
+                newera28026@gmail.com
+              </div>
             </div>
           </div>
           

@@ -186,7 +186,7 @@ export const mobileApps: MobileApp[] = [
     name: { ar: "ألو الشرطة", en: "Allo Police" },
     description: { ar: "تطبيق الأمن الوطني", en: "National Security App" },
     category: "police",
-    playStoreUrl: "https://play.google.com/store/apps/details?id=dz.dgsn.allopolice",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=allochorta.algeriepolice.dz",
     appStoreUrl: "https://apps.apple.com/app/allopolice/id1234567894",
     icon: "ShieldCheck",
     color: "from-blue-700 to-indigo-800",
