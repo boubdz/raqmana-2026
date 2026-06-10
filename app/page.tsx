@@ -9,12 +9,7 @@ import { CategoriesSection } from "@/components/categories-section";
 import { SolutionsHub } from "@/components/solutions-hub";
 import { DigitalDirectory } from "@/components/digital-directory";
 import { Footer } from "@/components/footer";
-import dynamic from "next/dynamic";
-
-const AIChatbot = dynamic(
-  () => import("@/components/ai-chatbot").then(m => ({ default: m.AIChatbot })),
-  { ssr: false }
-);
+import { AIChatbot } from "@/components/ai-chatbot";
 
 export default function Home() {
   const jsonLd = [
