@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'دليل تكوين الملفات والوثائق | رقمنة الجزائر',
   description: 'دليل تفاعلي للوثائق المطلوبة في الإدارات الجزائرية، محدث وفقاً لآخر التعليمات الوزارية لعام 2026.',
   keywords: ['دليل الوثائق', 'تكوين ملف', 'وثائق إدارية الجزائر', 'ملف إداري', 'الوثائق المطلوبة'],
+  alternates: {
+    canonical: 'https://raqmana.vercel.app/document-guide',
+  },
 };
 
 export default function DocumentGuidePage() {

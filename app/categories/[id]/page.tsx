@@ -212,7 +212,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "رقمنة - Raqmana",
       images: [
         {
-          url: `/og-image-${id}.png`, // Placeholder for specific OG images
+          url: `/og-image.png`,
           width: 1200,
           height: 630,
           alt: `خدمات ${categoryName} في الجزائر`,
@@ -223,7 +223,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [`/og-image-${id}.png`],
+      images: [`/og-image.png`],
     },
     alternates: {
       canonical: `https://raqmana.vercel.app/categories/${id}`,
@@ -254,6 +254,46 @@ export default async function CategoryPage({ params }: Props) {
         "@type": "Answer",
         "text": guide.steps.join(" ")
       }
+    }))
+  } : null;
+
+  const howToSchemas = category.usageGuides ? category.usageGuides.map((guide) => ({
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": guide.title,
+    "step": guide.steps.map((step, stepIndex) => ({
+      "@type": "HowToStep",
+      "position": stepIndex + 1,
+      "text": step
+    }))
+  })) : [];
+
+  const allServices: { name: string; url: string }[] = [];
+  if (category.services) {
+    category.services.forEach(s => {
+      allServices.push({ name: s.name.ar, url: s.url });
+    });
+  }
+  if (category.subCategories) {
+    category.subCategories.forEach(sub => {
+      if (sub.services) {
+        sub.services.forEach(s => {
+          allServices.push({ name: s.name.ar, url: s.url });
+        });
+      }
+    });
+  }
+
+  const itemListSchema = allServices.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": `خدمات قطاع ${categoryName}`,
+    "numberOfItems": allServices.length,
+    "itemListElement": allServices.map((service, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": service.name,
+      "url": service.url
     }))
   } : null;
 
@@ -290,7 +330,9 @@ export default async function CategoryPage({ params }: Props) {
         }
       ]
     },
-    ...(faqSchema ? [faqSchema] : [])
+    ...(faqSchema ? [faqSchema] : []),
+    ...(itemListSchema ? [itemListSchema] : []),
+    ...howToSchemas
   ];
 
   return (

@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title: 'المساعد الذكي للوثائق والطلبات الإدارية | رقمنة الجزائر',
   description: 'استخدم الذكاء الاصطناعي لصياغة طلباتك الإدارية، العرائض، والشكاوى باللغة العربية الرسمية والدارجة. أداة سهلة وسريعة لمواطني الجزائر.',
   keywords: ['مساعد الوثائق', 'طلبات إدارية', 'شكوى إدارية الجزائر', 'صياغة عريضة', 'ذكاء اصطناعي إداري'],
+  alternates: {
+    canonical: 'https://raqmana.vercel.app/document-assistant',
+  },
 };
 
 import DocumentAssistantClient from '@/components/document-assistant-client';

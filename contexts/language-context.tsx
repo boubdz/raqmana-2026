@@ -27,8 +27,8 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.directory": "الفهرس الشامل",
 
     // Hero
-    "hero.title": "مستقبل الخدمات الرقمية",
-    "hero.subtitle": "اكتشف الكثير من الخدمات الرقمية الحكومية في مكان واحد. بوابة مستقلة غير حكومية للخدمات الرقمية هي منصة إلكترونية وطنية موحّدة، تهدف إلى تمكين المواطنين الجزائريين من الوصول السريع والآمن إلى مختلف الخدمات الحكومية وتوعيتهم بمختلف الخدمات الرقمية و  الولوج للعالم الرقمي  .",
+    "hero.title": "البوابة الجزائرية للخدمات الرقمية",
+    "hero.subtitle": "رقمنة 2026 بوابة إرشادية مستقلة تجمع روابط الخدمات الرقمية الحكومية والعمومية في الجزائر في مكان واحد: الوثائق الإدارية، الدفع الإلكتروني، بريد الجزائر، عدل، التعليم، التشغيل، والعدالة بروابط مباشرة ومحدثة.",
     "hero.cta": "استكشف الخدمات",
     "hero.secondary": "المساعد الذكي",
 
@@ -73,6 +73,7 @@ const translations: Record<Language, Record<string, string>> = {
     "category.environment": "البيئة",
     "category.media": "الإعلام والاتصال",
     "category.finance": "البنوك والمالية",
+    "category.retirement": "خدمات التقاعد CNR",
 
     // Subcategories
     "subcategory.ade": "الجزائرية للمياه ADE",
@@ -101,6 +102,8 @@ const translations: Record<Language, Record<string, string>> = {
     "subcategory.publicBanks": "البنوك العمومية",
     "subcategory.privateBanks": "البنوك الخاصة",
     "subcategory.agricultureApps": "تطبيقات الفلاحة",
+    "subcategory.retireeServices": "فضاء المتقاعدين (CNR)",
+    "subcategory.employerServices": "فضاء أرباب العمل (CNR)",
 
     // Categories Section
     "categories.title": "الفهرس الشامل للخدمات",
@@ -238,6 +241,7 @@ const translations: Record<Language, Record<string, string>> = {
     "category.environment": "Environment",
     "category.media": "Media & Communication",
     "category.finance": "Banks & Finance",
+    "category.retirement": "Retirement Services CNR",
 
     // Subcategories
     "subcategory.ade": "ADE Water",
@@ -267,6 +271,8 @@ const translations: Record<Language, Record<string, string>> = {
     "subcategory.publicBanks": "Public Banks",
     "subcategory.privateBanks": "Private Banks",
     "subcategory.agricultureApps": "Agricultural Apps",
+    "subcategory.retireeServices": "Retirees Portal (CNR)",
+    "subcategory.employerServices": "Employers Portal (CNR)",
 
     // Categories Section
     "categories.title": "Complete Services Directory",

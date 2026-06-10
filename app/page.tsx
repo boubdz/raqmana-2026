@@ -1,53 +1,15 @@
-// app/page.tsx — Performance Optimized
-"use client";
-
-import dynamic from "next/dynamic";
+// app/page.tsx — Performance Optimized Server Component
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
-import { useLanguage } from "@/contexts/language-context";
-
-// ✅ PERFORMANCE: Lazy load below-the-fold heavy components
-// This splits them into separate JS chunks loaded only when needed
-
-const ServicesMarquee = dynamic(
-  () => import("@/components/services-marquee").then(m => ({ default: m.ServicesMarquee })),
-  { ssr: false }
-);
-
-const NewsTicker = dynamic(
-  () => import("@/components/news-ticker").then(m => ({ default: m.NewsTicker })),
-  { ssr: false }
-);
-
-const SeasonalEvents = dynamic(
-  () => import("@/components/seasonal-events").then(m => ({ default: m.SeasonalEvents })),
-  { ssr: false }
-);
-
-const DailyUtilities = dynamic(
-  () => import("@/components/daily-utilities").then(m => ({ default: m.DailyUtilities })),
-  { ssr: false }
-);
-
-const CategoriesSection = dynamic(
-  () => import("@/components/categories-section").then(m => ({ default: m.CategoriesSection })),
-  { ssr: false }
-);
-
-const SolutionsHub = dynamic(
-  () => import("@/components/solutions-hub").then(m => ({ default: m.SolutionsHub })),
-  { ssr: false }
-);
-
-const DigitalDirectory = dynamic(
-  () => import("@/components/digital-directory").then(m => ({ default: m.DigitalDirectory })),
-  { ssr: false }
-);
-
-const Footer = dynamic(
-  () => import("@/components/footer").then(m => ({ default: m.Footer })),
-  { ssr: false }
-);
+import { ServicesMarquee } from "@/components/services-marquee";
+import { NewsTicker } from "@/components/news-ticker";
+import { SeasonalEvents } from "@/components/seasonal-events";
+import { DailyUtilities } from "@/components/daily-utilities";
+import { CategoriesSection } from "@/components/categories-section";
+import { SolutionsHub } from "@/components/solutions-hub";
+import { DigitalDirectory } from "@/components/digital-directory";
+import { Footer } from "@/components/footer";
+import dynamic from "next/dynamic";
 
 const AIChatbot = dynamic(
   () => import("@/components/ai-chatbot").then(m => ({ default: m.AIChatbot })),
@@ -55,8 +17,6 @@ const AIChatbot = dynamic(
 );
 
 export default function Home() {
-  const { dir } = useLanguage();
-
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -89,7 +49,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-background" dir={dir}>
+    <div className="min-h-screen bg-background" dir="rtl">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -99,7 +59,7 @@ export default function Home() {
         {/* Above-the-fold: loaded immediately */}
         <HeroSection />
 
-        {/* Below-the-fold: lazy loaded */}
+        {/* Below-the-fold: server-rendered for search engines */}
         <ServicesMarquee />
         <NewsTicker />
         <SeasonalEvents />

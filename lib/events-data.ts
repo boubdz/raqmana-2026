@@ -53,13 +53,13 @@ export const seasonalEvents: SeasonalEvent[] = [
     id: "minha-update",
     title: { ar: "تحديث منحة البطالة", en: "Unemployment Grant Update" },
     category: "employment",
-    dateRange: { ar: "شهرياً (من 1 إلى 5)", en: "Monthly (1st to 5th)" },
+    dateRange: { ar: "كل 6 أشهر (تجديد بطاقة العمل)", en: "Every 6 months (Job Card Renewal)" },
     description: { 
-      ar: "فترة تمديد طلبات العمل والتحقق من حالة منحة البطالة.", 
-      en: "Period for job request extension and grant status check." 
+      ar: "حماية منحة البطالة من التجميد عبر تتبع تاريخ انتهاء وثيقة طالب العمل وتجديدها في الوقت المناسب.", 
+      en: "Protect your unemployment grant from suspension by tracking and renewing your job seeker document on time." 
     },
-    importance: "medium",
-    link: "https://minha.anem.dz",
+    importance: "high",
+    link: "/categories/employment",
     isLive: true
   },
   {
@@ -149,5 +149,18 @@ export const seasonalEvents: SeasonalEvent[] = [
     },
     importance: "high",
     isLive: false
+  },
+  {
+    id: "pension-payment",
+    title: { ar: "تذكير صب المعاش", en: "Pension Payment Reminder" },
+    category: "retirement",
+    dateRange: { ar: "شهرياً (حسب الصندوق)", en: "Monthly (per CNR schedule)" },
+    description: {
+      ar: "تتبع موعد صب معاشك الشهري وتنبيهات الاستحقاقات القادمة. لا تفوت تاريخ الصب وتحقق من حسابك بسهولة.",
+      en: "Track your monthly pension payment date and upcoming entitlements. Never miss a deposit and check your account easily."
+    },
+    importance: "high",
+    link: "/categories/retirement",
+    isLive: true
   }
 ];

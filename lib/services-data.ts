@@ -374,9 +374,11 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-orange-500 to-red-600",
     officialSite: "https://services.mvet.dz/",
     phone: "+213 23 25 52 66",
+    descriptionAr: "الخدمات الرقمية لقطاع التكوين والتعليم المهنيين والتكوين المتواصل: التسجيل في التكوين المهني، والتسجيل المسبق في جامعة التكوين المتواصل UFC.",
     services: [
       { name: { ar: "التسجيل في التكوين المهني", en: "Vocational Training Registration" }, url: "https://www.takwin.dz/" },
       { name: { ar: "بوابة وزارة التكوين المهني", en: "Ministry Portal" }, url: "https://www.mfep.gov.dz" },
+      { name: { ar: "التسجيل المسبق - جامعة التكوين المتواصل UFC", en: "UFC University Pre-registration" }, url: "http://www.preinscriptions.ufc.dz/" },
     ],
   },
   // 8. خدمات الإدارة المحلية
@@ -1338,6 +1340,51 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "بوابة البنك الوطني الجزائري BNA", en: "BNA Bank Portal" }, url: "https://www.bna.dz" },
       { name: { ar: "تطبيق Banxy (Natixis)", en: "Banxy App" }, url: "https://play.google.com/store/apps/details?id=dz.natixis.prod", isApp: true },
       { name: { ar: "تطبيق Wimpay BNA (الدفع)", en: "Wimpay App" }, url: "https://play.google.com/store/apps/details?id=com.beyn.bna.wimpay.customer", isApp: true },
+    ],
+  },
+  // 41. التقاعد CNR
+  {
+    id: "retirement",
+    nameKey: "category.retirement",
+    icon: "Landmark",
+    color: "from-cyan-600 to-blue-700",
+    officialSite: "https://dz.cnr.dz",
+    phone: "3011",
+    descriptionAr: "الصندوق الوطني للتقاعد CNR: دليل الخدمات الرقمية للمتقاعدين وأرباب العمل. تطبيق تقاعدي الجديد، الحساب الفردي للأجور CIS، ومتابعة ملف التقاعد والتحقق من الوثائق.",
+    usageGuides: [
+      {
+        title: "خطوات الولوج لحساب المتقاعد وإثبات الحياة",
+        steps: [
+          "تحميل تطبيق 'تقاعدي' للهواتف الذكية أو الولوج لمنصة CNR.",
+          "مسح رمز الاستجابة السريعة (QR Code) أو إدخال رقم المعاش.",
+          "استخدام تقنية التعرف على الوجه لإثبات الحياة دون التنقل الشاق.",
+          "الاطلاع على كشف المعاش، التنزيلات وتواريخ صب الرواتب."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "البوابة الرقمية لصندوق التقاعد (CNR)", en: "CNR Digital Retirement Portal" }, url: "https://dz.cnr.dz" },
+      { name: { ar: "تطبيق تقاعدي (تطبيق الهاتف الرسمي)", en: "Taqaoudi Mobile App (Official)" }, url: "https://play.google.com/store/apps/details?id=dz.cnr.cnr", isApp: true },
+    ],
+    subCategories: [
+      {
+        nameKey: "subcategory.retireeServices",
+        services: [
+          { name: { ar: "فضاء المتقاعد (حساب المتقاعد)", en: "Retiree Account Space" }, url: "https://dz.cnr.dz" },
+          { name: { ar: "الحساب الفردي للأجور (CIS)", en: "Individual Salary Account (CIS)" }, url: "https://dz.cnr.dz" },
+          { name: { ar: "متابعة ملف التقاعد عن بعد", en: "Track Pension File Status" }, url: "https://dz.cnr.dz" },
+          { name: { ar: "الاطلاع على تاريخ صب المعاش", en: "Pension Deposit Date Inquiry" }, url: "https://dz.cnr.dz" },
+          { name: { ar: "طلب التقاعد المنقول", en: "Transferred Pension Request" }, url: "https://dz.cnr.dz" },
+          { name: { ar: "طلب تثمين المعاشات", en: "Pension Revaluation Request" }, url: "https://dz.cnr.dz" },
+        ],
+      },
+      {
+        nameKey: "subcategory.employerServices",
+        services: [
+          { name: { ar: "فضاء صاحب العمل (فضاء أرباب العمل)", en: "Employer Space Portal" }, url: "https://dz.cnr.dz" },
+          { name: { ar: "التحقق من صحة وثائق المتقاعدين", en: "Document Validity Verification" }, url: "https://dz.cnr.dz" },
+        ],
+      },
     ],
   },
 ]

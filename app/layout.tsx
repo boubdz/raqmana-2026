@@ -21,15 +21,15 @@ const alexandria = Alexandria({
 
 export const metadata: Metadata = {
   title: {
-    default: 'رقمنة 2026 | البوابة الجزائرية للخدمات الرقمية المستقلة (روابط مباشرة)',
-    template: '%s | رقمنة 2026'
+    default: 'البوابة الجزائرية للخدمات الرقمية | رقمنة 2026 - روابط رسمية مباشرة',
+    template: '%s | البوابة الجزائرية للخدمات الرقمية'
   },
-  description: 'بوابتك الجزائرية الأسرع للوصول المباشر إلى كافة الخدمات الرقمية الحكومية بدون إعلانات. استخرج وثائقك الرسمية (S12)، سدد فواتيرك، وسجل في المسابقات والوظائف بنقرة واحدة.',
+  description: 'البوابة الجزائرية للخدمات الرقمية رقمنة 2026: دليل مستقل للوصول السريع إلى روابط الخدمات الحكومية والعمومية في الجزائر، استخراج الوثائق، دفع الفواتير، بريد الجزائر، عدل، التعليم، التشغيل والعدالة.',
   generator: 'Raqmana',
   applicationName: 'رقمنة',
   referrer: 'origin-when-cross-origin',
   keywords: [
-    'الجزائر', 'خدمات رقمية', 'حكومة إلكترونية', 'البوابة الرقمية الجزائرية', 'البوابة الجزائرية للخدمات الرقمية', 'استخراج شهادة الميلاد S12', 'منصة أضاحي 2026', 'بريد الجزائر', 
+    'البوابة الجزائرية للخدمات الرقمية', 'رقمنة 2026', 'البوابة الرقمية الجزائرية', 'الخدمات الرقمية في الجزائر', 'خدمات رقمية حكومية الجزائر', 'الجزائر', 'خدمات رقمية', 'حكومة إلكترونية', 'استخراج شهادة الميلاد S12', 'منصة أضاحي 2026', 'بريد الجزائر',
     'عدل 3', 'جواز السفر البيومتري', 'البوابة الرقمية الجزائر', 'رابط مباشر', 'تطبيقات حكومية', 'منصة فضاء الأولياء',
     'استخراج السوابق القضائية', 'حجز تذاكر الجوية الجزائرية', 'دفع فواتير سونلغاز', 'اتصالات الجزائر 4G',
     'البوابة الوطنية للخدمات الرقمية', 'Dzair Digital Services', 'التوقيع الإلكتروني e-Tawki3', 'الهوية الرقمية الجزائرية',
@@ -46,10 +46,21 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://raqmana.vercel.app'),
   alternates: {
     canonical: '/',
+    languages: {
+      'ar': '/',
+      'en': '/en',
+      'ar-dz': '/',
+      'x-default': '/',
+    },
+    types: {
+      'application/rss+xml': [
+        { url: '/api/rss', title: 'رقمنة - آخر الخدمات والتحيينات الرقمية' }
+      ]
+    }
   },
   openGraph: {
-    title: 'رقمنة 2026 | البوابة الجزائرية للخدمات الرقمية المستقلة',
-    description: 'كل المنصات الحكومية الجزائرية في مكان واحد. روابط مباشرة، تحديثات 2026، وسهولة تامة في الوصول بدون إعلانات.',
+    title: 'البوابة الجزائرية للخدمات الرقمية | رقمنة 2026',
+    description: 'دليل مستقل يجمع روابط الخدمات الرقمية الحكومية والعمومية في الجزائر: وثائق، فواتير، بريد الجزائر، عدل، التعليم، التشغيل والعدالة.',
     url: 'https://raqmana.vercel.app',
     siteName: 'رقمنة - Raqmana',
     locale: 'ar_DZ',
@@ -65,8 +76,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'رقمنة 2026 | البوابة الجزائرية للخدمات الرقمية المستقلة',
-    description: 'أكثر من 300 خدمة رقمية حكومية جزائرية بين يديك الآن بروابط مباشرة وبدون إعلانات.',
+    title: 'البوابة الجزائرية للخدمات الرقمية | رقمنة 2026',
+    description: 'روابط مباشرة ومحدثة للخدمات الرقمية الحكومية والعمومية في الجزائر ضمن دليل مستقل وسهل البحث.',
     creator: '@raqmana',
     images: ['/og-image.png'],
   },
@@ -80,9 +91,6 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
-  verification: {
-    google: 'G-TWMTPY4E30', // Using the tag ID as a placeholder if no specific token provided
   },
 }
 
@@ -118,10 +126,24 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "رقمنة 2026",
+              "@id": "https://raqmana.vercel.app/#organization",
+              "name": "البوابة الجزائرية للخدمات الرقمية - رقمنة 2026",
+              "alternateName": "رقمنة 2026",
               "url": "https://raqmana.vercel.app",
-              "logo": "https://raqmana.vercel.app/logo.png",
-              "description": "المنصة الشاملة للخدمات الرقمية في الجزائر",
+              "logo": "https://raqmana.vercel.app/icon-512x512.png",
+              "description": "دليل مستقل للوصول إلى روابط الخدمات الرقمية الحكومية والعمومية في الجزائر",
+              "foundingDate": "2026",
+              "areaServed": {
+                "@type": "Country",
+                "name": "DZ"
+              },
+              "knowsAbout": [
+                "الخدمات الرقمية في الجزائر",
+                "الإدارة الإلكترونية",
+                "رقمنة الجزائر",
+                "استخراج الوثائق الإدارية في الجزائر",
+                "الدفع الإلكتروني بالبطاقة الذهبية"
+              ],
               "sameAs": [
                 "https://facebook.com/raqmana",
                 "https://twitter.com/raqmana"
@@ -135,7 +157,13 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
+              "name": "البوابة الجزائرية للخدمات الرقمية",
+              "alternateName": "رقمنة 2026",
               "url": "https://raqmana.vercel.app",
+              "inLanguage": "ar-DZ",
+              "publisher": {
+                "@id": "https://raqmana.vercel.app/#organization"
+              },
               "potentialAction": {
                 "@type": "SearchAction",
                 "target": "https://raqmana.vercel.app/services?q={search_term_string}",

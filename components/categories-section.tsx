@@ -94,6 +94,7 @@ const categoryPageMap: Record<string, string> = {
   environment: "/categories/environment",
   media: "/categories/media",
   finance: "/categories/finance",
+  retirement: "/categories/retirement",
 };
 
 const iconMap: Record<string, React.ElementType> = {
