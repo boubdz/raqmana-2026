@@ -74,6 +74,8 @@ const subCategoryNamesAr: Record<string, string> = {
   // agriculture
   "subcategory.agricultureApps": "تطبيقات الفلاحة",
   "subcategory.mobileApps": "تطبيقات الهاتف",
+  "subcategory.retireeServices": "فضاء المتقاعدين (CNR)",
+  "subcategory.employerServices": "فضاء أرباب العمل (CNR)",
 };
 
 export async function generateStaticParams() {
@@ -122,6 +124,7 @@ const categoryNamesAr: Record<string, string> = {
   environment: "البيئة",
   media: "الإعلام والاتصال",
   finance: "البنوك والمالية",
+  retirement: "خدمات التقاعد CNR",
 };
 
 const trendingKeywordsMap: Record<string, string[]> = {
@@ -164,6 +167,7 @@ const trendingKeywordsMap: Record<string, string[]> = {
   industry: ["وزارة الصناعة", "دعم المقاولاتية ANADE", "المؤسسات الناشئة", "المطابقة والجودة", "المناطق الصناعية"],
   environment: ["وزارة البيئة", "النفايات", "التغير المناخي", "الطاقة الشمسية في الجزائر", "رخصة النشاط البيئي"],
   media: ["وزارة الاتصال", "اعتماد صحفي", "الصحافة الإلكترونية", "الإذاعة الوطنية", "التلفزيون الجزائري"],
+  retirement: ["صندوق التقاعد CNR", "تطبيق تقاعدي", "تتبع ملف التقاعد", "حساب المتقاعد", "صب المعاشات الجزائر", "الحساب الفردي للأجور", "التقاعد المنقول", "تثمين المعاش", "صاحب العمل cnr"],
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -500,6 +504,50 @@ export default async function CategoryPage({ params }: Props) {
                   )}
                </div>
             </div>
+          </div>
+        </div>
+
+        {/* ===== قسم التنقل بين الصفحات — يساعد Googlebot على فهرسة كل الصفحات ===== */}
+        <div className="container mx-auto px-6 mt-20 mb-10">
+          <div className="border-t border-black/5 dark:border-white/5 pt-16">
+            <div className="flex items-center gap-4 mb-10">
+              <LayoutGrid className="h-5 w-5 text-primary" />
+              <h2 className="text-sm font-black uppercase tracking-[0.3em] text-muted-foreground/60">
+                استكشف أقسامًا أخرى
+              </h2>
+              <div className="h-px flex-1 bg-black/5 dark:bg-white/5"></div>
+              <Link
+                href="/sitemap"
+                className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline flex items-center gap-1"
+              >
+                كل الأقسام
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+            <nav aria-label="أقسام المنصة الأخرى">
+              <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                {serviceCategories
+                  .filter((cat) => cat.id !== id)
+                  .map((cat) => {
+                    const CatIcon = iconMap[cat.icon] || Info;
+                    return (
+                      <li key={cat.id}>
+                        <Link
+                          href={`/categories/${cat.id}`}
+                          className="group flex flex-col items-center gap-2 rounded-2xl bg-white dark:bg-[#0c0c0c] border border-black/[0.04] dark:border-white/[0.04] p-4 text-center hover:-translate-y-1 hover:shadow-md hover:border-primary/20 transition-all duration-300"
+                        >
+                          <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center text-white shadow`}>
+                            <CatIcon className="h-4 w-4" />
+                          </div>
+                          <span className="text-[11px] font-bold text-foreground/70 group-hover:text-primary transition-colors leading-tight line-clamp-2">
+                            {categoryNamesAr[cat.id] || cat.id}
+                          </span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+              </ul>
+            </nav>
           </div>
         </div>
       </main>

@@ -2,48 +2,50 @@ import { MetadataRoute } from 'next';
 import { serviceCategories } from '@/lib/services-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://raqmana.vercel.app'; // ⚠️ استبدل هذا لاحقاً برابطك النهائي
+  const baseUrl = 'https://raqmana.vercel.app';
+  // تحديث التاريخ لإجبار Google على إعادة الزحف فوراً
+  const lastModified = new Date('2026-06-10');
 
-  // 1. الصفحة الرئيسية
+  // 1. الصفحات الرئيسية
   const routes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/document-assistant`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
+      lastModified,
+      changeFrequency: 'daily',
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/sitemap`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/document-guide`,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/document-guide`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/feedback`,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: 'monthly',
-      priority: 0.5,
+      priority: 0.6,
     },
   ];
 
-  // 2. صفحات الخدمات (من serviceCategories) - أكثر من 30 صفحة
+  // 2. صفحات الخدمات (من serviceCategories) — فهرسة كل صفحة مستقلة
   const categoryRoutes = serviceCategories.map((category) => ({
     url: `${baseUrl}/categories/${category.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
+    lastModified,
+    changeFrequency: 'daily' as const,  // تغيير لـ daily لإجبار إعادة الزحف
+    priority: 0.9,  // رفع الأولوية لـ 0.9
   }));
 
   return [...routes, ...categoryRoutes];

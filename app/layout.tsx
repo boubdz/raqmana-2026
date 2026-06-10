@@ -149,44 +149,44 @@ export default function RootLayout({
         <ThemeProvider>
           <LanguageProvider>
             {children}
+            
+            {/* PWA Service Worker Registration */}
+            <Script id="register-sw" strategy="afterInteractive">
+              {`
+                if ('serviceWorker' in navigator) {
+                  window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js').then(
+                      function(registration) {
+                        console.log('Service Worker registration successful with scope: ', registration.scope);
+                      },
+                      function(err) {
+                        console.log('Service Worker registration failed: ', err);
+                      }
+                    );
+                  });
+                }
+              `}
+            </Script>
+
+            {/* Google Analytics — lazyOnload: defers until page is idle, reduces TBT */}
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-TWMTPY4E30"
+              strategy="lazyOnload"
+            />
+            <Script id="google-analytics" strategy="lazyOnload">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-TWMTPY4E30', { send_page_view: false });
+              `}
+            </Script>
+
+            <Analytics />
+            <InstallButton />
+            <SiteShare />
           </LanguageProvider>
         </ThemeProvider>
-        
-        {/* PWA Service Worker Registration */}
-        <Script id="register-sw" strategy="afterInteractive">
-          {`
-            if ('serviceWorker' in navigator) {
-              window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js').then(
-                  function(registration) {
-                    console.log('Service Worker registration successful with scope: ', registration.scope);
-                  },
-                  function(err) {
-                    console.log('Service Worker registration failed: ', err);
-                  }
-                );
-              });
-            }
-          `}
-        </Script>
-
-        {/* Google Analytics — lazyOnload: defers until page is idle, reduces TBT */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-TWMTPY4E30"
-          strategy="lazyOnload"
-        />
-        <Script id="google-analytics" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-TWMTPY4E30', { send_page_view: false });
-          `}
-        </Script>
-
-        <Analytics />
-        <InstallButton />
-        <SiteShare />
       </body>
     </html>
   )
