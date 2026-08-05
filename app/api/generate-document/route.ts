@@ -1,57 +1,224 @@
 import { NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
 
-// ✅ FIX: Lazy initialization — prevents build-time crash when env var is absent
+export const maxDuration = 10;
 
 export async function POST(req: Request) {
-  const apiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: 'خدمة الذكاء الاصطناعي غير متاحة حالياً' }, { status: 503 });
+  const openrouterApiKey = process.env.OPENROUTER_API_KEY || process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+  const groqApiKey = process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY;
+
+  if (!openrouterApiKey && !groqApiKey) {
+    return NextResponse.json(
+      { error: 'خدمة الذكاء الاصطناعي غير متاحة. يرجى إعداد مفتاح API في المتغيرات البيئية.' },
+      { status: 503 }
+    );
   }
-  // Lazy init: only runs at request time, not build time
-  const groq = new Groq({ apiKey });
 
   try {
     const { description, docType, toneInstruction } = await req.json();
 
-
     if (!description) {
-      return NextResponse.json({ error: 'الوصف مطلوب' }, { status: 400 });
+      return NextResponse.json({ error: 'الوصف مطلوب لتوليد النص' }, { status: 400 });
     }
 
-    const prompt = `
-أنت مساعد إداري خبير في القوانين والإجراءات الإدارية الجزائرية.
-بناءً على الوصف التالي، قم بإنشاء نص رسمي ومهني من نوع "${docType || 'وثيقة'}" باللغة العربية الفصحى.
+    let generatedText = '';
 
-**تعليمات اللهجة:** ${toneInstruction || 'رسمية'}
+    // ----- استخدام OpenRouter -----
+    if (openrouterApiKey) {
+      const openRouterModel = process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash:floor';
 
-**تعليمات صارمة:**
-- لا تطلب أي معلومات شخصية (رقم بطاقة تعريف، عنوان تفصيلي، أرقام سرية).
-- لا تطلب أي وثائق أو مرفقات.
-- اعتمد فقط على الوصف العام المقدم.
-- استخدم الصياغات الرسمية المتبعة في المراسلات الإدارية الجزائرية.
-- خاطب الجهة المعنية بصيغة "السيد/السيدة المحترم/ة".
-- اترك مكاناً فارغاً بين قوسين معقوفين للمعلومات التي يجب أن يملأها المستخدم (مثل [الاسم الكامل]، [تاريخ الميلاد]).
-- اجعل النص جاهزاً للتعبئة والطباعة.
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${openrouterApiKey.trim()}`,
+          'HTTP-Referer': 'https://raqmana.vercel.app',
+          'X-Title': 'Raqmana Algeria',
+          'X-OpenRouter-Cache': 'true',
+        },
+        body: JSON.stringify({
+          model: openRouterModel,
+          messages: [
+            {
+              role: 'system',
+              content: `أنت مساعد كتابة النماذج الإدارية الجزائرية.
 
-**وصف المستخدم:**
-${description}
+              تعليمات صارمة ومطلقة (لا تحيد عنها بأي حال):
+              1. اكتب "الجمهورية الجزائرية الديمقراطية الشعبية" في السطر الأول فقط من النموذج، ولا تكررها في أي مكان آخر.
+              2. لا تضع أي عنوان علوي مثل "طلب إداري" أو "OFFICIAL DOCUMENT" أو "عريضة".
+              3. أنشئ جدولاً بعمودين بدون عنوان:
+                 - العمود الأيمن: الاسم الكامل: ......، العنوان: ......، رقم الهاتف: ......، البريد الإلكتروني: ......
+                 - العمود الأيسر: إلى السيد/ة: ......، المؤسسة/المديرية: ......، العنوان: ......
+              4. استخدم النقاط "......" للحقول الفارغة.
+              5. بعد الجدول، اكتب سطراً بعنوان "الموضوع:" ثم المحتوى المطلوب مباشرة.
+              6. بعد انتهاء المحتوى، أضف سطراً فارغاً، ثم اكتب عبارة ختامية مهذبة تتناسب مع الجهة المرسل إليها:
+                 - إذا كان المرسل إليه وزيراً أو مديراً عاماً: "وتفضلوا بقبول فائق التقدير والاحترام."
+                 - إذا كان المرسل إليه رئيس بلدية أو مسؤولاً محلياً: "وتقبلوا خالص الشكر والامتنان."
+                 - إذا كان المرسل إليه لجنة أو هيئة: "وتفضلوا بقبول خالص التقدير."
+              7. بعد العبارة الختامية، أضف سطراً فارغاً، ثم اكتب في الجهة اليسرى السفلية فقط:
+                 
+                 التوقيع:
+                 
+                 (اكتب كلمة "التوقيع:" فقط، ولا تكرر الاسم أو التاريخ لأنها موجودة في الجدول بالأعلى).
+              8. لا تستخدم أي عبارات تفخيم (سمو، المقام الكريم، صاحب السعادة).
+              9. اكتب المحتوى بأسلوب ${toneInstruction || 'رسمي'} دون أي مقدمات (مثل "بالتأكيد" أو "إليك").`
+            },
+            {
+              role: 'user',
+              content: `المطلوب: ${description}
+              
+              تأكيد: "الجمهورية الجزائرية الديمقراطية الشعبية" تكتب مرة واحدة فقط في السطر الأول. أضف عبارة ختامية مهذبة قبل التوقيع، مع مراعاة الجهة المرسل إليها. التوقيع هو فقط كلمة "التوقيع:" بدون اسم أو تاريخ.`
+            }
+          ],
+          temperature: 0.3,
+          max_tokens: 1500,
+        }),
+      });
 
-**النص المُولّد:**
-`;
+      if (response.ok) {
+        const data = await response.json();
+        generatedText = data.choices?.[0]?.message?.content || '';
+      } else {
+        const errText = await response.text();
+        console.error('OpenRouter Error:', errText);
 
-    const response = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.5,
-      max_tokens: 800,
-    });
+        if (response.status === 401) {
+          return NextResponse.json(
+            { error: 'الخدمة عليها ضغط، انتظر قليلاً.' },
+            { status: 401 }
+          );
+        } else if (response.status === 429) {
+          return NextResponse.json(
+            { error: 'تم تجاوز حد الطلبات المسموح بها. يرجى المحاولة بعد قليل.' },
+            { status: 429 }
+          );
+        } else {
+          throw new Error(`OpenRouter API error: ${response.statusText}`);
+        }
+      }
+    }
 
-    const generatedText = response.choices[0]?.message?.content || "عذراً، لم أتمكن من توليد النص.";
+    // ----- الاحتياط: Groq -----
+    if (!generatedText && groqApiKey) {
+      const groq = new Groq({ apiKey: groqApiKey });
+
+      const response = await groq.chat.completions.create({
+        model: 'llama-3.1-8b-instant',
+        messages: [
+          {
+            role: 'system',
+            content: `اكتب النموذج بالهيكل التالي بدقة:
+            1. السطر الأول فقط: "الجمهورية الجزائرية الديمقراطية الشعبية" (مرة واحدة فقط، لا تكررها).
+            2. جدول بعمودين:
+               - اليمين: الاسم الكامل: ......، العنوان: ......، رقم الهاتف: ......، البريد الإلكتروني: ......
+               - اليسار: إلى السيد/ة: ......، المؤسسة/المديرية: ......، العنوان: ......
+            3. الموضوع: ثم المحتوى.
+            4. بعد المحتوى، أضف عبارة ختامية مهذبة مناسبة (مثل: "وتفضلوا بقبول فائق التقدير والاحترام." أو "وتقبلوا خالص الشكر والامتنان." أو "وتفضلوا بقبول خالص التقدير.") حسب الجهة المرسل إليها.
+            5. في الأسفل (يسار الصفحة): التوقيع: (فقط هذه الكلمة).
+            6. لا تضع عناوين علوية. لا تستخدم تفخيم.`,
+          },
+          {
+            role: 'user',
+            content: `المطلوب: ${description}`,
+          },
+        ],
+        temperature: 0.3,
+        max_tokens: 800,
+      });
+
+      generatedText = response.choices[0]?.message?.content || '';
+    }
+
+    // ===== دالة تنظيف قوية =====
+    function cleanGeneratedText(text: string): string {
+      if (!text) return '';
+
+      // 1. حذف أي تكرار لعبارة "الجمهورية الجزائرية الديمقراطية الشعبية" بعد السطر الأول
+      const header = 'الجمهورية الجزائرية الديمقراطية الشعبية';
+      const lines = text.split('\n');
+      let foundFirst = false;
+      const filteredLines = [];
+
+      for (const line of lines) {
+        if (line.includes(header)) {
+          if (!foundFirst) {
+            foundFirst = true;
+            filteredLines.push(line);
+          }
+        } else {
+          filteredLines.push(line);
+        }
+      }
+
+      let cleaned = filteredLines.join('\n').trim();
+
+      // 2. حذف العبارات التمهيدية المزعجة
+      const prefixesToRemove = [
+        /^بالتأكيد،?\s*/i,
+        /^بالطبع،?\s*/i,
+        /^إليك\s*/i,
+        /^هذا هو\s*/i,
+        /^هذه هي\s*/i,
+        /^نص\s*/i,
+        /^فيما يلي\s*/i,
+        /^بناءً على طلبك،?\s*/i,
+        /^تفضل\s*/i,
+        /^هذا نص\s*/i,
+        /^إليك نص\s*/i,
+        /^ها هو\s*/i,
+        /^ها هي\s*/i,
+        /^حسب طلبك،?\s*/i,
+      ];
+
+      for (const pattern of prefixesToRemove) {
+        if (pattern.test(cleaned)) {
+          cleaned = cleaned.replace(pattern, '');
+          break;
+        }
+      }
+
+      // 3. تنظيف الأسطر الفارغة المتكررة
+      cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+
+      // 4. التأكد من أن التوقيع هو فقط "التوقيع:" وليس معه اسم أو تاريخ
+      const signatureLines = cleaned.split('\n');
+      const newLines = [];
+      let signatureFound = false;
+
+      for (const line of signatureLines) {
+        if (line.includes('التوقيع') && !signatureFound) {
+          newLines.push('التوقيع:');
+          signatureFound = true;
+        } else if (!line.includes('التوقيع')) {
+          if (signatureFound && (line.includes('الاسم') || line.includes('التاريخ') || line.includes('الصفة'))) {
+            continue;
+          } else {
+            newLines.push(line);
+          }
+        }
+      }
+
+      cleaned = newLines.join('\n').trim();
+
+      return cleaned;
+    }
+
+    // تنظيف النص الناتج
+    generatedText = cleanGeneratedText(generatedText);
+
+    if (!generatedText) {
+      return NextResponse.json(
+        { error: 'عذراً، لم أتمكن من توليد النص. يرجى المحاولة مجدداً.' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ generatedText });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'حدث خطأ أثناء توليد النص' }, { status: 500 });
+    console.error('Generate Document Error:', error);
+    return NextResponse.json(
+      { error: `حدث خطأ داخلي في الخادم: ${error instanceof Error ? error.message : 'خطأ غير معروف'}` },
+      { status: 500 }
+    );
   }
 }

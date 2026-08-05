@@ -1,8 +1,27 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ✅ Clean up public/categories directory to prevent shadowing Next.js App Router paths
+const publicCategoriesPath = path.join(__dirname, 'public', 'categories');
+if (fs.existsSync(publicCategoriesPath)) {
+  try {
+    fs.rmSync(publicCategoriesPath, { recursive: true, force: true });
+    console.log('🧹 Automatically removed public/categories to prevent page shadowing.');
+  } catch (error) {
+    console.error('❌ Failed to remove public/categories:', error);
+  }
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  transpilePackages: ['date-fns'],
 
   // ✅ Image optimization: AVIF first (50% smaller), fallback WebP
   images: {
@@ -45,6 +64,7 @@ const nextConfig = {
       { source: '/categories/complaint.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/request.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/resignation.html', destination: '/document-assistant', permanent: true },
+      { source: '/categories/orientation', destination: '/categories/university', permanent: true },
       { source: '/categories/:slug.html', destination: '/categories/:slug', permanent: true },
     ];
   },

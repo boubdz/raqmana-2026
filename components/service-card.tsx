@@ -3,17 +3,21 @@
 import { useLanguage } from "@/contexts/language-context"
 import { Card } from "@/components/ui/card"
 import { ExternalLink, Smartphone, Globe } from "lucide-react"
-import Image from "next/image"
 import { useState } from "react"
+
+import { InstantShareButton } from "@/components/instant-share-button"
+import { ServiceToolbarBar } from "@/components/service-toolbar-bar"
 
 interface ServiceCardProps {
   name: { ar: string; en: string }
   url: string
   isApp?: boolean
   status?: "active" | "slow" | "down"
+  customStatusNote?: string
+  isTrending?: boolean
 }
 
-export function ServiceCard({ name, url, isApp, status: initialStatus }: ServiceCardProps) {
+export function ServiceCard({ name, url, isApp, status: initialStatus, customStatusNote, isTrending }: ServiceCardProps) {
   const { language, t } = useLanguage()
   const [imgError, setImgError] = useState(false)
   const [status, setStatus] = useState(initialStatus || "active")
@@ -43,7 +47,7 @@ export function ServiceCard({ name, url, isApp, status: initialStatus }: Service
             {isApp ? (
               <Smartphone className="h-7 w-7 text-primary" />
             ) : !imgError ? (
-              <Image
+              <img
                 src={faviconUrl}
                 alt={name[language]}
                 width={48}
@@ -82,33 +86,52 @@ export function ServiceCard({ name, url, isApp, status: initialStatus }: Service
               </span>
             </div>
           </div>
-          <h3 className="text-lg font-bold text-[#1a1a1a] dark:text-white/90 leading-tight group-hover:text-primary transition-colors line-clamp-2">
+          {/* Custom Status Note */}
+          {customStatusNote && (
+            <div className="mt-2.5 p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] font-bold text-amber-700 dark:text-amber-300 leading-snug">
+              📢 {customStatusNote}
+            </div>
+          )}
+
+          <h3 className="text-lg font-bold text-[#1a1a1a] dark:text-white/90 leading-tight group-hover:text-primary transition-colors line-clamp-2 mt-2">
             {name[language]}
           </h3>
           
-          <div className="mt-4 flex items-center justify-between">
-            <p className="text-xs font-bold text-muted-foreground/40 truncate tracking-wide max-w-[60%]">
-              {domain}
-            </p>
-            
-            {!isApp && (
-              <div className="flex gap-1">
-                {!hasReported ? (
-                  <button 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setStatus("slow");
-                      setHasReported(true);
-                    }}
-                    className="h-6 px-2 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] text-[8px] font-black uppercase tracking-widest hover:bg-amber-500/10 hover:text-amber-600 transition-all"
-                  >
-                    Report Slow
-                  </button>
-                ) : (
-                  <span className="text-[8px] font-black uppercase tracking-widest text-emerald-500">Thanks!</span>
-                )}
-              </div>
-            )}
+          <div className="mt-4 pt-3 border-t border-border/40 flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-bold text-muted-foreground/40 truncate tracking-wide max-w-[60%]">
+                {domain}
+              </p>
+              
+              {!isApp && (
+                <div className="flex gap-1">
+                  {!hasReported ? (
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setStatus("slow");
+                        setHasReported(true);
+                      }}
+                      className="h-6 px-2 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] text-[8px] font-black uppercase tracking-widest hover:bg-amber-500/10 hover:text-amber-600 transition-all"
+                    >
+                      Report Slow
+                    </button>
+                  ) : (
+                    <span className="text-[8px] font-black uppercase tracking-widest text-emerald-500">Thanks!</span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Instant Share Button & Social Proof Toolbar */}
+            <div onClick={(e) => e.preventDefault()} className="mt-2 space-y-2">
+              <ServiceToolbarBar
+                serviceId={domain.replace(/[^a-zA-Z0-9]/g, "_")}
+                serviceTitle={name[language]}
+                url={url}
+              />
+              <InstantShareButton title={name[language]} url={url} compact />
+            </div>
           </div>
         </div>
       </div>

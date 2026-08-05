@@ -71,18 +71,18 @@ export function HeroSection() {
           <span>{t("brand.tagline")}</span>
         </div>
 
-        {/* H1 */}
+        {/* H1 — SEO optimised: contains primary keywords */}
         <div className="max-w-5xl mx-auto mb-10">
           <h1 className="text-5xl font-bold tracking-tight sm:text-7xl md:text-8xl mb-8 text-[#1a1a1a] dark:text-white leading-[1.1]">
             {dir === "rtl" ? (
               <span className="block italic">
-                مستقبل الخدمات <br />
-                <span className="text-primary not-italic opacity-90">الرقمية</span>
+                رقمنة الجزائر <br />
+                <span className="text-primary not-italic opacity-90">2026 — الخدمات الرقمية</span>
               </span>
             ) : (
               <span className="block italic">
-                Experience the <br />
-                <span className="text-primary not-italic opacity-90">Digital</span> Future
+                Algeria&apos;s <br />
+                <span className="text-primary not-italic opacity-90">Digital Services</span> Hub
               </span>
             )}
           </h1>
@@ -132,6 +132,29 @@ export function HeroSection() {
               {t("hero.secondary")}
             </Link>
           </Button>
+        </div>
+
+        {/* Quick Search Tag Badges (Trending Topics) */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto" dir="rtl">
+          <span className="text-xs text-muted-foreground font-semibold ml-2">الأكثر بحثاً:</span>
+          <Link href="/articles/mdn" className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors">
+            📕 تجنيد الجيش MDN
+          </Link>
+          <Link href="/articles/tawdhif" className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-colors">
+            🎓 مسابقات الأساتذة
+          </Link>
+          <Link href="/articles/employment" className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:bg-purple-500/20 transition-colors">
+            💼 منحة البطالة ANEM
+          </Link>
+          <Link href="/articles/chifa" className="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-colors">
+            💊 كناس وتطبيق الهناء
+          </Link>
+          <Link href="/articles/aadl3" className="px-3 py-1 rounded-full text-xs font-semibold bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 hover:bg-teal-500/20 transition-colors">
+            🏠 عدل 3 AADL
+          </Link>
+          <Link href="/articles/cnrc" className="px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-colors">
+            📋 سجل تجاري CNRC
+          </Link>
         </div>
 
         {/* Background brand text — decorative, aria-hidden */}

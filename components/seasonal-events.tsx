@@ -208,7 +208,7 @@ export function SeasonalEvents() {
   const allSubscribed = seasonalEvents.every((event) => subscribed.includes(event.id));
 
   return (
-    <section className="py-20 bg-white dark:bg-[#050505] overflow-hidden" id="seasonal-events">
+    <section className="py-20 bg-white dark:bg-[#050505] overflow-hidden" id="appointments">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl">

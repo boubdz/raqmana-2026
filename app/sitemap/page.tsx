@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import { serviceCategories } from "@/lib/services-data";
+import { articles } from "@/lib/articles-data";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { LayoutGrid, ChevronRight, ExternalLink } from "lucide-react";
+import { LayoutGrid, ChevronRight, ExternalLink, HelpCircle, ArrowRight } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -22,8 +23,11 @@ const translations = {
     home: "الصفحة الرئيسية",
     seasonal: "المواعيد الموسمية",
     solutions: "مركز الحلول",
+    solutionsSection: "حلول المشاكل الشائعة",
+    solutionsSubtitle: "مقالات تقنية مختصرة لحل أبرز مشاكل الخدمات الرقمية في الجزائر.",
     feedback: "إرسال ملاحظات",
-    // Categories
+    // Main Categories
+    "category.dzds": "البوابة الجزائرية للخدمات الرقمية",
     "category.bills": "الدفع الإلكتروني للفواتير",
     "category.mobile": "تعبئة الهاتف النقال",
     "category.post": "بريد الجزائر",
@@ -102,8 +106,11 @@ const translations = {
     home: "Home",
     seasonal: "Seasonal Events",
     solutions: "Solutions Hub",
+    solutionsSection: "Common Problem Solutions",
+    solutionsSubtitle: "Concise technical guides to fix common digital service issues in Algeria.",
     feedback: "Send Feedback",
-    // Categories
+    // Main Categories
+    "category.dzds": "Algerian Digital Services Portal",
     "category.bills": "Electronic Bill Payment",
     "category.mobile": "Mobile Phone Recharge",
     "category.post": "Algeria Post",
@@ -190,7 +197,7 @@ export default async function SitemapPage({ searchParams }: Props) {
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#050505]" dir={dir}>
       <Header />
-      
+
       <main className="container mx-auto px-6 pt-32 pb-24">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16">
@@ -205,7 +212,7 @@ export default async function SitemapPage({ searchParams }: Props) {
           <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
             {serviceCategories.map((category) => (
               <div key={category.id} className="space-y-6">
-                <Link 
+                <Link
                   href={`/categories/${category.id}`}
                   className="group flex items-center gap-4 border-b border-black/10 dark:border-white/10 pb-4"
                 >
@@ -221,9 +228,9 @@ export default async function SitemapPage({ searchParams }: Props) {
                 <ul className="space-y-3 pr-4 border-r border-black/5 dark:border-white/5">
                   {category.services.map((service, idx) => (
                     <li key={idx}>
-                      <a 
-                        href={service.url} 
-                        target="_blank" 
+                      <a
+                        href={service.url}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm font-bold text-muted-foreground hover:text-primary flex items-center gap-2 group"
                       >
@@ -233,7 +240,7 @@ export default async function SitemapPage({ searchParams }: Props) {
                       </a>
                     </li>
                   ))}
-                  
+
                   {category.subCategories?.map((sub) => (
                     <React.Fragment key={sub.nameKey}>
                       <li className="text-[10px] font-black uppercase tracking-widest text-primary pt-2">
@@ -241,9 +248,9 @@ export default async function SitemapPage({ searchParams }: Props) {
                       </li>
                       {sub.services.map((service, idx) => (
                         <li key={idx}>
-                          <a 
-                            href={service.url} 
-                            target="_blank" 
+                          <a
+                            href={service.url}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm font-bold text-muted-foreground hover:text-primary flex items-center gap-2 group"
                           >
@@ -259,10 +266,45 @@ export default async function SitemapPage({ searchParams }: Props) {
             ))}
           </div>
 
-          <div className="mt-20 p-10 rounded-[3rem] bg-white dark:bg-[#0c0c0c] border border-black/5 dark:border-white/5">
+          {/* قسم حلول المشاكل الشائعة */}
+          <div className="mt-20">
+            <div className="flex items-center gap-4 mb-8 border-b border-black/5 dark:border-white/5 pb-6">
+              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <HelpCircle className="h-5 w-5" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-black tracking-tighter">{t("solutionsSection")}</h2>
+                <p className="text-sm text-muted-foreground font-medium mt-1">{t("solutionsSubtitle")}</p>
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {articles.map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/solutions/${article.id}`}
+                  className="group flex items-center gap-4 bg-white dark:bg-[#0c0c0c] border border-black/5 dark:border-white/5 rounded-2xl p-5 hover:-translate-y-1 hover:shadow-md hover:border-primary/20 transition-all duration-300"
+                >
+                  <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                    <HelpCircle className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">{article.category}</p>
+                    <p className="text-sm font-bold line-clamp-2 group-hover:text-primary transition-colors">
+                      {article.title[language]}
+                    </p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground/40 shrink-0 group-hover:text-primary transition-colors" />
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16 p-10 rounded-[3rem] bg-white dark:bg-[#0c0c0c] border border-black/5 dark:border-white/5">
             <h3 className="text-2xl font-black mb-8">{t("quickLinks")}</h3>
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
               <Link href="/" className="text-sm font-bold hover:text-primary">{t("home")}</Link>
+              <Link href="/status" className="text-sm font-bold hover:text-primary">حالة الخدمات</Link>
+              <Link href="/document-guide" className="text-sm font-bold hover:text-primary">دليل الوثائق</Link>
               <Link href="/#seasonal-events" className="text-sm font-bold hover:text-primary">{t("seasonal")}</Link>
               <Link href="/#solutions-hub" className="text-sm font-bold hover:text-primary">{t("solutions")}</Link>
               <Link href="/feedback" className="text-sm font-bold hover:text-primary">{t("feedback")}</Link>

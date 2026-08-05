@@ -14,14 +14,14 @@ export function SiteShare() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Close share menu when clicking outside
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -30,9 +30,9 @@ export function SiteShare() {
 
   // Use dynamic window location URL on client-side
   const siteUrl = typeof window !== "undefined" ? window.location.href : "https://raqmana.vercel.app/";
-  
-  const siteTitle = language === "ar" 
-    ? "بوابة رقمنة 2026 | المنصة الجزائرية الموحدة للخدمات الرقمية" 
+
+  const siteTitle = language === "ar"
+    ? "بوابة رقمنة 2026 | المنصة الجزائرية الموحدة للخدمات الرقمية"
     : "Raqmana 2026 Portal | The Unified Algerian Digital Services Platform";
 
   const handleCopyLink = async () => {
@@ -125,28 +125,26 @@ export function SiteShare() {
           }
         }}
         aria-label={isOpen ? (language === "ar" ? "إغلاق قائمة المشاركة" : "Close share menu") : (language === "ar" ? "مشاركة الموقع" : "Share site")}
-        className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all duration-300 ${
-          isOpen 
-            ? "bg-red-500 hover:bg-red-600 text-white rotate-90" 
-            : "bg-[#1a1a1a] dark:bg-white text-white dark:text-black hover:scale-110"
-        }`}
+        className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all duration-300 ${isOpen
+          ? "bg-red-500 hover:bg-red-600 text-white rotate-90"
+          : "bg-[#1a1a1a] dark:bg-white text-white dark:text-black hover:scale-110"
+          }`}
       >
         {isOpen ? <X className="h-6 w-6" /> : <Share2 className="h-6 w-6" />}
       </Button>
 
       {/* Share Tray Card */}
       {isOpen && (
-        <div 
-          className={`absolute bottom-20 ${
-            language === "ar" ? "left-0" : "left-0"
-          } w-[280px] sm:w-[320px] bg-white/95 dark:bg-[#0c0c0c]/95 border border-black/5 dark:border-white/5 backdrop-blur-2xl p-6 rounded-[2rem] shadow-[0_30px_100px_rgba(0,0,0,0.25)] animate-in fade-in slide-in-from-bottom-6 zoom-in-95 duration-300`}
+        <div
+          className={`absolute bottom-20 ${language === "ar" ? "left-0" : "left-0"
+            } w-[280px] sm:w-[320px] bg-white/95 dark:bg-[#0c0c0c]/95 border border-black/5 dark:border-white/5 backdrop-blur-2xl p-6 rounded-[2rem] shadow-[0_30px_100px_rgba(0,0,0,0.25)] animate-in fade-in slide-in-from-bottom-6 zoom-in-95 duration-300`}
         >
           <h4 className="text-sm font-black uppercase tracking-wider text-[#1a1a1a] dark:text-white mb-2">
             {language === "ar" ? "مشاركة البوابة الرقمية" : "Share Digital Portal"}
           </h4>
           <p className="text-xs text-muted-foreground font-medium mb-6 leading-relaxed">
-            {language === "ar" 
-              ? "ساهم في نشر المعرفة الرقمية وشارك البوابة المباشرة مع عائلتك وأصدقائك بنقرة واحدة." 
+            {language === "ar"
+              ? "ساهم في نشر المعرفة الرقمية وشارك البوابة المباشرة مع عائلتك وأصدقائك بنقرة واحدة."
               : "Help spread digital literacy. Share this fast direct portal with friends and family."}
           </p>
 
@@ -169,11 +167,10 @@ export function SiteShare() {
           {/* Copy Link Row */}
           <button
             onClick={handleCopyLink}
-            className={`w-full flex items-center justify-between h-12 px-4 rounded-2xl border font-bold text-xs transition-all ${
-              copied 
-                ? "bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" 
-                : "border-black/5 dark:border-white/5 bg-black/[0.01] dark:bg-white/[0.01] hover:bg-black/5 dark:hover:bg-white/5 text-[#1a1a1a] dark:text-white"
-            }`}
+            className={`w-full flex items-center justify-between h-12 px-4 rounded-2xl border font-bold text-xs transition-all ${copied
+              ? "bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+              : "border-black/5 dark:border-white/5 bg-black/[0.01] dark:bg-white/[0.01] hover:bg-black/5 dark:hover:bg-white/5 text-[#1a1a1a] dark:text-white"
+              }`}
           >
             <div className="flex items-center gap-2">
               <Link2 className="h-4 w-4 shrink-0" />

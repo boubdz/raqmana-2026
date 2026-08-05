@@ -19,20 +19,25 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Navigation
     "nav.home": "الرئيسية",
-    "nav.services": "الخدمات",
+    "nav.services": "دليل القطاعات",
     "nav.assistant": "المساعد الذكي",
     "nav.documentGuide": "دليل الوثائق",
     "nav.sitemap": "خريطة الموقع",
+    "nav.articles": "المقالات",
     "nav.about": "حول",
-    "nav.directory": "الفهرس الشامل",
+    "nav.directory": "الدليل الرقمي",
+    "nav.status": "حالة الخدمات",
+    "nav.solutions": "حلول المشاكل",
+    "nav.appointments": "المواعيد الرقمية",
 
     // Hero
     "hero.title": "البوابة الجزائرية للخدمات الرقمية",
-    "hero.subtitle": "رقمنة 2026 بوابة إرشادية مستقلة تجمع روابط الخدمات الرقمية الحكومية والعمومية في الجزائر في مكان واحد: الوثائق الإدارية، الدفع الإلكتروني، بريد الجزائر، عدل، التعليم، التشغيل، والعدالة بروابط مباشرة ومحدثة.",
+    "hero.subtitle": "رقمنة الجزائر 2026 — بوابة إرشادية مستقلة تجمع روابط الخدمات الرقمية الحكومية في مكان واحد: الوثائق الإدارية، الدفع الإلكتروني، بريد الجزائر، عدل، التعليم، التشغيل، والعدالة. روابط مباشرة ومحدثة.",
     "hero.cta": "استكشف الخدمات",
     "hero.secondary": "المساعد الذكي",
 
     // Main Categories - الفهرس الشامل
+    "category.dzds": "البوابة الجزائرية للخدمات الرقمية",
     "category.bills": "الدفع الإلكتروني للفواتير",
     "category.mobile": "تعبئة الهاتف النقال",
     "category.post": "بريد الجزائر",
@@ -106,9 +111,9 @@ const translations: Record<Language, Record<string, string>> = {
     "subcategory.employerServices": "فضاء أرباب العمل (CNR)",
 
     // Categories Section
-    "categories.title": "الفهرس الشامل للخدمات",
-    "categories.subtitle": "اختر القطاع للوصول السريع إلى الخدمات الرقمية الرسمية",
-    "categories.mainDirectory": "الفهرس الشامل",
+    "categories.title": "البوابة الجزائرية للخدمات الرقمية",
+    "categories.subtitle": "روابط مباشرة للخدمات الإلكترونية في الجزائر: استخراج الوثائق الإدارية، الدفع الإلكتروني، وبريد الجزائر في مكان واحد.",
+    "categories.mainDirectory": "البوابة الجزائرية للخدمات الرقمية",
 
     // Quick Links
     "quickLinks.title": "الروابط السريعة",
@@ -187,12 +192,16 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Navigation
     "nav.home": "Home",
-    "nav.services": "Services",
+    "nav.services": "Sectors Directory",
     "nav.assistant": "AI Assistant",
     "nav.documentGuide": "Document Guide",
     "nav.sitemap": "Sitemap",
+    "nav.articles": "Articles",
     "nav.about": "About",
-    "nav.directory": "Main Directory",
+    "nav.directory": "Digital Directory",
+    "nav.status": "Service Status",
+    "nav.solutions": "Common Solutions",
+    "nav.appointments": "Digital Appointments",
 
     // Hero
     "hero.title": "Independent Digital Services Guidance Platform - Non-Governmental",
@@ -201,6 +210,7 @@ const translations: Record<Language, Record<string, string>> = {
     "hero.secondary": "AI Assistant",
 
     // Main Categories
+    "category.dzds": "Algerian Digital Services Portal",
     "category.bills": "Electronic Bill Payment",
     "category.mobile": "Mobile Phone Recharge",
     "category.post": "Algeria Post",
@@ -272,18 +282,6 @@ const translations: Record<Language, Record<string, string>> = {
     "subcategory.privateBanks": "Private Banks",
     "subcategory.agricultureApps": "Agricultural Apps",
     "subcategory.retireeServices": "Retirees Portal (CNR)",
-    "subcategory.employerServices": "Employers Portal (CNR)",
-
-    // Categories Section
-    "categories.title": "Complete Services Directory",
-    "categories.subtitle": "Select a sector for quick access to official digital services",
-    "categories.mainDirectory": "Main Directory",
-
-    // Quick Links
-    "quickLinks.title": "Quick Links",
-    "quickLinks.s12": "S12 Birth Certificate",
-    "quickLinks.casier": "Criminal Record",
-    "quickLinks.passport": "Biometric Passport",
     "quickLinks.cni": "National ID Card",
     "quickLinks.autoEntrepreneur": "Auto-Entrepreneur Card",
     "quickLinks.unemployment": "Unemployment Allowance",

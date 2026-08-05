@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Search, HelpCircle, ArrowRight, MessageSquare, ShieldCheck, Share2, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -92,7 +93,9 @@ export function SolutionsHub() {
                 </div>
 
                 <h3 className="text-3xl font-black tracking-tighter mb-4 group-hover:text-primary transition-colors">
-                  {article.title[language]}
+                  <Link href={`/solutions/${article.id}`} className="hover:underline">
+                    {article.title[language]}
+                  </Link>
                 </h3>
                 
                 <p className="text-lg text-muted-foreground font-medium mb-8 leading-relaxed">
@@ -114,18 +117,27 @@ export function SolutionsHub() {
                     {language === "ar" ? "المصدر:" : "Source:"} {article.source}
                   </div>
                   <div className="flex gap-4">
-                    <button 
+                    <button
                       aria-label={language === "ar" ? "مشاركة الحل" : "Share solution"}
+                      onClick={() => {
+                        const url = `${window.location.origin}/solutions/${article.id}`;
+                        if (navigator.share) {
+                          navigator.share({ title: article.title[language], url });
+                        } else {
+                          navigator.clipboard.writeText(url);
+                        }
+                      }}
                       className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all"
                     >
                       <Share2 className="h-4 w-4" />
                     </button>
-                    <button 
-                      aria-label={language === "ar" ? "تعليق أو استفسار" : "Comment or inquire"}
+                    <Link
+                      href={`/solutions/${article.id}`}
+                      aria-label={language === "ar" ? "عرض الحل كاملاً" : "View full solution"}
                       className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all"
                     >
-                      <MessageSquare className="h-4 w-4" />
-                    </button>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -31,17 +31,20 @@ export function Header() {
     { key: "nav.home", href: "/" },
     { key: "nav.services", href: "/#services" },
     { key: "nav.directory", href: "/#directory" },
+    { key: "nav.solutions", href: "/solutions" },
+    { key: "nav.appointments", href: "/#appointments" },
+    { key: "nav.articles", href: "/articles" },
+    { key: "nav.status", href: "/status" },
     { key: "nav.documentGuide", href: "/document-guide" },
     { key: "nav.assistant", href: "/document-assistant" },
   ]
 
   return (
-    <header 
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled 
-          ? "border-b border-border/50 bg-white/70 dark:bg-black/70 backdrop-blur-xl py-3" 
+    <header
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${scrolled
+          ? "border-b border-border/50 bg-white/70 dark:bg-black/70 backdrop-blur-xl py-3"
           : "bg-transparent py-5"
-      }`} 
+        }`}
       dir={dir}
     >
       <div className="container mx-auto flex items-center justify-between px-6">
@@ -74,16 +77,18 @@ export function Header() {
         {/* Right Controls */}
         <div className="flex items-center gap-3">
           {/* Language Selector */}
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => setLanguage(language === "ar" ? "en" : "ar")}
+            title={language === "ar" ? "Switch to English" : "التحويل إلى العربية"}
+            aria-label={language === "ar" ? "Switch to English" : "التحويل إلى العربية"}
             className="hidden sm:flex text-xs font-bold uppercase tracking-widest h-10 px-4 rounded-full border border-black/5 dark:border-white/5"
           >
             <Languages className="h-4 w-4 me-2" />
-            {language === "ar" ? "English" : "العربية"}
+            {language === "ar" ? "ENGLISH" : "العربية"}
           </Button>
-          
+
           <NotificationManager />
 
           {/* Theme Toggle — aria-label + 44px touch target */}
@@ -102,7 +107,7 @@ export function Header() {
           </Button>
 
           {/* Premium CTA Button - Suggestion */}
-          <Button 
+          <Button
             className="hidden lg:flex h-10 px-6 rounded-full bg-primary text-white font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg hover:shadow-primary/20"
             asChild
           >
@@ -159,14 +164,14 @@ export function Header() {
               </Link>
             ))}
             <div className="mt-6 flex gap-4">
-               <Button
-                 onClick={() => setLanguage(language === "ar" ? "en" : "ar")}
-                 variant="outline"
-                 aria-label={language === 'ar' ? 'Switch to English' : 'التحويل للعربية'}
-                 className="rounded-full px-8 h-11"
-               >
-                 {language === "ar" ? "English" : "العربية"}
-               </Button>
+              <Button
+                onClick={() => setLanguage(language === "ar" ? "en" : "ar")}
+                variant="outline"
+                aria-label={language === 'ar' ? 'Switch to English' : 'التحويل للعربية'}
+                className="rounded-full px-8 h-11"
+              >
+                {language === "ar" ? "English" : "العربية"}
+              </Button>
             </div>
           </nav>
         </div>

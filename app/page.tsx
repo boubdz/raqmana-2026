@@ -11,59 +11,166 @@ import { DigitalDirectory } from "@/components/digital-directory";
 import { Footer } from "@/components/footer";
 import { AIChatbot } from "@/components/ai-chatbot";
 
+import { SocialProofCounter } from "@/components/social-proof-counter";
+import { TrendingServicesGrid } from "@/components/trending-services-grid";
+import { CommunityComments } from "@/components/community-comments";
+
 export default function Home() {
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "رقمنة - Raqmana",
-      "url": "https://raqmana.vercel.app",
-      "description": "البوابة الجزائرية الشاملة للخدمات الرقمية والحكومية لعام 2026",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://raqmana.vercel.app/#services?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "رقمنة - Raqmana",
-      "url": "https://raqmana.vercel.app",
-      "logo": "https://raqmana.vercel.app/logo.png",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+213-XX-XX-XX-XX",
-        "contactType": "customer service"
+  // ✅ ItemList — يُدرج جميع الأقسام ويعطي غوغل فهرساً كاملاً للمحتوى
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "البوابة الجزائرية للخدمات الرقمية — رقمنة 2026",
+    "description": "دليل روابط الخدمات الرقمية بالجزائر واستخراج الوثائق الإدارية والدفع الإلكتروني",
+    "numberOfItems": 38,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1,  "name": "الدفع الإلكتروني للفواتير",        "url": "https://raqmana.vercel.app/categories/bills" },
+      { "@type": "ListItem", "position": 2,  "name": "تعبئة الهاتف النقال",              "url": "https://raqmana.vercel.app/categories/mobile" },
+      { "@type": "ListItem", "position": 3,  "name": "بريد الجزائر",                     "url": "https://raqmana.vercel.app/categories/post" },
+      { "@type": "ListItem", "position": 4,  "name": "اتصالات الجزائر",                  "url": "https://raqmana.vercel.app/categories/telecom" },
+      { "@type": "ListItem", "position": 5,  "name": "التربية والتعليم",                 "url": "https://raqmana.vercel.app/categories/education" },
+      { "@type": "ListItem", "position": 6,  "name": "الخدمات الجامعية",                 "url": "https://raqmana.vercel.app/categories/university" },
+      { "@type": "ListItem", "position": 7,  "name": "التكوين والتعليم المهنيين",         "url": "https://raqmana.vercel.app/categories/vocational" },
+      { "@type": "ListItem", "position": 8,  "name": "الإدارة المحلية",                  "url": "https://raqmana.vercel.app/categories/interior" },
+      { "@type": "ListItem", "position": 9,  "name": "وكالة عدل AADL",                   "url": "https://raqmana.vercel.app/categories/aadl" },
+      { "@type": "ListItem", "position": 10, "name": "الترقية العقارية ENPI",             "url": "https://raqmana.vercel.app/categories/enpi" },
+      { "@type": "ListItem", "position": 11, "name": "الخدمات الجبائية",                 "url": "https://raqmana.vercel.app/categories/tax" },
+      { "@type": "ListItem", "position": 12, "name": "خدمات العدالة",                    "url": "https://raqmana.vercel.app/categories/justice" },
+      { "@type": "ListItem", "position": 13, "name": "الصفقات العمومية",                 "url": "https://raqmana.vercel.app/categories/publicContracts" },
+      { "@type": "ListItem", "position": 14, "name": "الأملاك العقارية",                 "url": "https://raqmana.vercel.app/categories/realEstate" },
+      { "@type": "ListItem", "position": 15, "name": "الشؤون الخارجية",                  "url": "https://raqmana.vercel.app/categories/foreignAffairs" },
+      { "@type": "ListItem", "position": 16, "name": "الضمان الاجتماعي",                 "url": "https://raqmana.vercel.app/categories/socialSecurity" },
+      { "@type": "ListItem", "position": 17, "name": "الخدمات الصحية",                   "url": "https://raqmana.vercel.app/categories/health" },
+      { "@type": "ListItem", "position": 18, "name": "فحص المركبات",                    "url": "https://raqmana.vercel.app/categories/vehicles" },
+      { "@type": "ListItem", "position": 19, "name": "النقل والسفر",                     "url": "https://raqmana.vercel.app/categories/transport" },
+      { "@type": "ListItem", "position": 20, "name": "التشغيل ANEM",                     "url": "https://raqmana.vercel.app/categories/employment" },
+      { "@type": "ListItem", "position": 21, "name": "التجارة",                          "url": "https://raqmana.vercel.app/categories/commerce" },
+      { "@type": "ListItem", "position": 22, "name": "الجمارك الجزائرية",                "url": "https://raqmana.vercel.app/categories/customs" },
+      { "@type": "ListItem", "position": 23, "name": "المقاول الذاتي",                   "url": "https://raqmana.vercel.app/categories/autoEntrepreneur" },
+      { "@type": "ListItem", "position": 24, "name": "الحج والعمرة",                     "url": "https://raqmana.vercel.app/categories/hajj" },
+      { "@type": "ListItem", "position": 25, "name": "ترقية الاستثمار",                  "url": "https://raqmana.vercel.app/categories/investment" },
+      { "@type": "ListItem", "position": 26, "name": "الانتخابات",                       "url": "https://raqmana.vercel.app/categories/elections" },
+      { "@type": "ListItem", "position": 27, "name": "الأمن الوطني",                     "url": "https://raqmana.vercel.app/categories/police" },
+      { "@type": "ListItem", "position": 28, "name": "سلطة ضبط الاتصالات",              "url": "https://raqmana.vercel.app/categories/arpce" },
+      { "@type": "ListItem", "position": 29, "name": "التأمينات",                        "url": "https://raqmana.vercel.app/categories/insurance" },
+      { "@type": "ListItem", "position": 30, "name": "الخدمات البنكية",                  "url": "https://raqmana.vercel.app/categories/banking" },
+      { "@type": "ListItem", "position": 31, "name": "الفلاحة والصيد البحري",            "url": "https://raqmana.vercel.app/categories/agriculture" },
+      { "@type": "ListItem", "position": 32, "name": "السجل التجاري CNRC",               "url": "https://raqmana.vercel.app/categories/cnrc" },
+      { "@type": "ListItem", "position": 33, "name": "الشباب والرياضة",                  "url": "https://raqmana.vercel.app/categories/youth" },
+      { "@type": "ListItem", "position": 34, "name": "الثقافة والفنون",                  "url": "https://raqmana.vercel.app/categories/culture" },
+      { "@type": "ListItem", "position": 35, "name": "السياحة",                          "url": "https://raqmana.vercel.app/categories/tourism" },
+      { "@type": "ListItem", "position": 36, "name": "الموارد المائية",                  "url": "https://raqmana.vercel.app/categories/water" },
+      { "@type": "ListItem", "position": 37, "name": "الصناعة",                          "url": "https://raqmana.vercel.app/categories/industry" },
+      { "@type": "ListItem", "position": 38, "name": "البيئة",                           "url": "https://raqmana.vercel.app/categories/environment" },
+    ]
+  };
+
+  // ✅ FAQPage — يظهر في Google Search كـ Rich Snippets للأسئلة الجزائرية الشائعة
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "كيف أستخرج شهادة الميلاد S12 عبر الإنترنت؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "يمكنك استخراج شهادة الميلاد S12 عبر الموقع الرسمي demande12s.interieur.gov.dz بإدخال رقم التعريف الوطني NIN واسمك الكامل. الخدمة مجانية وتحصل على الوثيقة فوراً."
+        }
       },
-      "sameAs": [
-        "https://facebook.com/raqmana",
-        "https://twitter.com/raqmana"
-      ]
-    }
-  ];
+      {
+        "@type": "Question",
+        "name": "كيف أدفع فاتورة سونلغاز إلكترونياً؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ادفع فاتورة سونلغاز عبر منصة إي-طاقتي الجديدة E-Taqaty على الرابط e-taqaty.sonelgaz.dz باستخدام البطاقة الذهبية أو CIB. أدخل رقم الفاتورة ورمز المنطقة ثم أكد بالرمز المرسل لهاتفك."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "كيف أتحقق من رصيد CCP بريد الجزائر؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "اطلع على رصيد CCP عبر موقع eccp.poste.dz أو تطبيق BaridiMob. تحتاج لرقم الحساب CCP ورقم الهاتف المرتبط به."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "كيف أستخرج صحيفة السوابق القضائية إلكترونياً في الجزائر؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "استخرج صحيفة السوابق القضائية عبر منصة e-casier.mjustice.dz بإدخال رقم التعريف الوطني NIN ورقم الهاتف. ستصلك الوثيقة بصيغة PDF فوراً."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ما هو رابط منصة عدل 3 للتسجيل في السكنات؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "رابط منصة عدل AADL هو aadl.dz. يمكنك التسجيل في سكنات عدل 3 عند فتح الاكتتاب بإدخال رقم التعريف الوطني ورقم الضمان الاجتماعي."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "كيف أسجل في التسجيلات الجامعية الأولية عبر الإنترنت؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "تتم التسجيلات الجامعية الأولية عبر منصة orientation.esi.dz، ومتابعة المسار الدراسي عبر منصة Progres على progres.mesrs.dz بإدخال رقم البكالوريا."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "كيف أجدد منحة البطالة في الجزائر؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "جدد منحة البطالة عبر منصة ANEM على minha.anem.dz بإدخال رقم بطاقة طالب العمل ورقم التعريف الوطني. احجز موعدك إلكترونياً وتوجه لملحقة التشغيل."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "كيف أحصل على البطاقة الذهبية Edahabia من بريد الجزائر؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "اطلب البطاقة الذهبية Edahabia عبر الموقع eccp.poste.dz/commande-edahabia بإدخال رقم الحساب CCP (RIP)، اختر مكتب البريد لاستلامها، وتابع حالة الطلب عبر الموقع."
+        }
+      }
+    ]
+  };
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
+      {/* ✅ ItemList — يعطي محركات البحث فهرساً كاملاً لجميع الأقسام */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
+      {/* ✅ FAQPage — يظهر في Google Search كـ Rich Snippets */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <SocialProofCounter />
       <Header />
       <main>
         {/* Above-the-fold: loaded immediately */}
         <HeroSection />
 
+        {/* 🚀 قسم الخدمات الشائعة والمباشرة تريند */}
+        <TrendingServicesGrid />
+
         {/* Below-the-fold: server-rendered for search engines */}
         <ServicesMarquee />
+        <CategoriesSection />
         <NewsTicker />
         <SeasonalEvents />
         <div className="container mx-auto px-6 py-12 space-y-24">
           <DailyUtilities />
         </div>
-        <CategoriesSection />
         <SolutionsHub />
         <DigitalDirectory />
+
+        {/* 💬 قسم أسئلة واستفسارات المجتمع والتفاعل */}
+        <CommunityComments />
       </main>
       <Footer />
       <AIChatbot />

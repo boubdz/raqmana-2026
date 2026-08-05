@@ -7,9 +7,30 @@ import { Home, MessageSquare, ChevronLeft, Send, Sparkles, Star } from 'lucide-r
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'شاركنا رأيك | بوابة رقمنة الجزائر',
-  description: 'ملاحظاتك تساعدنا في تطوير وتسين بوابة رقمنة للخدمات الرقمية في الجزائر. شاركنا تجربتك واقتراحاتك لتحسين الخدمة.',
-  keywords: ['تقييم رقمنة', 'ملاحظات المستخدمين', 'تطوير الخدمات الرقمية الجزائر'],
+  title: 'شاركنا رأيك وملاحظاتك | بوابة رقمنة الجزائر 2026',
+  description: 'ملاحظاتك وتقييماتك تساعدنا في تطوير بوابة رقمنة للخدمات الرقمية الجزائرية. شاركنا تجربتك، اقتح إضافات، أو أبلغ عن مشاكل تقنية.',
+  keywords: [
+    'تقييم رقمنة', 'ملاحظات المستخدمين', 'تطوير الخدمات الرقمية الجزائر',
+    'اقتراحات رقمنة', 'الإبلاغ عن مشكلة', 'بوابة رقمنة',
+    'خدمات رقمية الجزائر', 'تحسين المنصة'
+  ],
+  alternates: {
+    canonical: 'https://raqmana.vercel.app/feedback',
+  },
+  openGraph: {
+    title: 'شاركنا رأيك | بوابة رقمنة الجزائر 2026',
+    description: 'ملاحظاتك وتقييماتك تساعدنا في تطوير بوابة رقمنة للخدمات الرقمية الجزائرية.',
+    url: 'https://raqmana.vercel.app/feedback',
+    type: 'website',
+    locale: 'ar_DZ',
+    siteName: 'رقمنة - Raqmana',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'شاركنا رأيك | رقمنة الجزائر',
+    description: 'ملاحظاتك تساعدنا في تحسين بوابة الخدمات الرقمية الجزائرية.',
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function FeedbackPage() {

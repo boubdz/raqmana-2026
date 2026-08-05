@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Printer, Download, Sparkles, FileText, Settings, Info, AlertCircle } from "lucide-react";
+import { Printer, Download, Sparkles, FileText, Settings, Info, AlertCircle, Edit3 } from "lucide-react";
 
 export function DocumentAssistant() {
   const [description, setDescription] = useState("");
@@ -24,6 +24,7 @@ export function DocumentAssistant() {
   const [tone, setTone] = useState("formal");
   const [includeSignature, setIncludeSignature] = useState(false);
   const [includeDate, setIncludeDate] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
   const getDocTypeName = () => {
     switch (docType) {
@@ -74,21 +75,127 @@ export function DocumentAssistant() {
   };
 
   const generatePDF = async () => {
-    const { default: html2canvas } = await import("html2canvas");
-    const { default: jsPDF } = await import("jspdf");
+    // Close editing mode before generating PDF
+    setIsEditing(false);
 
-    const element = document.getElementById("document-preview");
-    if (!element) return;
-    try {
-      const canvas = await html2canvas(element, { scale: 3 });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      pdf.addImage(imgData, "PNG", 0, 0, 210, (canvas.height * 210) / canvas.width);
-      pdf.save(`Raqmana_${getDocTypeName()}.pdf`);
-    } catch (error) {
-      console.error("Error generating PDF", error);
-    }
+    setTimeout(() => {
+      // Create a hidden iframe with isolated CSS to avoid oklch color parsing issues
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) return;
+
+      const element = document.getElementById('document-preview');
+      if (!element) return;
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl" lang="ar">
+        <head>
+          <meta charset="UTF-8">
+          <title>Raqmana - ${getDocTypeName()} إداري</title>
+          <style>
+            @page { size: A4; margin: 20mm; }
+            * { box-sizing: border-box; }
+            body { 
+              font-family: 'Times New Roman', Georgia, serif; 
+              direction: rtl; 
+              text-align: right;
+              color: #000;
+              background: #fff;
+              margin: 0; padding: 0;
+            }
+            .header { text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #ddd; }
+            .header h1 { font-size: 20px; font-weight: bold; margin: 0 0 8px; }
+            .header-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; opacity: 0.4; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; }
+            .content { font-size: 16px; line-height: 2; text-align: justify; white-space: pre-wrap; }
+            .footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; align-items: flex-end; }
+            .watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 42px; font-weight: 900; opacity: 0.04; color: #000; pointer-events: none; z-index: 0; text-align: center; direction: rtl; }
+          </style>
+        </head>
+        <body>
+          <div class="watermark">مكتب الاستشارات الادارية بلعايبة</div>
+          <div class="header">
+            <h1>الجمهورية الجزائرية الديمقراطية الشعبية</h1>
+            <div class="header-meta">
+              <span>Official Document</span>
+              <span>──────────────────</span>
+              <span>${getDocTypeName()} إداري</span>
+            </div>
+          </div>
+          <div class="content">${generatedText.replace(/\n/g, '<br>')}</div>
+          <div class="footer">
+            <div>
+              ${includeDate ? `<p style="font-size:12px;opacity:0.6">حرر بـ : بلعايبة في :  ${new Date().toLocaleDateString('ar-DZ')}</p>` : ''}
+              ${includeSignature ? `<p style="font-size:12px;opacity:0.6">توقيع المعني:</p>` : ''}
+            </div>
+          </div>
+          <script>
+            window.onload = function() { window.print(); window.close(); }
+          </script>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }, 150);
   };
+
+  const handlePrint = () => {
+    setIsEditing(false);
+    setTimeout(() => {
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) return;
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl" lang="ar">
+        <head>
+          <meta charset="UTF-8">
+          <title>طباعة - ${getDocTypeName()} إداري</title>
+          <style>
+            @page { size: A4; margin: 20mm; }
+            * { box-sizing: border-box; }
+            body { 
+              font-family: 'Times New Roman', Georgia, serif; 
+              direction: rtl; 
+              text-align: right;
+              color: #000;
+              background: #fff;
+              margin: 0; padding: 0;
+            }
+            .header { text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #ddd; }
+            .header h1 { font-size: 20px; font-weight: bold; margin: 0 0 8px; }
+            .header-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; opacity: 0.4; text-transform: uppercase; letter-spacing: 2px; margin-top: 16px; }
+            .content { font-size: 16px; line-height: 2; text-align: justify; white-space: pre-wrap; }
+            .footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; align-items: flex-end; }
+            .watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 42px; font-weight: 900; opacity: 0.04; color: #000; pointer-events: none; z-index: 0; text-align: center; direction: rtl; }
+          </style>
+        </head>
+        <body>
+          <div class="watermark">مكتب الاستشارات الادارية بلعايبة</div>
+          <div class="header">
+            <h1>الجمهورية الجزائرية الديمقراطية الشعبية</h1>
+            <div class="header-meta">
+              <span>Official Document</span>
+              <span>──────────────────</span>
+              <span>${getDocTypeName()} إداري</span>
+            </div>
+          </div>
+          <div class="content">${generatedText.replace(/\n/g, '<br>')}</div>
+          <div class="footer">
+            <div>
+              ${includeDate ? `<p style="font-size:12px;opacity:0.6">حرر بـ : بلعايبة في :  ${new Date().toLocaleDateString('ar-DZ')}</p>` : ''}
+              ${includeSignature ? `<p style="font-size:12px;opacity:0.6">توقيع المعني:</p>` : ''}
+            </div>
+          </div>
+          <script>
+            window.onload = function() { window.print(); window.close(); }
+          </script>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }, 150);
+  };
+
 
   return (
     <div className="space-y-12 max-w-6xl mx-auto pb-20" dir="rtl">
@@ -196,7 +303,15 @@ export function DocumentAssistant() {
           <div className="mb-8 flex items-center justify-between">
              <h3 className="text-2xl font-black uppercase tracking-tighter">المعاينة النهائية</h3>
              <div className="flex gap-4">
-                <Button onClick={() => window.print()} variant="outline" className="rounded-full h-12 px-6">
+                <Button 
+                  onClick={() => setIsEditing(!isEditing)} 
+                  variant="outline" 
+                  className={`rounded-full h-12 px-6 transition-all ${isEditing ? "bg-primary/10 border-primary/30 text-primary" : ""}`}
+                >
+                  <Edit3 className="me-2 h-4 w-4" /> 
+                  {isEditing ? "حفظ التعديل" : "تعديل النص"}
+                </Button>
+                <Button onClick={handlePrint} variant="outline" className="rounded-full h-12 px-6">
                   <Printer className="me-2 h-4 w-4" /> طباعة
                 </Button>
                 <Button onClick={generatePDF} className="rounded-full h-12 px-8 bg-primary">
@@ -214,7 +329,6 @@ export function DocumentAssistant() {
               {/* Official Algerian Header */}
               <div className="text-center mb-16 space-y-2 border-b-2 border-black/10 pb-10">
                 <h2 className="text-2xl font-bold tracking-tight">الجمهورية الجزائرية الديمقراطية الشعبية</h2>
-                <h3 className="text-lg font-medium opacity-60">وزارة الإدارة والرقمنة</h3>
                 <div className="pt-4 flex justify-between items-center text-sm font-bold opacity-40 uppercase tracking-widest">
                   <span>Official Document</span>
                   <div className="h-px bg-black/10 flex-1 mx-4" />
@@ -224,13 +338,22 @@ export function DocumentAssistant() {
 
               {/* Main Content */}
               <div className="text-xl leading-[2] text-justify whitespace-pre-wrap font-serif">
-                {generatedText}
+                {isEditing ? (
+                  <Textarea
+                    value={generatedText}
+                    onChange={(e) => setGeneratedText(e.target.value)}
+                    className="text-xl leading-[2] text-justify font-serif w-full min-h-[500px] border-dashed border-2 border-primary/30 p-6 rounded-2xl bg-transparent resize-y text-black focus-visible:ring-0 focus-visible:border-primary focus:outline-none"
+                    style={{ fontFamily: "'Times New Roman', serif" }}
+                  />
+                ) : (
+                  <div>{generatedText}</div>
+                )}
               </div>
 
               {/* Footer Section */}
               <div className="mt-20 pt-10 border-t border-black/5 flex justify-between items-end">
                 <div className="space-y-4">
-                  {includeDate && <p className="text-sm font-bold opacity-60">حرر بـ : ................... في : {new Date().toLocaleDateString("ar-DZ")}</p>}
+                  {includeDate && <p className="text-sm font-bold opacity-60">حرر بـ : بلعايبة في :  {new Date().toLocaleDateString("ar-DZ")}</p>}
                   {includeSignature && <p className="text-sm font-bold opacity-60">توقيع المعني:</p>}
                 </div>
                 <div className="h-24 w-24 rounded-full border-4 border-dashed border-black/5 flex items-center justify-center text-[10px] font-black opacity-10 uppercase -rotate-12">
@@ -240,7 +363,7 @@ export function DocumentAssistant() {
 
               {/* Watermark */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none">
-                 <span className="text-[12rem] font-black uppercase -rotate-45">RAQMANA</span>
+                 <span className="text-[3.5rem] font-black -rotate-45 text-center leading-tight">مكتب الاستشارات الادارية بلعايبة</span>
               </div>
             </div>
           </Card>

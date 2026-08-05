@@ -1,17 +1,19 @@
 import { serviceCategories } from "@/lib/services-data";
+import { CommunityComments } from "@/components/community-comments";
 import { notFound } from "next/navigation";
+import { seoArticles } from "@/lib/seo-articles-data";
 import Link from "next/link";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ServiceCard } from "@/components/service-card";
 import { ParticlesBackground } from "@/components/particles-background";
 import { Button } from "@/components/ui/button";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Globe, 
-  Phone, 
-  Zap, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Globe,
+  Phone,
+  Zap,
   Info,
   ExternalLink,
   ArrowRight,
@@ -22,23 +24,23 @@ import {
   Wallet
 } from "lucide-react";
 import { Metadata } from "next";
-import { 
-  Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi, 
-  Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench, 
-  Building, Landmark, Shield, Plane, Package, UserCheck, Moon, 
-  Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets
+import {
+  Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi,
+  Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench,
+  Building, Landmark, Shield, Plane, Package, UserCheck, Moon,
+  Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, MonitorSmartphone
 } from "lucide-react";
 
 // Map icons for dynamic rendering
 const iconMap: Record<string, React.ElementType> = {
-  Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi, 
-  Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench, 
-  Building, FileText, Landmark, Globe, Shield, Plane, Package, UserCheck, Moon, 
-  Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, Sparkles, Wallet
+  Scale, Heart, GraduationCap, Banknote, Car, Home, Briefcase, Users, Wifi,
+  Building2, ShoppingBag, Wheat, Receipt, Smartphone, Mail, School, Wrench,
+  Building, FileText, Landmark, Globe, Shield, Plane, Package, UserCheck, Moon,
+  Vote, ShieldCheck, Radio, ShieldPlus, Leaf, Droplets, Sparkles, Wallet, MonitorSmartphone
 };
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 // Arabic translations for sub-categories
@@ -84,6 +86,7 @@ export async function generateStaticParams() {
 
 // Arabic translations for categories (for server components)
 const categoryNamesAr: Record<string, string> = {
+  dzds: "البوابة الجزائرية للخدمات الرقمية",
   bills: "الدفع الإلكتروني للفواتير",
   mobile: "تعبئة الهاتف النقال",
   post: "بريد الجزائر",
@@ -170,6 +173,45 @@ const trendingKeywordsMap: Record<string, string[]> = {
   retirement: ["صندوق التقاعد CNR", "تطبيق تقاعدي", "تتبع ملف التقاعد", "حساب المتقاعد", "صب المعاشات الجزائر", "الحساب الفردي للأجور", "التقاعد المنقول", "تثمين المعاش", "صاحب العمل cnr"],
 };
 
+const highConvertingCategoryTitles: Record<string, { title: string; description: string }> = {
+  employment: {
+    title: "منحة البطالة 2026 ANEM 🇩🇿 — الرابط المباشر لتجديد وحجز مواعيد التشغيل",
+    description: "الرابط المباشر والمعتمد لتجديد منحة البطالة minha.anem.dz، حجز مواعيد المقابلة عبر وسيط WASIT، وتحديث طالب العمل فوراً بضغطة واحدة ⚡",
+  },
+  interior: {
+    title: "البوابة الرقمية لاستخراج الوثائق 2026 🇩🇿 — S12، جواز السفر وبطاقة التعريف",
+    description: "استخرج شهادة الميلاد S12 الإلكترونية، جواز السفر البيومتري، بطاقة التعريف الوطنية، وعقد الزواج فوراً بدون التنقل ⚡",
+  },
+  justice: {
+    title: "صحيفة السوابق القضائية e-Casier 2026 🇩🇿 — استخراج فوري أونلاين",
+    description: "رابط استخراج صحيفة السوابق القضائية وشهادة الجنسية الجزائرية عبر منصة وزارة العدل e-casier.mjustice.dz بصيغة PDF فوراً ⚡",
+  },
+  post: {
+    title: "بريد الجزائر ECCP 2026 🇩🇿 — طلب البطاقة الذهبية وتطبيق بريدي موب",
+    description: "طلب البطاقة الذهبية Edahabia، كشف رصيد الحساب الجاري ECCP، ودفع الفواتير عبر تطبيق BaridiMob بروابط مباشرة 💳⚡",
+  },
+  education: {
+    title: "نتائج ومسابقات وزارة التربية 2026 🇩🇿 — فضاء الأولياء والأساتذة",
+    description: "استعلام نتائج البكالوريا BAC، BEM، مسابقة توظيف الأساتذة concours.onec.dz، وتسجيلات فضاء الأولياء awlyaa 📢⚡",
+  },
+  university: {
+    title: "منصة بروغرس الجامعية Progres MESRS 2026 🇩🇿 — التحويلات وتسجيل الباك",
+    description: "رابط منصة بروغرس الجامعية progres.mesrs.dz/webetu لحاملي البكالوريا: التحويلات الجامعية، المنحة، والإيواء الجامعي 🎓⚡",
+  },
+  aadl: {
+    title: "منصة سكنات عدل 3 AADL 2026 🇩🇿 — الرابط المباشر للتسجيل ودفع الكراء",
+    description: "رابط التسجيل في سكنات عدل 3 (aadl.dz)، تتبع حالة الملف، دفع شطور الكراء، وطلب إعانة السكن FNPOS فوراً 🏠⚡",
+  },
+  tax: {
+    title: "الضرائب والتصريح الجبائي Jibayatic 2026 🇩🇿 — NIF وقسيمة السيارة",
+    description: "منصة التصريح الجبائي الإلكتروني jibayatic.mf.gov.dz، استخراج الرقم الجبائي NIF، وحساب قسيمة السيارات أونلاين ⚡",
+  },
+  police: {
+    title: "تسجيلات الجيش الوطني الشعبي MDN 2026 🇩🇿 — الرابط المباشر للتجنيد",
+    description: "موقع التسجيل الأولي للضباط وضباط الصف المتعاقدين بكافة القوات preinscription.mdn.dz — الشروط والملف المطلوبة 🛡️⚡",
+  },
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const category = serviceCategories.find((cat) => cat.id === id);
@@ -179,8 +221,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   const categoryName = categoryNamesAr[id] || category.nameKey;
-  const title = `خدمات ${categoryName} الرقمية في الجزائر 2026 | روابط التسجيل والمنصات الرسمية`;
-  const description = category.descriptionAr || `دليلك الشامل لخدمات قطاع ${categoryName} في الجزائر لعام 2026. تصفح الروابط المباشرة لشهادات الميلاد، منصات الدفع الإلكتروني، وتطبيقات الهاتف الرسمية. وفر وقتك واصل للخدمة بضغطة واحدة.`;
+  
+  const highConv = highConvertingCategoryTitles[id];
+  const title = highConv ? highConv.title : `${categoryName} 2026 🇩🇿 — البوابة الوطنية للخدمات الرقمية`;
+  const description = highConv ? highConv.description : (category.descriptionAr || `الرابط المباشر والمعتمد لجميع خدمات ومواقع ${categoryName} في الجزائر 2026. ووفر وقتك واستخرج وثائقك فوراً بضغطة واحدة ⚡`);
 
   // Extract specific service names for keywords
   const serviceNames = [
@@ -194,12 +238,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     keywords: [
-      categoryName, 
-      "رقمنة الجزائر", 
-      "خدمات رقمية", 
-      "الجزائر 2026", 
-      "روابط رسمية", 
-      "منصة رقمنة",
+      categoryName,
+      "البوابة الوطنية للخدمات الرقمية",
+      "البوابة الجزائرية للخدمات الرقمية",
+      "البوابة الرقمية لاستخراج الوثائق",
+      "رقمنة الجزائر",
+      "خدمات رقمية",
+      "الجزائر 2026",
+      "روابط مباشرة",
       ...trendingKeywords,
       ...serviceNames.slice(0, 10),
       id
@@ -209,7 +255,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: "article",
       locale: "ar_DZ",
-      siteName: "رقمنة - Raqmana",
+      siteName: "رقمنة الجزائر — البوابة الوطنية للخدمات الرقمية",
       images: [
         {
           url: `/og-image.png`,
@@ -237,8 +283,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const { id } = await params;
-  const category = serviceCategories.find((cat) => cat.id === id);
-  if (!category) return notFound();
+  const categoryIndex = serviceCategories.findIndex((cat) => cat.id === id);
+  if (categoryIndex === -1) return notFound();
+  
+  const category = serviceCategories[categoryIndex];
+  const prevCategory = serviceCategories[(categoryIndex - 1 + serviceCategories.length) % serviceCategories.length];
+  const nextCategory = serviceCategories[(categoryIndex + 1) % serviceCategories.length];
 
   const IconComponent = iconMap[category.icon] || Info;
   const isAgriculture = id === "agriculture";
@@ -303,8 +353,8 @@ export default async function CategoryPage({ params }: Props) {
       "@type": "WebPage",
       "name": `خدمات ${categoryName} الرقمية في الجزائر 2026`,
       "description": `دليل الخدمات الرقمية لقطاع ${categoryName} في الجزائر لعام 2026`,
-      "publisher": { 
-        "@type": "Organization", 
+      "publisher": {
+        "@type": "Organization",
         "name": "رقمنة - Raqmana",
         "logo": {
           "@type": "ImageObject",
@@ -339,15 +389,15 @@ export default async function CategoryPage({ params }: Props) {
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#050505]" dir="rtl">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Header />
-      
+
       <main className="pb-32">
         {/* Antigravity Style Category Hero */}
         <div className="relative pt-40 pb-20 overflow-hidden">
           <ParticlesBackground />
           <div className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-10">
-            <div className="absolute inset-0" style={{ 
+            <div className="absolute inset-0" style={{
               backgroundImage: `radial-gradient(circle at 2px 2px, rgba(0,0,0,0.1) 1px, transparent 0)`,
-              backgroundSize: '40px 40px' 
+              backgroundSize: '40px 40px'
             }} />
           </div>
 
@@ -357,7 +407,7 @@ export default async function CategoryPage({ params }: Props) {
               <ChevronLeft className="h-3 w-3" />
               <span className="text-primary">{categoryName}</span>
             </nav>
-            
+
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
               <div className="max-w-3xl">
                 <div className={`mb-8 inline-flex h-20 w-20 items-center justify-center rounded-[2rem] bg-gradient-to-br ${category.color} text-white shadow-2xl`}>
@@ -371,7 +421,7 @@ export default async function CategoryPage({ params }: Props) {
                 </p>
               </div>
               <div className="hidden lg:block opacity-5 group select-none pointer-events-none">
-                 <span className="text-[10rem] font-black uppercase tracking-tighter leading-none">{id}</span>
+                <span className="text-[10rem] font-black uppercase tracking-tighter leading-none">{id}</span>
               </div>
             </div>
           </div>
@@ -382,7 +432,7 @@ export default async function CategoryPage({ params }: Props) {
           <div className="grid gap-12 lg:grid-cols-3">
             {/* Main Guides & Services */}
             <div className="lg:col-span-2 space-y-16">
-              
+
               {/* Services Grid — web portals only (no apps) */}
               {(() => {
                 const flatPortals = (category.services ?? []).filter(s => !s.isApp);
@@ -475,6 +525,85 @@ export default async function CategoryPage({ params }: Props) {
                 );
               })()}
 
+              {/* Detailed SEO Article Section */}
+              {(() => {
+                const seoArticle = seoArticles[id];
+                const fallbackSeoArticle = {
+                  title: `دليل الخدمات الرقمية المتاحة لقطاع ${categoryName} في الجزائر 2026`,
+                  introduction: `يوفر هذا القسم دليلاً كاملاً وسريعاً للوصول إلى كافة روابط الخدمات الإلكترونية والمنصات الرسمية الخاصة بقطاع ${categoryName} في الجزائر لعام 2026. وفر وقتك وتعرف على كيفية استخدام الخدمات مباشرة.`,
+                  sections: [
+                    {
+                      heading: `نبذة عن خدمات ${categoryName}`,
+                      content: category.descriptionAr || `يهدف هذا القسم لمساعدتك على تصفح والولوج إلى كافة المواقع الرسمية والتطبيقات التابعة لقطاع ${categoryName} الموفرة من الهيئات الرسمية بالجزائر، لتمكينك من إتمام معاملاتك الإدارية والخدمية عن بعد دون التنقل.`
+                    },
+                    {
+                      heading: `كيفية استخدام المنصات الحكومية التابعة للقطاع`,
+                      content: `للاستفادة القصوى من الخدمات، ننصحك بالتحضير المسبق لبطاقتك البيومترية ورقم التعريف الوطني (NIN). يمكنك الولوج مباشرة للروابط الموضحة أعلاه للبدء في طلب شهادات الميلاد، استخراج الوثائق الإدارية، دفع الفواتير أو تعبئة الخدمات إلكترونياً وبطريقة آمنة بنسبة 100%.`
+                    }
+                  ]
+                };
+
+                const activeArticle = seoArticle || fallbackSeoArticle;
+
+                return (
+                  <article className="space-y-10">
+                    <div className="mb-10 flex items-center gap-4 border-b border-black/5 dark:border-white/5 pb-6">
+                      <h3 className="text-2xl font-black uppercase tracking-tighter">دليل إرشادي ومعلومات التسجيل</h3>
+                      <div className="h-px flex-1 bg-black/5 dark:bg-white/5"></div>
+                    </div>
+
+                    <div className="bg-white dark:bg-[#0c0c0c] border border-black/5 dark:border-white/5 rounded-[2.5rem] p-10 shadow-sm space-y-8">
+                      <h2 className="text-2xl font-black text-foreground tracking-tight leading-snug">
+                        {activeArticle.title}
+                      </h2>
+                      <p className="text-muted-foreground leading-relaxed text-lg font-medium">
+                        {activeArticle.introduction}
+                      </p>
+
+                      <div className="space-y-8 mt-6">
+                        {activeArticle.sections.map((section, sIdx) => (
+                          <div key={sIdx} className="space-y-3">
+                            <h3 className="text-lg font-bold text-[#1a1a1a] dark:text-white flex items-center gap-2">
+                              <span className="h-2 w-2 rounded-full bg-primary" />
+                              {section.heading}
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed font-medium ps-4">
+                              {section.content}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+
+                      {activeArticle.registrationRequiredSites && activeArticle.registrationRequiredSites.length > 0 && (
+                        <div className="mt-10 border-t border-black/5 dark:border-white/5 pt-8 space-y-6">
+                          <div className="flex items-center gap-3">
+                            <Zap className="h-5 w-5 text-primary animate-pulse" />
+                            <h4 className="text-base font-black text-foreground">
+                              مواقع في هذا القطاع تتطلب التسجيل المسبق:
+                            </h4>
+                          </div>
+                          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+                            {activeArticle.registrationRequiredSites.map((site, sIdx) => (
+                              <div key={sIdx} className="bg-primary/[0.02] dark:bg-white/[0.01] border border-primary/10 dark:border-white/5 rounded-2xl p-5 hover:border-primary/20 transition-colors">
+                                <h5 className="font-bold text-sm text-primary mb-2 flex items-center justify-between">
+                                  <span>{site.name}</span>
+                                  <a href={site.url} target="_blank" rel="noopener noreferrer" className="text-xs font-bold hover:underline flex items-center gap-1">
+                                    زيارة الموقع <ExternalLink className="h-3 w-3" />
+                                  </a>
+                                </h5>
+                                <p className="text-xs text-muted-foreground leading-relaxed">
+                                  <strong>متطلبات التسجيل:</strong> {site.requirements}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                );
+              })()}
+
               {/* Educational Guides */}
               {category.usageGuides && category.usageGuides.length > 0 && (
                 <div className="space-y-10">
@@ -508,91 +637,99 @@ export default async function CategoryPage({ params }: Props) {
 
             {/* Side Info */}
             <div className="space-y-8">
-               <div className="sticky top-32 space-y-8">
-                  <div className="bg-white dark:bg-[#0c0c0c] border border-black/5 dark:border-white/5 rounded-[2.5rem] p-8 shadow-sm">
-                    <h4 className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-8">معلومات التواصل</h4>
-                    <div className="space-y-6">
-                      {category.officialSite && (
-                        <div className="space-y-3">
-                          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">الموقع الرسمي</p>
-                          <a href={category.officialSite} target="_blank" className="flex items-center gap-4 bg-[#f5f5f5] dark:bg-white/5 p-4 rounded-2xl hover:scale-[1.02] transition-transform">
-                            <Globe className="h-5 w-5 text-primary" />
-                            <span className="text-sm font-bold truncate flex-1">{category.officialSite}</span>
-                          </a>
-                        </div>
-                      )}
-                      {category.phone && (
-                        <div className="space-y-3">
-                          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">الرقم المباشر</p>
-                          <a href={`tel:${category.phone}`} className="flex items-center gap-4 bg-[#1a1a1a] dark:bg-white text-white dark:text-black p-5 rounded-2xl hover:scale-[1.02] transition-transform">
-                            <Phone className="h-5 w-5" />
-                            <span className="text-2xl font-black tracking-[0.2em]">{category.phone}</span>
-                          </a>
-                        </div>
-                      )}
-                    </div>
+              <div className="sticky top-32 space-y-8">
+                <div className="bg-white dark:bg-[#0c0c0c] border border-black/5 dark:border-white/5 rounded-[2.5rem] p-8 shadow-sm">
+                  <h4 className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-8">معلومات التواصل</h4>
+                  <div className="space-y-6">
+                    {category.officialSite && (
+                      <div className="space-y-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">الموقع الرسمي</p>
+                        <a href={category.officialSite} target="_blank" className="flex items-center gap-4 bg-[#f5f5f5] dark:bg-white/5 p-4 rounded-2xl hover:scale-[1.02] transition-transform">
+                          <Globe className="h-5 w-5 text-primary" />
+                          <span className="text-sm font-bold truncate flex-1">{category.officialSite}</span>
+                        </a>
+                      </div>
+                    )}
+                    {category.phone && (
+                      <div className="space-y-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">الرقم المباشر</p>
+                        <a href={`tel:${category.phone}`} className="flex items-center gap-4 bg-[#1a1a1a] dark:bg-white text-white dark:text-black p-5 rounded-2xl hover:scale-[1.02] transition-transform">
+                          <Phone className="h-5 w-5" />
+                          <span className="text-2xl font-black tracking-[0.2em]">{category.phone}</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
+                </div>
 
-                  {/* Adahi Banner if Agriculture */}
-                  {isAgriculture && (
-                    <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-[2.5rem] p-8 text-white shadow-xl">
-                      <h4 className="text-sm font-black uppercase tracking-widest mb-4">Trending Now</h4>
-                      <h2 className="text-3xl font-black tracking-tighter mb-4 leading-none">أضاحي 2026</h2>
-                      <p className="text-white/80 text-sm mb-6 leading-relaxed">احجز أضحيتك الآن عبر المنصة الرسمية المعتمدة.</p>
-                      <Button className="w-full bg-white text-emerald-900 font-black rounded-xl h-14" asChild>
-                         <a href="https://adhahi.dz" target="_blank">زيارة المنصة</a>
-                      </Button>
-                    </div>
-                  )}
-               </div>
+                {/* Adahi Banner if Agriculture */}
+                {isAgriculture && (
+                  <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-[2.5rem] p-8 text-white shadow-xl">
+                    <h4 className="text-sm font-black uppercase tracking-widest mb-4">Trending Now</h4>
+                    <h2 className="text-3xl font-black tracking-tighter mb-4 leading-none">أضاحي 2026</h2>
+                    <p className="text-white/80 text-sm mb-6 leading-relaxed">احجز أضحيتك الآن عبر المنصة الرسمية المعتمدة.</p>
+                    <Button className="w-full bg-white text-emerald-900 font-black rounded-xl h-14" asChild>
+                      <a href="https://adhahi.dz" target="_blank">زيارة المنصة</a>
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* ===== قسم التنقل بين الصفحات — يساعد Googlebot على فهرسة كل الصفحات ===== */}
+        {/* ===== قسم التنقل بين الصفحات (Sequential Interlinking) ===== */}
         <div className="container mx-auto px-6 mt-20 mb-10">
           <div className="border-t border-black/5 dark:border-white/5 pt-16">
-            <div className="flex items-center gap-4 mb-10">
-              <LayoutGrid className="h-5 w-5 text-primary" />
-              <h2 className="text-sm font-black uppercase tracking-[0.3em] text-muted-foreground/60">
-                استكشف أقسامًا أخرى
-              </h2>
-              <div className="h-px flex-1 bg-black/5 dark:bg-white/5"></div>
-              <Link
-                href="/sitemap"
-                className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline flex items-center gap-1"
+            <h2 className="text-xl font-black text-center mb-10 text-muted-foreground">
+              استكشف المزيد من الخدمات
+            </h2>
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+              {/* Previous Category */}
+              <Link 
+                href={`/categories/${prevCategory.id}`}
+                className="group flex w-full sm:w-1/2 items-start gap-4 rounded-3xl bg-white dark:bg-[#0c0c0c] border border-black/[0.04] dark:border-white/[0.04] p-6 hover:-translate-y-1 hover:shadow-xl hover:border-primary/20 transition-all duration-500"
               >
-                كل الأقسام
-                <ArrowRight className="h-3 w-3" />
+                <div className="h-12 w-12 mt-1 shrink-0 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-white transition-colors">
+                  <ArrowRight className="h-5 w-5" />
+                </div>
+                <div className="text-right flex-1 min-w-0">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50 mb-1">القسم السابق</p>
+                  <p className="text-lg font-bold text-[#1a1a1a] dark:text-white group-hover:text-primary transition-colors mb-2">
+                    {categoryNamesAr[prevCategory.id] || prevCategory.id}
+                  </p>
+                  <p className="text-xs text-muted-foreground/70 font-medium line-clamp-2 leading-relaxed">
+                    {prevCategory.descriptionAr || `استكشف خدمات ${categoryNamesAr[prevCategory.id]} والمنصات الرقمية المرتبطة بها.`}
+                  </p>
+                </div>
+              </Link>
+
+              {/* Next Category */}
+              <Link 
+                href={`/categories/${nextCategory.id}`}
+                className="group flex w-full sm:w-1/2 items-start gap-4 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 p-6 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/40 transition-all duration-500"
+              >
+                <div className="text-left flex-1 min-w-0">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-primary/70 mb-1">القسم التالي</p>
+                  <p className="text-lg font-bold text-primary group-hover:text-primary/80 transition-colors mb-2">
+                    {categoryNamesAr[nextCategory.id] || nextCategory.id}
+                  </p>
+                  <p className="text-xs text-primary/60 font-medium line-clamp-2 leading-relaxed">
+                    {nextCategory.descriptionAr || `انتقل إلى قسم ${categoryNamesAr[nextCategory.id]} للوصول إلى الخدمات الرقمية.`}
+                  </p>
+                </div>
+                <div className="h-12 w-12 mt-1 shrink-0 rounded-2xl bg-primary text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <ChevronLeft className="h-5 w-5" />
+                </div>
               </Link>
             </div>
-            <nav aria-label="أقسام المنصة الأخرى">
-              <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                {serviceCategories
-                  .filter((cat) => cat.id !== id)
-                  .map((cat) => {
-                    const CatIcon = iconMap[cat.icon] || Info;
-                    return (
-                      <li key={cat.id}>
-                        <Link
-                          href={`/categories/${cat.id}`}
-                          className="group flex flex-col items-center gap-2 rounded-2xl bg-white dark:bg-[#0c0c0c] border border-black/[0.04] dark:border-white/[0.04] p-4 text-center hover:-translate-y-1 hover:shadow-md hover:border-primary/20 transition-all duration-300"
-                        >
-                          <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center text-white shadow`}>
-                            <CatIcon className="h-4 w-4" />
-                          </div>
-                          <span className="text-[11px] font-bold text-foreground/70 group-hover:text-primary transition-colors leading-tight line-clamp-2">
-                            {categoryNamesAr[cat.id] || cat.id}
-                          </span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-              </ul>
-            </nav>
           </div>
         </div>
       </main>
+
+      {/* 💬 قسم التعليقات والتفاعل المجتمعي خاص بكل قسم */}
+      <CommunityComments categoryId={id} categoryName={categoryName} />
+
       <Footer />
     </div>
   );

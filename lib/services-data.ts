@@ -4,6 +4,9 @@ export interface ServiceLink {
   phone?: string
   isApp?: boolean
   status?: "active" | "slow" | "down"
+  customStatusNote?: string
+  isTrending?: boolean
+  icon?: string
 }
 
 export interface SubCategory {
@@ -26,6 +29,34 @@ export interface ServiceCategory {
 }
 
 export const serviceCategories: ServiceCategory[] = [
+  // 0. البوابة الجزائرية للخدمات الرقمية
+  {
+    id: "dzds",
+    nameKey: "category.dzds",
+    icon: "MonitorSmartphone",
+    color: "from-blue-600 to-indigo-700",
+    officialSite: "https://dzds.dz/",
+    descriptionAr: "البوابة الجزائرية للخدمات الرقمية (dzds.dz): المنصة الوطنية الموحدة الشاملة التي تتيح للمواطنين الوصول المباشر لكافة الخدمات الإدارية والحكومية بطريقة آمنة وسريعة.",
+    status: "active",
+    usageGuides: [
+      {
+        title: "كيفية التسجيل في البوابة الجزائرية للخدمات الرقمية",
+        steps: [
+          "الدخول إلى الموقع الرسمي للبوابة (dzds.dz).",
+          "النقر على زر 'إنشاء حساب جديد' أو 'تسجيل الدخول'.",
+          "إدخال رقم التعريف الوطني (NIN) المكون من 18 رقماً.",
+          "تأكيد الهوية باستخدام رقم الهاتف ووسائل التحقق المتاحة.",
+          "الوصول إلى لوحة التحكم الخاصة بك واستخراج الوثائق الإدارية أو إجراء الطلبات."
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: "البوابة الجزائرية للخدمات الرقمية", en: "Algerian Digital Services Portal" }, url: "https://dzds.dz/" },
+      { name: { ar: "📖 الدليل الشامل لاستعمال بوابة dzds.dz", en: "📖 Full Guide to Using dzds.dz" }, url: "/solutions/dzds-comprehensive-guide" },
+      { name: { ar: "دليل التسجيل في البوابة الرقمية dzds.dz", en: "Guide to Registering on dzds.dz" }, url: "/solutions/dzds-portal-guide" },
+      { name: { ar: "تطبيق بوابة الخدمات الرقمية (بوابة المواطن) للأندرويد", en: "Digital Services Portal (Bawaba) Android App" }, url: "https://play.google.com/store/apps/details?id=com.linewell.citizen.aljly", isApp: true },
+    ],
+  },
   // 1. خدمات الدفع الإلكتروني للفواتير
   {
     id: "bills",
@@ -289,7 +320,7 @@ export const serviceCategories: ServiceCategory[] = [
       {
         nameKey: "subcategory.eduTeacher",
         services: [
-          { name: { ar: "المنصة الرقمية للأساتذة", en: "Teacher Platform" }, url: "https://ostadeducationdz.com/" },
+          { name: { ar: "المنصة الرقمية للأساتذة", en: "Teacher Platform" }, url: "https://ostad.education.dz" },
           { name: { ar: "تقييم المكتسبات", en: "Learning Assessment" }, url: "https://taqiim.education.dz/auth" },
           { name: { ar: "المنصة الرقمية لتوظيف الأساتذة (تعاقد - تسجيل ونتائج)", en: "Teacher Recruitment Platform (Tawdif - Apply & Results)" }, url: "https://tawdif.education.dz" },
           { name: { ar: "التسجيل في مسابقة توظيف الأساتذة", en: "Teacher Recruitment Competition" }, url: "https://concours.onec.dz" },
@@ -351,10 +382,21 @@ export const serviceCategories: ServiceCategory[] = [
           "الاطلاع على الجدول الزمني، المحاضرات، وكشوف النقاط.",
           "دفع حقوق التسجيل السنوية عبر البطاقة الذهبية مباشرة."
         ]
+      },
+      {
+        title: "دليل استخدام منصة RAG لمرافقة الطلبة الجدد",
+        steps: [
+          "الدخول إلى موقع المنصة الرسمي (rag.mesrs.dz).",
+          "تسجيل الدخول باستخدام رقم تسجيل البكالوريا كاسم مستخدم، والرقم السري لكشف نقاط البكالوريا.",
+          "الاطلاع على اسم وتفاصيل الأستاذ المرافق (Tuteur) المخصص لك.",
+          "الاستفادة من فضاءات الدعم اللغوي والرقمي المتاحة بالمنصة لتسهيل اندماجك.",
+          "التواصل مع الأستاذ المرافق عبر المنصة لطرح أي استفسارات بيداغوجية."
+        ]
       }
     ],
     services: [
       { name: { ar: "التسجيل الأولي الجامعي", en: "University Pre-registration" }, url: "https://www.orientation.esi.dz" },
+      { name: { ar: "منصة مرافقة الطلبة الجدد (RAG)", en: "New Students Accompanying Portal (RAG)" }, url: "https://rag.mesrs.dz/" },
       { name: { ar: "منصة Progres", en: "Progres Platform" }, url: "https://progres.mesrs.dz" },
       { name: { ar: "دفع حقوق إعادة التسجيل", en: "Re-registration Fee Payment" }, url: "https://progres.mesrs.dz/paiement" },
       { name: { ar: "دفع حقوق الإيواء", en: "Accommodation Fee Payment" }, url: "https://progres.mesrs.dz/hebergement" },
@@ -403,6 +445,7 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
+      { name: { ar: "البوابة الوطنية للخدمات الرقمية (المحافظة السامية للرقمنة)", en: "National Digital Services Portal (HCN)" }, url: "https://www.hcn.dz/" },
       { name: { ar: "استخراج شهادة الميلاد", en: "Birth Certificate" }, url: "https://etatcivil.interieur.gov.dz" },
       { name: { ar: "استخراج عقد الزواج", en: "Marriage Certificate" }, url: "https://etatcivil.interieur.gov.dz/ActeMariage/" },
       { name: { ar: "استخراج شهادة الميلاد S12", en: "S12 Birth Certificate" }, url: "https://demande12s.interieur.gov.dz/Ar/default.aspx" },
@@ -610,6 +653,7 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
+      { name: { ar: "بوابة التصديق الإلكتروني (الغرفة الوطنية للموثقين)", en: "Notary E-Apostille Portal" }, url: "https://apostille.hcn.dz/" },
       { name: { ar: "ترحيل الوثائق للتصديق", en: "Document Apostille" }, url: "https://aptracking.poste.dz//" },
       { name: { ar: "كاتب الدولة للجالية بالخارج", en: "Diaspora Secretary" }, url: "https://www.mfa.gov.dz/ar/contact" },
       { name: { ar: "الممثليات الدبلوماسية الجزائرية", en: "Algerian Embassies" }, url: "https://www.mfa.gov.dz/ar/foreign-diplomatic-and-consular-representations-in-algeria" },
@@ -930,10 +974,11 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
+      { name: { ar: "تسجيلات الجيش الوطني الشعبي (موقع MDN)", en: "MDN Military Pre-registration" }, url: "https://preinscription.mdn.dz", isTrending: true, customStatusNote: "منصة التسجيلات الأولية للضباط وضباط الصف ورجال الصف (تجنيد 2026)", status: "active" },
       { name: { ar: "التصريح بضياع الوثائق", en: "Lost Document Declaration" }, url: "https://www.algeriepolice.dz/e-declaration/" },
       { name: { ar: "إدلاء بشهادة", en: "Give Testimony" }, url: "https://www.dgsn.dz/?-%D8%A5%D8%AF%D9%84%D8%A7%D8%A1-%D8%A8%D8%B4%D9%87%D8%A7%D8%AF%D8%A9,583-" },
       { name: { ar: "بحث في فائدة العائلات", en: "Family Search" }, url: "https://www.dgsn.dz/?-%D8%A8%D8%AD%D8%AB-%D9%81%D9%8A-%D9%81%D8%A7%D8%A6%D8%AF%D8%A9-" },
-      { name: { ar: "الدليل الهاتفي", en: "Phone Directory" }, url: "https://www.dgsn.dz/?-%D8%AF%D9%84%D9%8A%D9%84-" },
+      { name: { ar: "الدليل الهاتفي للأمن", en: "Police Phone Directory" }, url: "https://www.dgsn.dz/?-%D8%AF%D9%84%D9%8A%D9%84-" },
       { name: { ar: "تطبيق ألو شرطة Allo Chorta", en: "Allo Chorta App" }, url: "https://play.google.com/store/apps/details?id=allochorta.algeriepolice.dz", isApp: true },
     ],
   },
@@ -1138,6 +1183,7 @@ export const serviceCategories: ServiceCategory[] = [
     services: [
       { name: { ar: "بوابة وزارة الشباب والرياضة", en: "MJS Portal" }, url: "https://www.mjs.gov.dz" },
       { name: { ar: "التسجيل في دور الشباب", en: "Youth Centers Registration" }, url: "https://www.mjs.gov.dz/maisons-jeunes" },
+      { name: { ar: "التسجيل في تكوين صيانة الهواتف النقالة", en: "Mobile Phone Repair Training Registration" }, url: "https://takwin.dz/inscription/264797?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExeGRpM0dLU1dvUG5KRzNIRnNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR6APjrqMe0X52ywiI7EzYjH9FjilzD6mwTiyXI_usRWbQaJ5pXWn7dXhGdI6g_aem_vL-PNjDfeHHCRReB2P7rfg" },
       { name: { ar: "المخيمات الصيفية INJEP", en: "Summer Camps INJEP" }, url: "https://www.injep.dz" },
       { name: { ar: "الجمعية الجزائرية للرياضة المدرسية", en: "School Sports Association" }, url: "https://www.asas.dz" },
       { name: { ar: "الاتحاد الجزائري لكرة القدم FAF", en: "FAF Football Federation" }, url: "https://www.faf.dz" },

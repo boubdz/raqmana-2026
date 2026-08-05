@@ -8,32 +8,55 @@ import { SiteShare } from '@/components/site-share'
 import Script from 'next/script'
 import './globals.css'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 })
 
 const alexandria = Alexandria({
   subsets: ["arabic"],
   variable: "--font-alexandria",
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
 })
 
 export const metadata: Metadata = {
   title: {
-    default: 'البوابة الجزائرية للخدمات الرقمية | رقمنة 2026 - روابط رسمية مباشرة',
-    template: '%s | البوابة الجزائرية للخدمات الرقمية'
+    default: 'البوابة الوطنية للخدمات الرقمية 2026 🇩🇿 — الرابط المباشر لكل المنصات والوثائق',
+    template: '%s | رقمنة'
   },
-  description: 'البوابة الجزائرية للخدمات الرقمية رقمنة 2026: دليل مستقل للوصول السريع إلى روابط الخدمات الحكومية والعمومية في الجزائر، استخراج الوثائق، دفع الفواتير، بريد الجزائر، عدل، التعليم، التشغيل والعدالة.',
+  description: 'البوابة الوطنية الجزائرية للخدمات الرقمية (رقمنة 2026): 267+ خدمة مجمعة بروابط مباشرة — منحة البطالة ANEM، بريدي موب، سكنات عدل 3، والوثائق الإدارية S12 بدون إعلانات ⚡',
   generator: 'Raqmana',
   applicationName: 'رقمنة',
   referrer: 'origin-when-cross-origin',
   keywords: [
-    'البوابة الجزائرية للخدمات الرقمية', 'رقمنة 2026', 'البوابة الرقمية الجزائرية', 'الخدمات الرقمية في الجزائر', 'خدمات رقمية حكومية الجزائر', 'الجزائر', 'خدمات رقمية', 'حكومة إلكترونية', 'استخراج شهادة الميلاد S12', 'منصة أضاحي 2026', 'بريد الجزائر',
-    'عدل 3', 'جواز السفر البيومتري', 'البوابة الرقمية الجزائر', 'رابط مباشر', 'تطبيقات حكومية', 'منصة فضاء الأولياء',
-    'استخراج السوابق القضائية', 'حجز تذاكر الجوية الجزائرية', 'دفع فواتير سونلغاز', 'اتصالات الجزائر 4G',
-    'البوابة الوطنية للخدمات الرقمية', 'Dzair Digital Services', 'التوقيع الإلكتروني e-Tawki3', 'الهوية الرقمية الجزائرية',
-    'الجزائر 2030', 'تطبيق بريد موب', 'تجديد منحة البطالة', 'فضاء الهناء CNAS'
+    // Exact GSC High-Volume Impression Search Queries (ANEM / Lanam, El Hanaa, Sonelgaz, BaridiMob, RAG, ENPI)
+    'لانام', 'لانام منحة البطالة', 'حجز موعد منحة البطالة 2026', 'أنام', 'تجديد لانام', 'فضاء طالب العمل', 'minha anem dz', 'wasit anem',
+    'فضاء الهناء', 'موقع الهناء', 'تتبع بطاقة الشفاء', 'فضاء الهناء casnos', 'elhanaa cnas',
+    'فضاء الزبون سونلغاز', 'مرجع الزبون سونلغاز', 'دفع فاتورة الكهرباء الجزائر', 'مرجع زبون سونلغاز',
+    'بريدي موب لا يعمل 2026', 'eccp.poste.dz', 'baridiweb', 'بريدي ويب',
+    'rag mesrs dz', 'rag.mesrs', 'البوابة الرقمية لقطاع التربية الوطنية',
+    'enpi dz', 'المؤسسة الوطنية للترقية العقارية', 'lpp 2026', 'سكنات lpp',
+    'البوابة الرقمية لاستخراج الوثائق', 'موقع استخراج شهادة الميلاد الجزائرية من الانترنت', 'شهادة السوابق العدلية الجزائر',
+    // Primary brand + platform
+    'البوابة الجزائرية للخدمات الرقمية', 'رقمنة الجزائر', 'رقمنة الجزائر 2026', 'رقمنة 2026', 'البوابة الرقمية الجزائرية', 'الخدمات الرقمية في الجزائر',
+    'خدمات رقمية حكومية الجزائر', 'الجزائر', 'خدمات رقمية', 'حكومة إلكترونية',
+    // High-intent document searches
+    'استخراج شهادة الميلاد S12', 'استخراج صحيفة السوابق القضائية', 'جواز السفر البيومتري الجزائر',
+    'بطاقة التعريف الوطنية البيومترية', 'شهادة الجنسية الجزائرية', 'عقد الزواج إلكتروني',
+    // Payments & banking
+    'منصة أضاحي 2026', 'بريد الجزائر', 'البطاقة الذهبية Edahabia', 'BaridiMob تطبيق', 'CIB دفع إلكتروني',
+    'دفع فواتير سونلغاز', 'منصة إي-طاقتي E-Taqaty', 'دفع فاتورة ADE', 'رصيد CCP',
+    // Education
+    'عدل 3', 'اكتتاب عدل', 'فضاء الأولياء', 'نتائج البكالوريا 2026', 'نتائج BEM 2026',
+    'منصة بروغرس progress mesrs', 'التسجيلات الجامعية 2026',
+    // Employment & social
+    'منحة البطالة ANEM', 'فضاء الهناء CNAS', 'تجديد منحة البطالة', 'CASNOS خدمات',
+    // Digital services directory
+    'البوابة الوطنية للخدمات الرقمية', 'Dzair Digital Services', 'التوقيع الإلكتروني e-Tawki3',
+    'الهوية الرقمية الجزائرية', 'الجزائر 2030', 'استخراج وثائق إدارية في الجزائر',
+    'روابط مباشرة خدمات حكومية الجزائر',
   ],
   authors: [{ name: 'Raqmana Team' }],
   creator: 'Raqmana',
@@ -42,6 +65,11 @@ export const metadata: Metadata = {
     email: false,
     address: false,
     telephone: false,
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-icon.png',
   },
   metadataBase: new URL('https://raqmana.vercel.app'),
   alternates: {
@@ -59,10 +87,10 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: 'البوابة الجزائرية للخدمات الرقمية | رقمنة 2026',
-    description: 'دليل مستقل يجمع روابط الخدمات الرقمية الحكومية والعمومية في الجزائر: وثائق، فواتير، بريد الجزائر، عدل، التعليم، التشغيل والعدالة.',
+    title: 'البوابة الجزائرية للخدمات الرقمية | رقمنة الجزائر 2026',
+    description: 'البوابة الجزائرية للخدمات الرقمية (رقمنة 2026): دليلك الموثوق للوصول السريع إلى كافة الخدمات الحكومية والعمومية في الجزائر بروابط مباشرة وبدون إعلانات.',
     url: 'https://raqmana.vercel.app',
-    siteName: 'رقمنة - Raqmana',
+    siteName: 'البوابة الجزائرية للخدمات الرقمية',
     locale: 'ar_DZ',
     type: 'website',
     images: [
@@ -70,14 +98,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'رقمنة 2026 - البوابة الجزائرية للخدمات الرقمية',
+        alt: 'رقمنة الجزائر 2026 - البوابة الجزائرية للخدمات الرقمية',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'البوابة الجزائرية للخدمات الرقمية | رقمنة 2026',
-    description: 'روابط مباشرة ومحدثة للخدمات الرقمية الحكومية والعمومية في الجزائر ضمن دليل مستقل وسهل البحث.',
+    title: 'البوابة الجزائرية للخدمات الرقمية | رقمنة الجزائر 2026',
+    description: 'البوابة الجزائرية للخدمات الرقمية (رقمنة 2026): دليلك الموثوق للوصول السريع إلى كافة الخدمات الحكومية والعمومية في الجزائر بروابط مباشرة وبدون إعلانات.',
     creator: '@raqmana',
     images: ['/og-image.png'],
   },
@@ -127,20 +155,21 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               "@id": "https://raqmana.vercel.app/#organization",
-              "name": "البوابة الجزائرية للخدمات الرقمية - رقمنة 2026",
-              "alternateName": "رقمنة 2026",
-              "url": "https://raqmana.vercel.app",
+              "name": "البوابة الجزائرية للخدمات الرقمية | رقمنة الجزائر",
+              "alternateName": ["رقمنة", "رقمنة الجزائر 2026", "البوابة الجزائرية للخدمات الرقمية"],
+              "url": "https://raqmana.vercel.app/",
               "logo": "https://raqmana.vercel.app/icon-512x512.png",
-              "description": "دليل مستقل للوصول إلى روابط الخدمات الرقمية الحكومية والعمومية في الجزائر",
+              "description": "البوابة الجزائرية للخدمات الرقمية (رقمنة 2026): دليل مستقل للوصول السريع إلى كافة الخدمات الحكومية والعمومية في الجزائر بروابط مباشرة",
               "foundingDate": "2026",
               "areaServed": {
                 "@type": "Country",
                 "name": "DZ"
               },
               "knowsAbout": [
-                "الخدمات الرقمية في الجزائر",
-                "الإدارة الإلكترونية",
+                "البوابة الجزائرية للخدمات الرقمية",
                 "رقمنة الجزائر",
+                "الخدمات الرقمية في الجزائر",
+                "الإدارة الإلكترونية الجزائر",
                 "استخراج الوثائق الإدارية في الجزائر",
                 "الدفع الإلكتروني بالبطاقة الذهبية"
               ],
@@ -158,15 +187,18 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "البوابة الجزائرية للخدمات الرقمية",
-              "alternateName": "رقمنة 2026",
-              "url": "https://raqmana.vercel.app",
+              "alternateName": ["رقمنة الجزائر 2026", "رقمنة الجزائر"],
+              "url": "https://raqmana.vercel.app/",
               "inLanguage": "ar-DZ",
               "publisher": {
                 "@id": "https://raqmana.vercel.app/#organization"
               },
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://raqmana.vercel.app/services?q={search_term_string}",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://raqmana.vercel.app/categories?q={search_term_string}"
+                },
                 "query-input": "required name=search_term_string"
               }
             })
@@ -177,7 +209,7 @@ export default function RootLayout({
         <ThemeProvider>
           <LanguageProvider>
             {children}
-            
+
             {/* PWA Service Worker Registration */}
             <Script id="register-sw" strategy="afterInteractive">
               {`
@@ -196,7 +228,7 @@ export default function RootLayout({
               `}
             </Script>
 
-            {/* Google Analytics — lazyOnload: defers until page is idle, reduces TBT */}
+            {/* Google Analytics — lazyOnload + async */}
             <Script
               src="https://www.googletagmanager.com/gtag/js?id=G-TWMTPY4E30"
               strategy="lazyOnload"

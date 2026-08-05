@@ -1,11 +1,84 @@
 // components/footer.tsx
 "use client";
 
+import { useState } from "react";
 import { useLanguage } from "@/contexts/language-context";
 import Link from "next/link";
-import { Globe, Phone, ExternalLink, ArrowUpRight } from "lucide-react";
+import { ExternalLink, ArrowUpRight, Check, Loader2 } from "lucide-react";
 import ViewsCounter from "@/components/ViewsCounter";
 import { SocialLinks } from "@/components/SocialLinks";
+
+// ── Newsletter Form ──────────────────────────────────────────────────────────
+function NewsletterForm({ language }: { language: string }) {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const isAr = language === 'ar';
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email) return;
+    setStatus('loading');
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus('success');
+        setEmail('');
+      } else {
+        setStatus('error');
+        setErrorMsg(data.error || (isAr ? 'حدث خطأ' : 'Something went wrong'));
+      }
+    } catch {
+      setStatus('error');
+      setErrorMsg(isAr ? 'تعذر الاتصال، تحقق من الإنترنت' : 'Connection error');
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <div className="flex items-center gap-2 text-primary animate-in fade-in duration-500">
+        <Check className="h-4 w-4" />
+        <span className="text-xs font-bold tracking-widest">
+          {isAr ? '✓ تم التسجيل بنجاح!' : '✓ Subscribed!'}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="relative w-full">
+      <input
+        type="email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder={isAr ? 'بريدك الإلكتروني' : 'your@email.com'}
+        disabled={status === 'loading'}
+        className="w-full bg-transparent border-b border-black/10 dark:border-white/10 py-3 text-center text-xs font-bold focus:outline-none focus:border-primary transition-colors uppercase tracking-widest disabled:opacity-50"
+      />
+      <button
+        type="submit"
+        disabled={status === 'loading' || !email}
+        aria-label={isAr ? 'اشترك في النشرة البريدية' : 'Subscribe to newsletter'}
+        className="absolute right-0 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform disabled:opacity-40 disabled:scale-100"
+      >
+        {status === 'loading'
+          ? <Loader2 className="h-4 w-4 animate-spin" />
+          : <ArrowUpRight className="h-4 w-4" />}
+      </button>
+      {status === 'error' && (
+        <p className="mt-2 text-center text-[10px] text-red-500 font-bold tracking-wide">{errorMsg}</p>
+      )}
+    </form>
+  );
+}
 
 export function Footer() {
   const { t, language, dir } = useLanguage();
@@ -62,19 +135,7 @@ export function Footer() {
               <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">
                 {language === 'ar' ? 'اشترك لتصلك جديد الخدمات' : 'Get Updates on New Services'}
               </p>
-              <div className="relative w-full">
-                <input 
-                  type="email" 
-                  placeholder={language === 'ar' ? 'بريدك الإلكتروني' : 'your@email.com'}
-                  className="w-full bg-transparent border-b border-black/10 dark:border-white/10 py-3 text-center text-xs font-bold focus:outline-none focus:border-primary transition-colors uppercase tracking-widest"
-                />
-                 <button 
-                  aria-label={language === 'ar' ? 'اشترك في النشرة البريدية' : 'Subscribe to newsletter'}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform"
-                >
-                  <ArrowUpRight className="h-4 w-4" />
-                </button>
-              </div>
+              <NewsletterForm language={language} />
             </div>
           </div>
 
@@ -104,8 +165,8 @@ export function Footer() {
               {t("footer.copyright")}
             </p>
             <div className="flex gap-8">
-               <a href="#" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary transition-colors">Privacy Policy</a>
-               <a href="#" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary transition-colors">Terms of Service</a>
+               <Link href="/privacy-policy" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary transition-colors">Privacy Policy</Link>
+               <Link href="/terms-of-service" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary transition-colors">Terms of Service</Link>
                <Link href="/sitemap" className="text-[10px] font-bold uppercase tracking-widest hover:text-primary transition-colors">Sitemap</Link>
             </div>
           </div>
