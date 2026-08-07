@@ -2,7 +2,7 @@ import { seoArticles } from '@/lib/seo-articles-data';
 
 export async function GET() {
   const baseUrl = 'https://raqmana.vercel.app';
-  const lastmod = '2026-07-17T12:00:00+00:00';
+  const lastmod = new Date().toISOString();
 
   // Articles index page
   const indexEntry = `  <url>
