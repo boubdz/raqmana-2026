@@ -291,7 +291,7 @@ function addArticleToDataFile(slug, article) {
 
   let newContent = content.slice(0, exportIdx) + articleTs + '\n' + content.slice(exportIdx);
   const braceIdx = newContent.indexOf('{', newContent.indexOf('export const seoArticles'));
-  const entryLine = `\n  ${slug}: ${varName}Article,`;
+  const entryLine = `\n  '${slug}': ${varName}Article,`;
   const finalContent = newContent.slice(0, braceIdx + 1) + entryLine + newContent.slice(braceIdx + 1);
 
   fs.writeFileSync(filePath, finalContent, 'utf8');

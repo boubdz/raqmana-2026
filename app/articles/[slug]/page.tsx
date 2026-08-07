@@ -15,6 +15,10 @@ type Props = {
 
 export const revalidate = 60;
 
+export async function generateStaticParams() {
+  return Object.keys(seoArticles).map((slug) => ({ slug }));
+}
+
 const highConvertingArticleMetadata: Record<string, { title: string; description: string }> = {
   tawdhif: {
     title: "منصة توظيف الأساتذة 2026 🇩🇿 — رابط التسجيل والنتائج tawdhif.education.dz",

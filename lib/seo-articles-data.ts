@@ -2338,7 +2338,7 @@ const anem_minha_2026Article: SeoArticle = {
 };
 
 export const seoArticles: Record<string, SeoArticle> = {
-  anem-minha-2026: anem_minha_2026Article,
+  'anem-minha-2026': anem_minha_2026Article,
   // المقالات الأكثر ترينداً وشهرة في الجزائر 2026 🔥
   mdn: mdnArticle,
   tawdhif: tawdhifArticle,
