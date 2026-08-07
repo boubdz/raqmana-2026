@@ -175,8 +175,8 @@ const trendingKeywordsMap: Record<string, string[]> = {
 
 const highConvertingCategoryTitles: Record<string, { title: string; description: string }> = {
   employment: {
-    title: "منحة البطالة 2026 ANEM 🇩🇿 — الرابط المباشر لتجديد وحجز مواعيد التشغيل",
-    description: "الرابط المباشر والمعتمد لتجديد منحة البطالة minha.anem.dz، حجز مواعيد المقابلة عبر وسيط WASIT، وتحديث طالب العمل فوراً بضغطة واحدة ⚡",
+    title: "منحة البطالة 2026 ANEM 🇩🇿 — لانام تجديد، minha.anem.dz وحجز موعد التشغيل",
+    description: "الرابط المباشر لمنصة لانام منحة البطالة minha.anem.dz، تجديد طلب العمل، حجز موعد وسيط Wasit ANEM، وفضاء طالب العمل بضغطة واحدة ⚡",
   },
   interior: {
     title: "البوابة الرقمية لاستخراج الوثائق 2026 🇩🇿 — S12، جواز السفر وبطاقة التعريف",
@@ -195,8 +195,8 @@ const highConvertingCategoryTitles: Record<string, { title: string; description:
     description: "استعلام نتائج البكالوريا BAC، BEM، مسابقة توظيف الأساتذة concours.onec.dz، وتسجيلات فضاء الأولياء awlyaa 📢⚡",
   },
   university: {
-    title: "منصة بروغرس الجامعية Progres MESRS 2026 🇩🇿 — التحويلات وتسجيل الباك",
-    description: "رابط منصة بروغرس الجامعية progres.mesrs.dz/webetu لحاملي البكالوريا: التحويلات الجامعية، المنحة، والإيواء الجامعي 🎓⚡",
+    title: "منصة بروغرس وجامعتي 2026 🇩🇿 — progres.mesrs.dz وبوابة RAG MESRS",
+    description: "رابط منصة بروغرس progres.mesrs.dz/webetu وبوابة RAG MESRS لمرافقة الطلبة الجدد: التحويلات الجامعية، المنحة والحي الجامعي 🎓⚡",
   },
   aadl: {
     title: "منصة سكنات عدل 3 AADL 2026 🇩🇿 — الرابط المباشر للتسجيل ودفع الكراء",
@@ -211,24 +211,24 @@ const highConvertingCategoryTitles: Record<string, { title: string; description:
     description: "ادفع فاتورة الإنترنت والهاتف الثابت، اشحن Idoom 4G LTE، سجّل عطباً، واطّلع على عروض الألياف البصرية Fiber Optic عبر client.algerietelecom.dz وتطبيق MyIdoom ⚡📡",
   },
   bills: {
-    title: "دفع فواتير سونلغاز وADE 2026 🇩🇿 — الرابط المباشر لمنصة إي-طاقتي",
-    description: "ادفع فاتورة الكهرباء والغاز عبر e-taqaty.sonelgaz.dz، فاتورة الماء ADE، وكراء OPGI وعدل إلكترونياً بالبطاقة الذهبية أو CIB بدون تنقل ⚡💡",
+    title: "دفع فواتير سونلغاز e-taqaty 2026 🇩🇿 — فضاء ومرجع الزبون سونلغاز والماء ADE",
+    description: "ادفع فاتورة سونلغاز عبر e-taqaty.sonelgaz.dz، معرفة مرجع الزبون سونلغاز، فاتورة الماء ADE وكراء عدل بالبطاقة الذهبية وCIB ⚡💡",
   },
   mobile: {
     title: "تعبئة الهاتف النقال 2026 🇩🇿 — فليكسي موبيليس، جيزي وأوريدو مباشرةً",
     description: "تعبئة وشراء Flexy لموبيليس، جيزي وأوريدو، دفع فواتير الهاتف المؤجل، وإدارة الاشتراكات عبر تطبيقات MobiSpace، MyOoredoo وDjezzy App فوراً ⚡📱",
   },
   socialSecurity: {
-    title: "الضمان الاجتماعي CNAS و CASNOS 2026 🇩🇿 — فضاء الهناء وبطاقة الشفاء",
-    description: "الدخول لفضاء الهناء cnas.dz، تتبع بطاقة الشفاء، التصريح بالأجور، خدمات CASNOS لغير الأجراء، وخدمات CNR للتقاعد بروابط مباشرة ⚡🏥",
+    title: "فضاء الهناء 2026 CNAS 🇩🇿 — تتبع بطاقة الشفاء والضمان الاجتماعي cnas.dz",
+    description: "الدخول المباشر لموقع فضاء الهناء elhanaa.cnas.dz، تتبع بطاقة الشفاء، استخراج شهادة الانتساب، وخدمات CASNOS لغير الأجراء وCNR ⚡🏥",
   },
   health: {
     title: "خدمات الصحة الرقمية 2026 🇩🇿 — حجز موعد طبي وبطاقة الشفاء",
     description: "احجز موعداً طبياً إلكترونياً، تتبع بطاقة الشفاء، سجل في حملات التلقيح، وتعرّف على أقرب مركز صحي عبر بوابة وزارة الصحة الجزائرية ⚡🩺",
   },
   vocational: {
-    title: "التكوين المهني 2026 🇩🇿 — التسجيل في مهنتي Mihnati والتكوين عن بعد",
-    description: "سجّل في دورات التكوين المهني عبر منصة minhati.mesrs.dz، تقدّم لشهادة الدولة، واستفد من التكوين عن بعد والتعليم المهني المجاني في الجزائر 🎓⚡",
+    title: "التكوين المهني takwin dz 2026 🇩🇿 — التسجيل في مهنتي Mihnati والتخصصات",
+    description: "رابط التسجيل الرسمي في التكوين المهني takwin.dz ومنصة مهنتي Mihnati، اختيار التخصصات والتكوين عن بعد وتأكيد التسجيلات 🎓⚡",
   },
   arpce: {
     title: "سلطة ضبط الاتصالات ARPCE 2026 🇩🇿 — قياس الإنترنت والشكاوى",

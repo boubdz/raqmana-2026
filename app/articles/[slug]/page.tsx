@@ -15,6 +15,53 @@ type Props = {
 
 export const revalidate = 60;
 
+const highConvertingArticleMetadata: Record<string, { title: string; description: string }> = {
+  tawdhif: {
+    title: "منصة توظيف الأساتذة 2026 🇩🇿 — رابط التسجيل والنتائج tawdhif.education.dz",
+    description: "رابط منصة توظيف الأساتذة tawdhif.education.dz، الاستعلام عن النتائج، شروط التسجيل، ورابط بوابة التربية والتعليم الرسمية ⚡📢",
+  },
+  employment: {
+    title: "منحة البطالة ANEM 2026 🇩🇿 — تجديد لانام حجز موعد minha.anem.dz فضاء طالب العمل",
+    description: "رابط تجديد منحة البطالة minha.anem.dz، حجز موعد المقابلة وسيط Wasit ANEM، استخراج شهادة طالب العمل، وتأكيد وضعية طلب العمل فوراً ⚡",
+  },
+  rag: {
+    title: "منصة RAG MESRS 2026 🇩🇿 — رابط البوابة الرقمية لمرافقة الطلبة الجدد rag.mesrs.dz",
+    description: "الدخول المباشر لمنصة RAG MESRS الجزائر (rag.mesrs.dz)، مرافقة الطلبة الجدد، التسجيلات الجامعية، الإيواء والمنحة الرقمية بروابط مباشرة 🎓⚡",
+  },
+  vocationalTraining: {
+    title: "التكوين المهني takwin.dz 2026 🇩🇿 — التسجيل في مهنتي Mihnati والدليل الكامل",
+    description: "رابط التسجيل في التكوين المهني takwin.dz ومنصة مهنتي Mihnati، اختيار التخصصات، ودليل التكوين عن بعد وتأكيد التسجيلات 🎓⚡",
+  },
+  chifa: {
+    title: "فضاء الهناء CNAS 2026 🇩🇿 — تتبع بطاقة الشفاء، شهادة الانتساب وتسجيل elhanaa",
+    description: "رابط فضاء الهناء elhanaa.cnas.dz، تتبع بطاقة الشفاء، استخراج شهادة الانتساب وعطل المرض أونلاين بالبطاقة الذهبية ⚡🏥",
+  },
+  socialSecurity: {
+    title: "الضمان الاجتماعي فضاء الهناء 2026 🇩🇿 — cnas.dz و casnos وبطاقة الشفاء",
+    description: "الدخول المباشر لفضاء الهناء cnas.dz، تتبع ملف الشفاء، التصريح بالأجور، وخدمات CASNOS لغير الأجراء وCNR للتقاعد ⚡🏥",
+  },
+  bills: {
+    title: "دفع فاتورة سونلغاز e-taqaty 2026 🇩🇿 — فضاء ومرجع الزبون سونلغاز بالبطاقة الذهبية",
+    description: "رابط منصة إي طاقتي e-taqaty.sonelgaz.dz، معرفة مرجع الزبون، ودفع فاتورة الكهرباء والغاز إلكترونياً بالبطاقة الذهبية وCIB ⚡💡",
+  },
+  realEstatePromotion: {
+    title: "سكنات LPP و ENPI 2026 🇩🇿 — رابط التسجيل والشروط عبر موقع enpi.dz",
+    description: "رابط التسجيل في سكنات الترقوي العمومي LPP والترقية العقارية عبر موقع enpi.dz، تتبع ملف السكن ودفع الشطور أونلاين 🏠⚡",
+  },
+  mdn: {
+    title: "التسجيل الأولي في الجيش MDN 2026 🇩🇿 — رابط preinscription.mdn.dz والشروط",
+    description: "رابط التسجيل الأولي للضباط وضباط الصف المتعاقدين بكافة القوات preinscription.mdn.dz والشروط والملف المطلوبة 🛡️⚡",
+  },
+  university: {
+    title: "منصة بروغرس الجامعية Progres MESRS 2026 🇩🇿 — التحويلات وتسجيلات الباك WebEtu",
+    description: "رابط منصة بروغرس الجامعية progres.mesrs.dz/webetu لحاملي البكالوريا: التحويلات الجامعية، المنحة، والإيواء الجامعي 🎓⚡",
+  },
+  post: {
+    title: "بريد الجزائر ECCP 2026 🇩🇿 — طلب البطاقة الذهبية وتطبيق بريدي موب",
+    description: "طلب البطاقة الذهبية Edahabia، كشف رصيد الحساب الجاري ECCP، ودفع الفواتير عبر تطبيق BaridiMob بروابط مباشرة 💳⚡",
+  },
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   
@@ -26,15 +73,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const highConv = highConvertingArticleMetadata[slug];
+  const title = highConv ? highConv.title : `${article.title} — رقمنة الجزائر 2026`;
+  const description = highConv ? highConv.description : (article.introduction?.substring(0, 160) || "الدليل المعتمد والرابط المباشر للخدمات الرقمية في الجزائر 2026 ⚡");
+
   return {
-    title: `${article.title} — رقمنة الجزائر 2026`,
-    description: article.introduction?.substring(0, 150),
+    title,
+    description,
     alternates: {
       canonical: `https://raqmana.vercel.app/articles/${slug}`,
     },
     openGraph: {
-      title: `${article.title} — رقمنة الجزائر 2026`,
-      description: article.introduction?.substring(0, 150),
+      title,
+      description,
       url: `https://raqmana.vercel.app/articles/${slug}`,
       type: "article",
       images: [
@@ -42,12 +93,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: `https://raqmana.vercel.app/articles/${slug}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: article.title,
+          alt: title,
         },
       ],
     },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [`https://raqmana.vercel.app/articles/${slug}/opengraph-image`],
+    },
   };
 }
+
 
 const slugToCategoryMap: Record<string, string> = {
   orientation: "university",
