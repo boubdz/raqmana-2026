@@ -217,7 +217,7 @@
     services: [
       { name: { ar: "التسجيل الأولي الجامعي", en: "University Pre-registration" }, url: "https://www.orientation.esi.dz" },
       { name: { ar: "منصة Progres", en: "Progres Platform" }, url: "https://progres.mesrs.dz" },
-      { name: { ar: "دفع حقوق إعادة التسجيل", en: "Re-registration Fee Payment" }, url: "https://progres.mesrs.dz/paiement" },
+      { name: { ar: "دفع حقوق إعادة التسجيل", en: "Re-registration Fee Payment" }, url: "https://progres.mesrs.dz/epaiement" },
       { name: { ar: "دفع حقوق الإيواء", en: "Accommodation Fee Payment" }, url: "https://progres.mesrs.dz/hebergement" },
       { name: { ar: "طلبات الإيواء", en: "Accommodation Requests" }, url: "https://progres.mesrs.dz/demande-hebergement" },
       { name: { ar: "تطبيق Progres", en: "Progres App" }, url: "https://play.google.com/store/apps/details?id=dz.mesrs.progres", isApp: true },
