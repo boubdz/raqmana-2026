@@ -24,6 +24,8 @@ jobs:
         run: npm ci
 
       - name: Execute Autonomous SEO Autopilot Script
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: npm run autopilot
 
       - name: Commit and Push Autopilot Updates
