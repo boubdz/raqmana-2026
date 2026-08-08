@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     shortcut: '/favicon-16x16.png',
     apple: '/apple-icon.png',
   },
-  metadataBase: new URL('https://raqmana.vercel.app'),
+  metadataBase: new URL('https://www.raqmanadz.com'),
   alternates: {
     canonical: '/',
     languages: {
@@ -89,7 +89,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'البوابة الجزائرية للخدمات الرقمية | رقمنة الجزائر 2026',
     description: 'البوابة الجزائرية للخدمات الرقمية (رقمنة 2026): دليلك الموثوق للوصول السريع إلى كافة الخدمات الحكومية والعمومية في الجزائر بروابط مباشرة وبدون إعلانات.',
-    url: 'https://raqmana.vercel.app',
+    url: 'https://www.raqmanadz.com',
     siteName: 'البوابة الجزائرية للخدمات الرقمية',
     locale: 'ar_DZ',
     type: 'website',
@@ -154,11 +154,11 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "@id": "https://raqmana.vercel.app/#organization",
+              "@id": "https://www.raqmanadz.com/#organization",
               "name": "البوابة الجزائرية للخدمات الرقمية | رقمنة الجزائر",
               "alternateName": ["رقمنة", "رقمنة الجزائر 2026", "البوابة الجزائرية للخدمات الرقمية"],
-              "url": "https://raqmana.vercel.app/",
-              "logo": "https://raqmana.vercel.app/icon-512x512.png",
+              "url": "https://www.raqmanadz.com/",
+              "logo": "https://www.raqmanadz.com/icon-512x512.png",
               "description": "البوابة الجزائرية للخدمات الرقمية (رقمنة 2026): دليل مستقل للوصول السريع إلى كافة الخدمات الحكومية والعمومية في الجزائر بروابط مباشرة",
               "foundingDate": "2026",
               "areaServed": {
@@ -188,16 +188,16 @@ export default function RootLayout({
               "@type": "WebSite",
               "name": "البوابة الجزائرية للخدمات الرقمية",
               "alternateName": ["رقمنة الجزائر 2026", "رقمنة الجزائر"],
-              "url": "https://raqmana.vercel.app/",
+              "url": "https://www.raqmanadz.com/",
               "inLanguage": "ar-DZ",
               "publisher": {
-                "@id": "https://raqmana.vercel.app/#organization"
+                "@id": "https://www.raqmanadz.com/#organization"
               },
               "potentialAction": {
                 "@type": "SearchAction",
                 "target": {
                   "@type": "EntryPoint",
-                  "urlTemplate": "https://raqmana.vercel.app/categories?q={search_term_string}"
+                  "urlTemplate": "https://www.raqmanadz.com/categories?q={search_term_string}"
                 },
                 "query-input": "required name=search_term_string"
               }

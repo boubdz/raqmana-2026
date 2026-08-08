@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { serviceCategories } from '@/lib/services-data';
 
 export async function GET() {
-  const baseUrl = 'https://raqmana.vercel.app';
+  const baseUrl = 'https://www.raqmanadz.com';
 
   const highActivityCategories = new Set([
     'bills', 'mobile', 'post', 'education', 'aadl',

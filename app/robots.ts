@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://raqmana.vercel.app';
+  const baseUrl = 'https://www.raqmanadz.com';
 
   return {
     rules: [

@@ -1,7 +1,7 @@
 import { seoArticles } from '@/lib/seo-articles-data';
 
 export async function GET() {
-  const baseUrl = 'https://raqmana.vercel.app';
+  const baseUrl = 'https://www.raqmanadz.com';
   const lastmod = new Date().toISOString();
 
   // Articles index page

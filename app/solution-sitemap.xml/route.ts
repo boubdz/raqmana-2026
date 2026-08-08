@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { articles } from '@/lib/articles-data';
 
 export async function GET() {
-  const baseUrl = 'https://raqmana.vercel.app';
+  const baseUrl = 'https://www.raqmanadz.com';
 
   const pad = (num: number) => String(num).padStart(2, '0');
 

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const baseUrl = 'https://raqmana.vercel.app';
+  const baseUrl = 'https://www.raqmanadz.com';
 
   const pages = [
     { loc: `${baseUrl}/`, lastmod: '2026-06-26T10:00:00+00:00', changefreq: 'daily', priority: '1.0' },

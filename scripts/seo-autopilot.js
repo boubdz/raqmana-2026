@@ -35,7 +35,7 @@ if (fs.existsSync(envPath)) {
 }
 
 const CONFIG = {
-  BASE_URL: 'https://raqmana.vercel.app',
+  BASE_URL: 'https://www.raqmanadz.com',
   INDEXNOW_KEY: 'raqmana2026indexnowkey789',
   OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY || '',
   OPENROUTER_MODEL: process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash',
@@ -303,7 +303,7 @@ function addArticleToDataFile(slug, article) {
 async function sendIndexNowNotification(urls) {
   return new Promise((resolve) => {
     const payload = JSON.stringify({
-      host: 'raqmana.vercel.app',
+      host: 'www.raqmanadz.com',
       key: CONFIG.INDEXNOW_KEY,
       keyLocation: `${CONFIG.BASE_URL}/${CONFIG.INDEXNOW_KEY}.txt`,
       urlList: urls,

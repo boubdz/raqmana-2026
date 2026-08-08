@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = articles.find((a) => a.id === id);
   if (!article) return { title: 'حل غير موجود | رقمنة' };
 
-  const baseUrl = 'https://raqmana.vercel.app';
+  const baseUrl = 'https://www.raqmanadz.com';
   const title = `${article.title.ar} | رقمنة الجزائر 2026`;
   const description = article.summary.ar;
 
@@ -77,7 +77,7 @@ export default async function SolutionPage({ params }: Props) {
   const article = articles.find((a) => a.id === id);
   if (!article) return notFound();
 
-  const baseUrl = 'https://raqmana.vercel.app';
+  const baseUrl = 'https://www.raqmanadz.com';
 
   // بناء خطوات الحل كقائمة
   const steps = article.content.ar

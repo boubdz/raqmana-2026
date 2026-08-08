@@ -85,16 +85,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: `https://raqmana.vercel.app/articles/${slug}`,
+      canonical: `https://www.raqmanadz.com/articles/${slug}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://raqmana.vercel.app/articles/${slug}`,
+      url: `https://www.raqmanadz.com/articles/${slug}`,
       type: "article",
       images: [
         {
-          url: `https://raqmana.vercel.app/articles/${slug}/opengraph-image`,
+          url: `https://www.raqmanadz.com/articles/${slug}/opengraph-image`,
           width: 1200,
           height: 630,
           alt: title,
@@ -105,7 +105,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [`https://raqmana.vercel.app/articles/${slug}/opengraph-image`],
+      images: [`https://www.raqmanadz.com/articles/${slug}/opengraph-image`],
     },
   };
 }
@@ -152,12 +152,12 @@ export default async function ArticlePage({ params }: Props) {
     "author": {
       "@type": "Organization",
       "name": "رقمنة الجزائر",
-      "url": "https://raqmana.vercel.app"
+      "url": "https://www.raqmanadz.com"
     },
     "publisher": {
       "@type": "Organization",
       "name": "رقمنة الجزائر",
-      "url": "https://raqmana.vercel.app"
+      "url": "https://www.raqmanadz.com"
     },
     "keywords": "رقمنة الجزائر, خدمات رقمية, الجزائر 2026"
   };
