@@ -80,7 +80,7 @@ export default function OGImage() {
               رقمنة الجزائر
             </div>
             <div style={{ color: '#6b7280', fontSize: '16px', fontWeight: 500 }}>
-              raqmana.vercel.app
+              www.raqmanadz.com
             </div>
           </div>
         </div>

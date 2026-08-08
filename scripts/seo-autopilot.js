@@ -143,7 +143,7 @@ STRICT RULES - ZERO HALLUCINATION POLICY:
 ${officialSitesText}
 4. MANDATORY internal links (embed in article text as Markdown):
 ${internalLinksText}
-5. MANDATORY legal disclaimer section at the end: State that the information is for guidance only, readers should refer to official websites, and raqmana.vercel.app is not affiliated with any government body.
+5. MANDATORY legal disclaimer section at the end: State that the information is for guidance only, readers should refer to official websites, and www.raqmanadz.com is not affiliated with any government body.
 6. MANDATORY FAQ section with 5 real questions in format: "س: [question] ج: [answer]"
 7. Do NOT copy text from other sites. Write in your own words.
 

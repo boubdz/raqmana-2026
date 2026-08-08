@@ -29,7 +29,7 @@ export function SiteShare() {
   if (!mounted) return null;
 
   // Use dynamic window location URL on client-side
-  const siteUrl = typeof window !== "undefined" ? window.location.href : "https://raqmana.vercel.app/";
+  const siteUrl = typeof window !== "undefined" ? window.location.href : "https://www.raqmanadz.com/";
 
   const siteTitle = language === "ar"
     ? "بوابة رقمنة 2026 | المنصة الجزائرية الموحدة للخدمات الرقمية"

@@ -16,12 +16,12 @@ export const metadata: Metadata = {
     'استمارة طلب رسمي', 'نموذج شكوى جزائر', 'استئناف إداري'
   ],
   alternates: {
-    canonical: 'https://raqmana.vercel.app/document-assistant',
+    canonical: 'https://www.raqmanadz.com/document-assistant',
   },
   openGraph: {
     title: 'المساعد الذكي لصياغة الطلبات الإدارية | رقمنة الجزائر',
     description: 'أداة مجانية تعتمد الذكاء الاصطناعي لصياغة طلباتك وعرائضك الإدارية بالعربية الرسمية.',
-    url: 'https://raqmana.vercel.app/document-assistant',
+    url: 'https://www.raqmanadz.com/document-assistant',
     type: 'website',
     locale: 'ar_DZ',
     siteName: 'رقمنة - Raqmana',

@@ -12,12 +12,12 @@ export const metadata: Metadata = {
     "مواقع حكومية جزائرية", "حالة الخدمات الرقمية", "فحص الاتصال"
   ],
   alternates: {
-    canonical: "https://raqmana.vercel.app/status",
+    canonical: "https://www.raqmanadz.com/status",
   },
   openGraph: {
-    title: "حالة الخدمات الرقمية بالجزائر — بريد الجزائر، عدل، سونلغاز اليوم",
-    description: "تابع حالة اتصال وسرعة استجابة مواقع الخدمات الحكومية في الجزائر بشكل مباشر ولحظي.",
-    url: "https://raqmana.vercel.app/status",
+    title: "حالة الخدمات الرقمية الجزائرية | رقمنة 2026",
+    description: "متابعة لحظية وتحديثات حية لحالة المنصات الرقمية والمواقع الحكومية في الجزائر ⚡",
+    url: "https://www.raqmanadz.com/status",
     type: "website",
     locale: "ar_DZ",
     siteName: "رقمنة - Raqmana",

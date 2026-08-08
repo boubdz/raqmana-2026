@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${openrouterApiKey.trim()}`,
-          'HTTP-Referer': 'https://raqmana.vercel.app',
+          'HTTP-Referer': 'https://www.raqmanadz.com',
           'X-Title': 'Raqmana Algeria',
           'X-OpenRouter-Cache': 'true',
         },

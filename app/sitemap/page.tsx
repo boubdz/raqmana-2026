@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "خريطة الموقع | رقمنة الجزائر",
   description: "دليل شامل وخريطة تفاعلية لكافة الخدمات والأقسام المتاحة في منصة رقمنة الجزائر للوصول السريع إلى الروابط الرسمية.",
   alternates: {
-    canonical: "https://raqmana.vercel.app/sitemap",
+    canonical: "https://www.raqmanadz.com/sitemap",
   },
 };
 

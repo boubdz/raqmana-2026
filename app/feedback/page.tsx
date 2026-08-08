@@ -15,12 +15,12 @@ export const metadata: Metadata = {
     'خدمات رقمية الجزائر', 'تحسين المنصة'
   ],
   alternates: {
-    canonical: 'https://raqmana.vercel.app/feedback',
+    canonical: 'https://www.raqmanadz.com/feedback',
   },
   openGraph: {
-    title: 'شاركنا رأيك | بوابة رقمنة الجزائر 2026',
-    description: 'ملاحظاتك وتقييماتك تساعدنا في تطوير بوابة رقمنة للخدمات الرقمية الجزائرية.',
-    url: 'https://raqmana.vercel.app/feedback',
+    title: 'اقتراح خدمة رقمية | رقمنة الجزائر 2026',
+    description: 'شاركنا اقتراحاتك للخدمات الرقمية والمنصات الحكومية التّي ترغب في إضافتها إلى دليل رقمنة.',
+    url: 'https://www.raqmanadz.com/feedback',
     type: 'website',
     locale: 'ar_DZ',
     siteName: 'رقمنة - Raqmana',

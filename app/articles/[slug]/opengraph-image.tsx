@@ -203,7 +203,7 @@ export default async function ArticleOGImage({ params }: Props) {
           }}
         >
           <div style={{ color: '#6b7280', fontSize: '16px' }}>
-            raqmana.vercel.app/articles/{slug}
+            www.raqmanadz.com/articles/{slug}
           </div>
           <div
             style={{

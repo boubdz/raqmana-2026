@@ -14,12 +14,12 @@ export const metadata: Metadata = {
     'وثائق جواز السفر', 'ملف بطاقة التعريف البيومترية', 'وثائق إدارية'
   ],
   alternates: {
-    canonical: 'https://raqmana.vercel.app/document-guide',
+    canonical: 'https://www.raqmanadz.com/document-guide',
   },
   openGraph: {
-    title: 'دليل تكوين الملفات والوثائق الإدارية في الجزائر 2026',
-    description: 'دليل تفاعلي شامل للوثائق المطلوبة في الإدارات الجزائرية، محدث وفق آخر التعليمات الوزارية.',
-    url: 'https://raqmana.vercel.app/document-guide',
+    title: 'دليل الوثائق الإدارية بالجزائر | رقمنة 2026',
+    description: 'شرح وتوضيح شامل للملفات والوثائق المطلوبة لكل المعاملات الإدارية في الجزائر ⚡',
+    url: 'https://www.raqmanadz.com/document-guide',
     type: 'website',
     locale: 'ar_DZ',
     siteName: 'رقمنة - Raqmana',

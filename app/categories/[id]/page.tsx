@@ -324,7 +324,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [`/og-image.png`],
     },
     alternates: {
-      canonical: `https://raqmana.vercel.app/categories/${id}`,
+      canonical: `https://www.raqmanadz.com/categories/${id}`,
     },
     robots: {
       index: true,
@@ -410,7 +410,7 @@ export default async function CategoryPage({ params }: Props) {
         "name": "رقمنة - Raqmana",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://raqmana.vercel.app/logo.png"
+          "url": "https://www.raqmanadz.com/logo.png"
         }
       }
     },
@@ -422,13 +422,13 @@ export default async function CategoryPage({ params }: Props) {
           "@type": "ListItem",
           "position": 1,
           "name": "الرئيسية",
-          "item": "https://raqmana.vercel.app"
+          "item": "https://www.raqmanadz.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": categoryName,
-          "item": `https://raqmana.vercel.app/categories/${id}`
+          "item": `https://www.raqmanadz.com/categories/${id}`
         }
       ]
     },
