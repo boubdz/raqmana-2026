@@ -21,7 +21,6 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shareArticleOnSocials } = require('./social-poster.js');
 
 // Load .env.local if present
 const envPath = path.join(__dirname, '../.env.local');
@@ -416,8 +415,6 @@ async function runAutopilot() {
   if (pushed) {
     const newUrl = `${CONFIG.BASE_URL}/articles/${target.slug}`;
     await sendIndexNowNotification([newUrl, `${CONFIG.BASE_URL}/articles`]);
-    // Share on Facebook & Telegram automatically
-    await shareArticleOnSocials(target.slug, article.title, article.introduction);
     console.log(`\nDone! Published: ${newUrl}\n`);
   }
 }

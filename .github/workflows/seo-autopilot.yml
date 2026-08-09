@@ -2,11 +2,9 @@ name: Raqmana Autonomous SEO Autopilot
 
 on:
   schedule:
-    # Daily article writer: runs every day at 08:00 AM UTC (09:00 AM Algerian Time)
+    # Runs automatically every day at 08:00 AM UTC (09:00 AM Algerian Time)
     - cron: '0 8 * * *'
-    # News catcher: scans breaking news every 12 hours (09:00 AM + 09:00 PM Algerian Time)
-    - cron: '0 8,20 * * *'
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab if ever needed
 
 permissions:
   contents: write
@@ -31,20 +29,7 @@ jobs:
       - name: Execute Autonomous SEO Autopilot Script
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: npm run autopilot
-
-      - name: Execute News Catcher Engine
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: node scripts/news-catcher.js
 
       - name: Commit and Push Autopilot Updates
         run: |
@@ -52,8 +37,9 @@ jobs:
           git config --global user.email "bot@www.raqmanadz.com"
           git add -A
           if ! git diff-index --quiet HEAD; then
-            git commit -m "auto(seo): daily content + news + instant indexing trigger"
+            git commit -m "auto(seo): daily autonomous content & instant indexing trigger"
             git push
           else
             echo "No new changes to commit today."
           fi
+
