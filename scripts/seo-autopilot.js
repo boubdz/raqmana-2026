@@ -37,12 +37,17 @@ if (fs.existsSync(envPath)) {
 const CONFIG = {
   BASE_URL: 'https://www.raqmanadz.com',
   INDEXNOW_KEY: 'raqmana2026indexnowkey789',
-  OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY || '',
+  OPENROUTER_API_KEY: (process.env.OPENROUTER_API_KEY || '').trim(),
   OPENROUTER_MODEL: process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash',
   ARTICLES_DATA_PATH: path.join(__dirname, '../lib/seo-articles-data.ts'),
   PUBLIC_DIR: path.join(__dirname, '../public'),
   MAX_RETRIES: 2,
 };
+
+if (!CONFIG.OPENROUTER_API_KEY) {
+  console.error('\n❌ ERROR: OPENROUTER_API_KEY environment variable is missing or empty.');
+  console.error('Please add OPENROUTER_API_KEY to your GitHub Secrets (Settings -> Secrets and variables -> Actions).\n');
+}
 
 // Target articles queue -- ordered by priority
 const ARTICLE_TARGETS = [
