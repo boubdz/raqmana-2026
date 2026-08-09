@@ -111,26 +111,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 
-const slugToCategoryMap: Record<string, string> = {
-  orientation: "university",
-  rag: "university",
-  vocationalTraining: "vocational",
-  realEstatePromotion: "enpi",
-  taxServices: "tax",
-  publicProcurement: "publicContracts",
-  property: "realEstate",
-  arpce: "arpce",
-  investment: "investment",
-  agricultureWater: "agriculture",
-  eVisa: "foreignAffairs",
-  insurance: "insurance",
-  // المقالات التريند الجديدة 2026
-  mdn: "police",          // الجيش والأمن الوطني → قسم الأمن
-  tawdhif: "education",  // توظيف الأساتذة → قسم التربية والتعليم
-  aadl3: "aadl",         // عدل 3 → قسم بريد/عدل (bills يحتوي aadl)
-  chifa: "socialSecurity", // بطاقة الشفاء → قسم الضمان الاجتماعي
-  startups: "commerce",  // الشركات الناشئة → قسم التجارة
-};
+import { getCategoryIdForSlug } from "@/lib/category-mapper";
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
@@ -141,7 +122,7 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const categoryId = slugToCategoryMap[slug] || slug;
+  const categoryId = getCategoryIdForSlug(slug);
 
   // Generate JSON-LD for SEO
   const jsonLd = {

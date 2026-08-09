@@ -108,7 +108,7 @@ const ARTICLE_TARGETS = [
     ],
     internalLinks: [
       { anchor: 'مقالة عدل التسجيلات', path: '/articles/aadl' },
-      { anchor: 'قسم السكن', path: '/categories/housing' },
+      { anchor: 'قسم السكن', path: '/categories/aadl' },
     ],
   },
   {

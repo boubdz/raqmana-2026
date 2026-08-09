@@ -1,6 +1,7 @@
 import { serviceCategories } from "@/lib/services-data";
 import { CommunityComments } from "@/components/community-comments";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getCategoryIdForSlug } from "@/lib/category-mapper";
 import { seoArticles } from "@/lib/seo-articles-data";
 import Link from "next/link";
 import { Header } from "@/components/header";
@@ -335,8 +336,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const { id } = await params;
-  const categoryIndex = serviceCategories.findIndex((cat) => cat.id === id);
-  if (categoryIndex === -1) return notFound();
+  let categoryIndex = serviceCategories.findIndex((cat) => cat.id === id);
+  if (categoryIndex === -1) {
+    const targetCategory = getCategoryIdForSlug(id);
+    if (targetCategory && targetCategory !== id && serviceCategories.some(c => c.id === targetCategory)) {
+      redirect(`/categories/${targetCategory}`);
+    }
+    return notFound();
+  }
   
   const category = serviceCategories[categoryIndex];
   const prevCategory = serviceCategories[(categoryIndex - 1 + serviceCategories.length) % serviceCategories.length];
