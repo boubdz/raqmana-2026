@@ -6,6 +6,9 @@ on:
     - cron: '0 8 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub Actions tab if ever needed
 
+permissions:
+  contents: write
+
 jobs:
   seo-autopilot:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22'
           cache: 'npm'
 
       - name: Install Dependencies
@@ -29,8 +32,6 @@ jobs:
         run: npm run autopilot
 
       - name: Commit and Push Autopilot Updates
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "Raqmana Autopilot Bot"
           git config --global user.email "bot@www.raqmanadz.com"
@@ -41,3 +42,4 @@ jobs:
           else
             echo "No new changes to commit today."
           fi
+

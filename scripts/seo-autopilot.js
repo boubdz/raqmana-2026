@@ -405,7 +405,12 @@ async function runAutopilot() {
   if (!addArticleToDataFile(target.slug, article)) process.exit(1);
 
   console.log('\nPushing to GitHub/Vercel...');
-  const pushed = gitCommitAndPush(target.slug);
+  let pushed = true;
+  if (!process.env.CI) {
+    pushed = gitCommitAndPush(target.slug);
+  } else {
+    console.log('Running in GitHub Actions CI -- git commit & push will be handled by workflow step.');
+  }
 
   if (pushed) {
     const newUrl = `${CONFIG.BASE_URL}/articles/${target.slug}`;
