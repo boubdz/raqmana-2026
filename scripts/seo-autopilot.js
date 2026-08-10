@@ -91,16 +91,16 @@ const ARTICLE_TARGETS = [
     ],
   },
   {
-    slug: 'bac-2026-results',
-    topicAr: 'نتائج بكالوريا 2026 والحصول عليها عبر الانترنت -- المنصات الرسمية',
-    keywords: ['نتائج البكالوريا 2026', 'bac 2026 dz', 'نتائج باك 2026', 'استخراج نتائج البكالوريا'],
+    slug: 'tahwilat-jamiya-progres-2026',
+    topicAr: 'التحويلات الجامعية 2026 عبر منصة بروغرس progres.mesrs.dz -- الشروط والخطوات الرسمية',
+    keywords: ['التحويلات الجامعية 2026', 'progres mesrs dz', 'تحويل جامعي 2026', 'منصة بروغرس التحويلات', 'شروط التحويل الجامعي الجزائر'],
     officialSites: [
-      { name: 'وزارة التربية الوطنية', url: 'https://www.education.gov.dz' },
-      { name: 'بوابة نتائج الامتحانات', url: 'https://resultats.education.gov.dz' },
+      { name: 'منصة بروغرس الخدمات الجامعية', url: 'https://progres.mesrs.dz/webtu' },
+      { name: 'الموقع الرسمي لوزارة التعليم العالي MESRS', url: 'https://www.mesrs.dz' },
     ],
     internalLinks: [
-      { anchor: 'قسم التربية والتعليم', path: '/categories/education' },
-      { anchor: 'دليل التسجيلات الجامعية', path: '/articles/university' },
+      { anchor: 'قسم التعليم العالي والجامعات', path: '/categories/university' },
+      { anchor: 'دليل التسجيلات الجامعية أوريونتاسيو', path: '/articles/university' },
     ],
   },
   {
@@ -165,8 +165,8 @@ REQUIRED JSON OUTPUT STRUCTURE (respond with JSON only, no markdown):
 }
 
 SPECIFICATIONS:
-- Minimum 1200 words total
-- 8-12 sections
+- Concise, high-quality article (800-1000 words total)
+- 5-6 sections maximum
 - Target keywords: ${keywordsText}
 - FAQ section: MANDATORY (second-to-last section)
 - Disclaimer section: MANDATORY (last section)
@@ -176,7 +176,7 @@ SPECIFICATIONS:
 }
 
 function buildUserPrompt(target) {
-  return `Write a comprehensive SEO article in Arabic about: "${target.topicAr}"
+  return `Write a concise SEO article in Arabic (800 words total) about: "${target.topicAr}"
 
 Cover:
 - What the service/platform is and why it matters to Algerian citizens
@@ -199,7 +199,7 @@ async function callOpenRouter(systemPrompt, userPrompt, retryCount = 0) {
         { role: 'user', content: userPrompt },
       ],
       temperature: 0.3,
-      max_tokens: 6000,
+      max_tokens: 3500,
       response_format: { type: 'json_object' },
     });
 
@@ -252,7 +252,7 @@ function validateArticle(article, target) {
   const errors = [];
   if (!article.title || article.title.length < 30) errors.push('Title too short or missing');
   if (!article.introduction || article.introduction.length < 200) errors.push('Introduction too short');
-  if (!article.sections || article.sections.length < 6) errors.push(`Not enough sections: ${article.sections?.length || 0}`);
+  if (!article.sections || article.sections.length < 5) errors.push(`Not enough sections: ${article.sections?.length || 0}`);
 
   const hasFaq = article.sections?.some(s =>
     s.heading?.includes('الأسئلة') || s.heading?.includes('FAQ') || s.heading?.includes('أسئلة')

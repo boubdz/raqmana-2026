@@ -24,7 +24,7 @@ const slugToCategoryMap: Record<string, string> = {
   'anem-minha-2026': 'employment',
   'cnas-chifa-2026': 'socialSecurity',
   'takwin-mihnati-2026': 'vocational',
-  'bac-2026-results': 'education',
+  'tahwilat-jamiya-progres-2026': 'university',
   'aadl3-2026': 'aadl',
   'epaiement-cib-edahabia-guide': 'bills',
 };
