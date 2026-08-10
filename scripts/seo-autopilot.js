@@ -131,62 +131,122 @@ const ARTICLE_TARGETS = [
   },
 ];
 
-// ─── Build system prompt with strict guardrails ────────────────
+// ─── Fetch Live Google Trends for DZ ────────────────────────────
+async function fetchGoogleTrendsDZ() {
+  return new Promise((resolve) => {
+    const req = https.get('https://trends.google.com/trending/rss?geo=DZ', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      },
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        const titleMatches = data.match(/<title>(.*?)<\/title>/gi) || [];
+        const trendingKeywords = titleMatches
+          .map((t) => t.replace(/<\/?title>/gi, '').trim())
+          .filter((t) => t && t !== 'Daily Search Trends' && t !== 'Google Trends');
+        resolve(trendingKeywords);
+      });
+    });
+    req.on('error', (err) => {
+      console.warn(`⚠️ Warning: Could not fetch Google Trends RSS: ${err.message}`);
+      resolve([]);
+    });
+    req.setTimeout(8000, () => {
+      req.destroy();
+      console.warn('⚠️ Warning: Google Trends RSS request timed out.');
+      resolve([]);
+    });
+  });
+}
+
+// ─── Build system prompt with strict editorial rules ─────────────
 function buildSystemPrompt(target) {
   const officialSitesText = target.officialSites.map(s => `- ${s.name}: ${s.url}`).join('\n');
-  const internalLinksText = target.internalLinks.map(l => `- "${l.anchor}" -> ${CONFIG.BASE_URL}${l.path}`).join('\n');
+  const internalLinksText = target.internalLinks.map(l => `- [${l.anchor}](${CONFIG.BASE_URL}${l.path})`).join('\n');
   const keywordsText = target.keywords.join('، ');
+  const today = new Date().toLocaleDateString('ar-DZ', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return `
-You are an expert Arabic content writer for Algerian digital services.
-Write a comprehensive SEO article in formal Arabic (Fus-ha).
+أنت محرر محتوى عربي متخصص في الخدمات الرقمية الجزائرية. اليوم هو: ${today}.
+اكتب مقالاً شاملاً بالعربية الفصحى وفق القواعد التحريرية الصارمة التالية:
 
-STRICT RULES - ZERO HALLUCINATION POLICY:
-1. NO invented statistics or percentages. If unsure, omit the number entirely.
-2. NO fake government decisions or unofficial dates. Use phrases like "according to available information".
-3. ONLY link to these official sites:
-${officialSitesText}
-4. MANDATORY internal links (embed in article text as Markdown):
+═══════════════════════════════════════════
+أولاً: قواعد التعامل مع الزمن والتواريخ (أولوية قصوى)
+═══════════════════════════════════════════
+- قبل كتابة أي تاريخ، صنّف الحدث:
+  • حدث ماضٍ (انتهى): استخدم صيغة الماضي. مثال: "انتهت التسجيلات في...".
+  • حدث جارٍ حالياً: استخدم المضارع. مثال: "تجري حالياً عمليات..."
+  • حدث مستقبلي لم يُعلن عنه: اكتب حرفياً: "لم يصدر أي إعلان رسمي حتى الآن" ولا تضع تواريخ تخمينية أبداً.
+- لا تكتب أرقاماً (عدد المتقدمين، قيمة الأقساط، نسب...) إلا إذا وجدتها في مصدر رسمي. وإذا لم تجدها، اكتب: "لم تُفصح الجهات الرسمية عن هذه الأرقام".
+
+═══════════════════════════════════════════
+ثانياً: قواعد الروابط (Category-First Policy)
+═══════════════════════════════════════════
+- لا تضع رابطاً مباشراً لأي موقع خارجي في نص المقال.
+- وجّه القارئ EXCLUSIVELY لهذه الأقسام الداخلية في رَقمنة التي تجمع الروابط الرسمية المحققة:
 ${internalLinksText}
-5. MANDATORY legal disclaimer section at the end: State that the information is for guidance only, readers should refer to official websites, and www.raqmanadz.com is not affiliated with any government body.
-6. MANDATORY FAQ section with 5 real questions in format: "س: [question] ج: [answer]"
-7. Do NOT copy text from other sites. Write in your own words.
+- المراجع الرسمية (للذكر النصي فقط، ليس رابطاً قابلاً للنقر):
+${officialSitesText}
+- قبل إضافة أي رابط: تخيل أنك ستنقر عليه الآن. هل يذهب لصفحة حقيقية؟ إذا الجواب "لا" أو "ربما"، لا تضفه.
 
-REQUIRED JSON OUTPUT STRUCTURE (respond with JSON only, no markdown):
+═══════════════════════════════════════════
+ثالثاً: ذكر موقع رَقمنة الجزائر
+═══════════════════════════════════════════
+- يُسمح بذكر موقع raqmanadz.com مرة واحدة فقط في الخاتمة.
+- لا تذكره في العناوين الفرعية أو ضمن الخطوات الإرشادية.
+- صغ الذكر بشكل طبيعي: "للمزيد من المعلومات، يمكنكم زيارة موقع رَقمنة الجزائر."
+
+═══════════════════════════════════════════
+رابعاً: المراجعة الذاتية الإجبارية قبل الإخراج النهائي
+═══════════════════════════════════════════
+قبل توليد JSON النهائي، أجب عن هذه الأسئلة:
+1. هل ذكرت موعداً لحدث لم أتحقق من أنه لم يفت؟ إذا نعم → عدّله.
+2. هل أضفت رابطاً مختلقاً أو غير مؤكد؟ إذا نعم → احذفه.
+3. هل ذكرت اسم الموقع أكثر من مرة؟ إذا نعم → احذف التكرار.
+4. هل وضعت أرقاماً دون مصدر؟ إذا نعم → استبدلها بـ "لم تُعلن الجهات الرسمية".
+
+هيكل JSON المطلوب (أجب بـ JSON فقط، بدون markdown):
 {
-  "title": "Attractive title with main keyword + 2026 + emoji",
-  "introduction": "Opening paragraph 100-150 words answering user question immediately",
+  "title": "عنوان جذاب يتضمن الكلمة المفتاحية الرئيسية + 2026 + إيموجي",
+  "introduction": "فقرة افتتاحية 100-150 كلمة تجيب على سؤال المستخدم مباشرة",
   "sections": [
-    { "heading": "1. Section title", "content": "Section content 150-250 words" }
+    { "heading": "1. عنوان القسم", "content": "محتوى القسم 150-250 كلمة" }
   ],
   "registrationRequiredSites": [
-    { "name": "Site name", "url": "https://...", "requirements": "What user needs" }
+    { "name": "اسم الموقع", "url": "https://...", "requirements": "ما يحتاجه المستخدم" }
   ]
 }
 
-SPECIFICATIONS:
-- Concise, high-quality article (800-1000 words total)
-- 5-6 sections maximum
-- Target keywords: ${keywordsText}
-- FAQ section: MANDATORY (second-to-last section)
-- Disclaimer section: MANDATORY (last section)
-- Steps: use numbered lists (1. 2. 3.)
-- Style: clear, practical, direct -- no flowery language
+المواصفات:
+- مقال متكامل 800-1000 كلمة بالعربية الفصحى الرسمية
+- 5-6 أقسام كحد أقصى
+- الكلمات المفتاحية المستهدفة: ${keywordsText}
+- قسم الأسئلة الشائعة: إلزامي (قبل الأخير) - 5 أسئلة حقيقية شائعة فقط بصيغة "س: ... ج: ..."
+- قسم التنبيه/إخلاء المسؤولية: إلزامي (آخر قسم)
+- الخطوات: بترقيم واضح (1. 2. 3.)
+- الأسلوب: رسمي واضح مباشر - لا تهويل ولا لغة عاطفية مبالغ فيها
 `;
 }
 
 function buildUserPrompt(target) {
-  return `Write a concise SEO article in Arabic (800 words total) about: "${target.topicAr}"
+  return `اكتب مقالاً في حدود 800 كلمة بالعربية الفصحى عن: "${target.topicAr}"
 
-Cover:
-- What the service/platform is and why it matters to Algerian citizens
-- Detailed step-by-step registration or usage guide
-- Required documents and prerequisites
-- Solutions to common user problems
-- FAQ section (5 questions)
-- Legal disclaimer
+يجب أن يغطي المقال:
+- ما هي الخدمة/المنصة ولماذا تهم المواطن الجزائري
+- دليل خطوات مفصل للتسجيل أو الاستخدام (بتسلسل رقمي)
+- الوثائق والمتطلبات الأساسية
+- حلول للمشاكل الشائعة التي يواجهها المستخدمون
+- قسم الأسئلة الشائعة (5 أسئلة حقيقية متداولة)
+- قسم إخلاء المسؤولية القانوني
 
-Output JSON only.`;
+تذكر قبل الإخراج النهائي:
+- هل كل تاريخ ذكرته مؤكد من مصدر رسمي؟
+- هل الروابط تشير فقط لأقسام رَقمنة الداخلية؟
+- هل ذُكر اسم الموقع مرة واحدة فقط في الخاتمة؟
+
+أخرج JSON فقط.`;
 }
 
 // ─── OpenRouter API call ────────────────────────────────────────
@@ -362,9 +422,53 @@ async function runAutopilot() {
       process.exit(1);
     }
   } else {
+    console.log('Fetching live Google Trends for Algeria (geo=DZ)...');
+    const liveTrends = await fetchGoogleTrendsDZ();
+    if (liveTrends.length > 0) {
+      console.log(`Live Algeria Trends found (${liveTrends.length} keywords):`, liveTrends.slice(0, 10).join(' | '));
+    } else {
+      console.log('No live Google Trends RSS retrieved (or feed empty).');
+    }
+
     const existing = fs.readFileSync(CONFIG.ARTICLES_DATA_PATH, 'utf8');
-    target = ARTICLE_TARGETS.find(t => !existing.includes(`'${t.slug}'`) && !existing.includes(`"${t.slug}"`));
-    if (!target) { console.log('All target articles already written!'); process.exit(0); }
+
+    let bestTarget = null;
+    let maxScore = -1;
+
+    for (const t of ARTICLE_TARGETS) {
+      const isWritten = existing.includes(`'${t.slug}'`) || existing.includes(`"${t.slug}"`);
+      if (isWritten) continue;
+
+      let score = 0;
+      t.keywords.forEach(kw => {
+        const kwLower = kw.toLowerCase();
+        liveTrends.forEach(trendKw => {
+          const trendLower = trendKw.toLowerCase();
+          if (kwLower.includes(trendLower) || trendLower.includes(kwLower)) {
+            score += 20;
+          }
+        });
+      });
+
+      if (t.slug.includes('2026')) score += 5;
+
+      if (score > maxScore) {
+        maxScore = score;
+        bestTarget = t;
+      }
+    }
+
+    // Trend Gate Rule:
+    // If live trends exist but no unwritten target matches active search trends, skip generation.
+    // If live trends feed was unavailable, pick the next unwritten target as a fallback.
+    if (!bestTarget || (liveTrends.length > 0 && maxScore <= 0)) {
+      console.log('\nℹ️ Trend Gate Active: No unwritten topic matches active Google Trends in Algeria today.');
+      console.log('Skipping article generation to ensure high-relevance SEO publishing.\n');
+      process.exit(0);
+    }
+
+    target = bestTarget;
+    console.log(`\n🎯 Matched Trend Target: "${target.topicAr}" (Score: ${maxScore})`);
   }
 
   console.log(`Topic: ${target.topicAr}`);
