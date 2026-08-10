@@ -2567,7 +2567,6 @@ const tahwilat_jamiya_progres_2026Article: SeoArticle = {
 
 export const seoArticles: Record<string, SeoArticle> = {
   'tahwilat-jamiya-progres-2026': tahwilat_jamiya_progres_2026Article,
-  'bac-2026-results': bac_2026_resultsArticle,
   'takwin-mihnati-2026': takwin_mihnati_2026Article,
   'cnas-chifa-2026': cnas_chifa_2026Article,
   'anem-minha-2026': anem_minha_2026Article,
