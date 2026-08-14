@@ -3,6 +3,52 @@ import { serviceCategories, ServiceLink } from "@/lib/services-data";
 
 export const revalidate = 1800; // Cache for 30 minutes (Fast & Edge-friendly)
 
+// كلمات الاستبعاد: الرياضة، الترفيه، السياسة الدولية
+const EXCLUDE_KEYWORDS = [
+  // رياضة
+  "كرة", "مباراة", "فريق", "دوري", "كأس", "رونالدو", "ميسي", "مارسيل", "ليون",
+  "أتلتيكو", "نادي", "لاعب", "هدف", "نتيجة", "تصفيات", "منتخب",
+  "feyenoord", "coventry", "monaco", "madrid", "atletico", "marseille",
+  "city", "united", "barcelona", "liverpool", "psg", "ligue", "league", "cup",
+  // ترفيه وشهرة
+  "مطرب", "فنان", "ممثل", "مسلسل", "فيلم", "أغنية", "البوم",
+  "youcef", "belaili",
+  // سياسة دولية لا تخص الجزائر
+  "إسرائيل", "فلسطين", "روسيا", "أوكرانيا", "دونالد", "ترامب",
+];
+
+// كلمات الشمول: الخدمات الحكومية والتوظيف والتعليم
+const INCLUDE_KEYWORDS = [
+  "بكالوريا", "باك", "شهادة", "تعليم", "مدرسة", "دراسة", "جامعة", "تسجيل",
+  "توظيف", "مسابقة", "وظيفة", "منحة", "بطالة", "anem", "سكن", "عدل", "aadl",
+  "بريد", "وثيقة", "بطاقة", "جواز", "سفر", "هوية", "رخصة", "قيادة",
+  "ضريبة", "تصريح", "دفع", "وزارة", "إدارة", "بلدية", "ولاية", "مديرية",
+  "صحة", "مستشفى", "موعد", "progres", "dawli", "الرقمي", "الإلكتروني",
+  "نتائج", "قائمة", "إعلان", "مناقصة", "صفقة",
+  // للكشف عن الموضوع الحكومي حتى باللغة الفرنسية
+  "dz", "dzds", "mdn", "onec", "mesrs", "cnac", "cnas", "satim", "ccls",
+];
+
+// ترندات موسمية ذكية: تُستخدم عند عدم وجود ترند حكومي من جوجل
+const SEASONAL_GOV_TRENDS: { keyword: string; context: string }[] = [
+  { keyword: "تحويلات جامعية progres 2026", context: "أغسطس: موسم التحويلات الجامعية" },
+  { keyword: "منحة البطالة ANEM 2026", context: "طلب دائم طوال العام" },
+  { keyword: "نتائج شهادة التعليم المتوسط BEM 2026", context: "موسم النتائج" },
+  { keyword: "تسجيلات الدخول المدرسي 2026-2027", context: "دخول مدرسي: سبتمبر قادم" },
+  { keyword: "المنحة المدرسية 5000 دج 2026", context: "منحة أولياء التلاميذ" },
+  { keyword: "شهادة الميلاد رقمية الجزائر", context: "طلب دائم" },
+  { keyword: "مسابقة توظيف وزارة التربية 2026", context: "موسم التوظيف" },
+  { keyword: "عدل 3 سكن اجتماعي الجزائر", context: "طلب مرتفع في أغسطس" },
+];
+
+function isGovKeyword(kw: string): boolean {
+  const lower = kw.toLowerCase();
+  const isExcluded = EXCLUDE_KEYWORDS.some((ex) => lower.includes(ex.toLowerCase()));
+  if (isExcluded) return false;
+  const isIncluded = INCLUDE_KEYWORDS.some((inc) => lower.includes(inc.toLowerCase()));
+  return isIncluded;
+}
+
 export async function GET() {
   try {
     const res = await fetch("https://trends.google.com/trending/rss?geo=DZ", {
@@ -18,9 +64,18 @@ export async function GET() {
 
     const xmlText = await res.text();
     const titleMatches = xmlText.match(/<title>(.*?)<\/title>/gi) || [];
-    const trendingKeywords: string[] = titleMatches
+    const rawKeywords: string[] = titleMatches
       .map((t) => t.replace(/<\/?title>/gi, "").trim())
       .filter((t) => t && t !== "Daily Search Trends" && t !== "Google Trends");
+
+    // فلترة: نُبقي فقط على الكلمات المتعلقة بالخدمات الحكومية
+    const govKeywords = rawKeywords.filter(isGovKeyword);
+
+    // إذا لا توجد ترندات حكومية من جوجل اليوم → نستخدم الترندات الموسمية الذكية
+    const trendingKeywords: string[] =
+      govKeywords.length >= 3
+        ? govKeywords
+        : SEASONAL_GOV_TRENDS.map((s) => s.keyword);
 
     // Gather all services
     const allServices: (ServiceLink & { categoryName: string })[] = [];

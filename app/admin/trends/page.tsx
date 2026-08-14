@@ -78,6 +78,7 @@ function isCovered(title: string, publishedSlugs: string[]): boolean {
 }
 
 const KNOWN_PUBLISHED_SLUGS = [
+  // مقالات منشورة حالياً
   "tahwilat-jamiya-progres-2026",
   "awlya-ibtidai-2026",
   "dawla-madrasiya-2026-2027",
@@ -85,6 +86,10 @@ const KNOWN_PUBLISHED_SLUGS = [
   "aadl3-2026",
   "mdn-tagnid-2026",
   "bac-2026",
+  // كلمات عامة لاكتشاف التغطية
+  "progres", "tahwilat", "awlya", "ibtidai", "dawla", "madrasiya",
+  "minha", "aadl", "mdn", "tagnid", "bac", "bkalia", "onec",
+  "anem", "minha-batalat", "batala", "sakan", "baridi", "eccp",
 ];
 
 // ======= TREND BADGE =======
@@ -92,18 +97,18 @@ function ScoreBadge({ score }: { score: number }) {
   if (score >= 150)
     return (
       <span className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full bg-red-500 text-white">
-        <Flame className="w-3 h-3" /> حار جداً
+        <Flame className="w-3 h-3" /> 🔴 حار جداً (بحث ضخم الآن)
       </span>
     );
   if (score >= 100)
     return (
       <span className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full bg-orange-500 text-white">
-        <TrendingUp className="w-3 h-3" /> ترند
+        <TrendingUp className="w-3 h-3" /> 🟠 ترند (طلب مرتفع هذا اليوم)
       </span>
     );
   return (
     <span className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-400 text-black">
-      <BarChart2 className="w-3 h-3" /> صاعد
+      <BarChart2 className="w-3 h-3" /> 🟡 صاعد (يتزايد الطلب هذا الأسبوع)
     </span>
   );
 }
