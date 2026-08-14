@@ -134,6 +134,12 @@ export function getAllDetailedServices(): DetailedService[] {
 
       result.push(detailed);
       map.set(uniqueId, detailed);
+      try {
+        map.set(encodeURIComponent(uniqueId), detailed);
+      } catch {}
+      try {
+        map.set(decodeURIComponent(uniqueId), detailed);
+      } catch {}
     };
 
     (cat.services || []).forEach((s) => processService(s));
@@ -147,11 +153,47 @@ export function getAllDetailedServices(): DetailedService[] {
   return result;
 }
 
-export function getDetailedServiceById(id: string): DetailedService | undefined {
+export function getDetailedServiceById(rawId: string): DetailedService | undefined {
   if (!cachedServicesMap) {
     getAllDetailedServices();
   }
-  return cachedServicesMap?.get(id);
+  if (!rawId) return undefined;
+
+  let decoded = rawId;
+  try {
+    decoded = decodeURIComponent(rawId);
+  } catch {}
+
+  let encoded = rawId;
+  try {
+    encoded = encodeURIComponent(rawId);
+  } catch {}
+
+  const match =
+    cachedServicesMap?.get(rawId) ||
+    cachedServicesMap?.get(decoded) ||
+    cachedServicesMap?.get(encoded);
+
+  if (match) return match;
+
+  // Robust fallback: Find matching service by slug or name comparison
+  const all = getAllDetailedServices();
+  const lowerDecoded = decoded.toLowerCase();
+  
+  return all.find((s) => {
+    const sId = s.id.toLowerCase();
+    let sDec = sId;
+    try {
+      sDec = decodeURIComponent(sId).toLowerCase();
+    } catch {}
+    return (
+      sId === lowerDecoded ||
+      sDec === lowerDecoded ||
+      lowerDecoded.includes(sDec) ||
+      sDec.includes(lowerDecoded)
+    );
+  });
 }
+
 
 

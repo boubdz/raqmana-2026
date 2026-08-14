@@ -70,7 +70,12 @@ const categoryNamesAr: Record<string, string> = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const service = getDetailedServiceById(id);
+  let decodedId = id;
+  try {
+    decodedId = decodeURIComponent(id);
+  } catch {}
+
+  const service = getDetailedServiceById(decodedId) || getDetailedServiceById(id);
 
   if (!service) {
     return {
@@ -119,7 +124,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServiceDetailPage({ params }: Props) {
   const { id } = await params;
-  const service = getDetailedServiceById(id);
+  let decodedId = id;
+  try {
+    decodedId = decodeURIComponent(id);
+  } catch {}
+
+  const service = getDetailedServiceById(decodedId) || getDetailedServiceById(id);
 
   if (!service) {
     notFound();
