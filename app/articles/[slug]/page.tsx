@@ -1,4 +1,4 @@
-import { seoArticles } from "@/lib/seo-articles-data";
+import { getAllArticlesMerged } from "@/lib/custom-articles-store";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
@@ -9,6 +9,8 @@ import { Metadata } from "next";
 import { CommunityComments } from "@/components/community-comments";
 import { ServiceToolbarBar } from "@/components/service-toolbar-bar";
 
+import { OfficialDocumentViewer } from "@/components/official-document-viewer";
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -16,7 +18,8 @@ type Props = {
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  return Object.keys(seoArticles).map((slug) => ({ slug }));
+  const articles = getAllArticlesMerged();
+  return Object.keys(articles).map((slug) => ({ slug }));
 }
 
 const highConvertingArticleMetadata: Record<string, { title: string; description: string }> = {
@@ -68,8 +71,8 @@ const highConvertingArticleMetadata: Record<string, { title: string; description
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  
-  const article = seoArticles[slug];
+  const articles = getAllArticlesMerged();
+  const article = articles[slug];
 
   if (!article) {
     return {
@@ -115,8 +118,8 @@ import { getCategoryIdForSlug } from "@/lib/category-mapper";
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
-
-  const article = seoArticles[slug];
+  const articles = getAllArticlesMerged();
+  const article = articles[slug];
 
   if (!article) {
     notFound();
@@ -178,9 +181,19 @@ export default async function ArticlePage({ params }: Props) {
                 />
               </div>
               
-              <div className="text-xl text-muted-foreground font-medium leading-relaxed mb-12">
+              <div className="text-xl text-muted-foreground font-medium leading-relaxed mb-8">
                 {article.introduction}
               </div>
+
+              {/* Official Communiqué Document Viewer */}
+              {(article.officialDocumentUrl || (article as any).officialImage) && (
+                <OfficialDocumentViewer
+                  imageUrl={article.officialDocumentUrl || (article as any).officialImage}
+                  title={article.title}
+                  sourceMinistry={(article as any).sourceMinistry || "وزارة التربية الوطنية / الهيئات الرسمية"}
+                  dateStr={(article as any).dateStr || "2026"}
+                />
+              )}
               
               <div className="space-y-12">
                 {article.sections.map((section, index) => (

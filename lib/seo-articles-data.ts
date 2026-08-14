@@ -17,6 +17,10 @@ export interface SeoArticle {
   introduction: string;
   sections: SeoArticleSection[];
   registrationRequiredSites?: SeoRegistrationSite[];
+  officialDocumentUrl?: string;
+  sourceMinistry?: string;
+  dateStr?: string;
+  faqs?: { question: string; answer: string }[];
 }
 
 // ================================================================

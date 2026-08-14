@@ -1,8 +1,9 @@
-import { seoArticles } from '@/lib/seo-articles-data';
+import { getAllArticlesMerged } from '@/lib/custom-articles-store';
 
 export async function GET() {
   const baseUrl = 'https://www.raqmanadz.com';
   const lastmod = new Date().toISOString();
+  const articles = getAllArticlesMerged();
 
   // Articles index page
   const indexEntry = `  <url>
@@ -13,7 +14,7 @@ export async function GET() {
   </url>`;
 
   // Individual article pages
-  const articleEntries = Object.keys(seoArticles)
+  const articleEntries = Object.keys(articles)
     .map(
       (slug) => `  <url>
     <loc>${baseUrl}/articles/${slug}</loc>
