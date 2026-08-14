@@ -26,6 +26,9 @@ const slugToCategoryMap: Record<string, string> = {
   'takwin-mihnati-2026': 'vocational',
   'tahwilat-jamiya-progres-2026': 'university',
   'aadl3-2026': 'aadl',
+  'dawla-madrasiya-2026-2027': 'education',
+  'awlya-ibtidai-2026': 'education',
+  'minha-5000-madrasiya-2026': 'education',
   'epaiement-cib-edahabia-guide': 'bills',
 };
 
@@ -42,10 +45,10 @@ export function getCategoryIdForSlug(slug: string): string {
   if (lower.includes('anem') || lower.includes('minha') || lower.includes('employment') || lower.includes('wasit') || lower.includes('job')) return 'employment';
   if (lower.includes('cnas') || lower.includes('chifa') || lower.includes('elhanaa') || lower.includes('casnos') || lower.includes('social')) return 'socialSecurity';
   if (lower.includes('takwin') || lower.includes('mihnati') || lower.includes('vocational')) return 'vocational';
-  if (lower.includes('bac') || lower.includes('education') || lower.includes('tawdhif') || lower.includes('school')) return 'education';
+  if (lower.includes('bac') || lower.includes('education') || lower.includes('tawdhif') || lower.includes('school') || lower.includes('madrasiya') || lower.includes('madrasa') || lower.includes('awlya') || lower.includes('ibtidai') || lower.includes('edu')) return 'education';
   if (lower.includes('aadl') || lower.includes('lpp') || lower.includes('enpi') || lower.includes('housing') || lower.includes('building')) return 'aadl';
   if (lower.includes('cib') || lower.includes('edahabia') || lower.includes('bill') || lower.includes('epaiement') || lower.includes('sonelgaz')) return 'bills';
-  if (lower.includes('mesrs') || lower.includes('rag') || lower.includes('university') || lower.includes('progres')) return 'university';
+  if (lower.includes('mesrs') || lower.includes('rag') || lower.includes('university') || lower.includes('progres') || lower.includes('tahwilat')) return 'university';
   if (lower.includes('post') || lower.includes('ccp') || lower.includes('barid')) return 'post';
   if (lower.includes('tax')) return 'tax';
   if (lower.includes('justice')) return 'justice';
