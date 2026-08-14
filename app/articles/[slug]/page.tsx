@@ -273,8 +273,9 @@ export default async function ArticlePage({ params }: Props) {
 
       {/* 💬 تعليقات وأسئلة القراء حول المقال */}
       <CommunityComments
-        categoryId={`article-${slug}`}
-        categoryName={article.title}
+        serviceId={slug}
+        serviceTitle={article.title}
+        categoryId={categoryId}
       />
 
       <Footer />

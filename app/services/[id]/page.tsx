@@ -345,8 +345,9 @@ export default async function ServiceDetailPage({ params }: Props) {
           {/* Community Comments Section (UGC) */}
           <div className="p-6 sm:p-8 rounded-3xl border border-border/60 bg-card space-y-6">
             <CommunityComments
+              serviceId={service.id}
               serviceTitle={service.name.ar}
-              categoryId={service.id}
+              categoryId={service.category.id}
               categoryName={categoryTitle}
             />
           </div>
