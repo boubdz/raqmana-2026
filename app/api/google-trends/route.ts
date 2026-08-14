@@ -81,9 +81,42 @@ export async function GET() {
       .filter((s) => s.score > 0)
       .sort((a, b) => b.score - a.score);
 
+    // Calculate trending scores specifically for top quick-access cards
+    const cardScores: Record<string, number> = {
+      "progres-transfers": 100, // High seasonal baseline -- August university transfers
+      "onec-concours": 95,      // Very high baseline -- back-to-school season (Aug-Sep)
+      "anem-minha": 70,
+      "aadl-housing": 65,
+      "baridi-eccp": 60,
+      "mdn": 50,
+    };
+
+    trendingKeywords.forEach((kw) => {
+      const kwLower = kw.toLowerCase();
+      if (kwLower.includes("جامعة") || kwLower.includes("progres") || kwLower.includes("تحويلات") || kwLower.includes("بكالوريا") || kwLower.includes("bac")) {
+        cardScores["progres-transfers"] += 50;
+      }
+      if (kwLower.includes("مدرسة") || kwLower.includes("أوليائي") || kwLower.includes("awlya") || kwLower.includes("تربية") || kwLower.includes("أساتذة") || kwLower.includes("دخول مدرسي") || kwLower.includes("onec") || kwLower.includes("منحة مدرسية") || kwLower.includes("5000") || kwLower.includes("لوازم مدرسة")) {
+        cardScores["onec-concours"] += 50;
+      }
+      if (kwLower.includes("منحة") || kwLower.includes("بطالة") || kwLower.includes("anem") || kwLower.includes("وسيط")) {
+        cardScores["anem-minha"] += 50;
+      }
+      if (kwLower.includes("عدل") || kwLower.includes("aadl") || kwLower.includes("سكن") || kwLower.includes("fnpos")) {
+        cardScores["aadl-housing"] += 50;
+      }
+      if (kwLower.includes("ذهبية") || kwLower.includes("بريد") || kwLower.includes("eccp") || kwLower.includes("cib")) {
+        cardScores["baridi-eccp"] += 50;
+      }
+      if (kwLower.includes("جيش") || kwLower.includes("دفاع") || kwLower.includes("mdn") || kwLower.includes("تجنيد")) {
+        cardScores["mdn"] += 50;
+      }
+    });
+
     return NextResponse.json({
       success: true,
       googleKeywords: trendingKeywords.slice(0, 10),
+      cardScores,
       matchedCount: matchedServices.length,
       matchedServices: matchedServices.slice(0, 6),
     });
