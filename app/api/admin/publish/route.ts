@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     } = body;
 
     // Passcode check
-    const validPasscode = process.env.ADMIN_PUBLISH_PASSCODE || "raqmana2026";
+    const validPasscode = process.env.ADMIN_PUBLISH_PASSCODE || "@belaiba28026@";
     if (passcode !== validPasscode) {
       return NextResponse.json(
         { message: "الرمز السري الخاص بالنشر غير صحيح" },

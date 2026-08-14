@@ -181,7 +181,7 @@ export default function AdminPublishPage() {
               type="password"
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
-              placeholder="أدخل الرمز السري (الافتراضي: raqmana2026)"
+              placeholder="أدخل الرمز السري للنشر"
               className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
             />
           </div>
@@ -219,7 +219,7 @@ export default function AdminPublishPage() {
             {/* Ministry Source */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-2">
-                الجهة الوزارية المصدرة:
+                الجهة الوزارية أو الهيئة الرسمية المصدرة:
               </label>
               <select
                 value={sourceMinistry}
@@ -227,13 +227,47 @@ export default function AdminPublishPage() {
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
               >
                 <option value="وزارة التربية الوطنية">وزارة التربية الوطنية</option>
-                <option value="وزارة التعليم العالي والبحث العلمي">وزارة التعليم العالي والبحث العلمي</option>
+                <option value="وزارة التعليم العالي والبحث العلمي">وزارة التعليم العالي والبحث العلمي (MESRS)</option>
+                <option value="وزارة التكوين والتعليم المهنيين">وزارة التكوين والتعليم المهنيين (MFEP)</option>
                 <option value="وزارة الدفاع الوطني (MDN)">وزارة الدفاع الوطني (MDN)</option>
-                <option value="بريد الجزائر (ECCP / BaridiMob)">بريد الجزائر (ECCP / BaridiMob)</option>
-                <option value="الوكالة الوطنية للتنسيق والتشغيل (ANEM)">الوكالة الوطنية للتنسيق والتشغيل (ANEM)</option>
-                <option value="الضمان الاجتماعي (CNAS / CASNOS)">الضمان الاجتماعي (CNAS / CASNOS)</option>
+                <option value="وزارة الداخلية والجماعات المحلية والتهيئة العمرانية">وزارة الداخلية والجماعات المحلية والتهيئة العمرانية</option>
+                <option value="وزارة العدل حافظ الأختام">وزارة العدل حافظ الأختام</option>
+                <option value="وزارة العمل والتشغيل والضمان الاجتماعي">وزارة العمل والتشغيل والضمان الاجتماعي</option>
+                <option value="الوكالة الوطنية للتنسيق والتشغيل (ANEM / وسيط)">الوكالة الوطنية للتنسيق والتشغيل (ANEM / وسيط)</option>
+                <option value="الضمان الاجتماعي للعمال الأجراء (CNAS / الشفاء)">الضمان الاجتماعي للعمال الأجراء (CNAS / الشفاء)</option>
+                <option value="الضمان الاجتماعي لغير الأجراء (CASNOS)">الضمان الاجتماعي لغير الأجراء (CASNOS)</option>
+                <option value="الصندوق الوطني للتقاعد (CNR)">الصندوق الوطني للتقاعد (CNR)</option>
+                <option value="وزارة السكن والعمران والمدينة">وزارة السكن والعمران والمدينة</option>
+                <option value="الوكالة الوطنية لتحسين السكن وتطويره (عدل AADL)">الوكالة الوطنية لتحسين السكن وتطويره (عدل AADL)</option>
+                <option value="المؤسسة الوطنية للترقية العقارية (ENPI / LPP)">المؤسسة الوطنية للترقية العقارية (ENPI / LPP)</option>
+                <option value="وزارة البريد والمواصلات السلكية واللاسلكية">وزارة البريد والمواصلات السلكية واللاسلكية</option>
+                <option value="مؤسسة بريد الجزائر (ECCP / BaridiMob)">مؤسسة بريد الجزائر (ECCP / BaridiMob)</option>
+                <option value="مؤسسة اتصالات الجزائر (Algérie Télécom)">مؤسسة اتصالات الجزائر (Algérie Télécom)</option>
+                <option value="وزارة المالية (الضرائب والجمارك والأملاك)">وزارة المالية (الضرائب والجمارك والأملاك)</option>
+                <option value="المديرية العامة للضرائب (Jibayatic)">المديرية العامة للضرائب (Jibayatic)</option>
+                <option value="الجمارك الجزائرية (Douanes DZ)">الجمارك الجزائرية (Douanes DZ)</option>
                 <option value="شركة نفطال (Naftal e-mahata)">شركة نفطال (Naftal e-mahata)</option>
-                <option value="وكالة عدل AADL / ENPI">وكالة عدل AADL / ENPI</option>
+                <option value="مجمع سونلغاز (Sonelgaz e-taqaty)">مجمع سونلغاز (Sonelgaz e-taqaty)</option>
+                <option value="وزارة التجارة وترقية الصادرات">وزارة التجارة وترقية الصادرات</option>
+                <option value="المركز الوطني للسجل التجاري (CNRC)">المركز الوطني للسجل التجاري (CNRC)</option>
+                <option value="وزارة اقتصاد المعرفة والمؤسسات الناشئة والمصغرة">وزارة اقتصاد المعرفة والمؤسسات الناشئة والمصغرة</option>
+                <option value="الوكالة الجزائرية لترقية الاستثمار (AAPI)">الوكالة الجزائرية لترقية الاستثمار (AAPI)</option>
+                <option value="وزارة الصحة والسكان">وزارة الصحة والسكان</option>
+                <option value="وزارة الفلاحة والتنمية الريفية">وزارة الفلاحة والتنمية الريفية</option>
+                <option value="وزارة النقل والمواصلات">وزارة النقل والمواصلات</option>
+                <option value="وزارة الأشغال العمومية والمنشآت القاعدة">وزارة الأشغال العمومية والمنشآت القاعدة</option>
+                <option value="وزارة الري والموارد المائية">وزارة الري والموارد المائية</option>
+                <option value="المديرية العامة للأمن الوطني (DGSN)">المديرية العامة للأمن الوطني (DGSN)</option>
+                <option value="القيادة العامة للدرك الوطني">القيادة العامة للدرك الوطني</option>
+                <option value="المديرية العامة للحماية المدنية">المديرية العامة للحماية المدنية</option>
+                <option value="وزارة الشؤون الخارجية والجالية الوطنية بالخارج">وزارة الشؤون الخارجية والجالية الوطنية بالخارج</option>
+                <option value="وزارة الشؤون الدينية والأوقاف (بوابة الحج)">وزارة الشؤون الدينية والأوقاف (بوابة الحج)</option>
+                <option value="وزارة المجاهدين وذوي الحقوق">وزارة المجاهدين وذوي الحقوق</option>
+                <option value="وزارة الثقافة والفنون">وزارة الثقافة والفنون</option>
+                <option value="وزارة الشباب والرياضة">وزارة الشباب والرياضة</option>
+                <option value="السلطة الوطنية المستقلة للانتخابات (ANIE)">السلطة الوطنية المستقلة للانتخابات (ANIE)</option>
+                <option value="سلطة ضبط الاتصالات والبريد (ARPCE)">سلطة ضبط الاتصالات والبريد (ARPCE)</option>
+                <option value="بنك الجزائر والقطاع المصرفي">بنك الجزائر والقطاع المصرفي</option>
               </select>
             </div>
           </div>
@@ -296,22 +330,52 @@ export default function AdminPublishPage() {
             {/* Category */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-2">
-                القسم المرتبط بالمقال:
+                القسم المرتبط بالمقال (جميع الأقسام الـ 40):
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
               >
-                <option value="education">التربية والتعليم (education)</option>
-                <option value="university">الخدمات الجامعية (university)</option>
-                <option value="employment">التشغيل والبطالة (employment)</option>
-                <option value="aadl">سكنات عدل والترقية (aadl)</option>
-                <option value="bills">الدفع الإلكتروني والفواتير (bills)</option>
-                <option value="socialSecurity">الضمان الاجتماعي الشفاء (socialSecurity)</option>
-                <option value="post">بريد الجزائر (post)</option>
-                <option value="police">الأمن والجيش (police)</option>
-                <option value="commerce">التجارة والاستثمار (commerce)</option>
+                <option value="dzds">البوابة الجزائرية للخدمات الرقمية (dzds.dz)</option>
+                <option value="bills">خدمات الدفع الإلكتروني للفواتير (bills)</option>
+                <option value="mobile">تعبئة الهاتف النقال والحسابات (mobile)</option>
+                <option value="post">بريد الجزائر (ECCP / BaridiMob)</option>
+                <option value="telecom">اتصالات الجزائر (Algérie Télécom)</option>
+                <option value="education">التربية والتعليم (فضاء أوليائي / توظيف)</option>
+                <option value="university">الخدمات الجامعية (بروغرس Progres MESRS)</option>
+                <option value="vocational">التكوين والتعليم المهنيين (مهنتي Mihnati)</option>
+                <option value="interior">الإدارة المحلية والداخلية (الحالة المدنية)</option>
+                <option value="aadl">وكالة عدل AADL والسكن</option>
+                <option value="enpi">الترقية العقارية ENPI و LPP</option>
+                <option value="employment">التشغيل والبطالة (ANEM / وسيط Wasit)</option>
+                <option value="socialSecurity">الضمان الاجتماعي (CNAS / CASNOS / الشفاء)</option>
+                <option value="justice">العدل والقضاء (السوابق العدلية والجنسية)</option>
+                <option value="realEstate">أملاك الدولة والمسح العقاري</option>
+                <option value="retirement">التقاعد والمنح (CNR)</option>
+                <option value="autoEntrepreneur">المقاول الذاتي والبطاقة المهنية</option>
+                <option value="hajj">الحج والعمرة (بوابة الحج الرسمية)</option>
+                <option value="cnrc">السجل التجاري (CNRC / إنشاء المؤسسات)</option>
+                <option value="banking">الخدمات البنكية والمصرفية</option>
+                <option value="health">الصحة والدواء (مواعيد المستشفيات)</option>
+                <option value="vehicles">السيارات والمركبات (رخصة السياقة / البطاقة الرمادية)</option>
+                <option value="transport">النقل والمواصلات (الخطوط الجوية / القطارات)</option>
+                <option value="tax">الضرائب والرسوم (مساهمتي Jibayatic)</option>
+                <option value="commerce">التجارة والاستثمار (AAPI / التجارة)</option>
+                <option value="customs">الجمارك الجزائرية (البوابة الجمركية)</option>
+                <option value="youth">الشباب والرياضة</option>
+                <option value="publicContracts">الصفقات العمومية</option>
+                <option value="foreignAffairs">الشؤون الخارجية والقنصلية (التأشيرة)</option>
+                <option value="arpce">سلطة ضبط الاتصالات (ARPCE)</option>
+                <option value="investment">الاستثمار والشركات الناشئة (AAPI)</option>
+                <option value="agriculture">الفلاحة والموارد المائية</option>
+                <option value="insurance">التأمين وإعادة التأمين</option>
+                <option value="police">الأمن والجيش الوطني (MDN)</option>
+                <option value="religious">الشؤون الدينية والأوقاف</option>
+                <option value="mujahidine">المجاهدين وذوي الحقوق</option>
+                <option value="culture">الثقافة والفنون</option>
+                <option value="publicWorks">الأشغال العمومية والمنشآت</option>
+                <option value="environment">البيئة والطاقات المتجددة</option>
               </select>
             </div>
 
