@@ -58,3 +58,100 @@ export function getCategoryIdForSlug(slug: string): string {
   return 'dzds';
 }
 
+export interface DetailedService {
+  id: string;
+  name: { ar: string; en: string };
+  url: string;
+  phone?: string;
+  isApp?: boolean;
+  status?: "active" | "slow" | "down";
+  customStatusNote?: string;
+  isTrending?: boolean;
+  icon?: string;
+  category: {
+    id: string;
+    nameKey: string;
+    icon: string;
+    color: string;
+    descriptionAr?: string;
+  };
+  subCategoryName?: string;
+}
+
+export function slugifyService(nameAr: string, url: string): string {
+  let domain = "";
+  try {
+    domain = new URL(url).hostname.replace(/^www\./, "").split(".")[0];
+  } catch {
+    domain = "";
+  }
+  // Convert Arabic letters to clean slug or fallback to domain
+  const cleanAr = nameAr
+    .replace(/[^\u0621-\u064A0-9a-zA-Z]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  if (domain && domain.length > 2) {
+    return `${cleanAr}-${domain}`.toLowerCase();
+  }
+  return cleanAr.toLowerCase() || `service-${Math.abs(url.length * 31)}`;
+}
+
+let cachedServices: DetailedService[] | null = null;
+let cachedServicesMap: Map<string, DetailedService> | null = null;
+
+export function getAllDetailedServices(): DetailedService[] {
+  if (cachedServices) return cachedServices;
+
+  const result: DetailedService[] = [];
+  const map = new Map<string, DetailedService>();
+  const idCounts = new Map<string, number>();
+
+  serviceCategories.forEach((cat) => {
+    const processService = (s: any, subName?: string) => {
+      let baseId = slugifyService(s.name.ar, s.url);
+      
+      // Ensure absolute uniqueness
+      let uniqueId = baseId;
+      const count = idCounts.get(baseId) || 0;
+      if (count > 0) {
+        uniqueId = `${baseId}-${count + 1}`;
+      }
+      idCounts.set(baseId, count + 1);
+
+      const detailed: DetailedService = {
+        ...s,
+        id: uniqueId,
+        category: {
+          id: cat.id,
+          nameKey: cat.nameKey,
+          icon: cat.icon,
+          color: cat.color,
+          descriptionAr: cat.descriptionAr,
+        },
+        subCategoryName: subName,
+      };
+
+      result.push(detailed);
+      map.set(uniqueId, detailed);
+    };
+
+    (cat.services || []).forEach((s) => processService(s));
+    (cat.subCategories || []).forEach((sub) => {
+      (sub.services || []).forEach((s) => processService(s, sub.nameKey));
+    });
+  });
+
+  cachedServices = result;
+  cachedServicesMap = map;
+  return result;
+}
+
+export function getDetailedServiceById(id: string): DetailedService | undefined {
+  if (!cachedServicesMap) {
+    getAllDetailedServices();
+  }
+  return cachedServicesMap?.get(id);
+}
+
+
