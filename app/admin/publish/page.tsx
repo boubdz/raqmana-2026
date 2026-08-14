@@ -14,7 +14,8 @@ import {
   ArrowRight,
   ExternalLink,
   Lock,
-  Layers
+  Layers,
+  TrendingUp
 } from "lucide-react";
 
 export default function AdminPublishPage() {
@@ -112,13 +113,22 @@ export default function AdminPublishPage() {
             </div>
           </div>
 
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-medium hover:bg-slate-800 transition"
-          >
-            <ArrowRight className="w-4 h-4" />
-            العودة للموقع
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/admin/trends"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/20 transition"
+            >
+              <TrendingUp className="w-4 h-4" />
+              📡 الترندات
+            </Link>
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-medium hover:bg-slate-800 transition"
+            >
+              <ArrowRight className="w-4 h-4" />
+              العودة للموقع
+            </Link>
+          </div>
         </div>
 
         {/* Success Alert */}
