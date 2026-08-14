@@ -27,12 +27,18 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!title || !introduction || !imageUrl) {
+    if (!title || !introduction) {
       return NextResponse.json(
-        { message: "جميع الخانات الأساسية مطلوبة (العنوان والتوضيح وصورة البيان)" },
+        { message: "العنوان والمحتوى مطلوبان لإتمام النشر" },
         { status: 400 }
       );
     }
+
+    // صورة افتراضية عند عدم وجود صورة
+    const finalImageUrl = imageUrl && imageUrl.trim()
+      ? imageUrl.trim()
+      : "https://www.raqmanadz.com/og-image.png";
+
 
     // Slugify
     let finalSlug = rawSlug
@@ -68,7 +74,7 @@ export async function POST(req: Request) {
       title: `${title} 📜🇩🇿`,
       introduction,
       sections,
-      officialDocumentUrl: imageUrl,
+      officialDocumentUrl: finalImageUrl,
       sourceMinistry,
       dateStr: "2026",
       registrationRequiredSites: [

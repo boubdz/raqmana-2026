@@ -51,8 +51,8 @@ export default function AdminPublishPage() {
     setErrorMessage("");
     setSuccessResult(null);
 
-    if (!title || !introduction || !imageUrl) {
-      setErrorMessage("يرجى ملء جميع الخانات الأساسية (العنوان، التوضيح وصورة البيان الرسمي)");
+    if (!title || !introduction) {
+      setErrorMessage("يرجى ملء الخانات الأساسية: العنوان والمحتوى");
       return;
     }
 
@@ -285,18 +285,17 @@ export default function AdminPublishPage() {
           {/* Image URL */}
           <div>
             <label className="block text-xs font-bold text-slate-300 mb-2 flex items-center justify-between">
-              <span>رابط صورة البيان/الإرسالية الرسمية (JPEG/PNG): *</span>
-              <span className="text-[10px] text-slate-400 font-normal">يمكنك كتابة الرابط المباشر للصورة من الفيسبوك أو رفعها</span>
+              <span>رابط صورة البيان/الإرسالية الرسمية (JPEG/PNG): <span className="text-slate-500">(اختياري)</span></span>
+              <span className="text-[10px] text-slate-400 font-normal">اتركه فارغاً إن لم تملك صورة رسمية</span>
             </label>
             <div className="flex gap-2">
               <input
                 type="url"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                placeholder="https://...رابط صورة الإرسالية بالختم..."
+                placeholder="https://...رابط صورة الإرسالية بالختم (اختياري)..."
                 className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 font-mono text-left"
                 dir="ltr"
-                required
               />
             </div>
             {imageUrl && (
@@ -304,6 +303,11 @@ export default function AdminPublishPage() {
                 <p className="text-[10px] text-slate-400 mb-1">معاينة صورة البيان المرفوعة:</p>
                 <img src={imageUrl} alt="معاينة" className="max-h-48 mx-auto rounded object-contain border" />
               </div>
+            )}
+            {!imageUrl && (
+              <p className="text-[10px] text-slate-500 mt-1">
+                💡 بدون صورة سيستخدم الموقع صورة رقمنة الجزائر الافتراضية تلقائياً
+              </p>
             )}
           </div>
 
