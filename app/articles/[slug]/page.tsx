@@ -276,6 +276,7 @@ export default async function ArticlePage({ params }: Props) {
         serviceId={slug}
         serviceTitle={article.title}
         categoryId={categoryId}
+        itemType="HowTo"
       />
 
       <Footer />

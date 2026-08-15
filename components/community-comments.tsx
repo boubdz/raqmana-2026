@@ -21,6 +21,7 @@ interface CommunityCommentsProps {
   categoryName?: string;
   initialRatingCount?: number;
   initialAvgRating?: number;
+  itemType?: "SoftwareApplication" | "HowTo" | "Organization" | "Product";
 }
 
 export function CommunityComments({
@@ -30,9 +31,20 @@ export function CommunityComments({
   categoryName,
   initialRatingCount = 124,
   initialAvgRating = 4.7,
+  itemType,
 }: CommunityCommentsProps) {
   const pageKey = serviceId || categoryId || serviceTitle.replace(/[^\u0621-\u064A0-9a-zA-Z]/g, "-");
   const storageKey = `raqmana_comments_v2_${pageKey}`;
+
+  // Google supported itemReviewed type fallback
+  const resolvedItemType =
+    itemType ||
+    (serviceId?.includes("dawla-madrasiya") ||
+    serviceId?.includes("tahwilat") ||
+    serviceTitle.includes("دليل") ||
+    serviceTitle.includes("التحضيرات")
+      ? "HowTo"
+      : "SoftwareApplication");
 
   // State
   const [comments, setComments] = useState<CommentItem[]>([]);
@@ -191,7 +203,7 @@ export function CommunityComments({
             "@context": "https://schema.org",
             "@type": "AggregateRating",
             "itemReviewed": {
-              "@type": "GovernmentService",
+              "@type": resolvedItemType,
               "name": serviceTitle,
             },
             "ratingValue": initialAvgRating.toString(),
