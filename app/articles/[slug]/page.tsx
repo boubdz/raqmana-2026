@@ -10,12 +10,14 @@ import { CommunityComments } from "@/components/community-comments";
 import { ServiceToolbarBar } from "@/components/service-toolbar-bar";
 
 import { OfficialDocumentViewer } from "@/components/official-document-viewer";
+import { ArticleContentRenderer } from "@/components/article-content-renderer";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const articles = getAllArticlesMerged();
@@ -181,12 +183,12 @@ export default async function ArticlePage({ params }: Props) {
                 />
               </div>
               
-              <div className="text-xl text-muted-foreground font-medium leading-relaxed mb-8">
-                {article.introduction}
+              <div className="mb-8">
+                <ArticleContentRenderer content={article.introduction} />
               </div>
 
               {/* Official Communiqué Document Viewer */}
-              {(article.officialDocumentUrl || (article as any).officialImage) && (
+              {((article.officialDocumentUrl && !article.officialDocumentUrl.includes("og-image.png")) || (article as any).officialImage) && (
                 <OfficialDocumentViewer
                   imageUrl={article.officialDocumentUrl || (article as any).officialImage}
                   title={article.title}
@@ -202,7 +204,7 @@ export default async function ArticlePage({ params }: Props) {
                       {section.heading}
                     </h2>
                     <div className="prose prose-lg dark:prose-invert max-w-none text-muted-foreground">
-                      <p className="leading-loose whitespace-pre-line">{section.content}</p>
+                      <ArticleContentRenderer content={section.content} />
                     </div>
                   </section>
                 ))}

@@ -63,8 +63,8 @@ const nextConfig = {
       { source: '/categories/certificate.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/complaint.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/request.html', destination: '/document-assistant', permanent: true },
-      { source: '/categories/resignation.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/orientation', destination: '/categories/university', permanent: true },
+      { source: '/admin/trend', destination: '/admin/trends', permanent: true },
       { source: '/categories/:slug.html', destination: '/categories/:slug', permanent: true },
     ];
   },

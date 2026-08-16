@@ -4,14 +4,12 @@ import { HeroSection } from "@/components/hero-section";
 import { ServicesMarquee } from "@/components/services-marquee";
 import { NewsTicker } from "@/components/news-ticker";
 import { SeasonalEvents } from "@/components/seasonal-events";
-import { DailyUtilities } from "@/components/daily-utilities";
 import { CategoriesSection } from "@/components/categories-section";
 import { SolutionsHub } from "@/components/solutions-hub";
 import { DigitalDirectory } from "@/components/digital-directory";
 import { Footer } from "@/components/footer";
 import { AIChatbot } from "@/components/ai-chatbot";
 
-import { SocialProofCounter } from "@/components/social-proof-counter";
 import { TrendingServicesGrid } from "@/components/trending-services-grid";
 import { CommunityComments } from "@/components/community-comments";
 
@@ -149,7 +147,6 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <SocialProofCounter />
       <Header />
       <main>
         {/* Above-the-fold: loaded immediately */}
@@ -163,9 +160,6 @@ export default function Home() {
         <CategoriesSection />
         <NewsTicker />
         <SeasonalEvents />
-        <div className="container mx-auto px-6 py-12 space-y-24">
-          <DailyUtilities />
-        </div>
         <SolutionsHub />
         <DigitalDirectory />
 

@@ -26,20 +26,16 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Execute Autonomous SEO Autopilot Script
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      - name: Execute SEO Radar & IndexNow Verification
         run: npm run autopilot
 
-      - name: Commit and Push Autopilot Updates
+      - name: Verify IndexNow Key Status
         run: |
-          git config --global user.name "Raqmana Autopilot Bot"
-          git config --global user.email "bot@www.raqmanadz.com"
-          git add -A
-          if ! git diff-index --quiet HEAD; then
-            git commit -m "auto(seo): daily autonomous content & instant indexing trigger"
-            git push
+          if [ -f "public/raqmana2026indexnowkey789.txt" ]; then
+            echo "IndexNow Key File OK"
           else
-            echo "No new changes to commit today."
+            echo "IndexNow Key File missing!"
+            exit 1
           fi
+
 

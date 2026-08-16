@@ -35,3 +35,23 @@ export function saveCustomArticle(slug: string, article: SeoArticle): boolean {
     return false;
   }
 }
+
+export function getCustomArticleBySlug(slug: string): SeoArticle | null {
+  const custom = getCustomArticles();
+  return custom[slug] || null;
+}
+
+export function deleteCustomArticle(slug: string): boolean {
+  try {
+    const custom = getCustomArticles();
+    if (custom[slug]) {
+      delete custom[slug];
+      fs.writeFileSync(CUSTOM_ARTICLES_FILE, JSON.stringify(custom, null, 2), "utf-8");
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.error("Error deleting custom article:", err);
+    return false;
+  }
+}

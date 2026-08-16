@@ -355,116 +355,23 @@ function gitCommitAndPush(slug) {
 
 // ---- Main engine -------------------------------------------------
 function runAutopilot() {
-  console.log('\nRaqmana SEO Autopilot v2.1 -- Starting\n');
+  console.log('\nRaqmana SEO Radar & IndexNow Verifier v2.2 -- Starting\n');
   ensureIndexNowKeyFile();
-
-  const targetSlug = process.argv[2];
-
-  if (targetSlug) {
-    const target = ARTICLE_TARGETS.find(function(t) { return t.slug === targetSlug; });
-    if (!target) {
-      console.error('Slug "' + targetSlug + '" not found. Available: ' + ARTICLE_TARGETS.map(function(t) { return t.slug; }).join(', '));
-      process.exit(1);
-    }
-    runArticleGeneration(target);
-    return;
-  }
 
   console.log('Fetching live Google Trends for Algeria (geo=DZ)...');
   fetchGoogleTrendsDZ().then(function(liveTrends) {
     if (liveTrends.length > 0) {
-      console.log('Trends (' + liveTrends.length + '):', liveTrends.slice(0, 8).join(' | '));
-    } else {
-      console.log('No live trends. Using queue fallback.');
-    }
-
-    const existing = fs.readFileSync(CONFIG.ARTICLES_DATA_PATH, 'utf8');
-    let bestTarget = null;
-    let maxScore = -1;
-
-    ARTICLE_TARGETS.forEach(function(t) {
-      const isWritten = existing.includes("'" + t.slug + "'") || existing.includes('"' + t.slug + '"');
-      if (isWritten) return;
-
-      let score = 0;
-      t.keywords.forEach(function(kw) {
-        const kwLower = kw.toLowerCase();
-        liveTrends.forEach(function(trendKw) {
-          const trendLower = trendKw.toLowerCase();
-          if (kwLower.includes(trendLower) || trendLower.includes(kwLower)) score += 20;
-        });
+      console.log('\n🔥 Live Trends (' + liveTrends.length + '):');
+      liveTrends.forEach(function(t, i) {
+        console.log('   ' + (i + 1) + '. ' + t);
       });
-      if (t.slug.includes('2026')) score += 5;
-      if (score > maxScore) { maxScore = score; bestTarget = t; }
-    });
-
-    // Fallback: if no trend matched, pick first unwritten article in queue
-    if (!bestTarget || maxScore <= 0) {
-      bestTarget = ARTICLE_TARGETS.find(function(t) {
-        return !existing.includes("'" + t.slug + "'") && !existing.includes('"' + t.slug + '"');
-      });
-    }
-
-    if (!bestTarget) {
-      console.log('\nAll target articles published. Add new topics to continue.');
-      process.exit(0);
-    }
-
-    console.log('\nSelected: "' + bestTarget.topicAr + '" (Score: ' + (maxScore > 0 ? maxScore : 'Queue') + ')');
-    runArticleGeneration(bestTarget);
-  });
-}
-
-function runArticleGeneration(target) {
-  console.log('\nTopic: ' + target.topicAr + '\nSlug:  ' + target.slug + '\n');
-  console.log('Generating via Gemini 2.5 Flash (OpenRouter)...');
-
-  callOpenRouter(buildSystemPrompt(target), buildUserPrompt(target)).then(function(rawContent) {
-    let article;
-    try {
-      const cleaned = rawContent.replace(/^```json\n?/i, '').replace(/\n?```$/i, '').trim();
-      article = JSON.parse(cleaned);
-    } catch (err) {
-      console.error('Failed to parse JSON from AI. Raw (first 500):', rawContent.substring(0, 500));
-      process.exit(1);
-    }
-
-    console.log('\nValidating quality...');
-    const errors = validateArticle(article, target);
-    if (errors.length > 0) {
-      console.error('Quality FAILED:');
-      errors.forEach(function(e) { console.error('  - ' + e); });
-      const draftDir = path.join(__dirname, '../drafts');
-      if (!fs.existsSync(draftDir)) fs.mkdirSync(draftDir, { recursive: true });
-      fs.writeFileSync(path.join(draftDir, target.slug + '-draft.json'), JSON.stringify(article, null, 2), 'utf8');
-      console.log('Draft saved: drafts/' + target.slug + '-draft.json');
-      process.exit(1);
-    }
-    console.log('Quality PASSED\n');
-
-    if (!addArticleToDataFile(target.slug, article)) process.exit(1);
-
-    let pushedPromise;
-    if (!process.env.CI) {
-      const pushed = gitCommitAndPush(target.slug);
-      pushedPromise = Promise.resolve(pushed);
+      console.log('\n📌 High-priority trends ready for manual article creation at: /admin/trends');
     } else {
-      console.log('CI mode: git handled by workflow step.');
-      pushedPromise = Promise.resolve(true);
+      console.log('No live trends returned from Google Trends RSS.');
     }
-
-    pushedPromise.then(function(pushed) {
-      if (pushed) {
-        const newUrl = CONFIG.BASE_URL + '/articles/' + target.slug;
-        sendIndexNowNotification([newUrl, CONFIG.BASE_URL + '/articles']).then(function() {
-          console.log('\nDone! Published: ' + newUrl + '\n');
-        });
-      }
-    });
-  }).catch(function(err) {
-    console.error('OpenRouter failed: ' + err.message);
-    process.exit(1);
+    console.log('\n✅ SEO Radar check completed cleanly without AI calls.\n');
   });
 }
 
 runAutopilot();
+

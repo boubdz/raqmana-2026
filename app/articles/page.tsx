@@ -1,4 +1,4 @@
-import { seoArticles } from "@/lib/seo-articles-data";
+import { getAllArticlesMerged } from "@/lib/custom-articles-store";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
@@ -12,19 +12,20 @@ export const metadata: Metadata = {
   description: "رقمنة الجزائر: شروحات مفصلة وأدلة عملية لاستخدام كل المنصات الرقمية الحكومية. تسجيل الخدمات، خطوات التسجيل، وآخر التحديثات في مكان واحد.",
 };
 
-// تحديث تلقائي كل 60 ثانية (ISR)
-export const revalidate = 60;
+// تحديث فوري ديناميكي عند النشر أو التعديل
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-const trendingSlugs = new Set(["mdn", "tawdhif", "aadl3", "chifa", "startups"]);
+const trendingSlugs = new Set(["mdn", "tawdhif", "aadl3", "chifa", "startups", "onec-concours-2026"]);
 
 export default async function ArticlesPage() {
-  // تحويل المقالات الثابتة للشكل المعيار
-  const articles = Object.entries(seoArticles).map(([slug, article]) => ({
+  const allArticles = getAllArticlesMerged();
+  // تحويل المقالات للشكل المعياري
+  const articles = Object.entries(allArticles).map(([slug, article]) => ({
     slug,
     title: article.title,
     introduction: article.introduction,
     isTrending: trendingSlugs.has(slug),
-    source: 'static' as const,
   }));
 
   return (
