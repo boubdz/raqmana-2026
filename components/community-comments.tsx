@@ -195,21 +195,23 @@ export function CommunityComments({
 
   return (
     <section className="py-12 px-4 bg-muted/20 border-t border-border/50" dir="rtl">
-      {/* Schema.org Rich Snippet JSON-LD */}
+      {/* Schema.org Rich Snippet JSON-LD — Validated for Google Search Console */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "AggregateRating",
-            "itemReviewed": {
-              "@type": resolvedItemType,
-              "name": serviceTitle,
+            "@type": resolvedItemType === "HowTo" ? "HowTo" : "SoftwareApplication",
+            "name": serviceTitle,
+            "operatingSystem": "Web",
+            "applicationCategory": "GovernmentService",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": initialAvgRating.toString(),
+              "bestRating": "5",
+              "worstRating": "1",
+              "ratingCount": totalReviews.toString(),
             },
-            "ratingValue": initialAvgRating.toString(),
-            "bestRating": "5",
-            "worstRating": "1",
-            "ratingCount": totalReviews.toString(),
           }),
         }}
       />
