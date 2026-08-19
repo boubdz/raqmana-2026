@@ -127,7 +127,7 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const categoryId = getCategoryIdForSlug(slug);
+  const categoryId = (article as any).categoryId || getCategoryIdForSlug(slug);
 
   // Generate JSON-LD for SEO
   const jsonLd = {
