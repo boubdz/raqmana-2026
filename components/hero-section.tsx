@@ -87,13 +87,13 @@ export function HeroSection() {
             )}
           </h1>
 
-          <h2 className="text-lg md:text-2xl font-medium text-muted-foreground/50 max-w-2xl mx-auto leading-relaxed mb-10 tracking-wide uppercase">
+          <h2 className="text-lg md:text-2xl font-semibold text-foreground/80 dark:text-foreground/90 max-w-2xl mx-auto leading-relaxed mb-10 tracking-wide uppercase">
             {t("hero.title")}
           </h2>
         </div>
 
         {/* Subtitle */}
-        <p className="mb-12 max-w-2xl mx-auto text-lg text-muted-foreground/80 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+        <p className="mb-12 max-w-2xl mx-auto text-lg text-foreground/85 dark:text-foreground/90 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
           {t("hero.subtitle")}
         </p>
 
