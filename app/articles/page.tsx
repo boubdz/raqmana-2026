@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const trendingSlugs = new Set(["mdn", "tawdhif", "aadl3", "chifa", "startups", "onec-concours-2026"]);
+const trendingSlugs = new Set(["mdn", "tawdhif", "aadl3", "chifa", "startups", "onec-concours-2026", "minha-batala-guide-2026"]);
 
 export default async function ArticlesPage() {
   const allArticles = getAllArticlesMerged();

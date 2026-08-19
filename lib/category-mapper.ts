@@ -32,6 +32,7 @@ const slugToCategoryMap: Record<string, string> = {
   'tarbiya-tahdiriya-2026': 'education',
   'onec-concours-2026': 'education',
   'epaiement-cib-edahabia-guide': 'bills',
+  'minha-batala-guide-2026': 'employment',
 };
 
 export function getCategoryIdForSlug(slug: string): string {

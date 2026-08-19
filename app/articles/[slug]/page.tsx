@@ -69,6 +69,10 @@ const highConvertingArticleMetadata: Record<string, { title: string; description
     title: "بريد الجزائر ECCP 2026 🇩🇿 — طلب البطاقة الذهبية وتطبيق بريدي موب",
     description: "طلب البطاقة الذهبية Edahabia، كشف رصيد الحساب الجاري ECCP، ودفع الفواتير عبر تطبيق BaridiMob بروابط مباشرة 💳⚡",
   },
+  'minha-batala-guide-2026': {
+    title: "📋 الدليل الشامل لمنحة البطالة في الجزائر 2026 — أسباب التعليق والإلغاء والاسترجاع",
+    description: "الدليل الشامل لمنحة البطالة الجزائر 2026: 29 سبباً للتعليق والإلغاء، شروط السن، منصة وسيط أونلاين، وآلية استرجاع المنحة خطوة بخطوة ⚡🇩🇿",
+  },
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
