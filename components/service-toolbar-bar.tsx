@@ -121,6 +121,7 @@ export function ServiceToolbarBar({
               window.open(url, "_blank", "noopener,noreferrer");
             }}
             title="زيارة المنصة الرسمية"
+            aria-label={`زيارة المنصة الرسمية لـ ${serviceTitle}`}
             className="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-black shadow-sm transition-all hover:scale-105 active:scale-95"
           >
             <ArrowUpRight className="w-4 h-4" />
@@ -131,6 +132,7 @@ export function ServiceToolbarBar({
             type="button"
             onClick={handleReport}
             title="الإبلاغ عن عطل أو رابط لا يعمل"
+            aria-label="الإبلاغ عن عطل أو رابط لا يعمل"
             className={`flex items-center justify-center w-8 h-8 rounded-xl border transition-all ${
               reported
                 ? "bg-amber-500/20 border-amber-500 text-amber-600 dark:text-amber-400"
@@ -149,6 +151,7 @@ export function ServiceToolbarBar({
             onClick={handleCommentClick}
             className="flex items-center gap-1 hover:text-primary transition-colors"
             title="عدد استفسارات المواطنين"
+            aria-label={`عرض ${initialCommentsCount} استفسارات للمواطنين`}
           >
             <span>{initialCommentsCount}</span>
             <MessageSquare className="w-3.5 h-3.5 opacity-80" />
@@ -159,6 +162,8 @@ export function ServiceToolbarBar({
             onClick={handleViewClick}
             className="flex items-center gap-1 cursor-pointer hover:text-primary transition-colors"
             title="عدد المشاهدات والزيارات"
+            role="status"
+            aria-label={`عدد المشاهدات: ${formatNumber(views)}`}
           >
             <span>{formatNumber(views)}</span>
             <Eye className="w-3.5 h-3.5 opacity-80" />
@@ -175,6 +180,7 @@ export function ServiceToolbarBar({
               }}
               className="flex items-center gap-1 hover:scale-105 transition-transform text-amber-600 dark:text-amber-400 font-extrabold"
               title="تقييم المنصة (اضغط للتقييم)"
+              aria-label={`تقييم المنصة الحالي ${avgRating} نجوم، اضغط للتقييم`}
             >
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
               <span>{avgRating}</span>
@@ -189,12 +195,13 @@ export function ServiceToolbarBar({
                 <span className="text-[10px] font-bold text-muted-foreground text-center">
                   قيّم هذه المنصة:
                 </span>
-                <div className="flex items-center justify-center gap-1 dir-ltr">
+                <div className="flex items-center justify-center gap-1 dir-ltr" role="radiogroup" aria-label="اختر تقييم النجوم">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
                       type="button"
                       onClick={(e) => handleRate(star, e)}
+                      aria-label={`تقييم ${star} من 5 نجوم`}
                       className="p-1 hover:scale-125 transition-transform"
                     >
                       <Star

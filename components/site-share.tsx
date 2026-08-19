@@ -156,6 +156,7 @@ export function SiteShare() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
+                aria-label={`مشاركة عبر ${net.label}`}
                 className={`flex items-center gap-3 p-3 rounded-2xl text-xs font-black transition-all ${net.color}`}
               >
                 <div className="shrink-0">{net.icon}</div>
@@ -166,7 +167,9 @@ export function SiteShare() {
 
           {/* Copy Link Row */}
           <button
+            type="button"
             onClick={handleCopyLink}
+            aria-label={copied ? "تم نسخ الرابط" : "نسخ رابط الموقع"}
             className={`w-full flex items-center justify-between h-12 px-4 rounded-2xl border font-bold text-xs transition-all ${copied
               ? "bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
               : "border-black/5 dark:border-white/5 bg-black/[0.01] dark:bg-white/[0.01] hover:bg-black/5 dark:hover:bg-white/5 text-[#1a1a1a] dark:text-white"

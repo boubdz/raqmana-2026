@@ -17,7 +17,6 @@ const inter = Inter({
 const alexandria = Alexandria({
   subsets: ["arabic"],
   variable: "--font-alexandria",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 })
 

@@ -296,7 +296,7 @@ export function CommunityComments({
               </label>
 
               {/* Star Picker */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1" role="radiogroup" aria-label="تقييم الخدمة بالنجوم">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
@@ -304,6 +304,7 @@ export function CommunityComments({
                     onClick={() => setUserRating(star)}
                     onMouseEnter={() => setHoverRating(star)}
                     onMouseLeave={() => setHoverRating(0)}
+                    aria-label={`تقييم ${star} من 5 نجوم`}
                     className="p-1 transition-transform hover:scale-125 focus:outline-none"
                   >
                     <Star
@@ -321,6 +322,7 @@ export function CommunityComments({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <input
                 type="text"
+                aria-label="اسمك أو ولايتك"
                 placeholder="اسمك أو ولايتك (مثال: أستاذ من الجزائر)..."
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -334,6 +336,7 @@ export function CommunityComments({
 
             <textarea
               rows={3}
+              aria-label={`اكتب تجربتك أو استفسارك حول ${serviceTitle}`}
               placeholder={`اكتب تجربتك، سؤالك، أو استفسارك حول ${serviceTitle} هنا...`}
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -350,7 +353,7 @@ export function CommunityComments({
                 <span className="text-[11px] text-muted-foreground">تفاعل محترم ونافع للمواطنين 🇩🇿</span>
               )}
 
-              <Button type="submit" size="sm" className="gap-2 text-xs font-bold px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl">
+              <Button type="submit" size="sm" aria-label="نشر التقييم والاستفسار" className="gap-2 text-xs font-bold px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl">
                 <span>نشر التقييم والاستفسار</span>
                 <Send className="w-3.5 h-3.5 dir-rtl:rotate-180" />
               </Button>
@@ -409,7 +412,9 @@ export function CommunityComments({
 
                 <div className="flex items-center justify-end pr-10">
                   <button
+                    type="button"
                     onClick={() => handleLike(item.id)}
+                    aria-label={`تصويت مفيد لتعليق ${item.author}`}
                     className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-emerald-600 transition-colors bg-muted/40 hover:bg-muted px-3 py-1 rounded-lg"
                   >
                     <ThumbsUp className="w-3.5 h-3.5" />

@@ -32,7 +32,9 @@ export default function InstallButton() {
 
   return (
     <button
+      type="button"
       onClick={handleInstall}
+      aria-label="تثبيت تطبيق رقمنة على جهازك"
       className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-primary-foreground shadow-lg transition-all hover:bg-primary/90 hover:scale-105"
       style={{
         animation: 'pulse 2s infinite',
