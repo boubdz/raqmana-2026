@@ -1,8 +1,10 @@
 /**
- * auto-news-worker.js — محرك أتمتة الأخبار الحكومية الجزائرية
- * ============================================================
- * يراقب المواقع الحكومية، يستخرج الأخبار، يكتب مقالات SEO احترافية
- * بالاستعانة بـ Gemini AI، ثم يحفظها في قاعدة بيانات المشروع.
+ * auto-news-worker.js — محرك أتمتة الأخبار الحكومية الجزائرية (مُحدّث بمصفاة الوقت وضوابط الصور)
+ * =========================================================================================
+ * 1. فحص خراطيم RSS للمواقع الرسمية وتصفية الأخبار الأقدم من 48 ساعة.
+ * 2. استخراج og:image الحقيقية فقط عبر axios و cheerio في Node.js.
+ * 3. حظر Gemini تماماً من توليد أي وسوم صور أو روابط وهمية.
+ * 4. حفظ المقال وتوليد الفهرسة الفورية لمحركات البحث.
  *
  * الاستخدام:
  *   node scripts/news-automation/auto-news-worker.js             # تشغيل tier1
@@ -16,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const http = require('http');
+const axios = require('axios');
 const { parseStringPromise } = require('xml2js');
 const cheerio = require('cheerio');
 
@@ -36,8 +39,10 @@ const CONFIG = {
   SITES_CONFIG: path.join(__dirname, 'sites-config.json'),
   ARTICLES_JSON: path.join(ROOT_DIR, 'lib', 'custom-articles-data.json'),
   STATE_FILE: path.join(__dirname, 'news-state.json'),
-  MAX_ARTICLES_PER_RUN: 5,    // حد أقصى للمقالات في كل دورة
-  REQUEST_TIMEOUT_MS: 12000,  // مهلة الطلب 12 ثانية
+  MAX_ARTICLES_PER_RUN: 5,         // حد أقصى للمقالات في كل دورة
+  REQUEST_TIMEOUT_MS: 12000,       // مهلة طلبات RSS (12 ثانية)
+  MAX_NEWS_AGE_HOURS: 48,          // مصفاة الوقت: تجاهل الأخبار الأقدم من 48 ساعة
+  DEFAULT_PLACEHOLDER: '/images/default-placeholder.png', // الصورة الافتراضية
 };
 
 if (!CONFIG.GEMINI_API_KEY) {
@@ -61,7 +66,7 @@ if (isAll) {
   sitesToProcess = sitesConfig.tier1; // الافتراضي: Tier 1
 }
 
-// ─── 2. تحميل وحفظ الحالة (لتجنب إعادة نشر نفس الخبر) ────────
+// ─── 2. تحميل وحفظ الحالة (لتجنب إعادة معالجة أي خبر) ────────
 function loadState() {
   if (fs.existsSync(CONFIG.STATE_FILE)) {
     try { return JSON.parse(fs.readFileSync(CONFIG.STATE_FILE, 'utf8')); } catch {}
@@ -73,21 +78,24 @@ function saveState(state) {
   fs.writeFileSync(CONFIG.STATE_FILE, JSON.stringify(state, null, 2), 'utf8');
 }
 
-// ─── 3. دالة طلب HTTP/HTTPS عامة ─────────────────────────────
+// ─── 3. دالة طلب HTTP/HTTPS عامة للـ RSS ──────────────────────
+const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+
 function fetchUrl(url, timeoutMs = CONFIG.REQUEST_TIMEOUT_MS) {
   return new Promise((resolve, reject) => {
-    const client = url.startsWith('https') ? https : http;
+    const isHttps = url.startsWith('https');
+    const client = isHttps ? https : http;
     const req = client.get(
       url,
       {
         timeout: timeoutMs,
+        agent: isHttps ? httpsAgent : undefined,
         headers: {
-          'User-Agent': 'RaqmanaNewsBot/1.0 (+https://www.raqmanadz.com)',
+          'User-Agent': 'Mozilla/5.0 (compatible; RaqmanaNewsBot/1.0; +https://www.raqmanadz.com)',
           'Accept': 'text/html,application/xml,application/rss+xml,*/*',
         },
       },
       (res) => {
-        // متابعة التحويلات (redirects) تلقائياً حتى 3 مرات
         if ([301, 302, 303, 307, 308].includes(res.statusCode) && res.headers.location) {
           return fetchUrl(res.headers.location, timeoutMs).then(resolve).catch(reject);
         }
@@ -109,11 +117,10 @@ async function fetchRssItems(rssUrl) {
     const channel = parsed?.rss?.channel || parsed?.feed;
     if (!channel) return [];
 
-    // دعم RSS 2.0 و Atom
     const items = channel.item || channel.entry || [];
     const itemsArray = Array.isArray(items) ? items : [items];
 
-    return itemsArray.slice(0, 10).map((item) => ({
+    return itemsArray.slice(0, 15).map((item) => ({
       title: extractText(item.title),
       link: extractText(item.link) || extractText(item.id),
       description: extractText(item.description) || extractText(item.summary) || '',
@@ -133,111 +140,128 @@ function extractText(val) {
   return String(val).trim();
 }
 
-// ─── 5. استخراج الصورة من الصفحة باستخدام Cheerio ───────────
-// ⚠ هذا القسم هو المكان الوحيد الذي يبحث فيه عن الصورة — لا يطلب من Gemini أبداً
-async function extractImageFromPage(pageUrl) {
+// ─── 5. استخراج الصورة الرسمية عبر axios و cheerio ───────────
+// ⚠ البحث عن الصورة يتم في Node.js فقط وبشكل معزول تماماً عن Gemini لمنع التزييف
+async function extractOfficialImage(pageUrl) {
+  if (!pageUrl || typeof pageUrl !== 'string' || !pageUrl.startsWith('http')) {
+    return null;
+  }
+
   try {
-    const { body, statusCode } = await fetchUrl(pageUrl, 8000);
-    if (statusCode !== 200) return null;
+    const response = await axios.get(pageUrl, {
+      timeout: 8000,
+      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      },
+      maxRedirects: 3,
+      validateStatus: (status) => status === 200,
+    });
 
-    const $ = cheerio.load(body);
+    const $ = cheerio.load(response.data);
 
-    // الأولوية 1: og:image (أدق مصدر)
-    const ogImage = $('meta[property="og:image"]').attr('content');
-    if (ogImage && isValidImageUrl(ogImage)) return ogImage.trim();
+    // 1. فحص og:image (المعيار الرسمي)
+    const ogImage = $('meta[property="og:image"]').attr('content') || $('meta[property="og:image:url"]').attr('content');
+    if (ogImage && isValidImageUrl(ogImage)) {
+      return normalizeUrl(ogImage, pageUrl);
+    }
 
-    // الأولوية 2: twitter:image
-    const twitterImage = $('meta[name="twitter:image"]').attr('content');
-    if (twitterImage && isValidImageUrl(twitterImage)) return twitterImage.trim();
+    // 2. فحص twitter:image
+    const twitterImage = $('meta[name="twitter:image"]').attr('content') || $('meta[name="twitter:image:src"]').attr('content');
+    if (twitterImage && isValidImageUrl(twitterImage)) {
+      return normalizeUrl(twitterImage, pageUrl);
+    }
 
-    // الأولوية 3: أول صورة كبيرة في المقال
-    let firstLargeImg = null;
-    $('img').each((_, el) => {
-      if (firstLargeImg) return;
+    // 3. فحص أول صورة رئيسية داخل نص المقال (إن وُجدت وليست أيقونة أو لوغو)
+    let bodyImage = null;
+    $('article img, .post-content img, .entry-content img, .content img').each((_, el) => {
+      if (bodyImage) return;
       const src = $(el).attr('src') || $(el).attr('data-src') || '';
-      if (src && isValidImageUrl(src) && !src.includes('logo') && !src.includes('icon')) {
-        firstLargeImg = src.startsWith('http') ? src : new URL(src, pageUrl).href;
+      if (src && isValidImageUrl(src) && !src.toLowerCase().includes('logo') && !src.toLowerCase().includes('icon')) {
+        bodyImage = normalizeUrl(src, pageUrl);
       }
     });
-    if (firstLargeImg) return firstLargeImg;
+    if (bodyImage) return bodyImage;
 
-    return null; // لم توجد صورة
-  } catch {
-    return null; // في حالة الخطأ نعود بـ null
+    return null; // لم يُعثر على صورة رسمية
+  } catch (err) {
+    // try/catch يحمي السكريبت من التوقف إذا تعطل موقع أو رفض الاتصال
+    return null;
   }
 }
 
 function isValidImageUrl(url) {
-  if (!url || url.length < 10) return false;
-  return /\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(url) || url.includes('image') || url.includes('photo');
+  if (!url || url.length < 8) return false;
+  const lower = url.toLowerCase();
+  return /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(lower) || lower.includes('/uploads/') || lower.includes('image');
 }
 
-// ─── 6. منطق الصورة البديلة ───────────────────────────────────
-// ⚠ هذا القسم الخاص بحالة عدم وجود صورة:
-// إذا لم يُعثر على صورة من الصفحة، نستخدم شعار الوزارة كصورة بديلة
-// مع إضافة وسم alt واضح: "صورة توضيحية"
+function normalizeUrl(rawUrl, baseUrl) {
+  try {
+    if (rawUrl.startsWith('http://') || rawUrl.startsWith('https://')) return rawUrl.trim();
+    return new URL(rawUrl.trim(), baseUrl).href;
+  } catch {
+    return null;
+  }
+}
+
+// ─── 6. منطق الصورة البديلة (Fallback Logic) ─────────────────
+// ⚠ إذا فشل العثور على صورة رسمية من البيان:
+// نستخدم شعار الوزارة أو الصورة الافتراضية المخصصة للموقع مع وسم توضيحي
 function resolveArticleImage(foundImage, site) {
   if (foundImage) {
-    // ✅ تم العثور على صورة حقيقية من البيان
+    // ✅ تم العثور على صورة حقيقية موثقة من البيان
     return {
       url: foundImage,
-      alt: `صورة من بيان ${site.name}`,
+      alt: `صورة رسمية من بيان ${site.name}`,
       isPlaceholder: false,
     };
   }
 
-  // ⚠ لم تُوجد صورة — استخدام شعار الوزارة أو الصورة الافتراضية
-  // لا نخترع رابطاً ولا نكذب على القارئ
+  // ⚠ حالة عدم وجود صورة: ندرج الصورة الافتراضية أو شعار المؤسسة
+  const fallbackUrl = site.fallbackImage || site.logoUrl || CONFIG.DEFAULT_PLACEHOLDER;
   return {
-    url: site.fallbackImage || site.logoUrl,
+    url: fallbackUrl,
     alt: `صورة توضيحية — ${site.name} (بدون بيان مصور)`,
     isPlaceholder: true,
   };
 }
 
-// ─── 7. توليد المقال باستخدام Gemini AI ──────────────────────
-async function generateArticleWithGemini(newsItem, site, imageInfo) {
-  // تعليمات صارمة لـ Gemini بشأن الصور
-  const imageInstruction = imageInfo.isPlaceholder
-    ? `[تعليمات الصورة للكاتب الذكي]: لم يرسل لك السكريبت رابط صورة حقيقية من البيان.
-       - لا تخترع رابط صورة.
-       - لا تصف صورة غير موجودة.
-       - تجاهل قسم الصور تماماً.
-       - اكتفِ بالكتابة النصية الاحترافية فقط.`
-    : `[الصورة المرفقة]: تم العثور على صورة رسمية من البيان: ${imageInfo.url}
-       أشر إليها في المقال بشكل طبيعي إن أمكن.`;
-
+// ─── 7. توليد المقال باستخدام Gemini AI (نصي فقط بدون صور) ────
+async function generateArticleWithGemini(newsItem, site) {
+  // ⚠ تم حذف أي طلب للصور من الـ Prompt نهائياً لمنع الهلوسة والتزييف
   const prompt = `أنت محرر صحفي جزائري متخصص في تحليل وكتابة مقالات إخبارية سيو (SEO) احترافية باللغة العربية الفصيحة.
 
-[المصدر]: ${site.name} (${site.url})
-[عنوان الخبر الأصلي]: ${newsItem.title}
+[المصدر الرسمي]: ${site.name} (${site.url})
+[عنوان الخبر]: ${newsItem.title}
 [ملخص البيان]: ${newsItem.description || 'غير متوفر'}
-[رابط البيان الأصلي]: ${newsItem.link}
+[رابط البيان]: ${newsItem.link}
 [تاريخ النشر]: ${newsItem.pubDate}
 
-${imageInstruction}
+[قواعد التحرير الصارمة]:
+1. اكتب مقالاً إخبارياً تحليلياً باللغة العربية الفصيحة بين 1000 و1500 كلمة.
+2. الهيكل الإلزامي:
+   - عنوان رئيسي H1 جذاب ومحسّن لمحركات البحث (لا يتجاوز 65 حرفاً)
+   - مقدمة قوية وشاملة (150-200 كلمة) تلخص سياق الخبر وتجذب القارئ
+   - 4 إلى 6 عناوين فرعية H2 مع شرح وتفاصيل وافية تحت كل عنوان
+   - قوائم نقطية لتبسيط الخطوات أو الشروط للمواطنين
+   - قسم في النهاية: الأسئلة الشائعة (FAQ) بسؤالين وإجابتين مفصلتين
+   - خاتمة وتوجيهات للمواطنين مع ذكر رابط المصدر الرسمي
+3. اقتبس جملة أو فقرة حرفية واحدة على الأقل من البيان بين علامتي تنصيص مع نسبتها للمصدر.
+4. لا تخترع أي أرقام، إحصائيات، أو تواريخ غير مذكورة في البيان. إذا لم تُذكر، اكتب صراحة: "لم يُكشف عن الأرقام الرسمية بعد".
+5. قواعد صارمة جداً بخصوص الصور:
+   - يُمْنَع منعاً باتاً كتابة أي كود أو وسم صور من نوع Markdown مثل ![]() أو HTML <img>.
+   - لا تضع أي روابط صور إطلاقاً ولا تصف صورة غير موجودة.
+   - ركّز حصرياً على المحتوى النصي المتقن فقط؛ إدارة الصور تتم برمجياً خارج الذكاء الاصطناعي.
 
-[قواعد الكتابة الصارمة]:
-1. اكتب مقالاً باللغة العربية الفصيحة بين 1000 و1500 كلمة.
-2. الهيكل المطلوب:
-   - عنوان H1 جذاب ومحسّن للسيو (لا يتجاوز 65 حرفاً)
-   - مقدمة قوية (150-200 كلمة) تلخص الخبر وتستقطب القارئ
-   - 4-6 عناوين فرعية H2 مع محتوى مفيد تحت كل منها
-   - قوائم نقطية حيثما أمكن
-   - خاتمة فعّالة مع دعوة للفعل (CTA)
-3. اقتبس جملة حرفية واحدة على الأقل من البيان بين علامتي تنصيص مع ذكر المصدر.
-4. لا تخترع أرقاماً أو تواريخ لم يذكرها البيان. إذا لم تُذكر، اكتب "لم يُكشف عن الأرقام".
-5. أضف في نهاية المقال قسم "الأسئلة الشائعة (FAQ)" بسؤالين على الأقل.
-6. استخدم كلمات مفتاحية ذات صلة بالجزائر والخدمة المذكورة.
-7. لا تنسَ الإشارة إلى الرابط الرسمي للمصدر.
-
-[الإخراج المطلوب]: أعد المقال كاملاً بدون أي تعليق إضافي منك. ابدأ مباشرة بعنوان H1.`;
+[الإخراج المطلوب]: ابدأ مباشرة بعنوان # H1 بدون أي مقدمات أو هوامش تعليقية منك.`;
 
   const candidateModels = [
     CONFIG.GEMINI_MODEL,
     'gemini-2.5-flash-lite',
     'gemini-3.5-flash',
-    'gemini-flash-latest'
+    'gemini-flash-latest',
   ];
 
   let lastError = null;
@@ -285,7 +309,6 @@ ${imageInstruction}
       return result; // نجح التوليد
     } catch (err) {
       lastError = err;
-      // إذا كان الخطأ 503 أو غيره، نجرب النموذج التالي بعد انتظار نصف ثانية
       await new Promise((r) => setTimeout(r, 600));
     }
   }
@@ -293,16 +316,22 @@ ${imageInstruction}
   throw lastError || new Error('فشلت جميع نماذج Gemini المتاحة');
 }
 
-// ─── 8. تحويل نص Gemini إلى هيكل JSON للمقال ─────────────────
+// ─── 8. تحويل نص Gemini إلى هيكل JSON للمقال وتطهير الصور الوهمية ──
 function parseGeminiToArticleJson(rawText, newsItem, site, imageInfo) {
-  const lines = rawText.split('\n').map((l) => l.trim()).filter(Boolean);
+  // تنظيف النص وتطهير أي هلوسة صور قد يفلت بها الذكاء الاصطناعي
+  const sanitizedText = rawText
+    .replace(/!\[.*?\]\(.*?\)/g, '')   // إزالة أي وسم صورة markdown وهمي
+    .replace(/<img[^>]*>/gi, '')       // إزالة أي وسم html img وهمي
+    .replace(/\n\s*---\s*\n/g, '\n\n'); // إزالة الخطوط الأفقية الزائدة
+
+  const lines = sanitizedText.split('\n').map((l) => l.trim()).filter(Boolean);
 
   // استخراج العنوان (H1)
   let title = newsItem.title;
   const h1Line = lines.find((l) => l.startsWith('# '));
   if (h1Line) title = h1Line.replace(/^#\s*/, '').trim();
 
-  // استخراج المقدمة (أول فقرة قبل H2)
+  // استخراج المقدمة (أول فقرة قبل أول H2)
   let introduction = '';
   let inIntro = false;
   for (const line of lines) {
@@ -326,14 +355,14 @@ function parseGeminiToArticleJson(rawText, newsItem, site, imageInfo) {
   if (currentSection) sections.push(currentSection);
   sections.forEach((s) => (s.content = s.content.trim()));
 
-  // توليد slug من العنوان
+  // توليد slug فريد
   const slug = generateSlug(title, newsItem.guid);
 
-  // تجميع JSON النهائي للمقال بنفس هيكل custom-articles-data.json
+  // تجميع هيكل المقال النهائي
   const article = {
     title,
-    introduction: introduction || rawText.slice(0, 500),
-    sections: sections.length > 0 ? sections : [{ heading: 'تفاصيل الخبر', content: rawText }],
+    introduction: introduction || sanitizedText.slice(0, 500),
+    sections: sections.length > 0 ? sections : [{ heading: 'تفاصيل الخبر والبيان الرسمي', content: sanitizedText }],
     sourceMinistry: site.name,
     categoryId: site.categoryId,
     dateStr: new Date(newsItem.pubDate).toLocaleDateString('ar-DZ', { year: 'numeric', month: 'long', day: 'numeric' }),
@@ -342,16 +371,13 @@ function parseGeminiToArticleJson(rawText, newsItem, site, imageInfo) {
     generatedAt: new Date().toISOString(),
   };
 
-  // ─── إضافة الصورة إن وجدت ────────────────────────────────────
-  // ⚠ القسم الخاص بحالة الصورة: نضيف الصورة فقط إذا كانت حقيقية من البيان
-  // إذا كانت placeholder نضيف metadata فقط دون إدراجها في المقال كصورة رئيسية
+  // ─── ربط الصورة المستخرجة عبر Node.js بالبيانات ───────────────
   if (!imageInfo.isPlaceholder) {
     article.featuredImage = {
       url: imageInfo.url,
       alt: imageInfo.alt,
     };
   } else {
-    // صورة توضيحية — شعار الوزارة
     article.placeholderImage = {
       url: imageInfo.url,
       alt: imageInfo.alt,
@@ -363,10 +389,9 @@ function parseGeminiToArticleJson(rawText, newsItem, site, imageInfo) {
 }
 
 function generateSlug(title, guid) {
-  // إنشاء slug من آخر جزء من الـ guid أو من العنوان
   const base = guid
-    ? guid.split('/').pop().replace(/[^a-zA-Z0-9-]/g, '-').slice(0, 60)
-    : title.replace(/[^\u0621-\u064A0-9a-zA-Z\s]/g, '').replace(/\s+/g, '-').slice(0, 60);
+    ? guid.split('/').pop().replace(/[^a-zA-Z0-9-]/g, '-').slice(0, 50)
+    : title.replace(/[^\u0621-\u064A0-9a-zA-Z\s]/g, '').replace(/\s+/g, '-').slice(0, 50);
   return `auto-${base}-${Date.now().toString(36)}`.toLowerCase();
 }
 
@@ -398,59 +423,76 @@ function pingIndexNow(url) {
   req.end();
 }
 
-// ─── 11. معالجة موقع واحد (مع Try/Catch لمنع التوقف الكامل) ─
+// ─── 11. معالجة موقع واحد (مع تطبيق مصفاة الوقت والـ Try/Catch) ─
 async function processSite(site, state, articlesCount) {
   console.log(`\n🔍 فحص: ${site.name} (${site.id})`);
 
   try {
-    // جلب RSS
     const items = await fetchRssItems(site.rssUrl);
     if (items.length === 0) {
-      console.log(`   ℹ لا توجد عناصر جديدة في RSS`);
+      console.log(`   ℹ لا توجد عناصر في RSS`);
       return articlesCount;
     }
 
     let newCount = 0;
     for (const item of items) {
-      // تجاوز العناصر السابقة
+      // 1. تجاوز الأخبار التي تمت معالجتها سابقاً
       if (state.processedItems[item.guid || item.link]) {
         continue;
       }
 
+      // 2. التوقف عند بلوغ الحد الأقصى للمقالات في الدورة الواحدة
       if (articlesCount + newCount >= CONFIG.MAX_ARTICLES_PER_RUN) {
         console.log(`   ⏸ وصلنا للحد الأقصى للجلسة (${CONFIG.MAX_ARTICLES_PER_RUN} مقالات).`);
         break;
       }
 
-      console.log(`   📰 خبر جديد: ${item.title.slice(0, 60)}...`);
+      // ─── شرط مصفاة الوقت (Time Filter): حماية السيو من الأخبار القديمة ───
+      // إذا كان الخبر أقدم من 48 ساعة من الوقت الحالي، نقوم بتخطيه فوراً (continue)
+      const newsDate = new Date(item.pubDate);
+      const now = new Date();
+      const diffHours = (now.getTime() - newsDate.getTime()) / (1000 * 60 * 60);
+
+      if (isNaN(diffHours) || diffHours > CONFIG.MAX_NEWS_AGE_HOURS) {
+        const ageLabel = isNaN(diffHours) ? 'تاريخ غير معروف' : `${Math.round(diffHours)} ساعة مضت`;
+        console.log(`   ⏭ تم تخطي الخبر لأنه قديم (${ageLabel}): ${item.title.slice(0, 45)}...`);
+        state.processedItems[item.guid || item.link] = {
+          skippedReason: 'older_than_48h',
+          pubDate: item.pubDate,
+          skippedAt: new Date().toISOString(),
+        };
+        continue;
+      }
+
+      console.log(`   📰 خبر طازج وجديد (${Math.round(diffHours)} ساعة): ${item.title.slice(0, 55)}...`);
 
       try {
-        // استخراج الصورة بـ Cheerio (لا نطلب من Gemini أبداً)
-        process.stdout.write('   🖼 استخراج الصورة...');
-        const foundImage = item.link ? await extractImageFromPage(item.link) : null;
+        // استخراج الصورة الرسمية عبر axios و cheerio (في Node.js فقط)
+        process.stdout.write('   🖼 استخراج الصورة الرسمية...');
+        const foundImage = await extractOfficialImage(item.link);
         const imageInfo = resolveArticleImage(foundImage, site);
         console.log(imageInfo.isPlaceholder
-          ? ` ⚠ لم توجد صورة — سيُستخدم الشعار الرسمي`
-          : ` ✅ صورة حقيقية`);
+          ? ` ⚠ لا توجد صورة رسمية — تم إدراج الشعار التوضيحي`
+          : ` ✅ تم العثور على og:image حقيقية`);
 
-        // توليد المقال بـ Gemini
-        process.stdout.write('   ✍ الكتابة بـ Gemini...');
-        const rawArticle = await generateArticleWithGemini(item, site, imageInfo);
+        // توليد المقال النصي بـ Gemini (بدون أي صور)
+        process.stdout.write('   ✍ تحرير المقال بـ Gemini...');
+        const rawArticle = await generateArticleWithGemini(item, site);
         console.log(' ✅');
 
-        // تحويل النص إلى JSON
+        // تحويل النص إلى JSON وتطهيره
         const { slug, article } = parseGeminiToArticleJson(rawArticle, item, site, imageInfo);
 
         // حفظ المقال
         saveArticleToJson(slug, article);
         console.log(`   💾 حُفظ: /articles/${slug}`);
 
-        // فهرسة فورية
+        // فهرسة فورية في محركات البحث
         const articleUrl = `https://www.raqmanadz.com/articles/${slug}`;
         pingIndexNow(articleUrl);
-        console.log(`   📡 IndexNow أُرسل`);
+        console.log(`   📡 تم إرسال IndexNow`);
 
-        // تحديث الحالة
+        // تحديث السجل
         state.processedItems[item.guid || item.link] = {
           slug,
           processedAt: new Date().toISOString(),
@@ -458,12 +500,12 @@ async function processSite(site, state, articlesCount) {
         };
         newCount++;
 
-        // انتظر ثانيتين بين المقالات لتجنب Rate Limiting
+        // انتظار ثانيتين بين المقالات
         await new Promise((r) => setTimeout(r, 2000));
 
       } catch (itemErr) {
-        // ⚠ Try/Catch للعنصر الفردي: الفشل لا يوقف بقية المواقع
-        console.error(`   ❌ خطأ في معالجة الخبر: ${itemErr.message}`);
+        // try/catch لكل خبر على حدة لكي لا يوقف باقي الأخبار
+        console.error(`   ❌ خطأ أثناء معالجة الخبر: ${itemErr.message}`);
         state.processedItems[item.guid || item.link] = {
           error: itemErr.message,
           skippedAt: new Date().toISOString(),
@@ -471,12 +513,12 @@ async function processSite(site, state, articlesCount) {
       }
     }
 
-    console.log(`   ✅ تم معالجة ${newCount} خبر جديد من ${site.name}`);
+    console.log(`   ✅ معالجة ${newCount} خبر جديد من ${site.name}`);
     return articlesCount + newCount;
 
   } catch (siteErr) {
-    // ⚠ Try/Catch للموقع الكامل: إذا تعطل موقع لا يتوقف السكريبت
-    console.error(`   ❌ تعذّر الوصول لـ ${site.name}: ${siteErr.message}`);
+    // try/catch للموقع ككل: إذا تعطل السيرفر الخاص بأي وزارة، يكمل السكريبت عمله مع باقي الوزارات
+    console.error(`   ❌ تعذّر جلب بيانات ${site.name}: ${siteErr.message}`);
     return articlesCount;
   }
 }
@@ -484,7 +526,9 @@ async function processSite(site, state, articlesCount) {
 // ─── 12. الدالة الرئيسية ──────────────────────────────────────
 async function main() {
   console.log('\n' + '='.repeat(60));
-  console.log('🤖 RAQMANA — محرك أتمتة الأخبار الحكومية v1.0');
+  console.log('🤖 RAQMANA — محرك أتمتة الأخبار الحكومية v2.0');
+  console.log('⏱ مصفاة الوقت: أخبار الـ 48 ساعة الأخيرة فقط');
+  console.log('🖼 ضوابط الصور: og:image حقيقية فقط + حظر هلوسة Gemini');
   console.log('='.repeat(60));
   console.log(`📋 المواقع المجدولة: ${sitesToProcess.length} موقع`);
   console.log(`📦 الحد الأقصى للمقالات: ${CONFIG.MAX_ARTICLES_PER_RUN} مقال/جلسة\n`);
@@ -494,12 +538,12 @@ async function main() {
 
   for (const site of sitesToProcess) {
     totalArticles = await processSite(site, state, totalArticles);
-    saveState(state); // حفظ الحالة بعد كل موقع
+    saveState(state);
     if (totalArticles >= CONFIG.MAX_ARTICLES_PER_RUN) break;
   }
 
   console.log('\n' + '='.repeat(60));
-  console.log(`🎉 اكتملت الجلسة — تم كتابة ${totalArticles} مقال جديد`);
+  console.log(`🎉 اكتملت الجلسة — تم كتابة ${totalArticles} مقال جديد حديث`);
   console.log('='.repeat(60) + '\n');
 }
 
