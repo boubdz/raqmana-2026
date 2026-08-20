@@ -32,7 +32,7 @@ if (fs.existsSync(envPath)) {
 // ─── الإعدادات العامة ─────────────────────────────────────────
 const CONFIG = {
   GEMINI_API_KEY: (process.env.GEMINI_API_KEY || '').trim(),
-  GEMINI_MODEL: 'gemini-2.5-flash',
+  GEMINI_MODEL: 'gemini-3.6-flash',
   SITES_CONFIG: path.join(__dirname, 'sites-config.json'),
   ARTICLES_JSON: path.join(ROOT_DIR, 'lib', 'custom-articles-data.json'),
   STATE_FILE: path.join(__dirname, 'news-state.json'),
@@ -233,43 +233,64 @@ ${imageInstruction}
 
 [الإخراج المطلوب]: أعد المقال كاملاً بدون أي تعليق إضافي منك. ابدأ مباشرة بعنوان H1.`;
 
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 4096,
-        topP: 0.9,
-      },
-    });
+  const candidateModels = [
+    CONFIG.GEMINI_MODEL,
+    'gemini-2.5-flash-lite',
+    'gemini-3.5-flash',
+    'gemini-flash-latest'
+  ];
 
-    const req = https.request(
-      {
-        hostname: 'generativelanguage.googleapis.com',
-        path: `/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent?key=${CONFIG.GEMINI_API_KEY}`,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(body),
-        },
-      },
-      (res) => {
-        let data = '';
-        res.on('data', (c) => (data += c));
-        res.on('end', () => {
-          try {
-            const parsed = JSON.parse(data);
-            const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (text) resolve(text.trim());
-            else reject(new Error(`Gemini: لا يوجد محتوى — ${JSON.stringify(parsed?.error || data).slice(0, 200)}`));
-          } catch (e) { reject(e); }
+  let lastError = null;
+
+  for (const modelName of candidateModels) {
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const body = JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 4096,
+            topP: 0.9,
+          },
         });
-      }
-    );
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
+
+        const req = https.request(
+          {
+            hostname: 'generativelanguage.googleapis.com',
+            path: `/v1beta/models/${modelName}:generateContent?key=${CONFIG.GEMINI_API_KEY}`,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(body),
+            },
+          },
+          (res) => {
+            let data = '';
+            res.on('data', (c) => (data += c));
+            res.on('end', () => {
+              try {
+                const parsed = JSON.parse(data);
+                const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (text) resolve(text.trim());
+                else reject(new Error(`Gemini (${modelName}): ${JSON.stringify(parsed?.error || data).slice(0, 200)}`));
+              } catch (e) { reject(e); }
+            });
+          }
+        );
+        req.on('error', reject);
+        req.write(body);
+        req.end();
+      });
+
+      return result; // نجح التوليد
+    } catch (err) {
+      lastError = err;
+      // إذا كان الخطأ 503 أو غيره، نجرب النموذج التالي بعد انتظار نصف ثانية
+      await new Promise((r) => setTimeout(r, 600));
+    }
+  }
+
+  throw lastError || new Error('فشلت جميع نماذج Gemini المتاحة');
 }
 
 // ─── 8. تحويل نص Gemini إلى هيكل JSON للمقال ─────────────────
