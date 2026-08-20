@@ -109,12 +109,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ],
     metadataBase: new URL("https://www.raqmanadz.com"),
     alternates: {
-      canonical: `/services/${id}`,
+      canonical: `/services/${service.id}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://www.raqmanadz.com/services/${id}`,
+      url: `https://www.raqmanadz.com/services/${service.id}`,
       siteName: "البوابة الجزائرية للخدمات الرقمية",
       locale: "ar_DZ",
       type: "website",
@@ -144,6 +144,12 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
   const categoryTitle = categoryNamesAr[service.category.id] || "الخدمات الحكومية";
+
+  // Fetch related services from the same category for dense internal linking
+  const allServices = getAllDetailedServices();
+  const similarServices = allServices
+    .filter((s) => s.category.id === service.category.id && s.id !== service.id)
+    .slice(0, 6);
 
   // Find matching articles for cross-linking
   const relatedArticles = Object.entries(seoArticles).filter(([slug, art]) => {
@@ -338,6 +344,69 @@ export default async function ServiceDetailPage({ params }: Props) {
                     </div>
                   </Link>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Related Services in the same category (Dense Internal Linking) */}
+          {similarServices.length > 0 && (
+            <div className="p-6 sm:p-8 rounded-3xl border border-border/60 bg-card space-y-4">
+              <div className="flex items-center justify-between border-b border-border/40 pb-3 flex-wrap gap-2">
+                <div className="flex items-center gap-2 text-primary font-bold text-lg">
+                  <LayoutGrid className="w-5 h-5" />
+                  <h2>خدمات حكومية أخرى في قطاع {categoryTitle}</h2>
+                </div>
+                <Link
+                  href={`/categories/${service.category.id}`}
+                  className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                >
+                  <span>عرض الكل ({allServices.filter(s => s.category.id === service.category.id).length})</span>
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {similarServices.map((sim) => {
+                  let simDomain = "";
+                  try {
+                    simDomain = new URL(sim.url).hostname.replace(/^www\./, "");
+                  } catch {
+                    simDomain = sim.url;
+                  }
+                  const simFavicon = `https://www.google.com/s2/favicons?domain=${simDomain}&sz=64`;
+
+                  return (
+                    <Link
+                      key={sim.id}
+                      href={`/services/${sim.id}`}
+                      className="group p-4 rounded-2xl border border-border/60 bg-muted/20 hover:border-primary/50 hover:bg-primary/5 transition-all flex items-start gap-3"
+                    >
+                      <div className="p-2.5 rounded-xl bg-background border border-border/60 flex items-center justify-center flex-shrink-0">
+                        {sim.isApp ? (
+                          <Smartphone className="w-5 h-5 text-primary" />
+                        ) : (
+                          <img
+                            src={simFavicon}
+                            alt={sim.name.ar}
+                            className="w-5 h-5 object-contain"
+                          />
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                          {sim.name.ar}
+                        </h3>
+                        <p className="text-[10px] text-muted-foreground font-mono truncate mt-0.5">
+                          {simDomain}
+                        </p>
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary mt-2">
+                          <span>دليل واستخدام الخدمة</span>
+                          <ArrowRight className="w-2.5 h-2.5 group-hover:-translate-x-1 transition-transform" />
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}

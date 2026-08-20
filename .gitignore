@@ -15,6 +15,11 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
+service-account*.json
+service_account*.json
+gsc-key*.json
+google-credentials*.json
+scripts/indexing-state.json
 
 # Logs
 logs/

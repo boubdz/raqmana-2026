@@ -15,9 +15,10 @@ const inter = Inter({
 })
 
 const alexandria = Alexandria({
-  subsets: ["arabic"],
+  subsets: ["arabic", "latin"],
   variable: "--font-alexandria",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 })
 
 export const metadata: Metadata = {

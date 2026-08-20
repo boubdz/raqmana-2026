@@ -120,7 +120,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 
-import { getCategoryIdForSlug } from "@/lib/category-mapper";
+import { getCategoryIdForSlug, getAllDetailedServices } from "@/lib/category-mapper";
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
@@ -132,6 +132,10 @@ export default async function ArticlePage({ params }: Props) {
   }
 
   const categoryId = (article as any).categoryId || getCategoryIdForSlug(slug);
+  const allServices = getAllDetailedServices();
+  const relatedServices = allServices
+    .filter((s) => s.category.id === categoryId)
+    .slice(0, 6);
 
   // Generate JSON-LD for SEO
   const jsonLd = {
@@ -253,6 +257,40 @@ export default async function ArticlePage({ params }: Props) {
 
             {/* Sidebar */}
             <aside className="lg:col-span-4 space-y-8">
+              {/* Related Services in this Category */}
+              {relatedServices.length > 0 && (
+                <div className="bg-card border border-border/60 rounded-[2rem] p-6 shadow-sm space-y-4">
+                  <div className="flex items-center justify-between pb-2 border-b border-border/40">
+                    <h3 className="font-bold text-sm text-foreground">
+                      خدمات رقمية ذات صلة بهذا الدليل
+                    </h3>
+                    <span className="text-[11px] font-bold text-primary px-2 py-0.5 rounded-full bg-primary/10">
+                      {relatedServices.length} خدمات
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {relatedServices.map((srv) => (
+                      <Link
+                        key={srv.id}
+                        href={`/services/${srv.id}`}
+                        className="group flex items-center justify-between p-3 rounded-xl bg-muted/30 hover:bg-primary/5 border border-border/40 hover:border-primary/40 transition-all"
+                      >
+                        <div className="min-w-0 pr-1">
+                          <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors truncate">
+                            {srv.name.ar}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground truncate font-mono mt-0.5">
+                            {srv.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]}
+                          </p>
+                        </div>
+                        <ChevronLeft className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:-translate-x-1 transition-all flex-shrink-0" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Sticky Category Link Box */}
               <div className="sticky top-32 bg-gradient-to-br from-primary to-indigo-600 rounded-[2rem] p-8 text-white shadow-2xl overflow-hidden relative">
                 <div className="absolute inset-0 opacity-10 mix-blend-overlay" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")" }}></div>
