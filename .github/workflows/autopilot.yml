@@ -1,0 +1,134 @@
+name: 🤖 Raqmana News Autopilot
+
+on:
+  schedule:
+    # ─── Tier 1: كل 15 دقيقة (أهم 10 مواقع) ───────────────────
+    - cron: '*/15 * * * *'
+    # ─── Tier 2: مرة واحدة يومياً الساعة 3:00 فجراً ─────────────
+    - cron: '0 2 * * *'
+
+  # تشغيل يدوي من واجهة GitHub Actions
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: 'الطبقة المراد تشغيلها (1 أو 2 أو all)'
+        required: false
+        default: '1'
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - 'all'
+
+# منع تشغيل أكثر من نسخة في نفس الوقت
+concurrency:
+  group: raqmana-autopilot
+  cancel-in-progress: false
+
+jobs:
+  # ════════════════════════════════════════════════════════════
+  # JOB 1 — Tier 1: أهم المواقع (كل 15 دقيقة)
+  # ════════════════════════════════════════════════════════════
+  tier1-news:
+    name: '⚡ Tier 1 — مواقع التراند (كل 15 دقيقة)'
+    runs-on: ubuntu-latest
+
+    # تشغيل فقط عند cron الـ 15 دقيقة أو يدوياً بـ tier=1 أو all
+    if: |
+      github.event_name == 'workflow_dispatch' && (github.event.inputs.tier == '1' || github.event.inputs.tier == 'all') ||
+      (github.event_name == 'schedule' && github.event.schedule == '*/15 * * * *')
+
+    steps:
+      - name: '📥 Checkout المستودع'
+        uses: actions/checkout@v4
+
+      - name: '🟢 إعداد Node.js 20'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: '📦 تثبيت التبعيات'
+        run: npm ci --prefer-offline
+
+      - name: '📦 تثبيت تبعيات سكريبت الأخبار'
+        run: npm install --no-save xml2js cheerio
+
+      - name: '🔐 إنشاء ملف service-account.json'
+        run: echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}' > service-account.json
+
+      - name: '🤖 تشغيل محرك الأخبار — Tier 1'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NODE_ENV: production
+        run: node scripts/news-automation/auto-news-worker.js --tier=1
+
+      - name: '📡 تشغيل محرك الفهرسة'
+        env:
+          NODE_ENV: production
+        run: node scripts/news-automation/indexing-process.js
+
+      - name: '💾 حفظ التغييرات في Git'
+        run: |
+          git config user.name "Raqmana News Bot"
+          git config user.email "bot@raqmanadz.com"
+          git add lib/custom-articles-data.json public/auto-news-sitemap.xml || true
+          git diff --staged --quiet || git commit -m "🤖 auto: Tier1 news articles $(date +'%Y-%m-%d %H:%M')"
+          git push || echo "لا توجد تغييرات لرفعها"
+
+      - name: '🧹 حذف ملف الاعتماد الحساس'
+        if: always()
+        run: rm -f service-account.json
+
+  # ════════════════════════════════════════════════════════════
+  # JOB 2 — Tier 2: باقي المواقع (مرة يومياً)
+  # ════════════════════════════════════════════════════════════
+  tier2-news:
+    name: '🌙 Tier 2 — باقي المواقع (يومياً 3:00 ص)'
+    runs-on: ubuntu-latest
+
+    if: |
+      github.event_name == 'workflow_dispatch' && (github.event.inputs.tier == '2' || github.event.inputs.tier == 'all') ||
+      (github.event_name == 'schedule' && github.event.schedule == '0 2 * * *')
+
+    steps:
+      - name: '📥 Checkout المستودع'
+        uses: actions/checkout@v4
+
+      - name: '🟢 إعداد Node.js 20'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: '📦 تثبيت التبعيات'
+        run: npm ci --prefer-offline
+
+      - name: '📦 تثبيت تبعيات سكريبت الأخبار'
+        run: npm install --no-save xml2js cheerio
+
+      - name: '🔐 إنشاء ملف service-account.json'
+        run: echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}' > service-account.json
+
+      - name: '🤖 تشغيل محرك الأخبار — Tier 2'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NODE_ENV: production
+        run: node scripts/news-automation/auto-news-worker.js --tier=2
+
+      - name: '📡 تشغيل محرك الفهرسة'
+        env:
+          NODE_ENV: production
+        run: node scripts/news-automation/indexing-process.js
+
+      - name: '💾 حفظ التغييرات في Git'
+        run: |
+          git config user.name "Raqmana News Bot"
+          git config user.email "bot@raqmanadz.com"
+          git add lib/custom-articles-data.json public/auto-news-sitemap.xml || true
+          git diff --staged --quiet || git commit -m "🤖 auto: Tier2 daily articles $(date +'%Y-%m-%d')"
+          git push || echo "لا توجد تغييرات لرفعها"
+
+      - name: '🧹 حذف ملف الاعتماد الحساس'
+        if: always()
+        run: rm -f service-account.json

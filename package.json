@@ -10,7 +10,15 @@
         "lighthouse:mobile": "npx lighthouse http://localhost:3000 --form-factor=mobile --throttling-method=simulate --screenEmulation.mobile --output=json --output-path=./lighthouse-mobile.json --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices && node -e \"const r=require('./lighthouse-mobile.json');const c=r.categories;console.log('\\n📱 Mobile Lighthouse Results:');console.log('  Performance:    ',Math.round(c.performance.score*100));console.log('  Accessibility:  ',Math.round(c.accessibility.score*100));console.log('  Best Practices: ',Math.round(c['best-practices'].score*100));const a=r.audits;console.log('\\n⏱ Core Web Vitals:');console.log('  LCP: ',a['largest-contentful-paint'].displayValue);console.log('  TBT: ',a['total-blocking-time'].displayValue);console.log('  CLS: ',a['cumulative-layout-shift'].displayValue);console.log('  FCP: ',a['first-contentful-paint'].displayValue);\")",
         "lighthouse:desktop": "npx lighthouse http://localhost:3000 --form-factor=desktop --output=json --output-path=./lighthouse-desktop.json --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices && node -e \"const r=require('./lighthouse-desktop.json');const c=r.categories;console.log('\\n🖥 Desktop Results — Performance:',Math.round(c.performance.score*100),'Accessibility:',Math.round(c.accessibility.score*100));\"",
         "analyze": "ANALYZE=true next build",
-        "autopilot": "node scripts/seo-autopilot.js"
+        "autopilot": "node scripts/seo-autopilot.js",
+        "index:all": "node scripts/index-master.mjs",
+        "index:status": "node scripts/index-master.mjs --status",
+        "index:now": "node scripts/index-master.mjs --indexnow",
+        "index:google": "node scripts/index-master.mjs --google",
+        "news": "node scripts/news-automation/auto-news-worker.js",
+        "news:tier2": "node scripts/news-automation/auto-news-worker.js --tier=2",
+        "news:all": "node scripts/news-automation/auto-news-worker.js --all",
+        "news:index": "node scripts/news-automation/indexing-process.js"
     },
     "dependencies": {
         "@ducanh2912/next-pwa": "^10.2.6",
@@ -79,10 +87,12 @@
         "@types/react-is": "^19.2.0",
         "@types/use-sync-external-store": "^1.5.0",
         "@types/which": "^3.0.4",
+        "cheerio": "^1.2.0",
         "postcss": "^8.5",
         "tailwindcss": "^4.2.0",
         "ts-node": "^10.9.2",
         "tw-animate-css": "1.3.3",
-        "typescript": "^5.7.3"
+        "typescript": "^5.7.3",
+        "xml2js": "^0.6.2"
     }
 }

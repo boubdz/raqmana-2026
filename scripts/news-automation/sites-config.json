@@ -1,0 +1,156 @@
+{
+  "tier1": [
+    {
+      "id": "education",
+      "name": "وزارة التربية الوطنية",
+      "url": "https://www.education.gov.dz",
+      "rssUrl": "https://www.education.gov.dz/feed/",
+      "logoUrl": "https://www.education.gov.dz/wp-content/uploads/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/education.jpg",
+      "categoryId": "education",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "interieur",
+      "name": "وزارة الداخلية والجماعات المحلية",
+      "url": "https://www.interieur.gov.dz",
+      "rssUrl": "https://www.interieur.gov.dz/index.php/ar/?format=feed&type=rss",
+      "logoUrl": "https://www.interieur.gov.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/interieur.jpg",
+      "categoryId": "interior",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "travail",
+      "name": "وزارة العمل والتشغيل والضمان الاجتماعي",
+      "url": "https://www.travail.gov.dz",
+      "rssUrl": "https://www.travail.gov.dz/feed/",
+      "logoUrl": "https://www.travail.gov.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/travail.jpg",
+      "categoryId": "employment",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "sante",
+      "name": "وزارة الصحة والسكان وإصلاح المستشفيات",
+      "url": "https://www.sante.gov.dz",
+      "rssUrl": "https://www.sante.gov.dz/feed/",
+      "logoUrl": "https://www.sante.gov.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/sante.jpg",
+      "categoryId": "health",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "anem",
+      "name": "الوكالة الوطنية للتشغيل (ANEM)",
+      "url": "https://www.anem.dz",
+      "rssUrl": "https://www.anem.dz/feed/",
+      "logoUrl": "https://www.anem.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/anem.jpg",
+      "categoryId": "employment",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "cnas",
+      "name": "الصندوق الوطني للتأمينات الاجتماعية للعمال الأجراء (CNAS)",
+      "url": "https://www.cnas.dz",
+      "rssUrl": "https://www.cnas.dz/feed/",
+      "logoUrl": "https://www.cnas.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/cnas.jpg",
+      "categoryId": "socialSecurity",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "cnr",
+      "name": "الصندوق الوطني للتقاعد (CNR)",
+      "url": "https://www.cnr.dz",
+      "rssUrl": "https://www.cnr.dz/index.php/ar/?format=feed",
+      "logoUrl": "https://www.cnr.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/cnr.jpg",
+      "categoryId": "socialSecurity",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "dgfip",
+      "name": "المديرية العامة للضرائب",
+      "url": "https://www.mfdgi.gov.dz",
+      "rssUrl": "https://www.mfdgi.gov.dz/index.php/ar/?format=feed",
+      "logoUrl": "https://www.mfdgi.gov.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/dgfip.jpg",
+      "categoryId": "tax",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "baridalgerie",
+      "name": "بريد الجزائر",
+      "url": "https://www.poste.dz",
+      "rssUrl": "https://www.poste.dz/feed/",
+      "logoUrl": "https://www.poste.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/poste.jpg",
+      "categoryId": "post",
+      "checkIntervalMinutes": 15
+    },
+    {
+      "id": "sonelgaz",
+      "name": "سونلغاز",
+      "url": "https://www.sonelgaz.dz",
+      "rssUrl": "https://www.sonelgaz.dz/feed/",
+      "logoUrl": "https://www.sonelgaz.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/sonelgaz.jpg",
+      "categoryId": "bills",
+      "checkIntervalMinutes": 15
+    }
+  ],
+  "tier2": [
+    {
+      "id": "justice",
+      "name": "وزارة العدل",
+      "url": "https://www.mjustice.dz",
+      "rssUrl": "https://www.mjustice.dz/ar/?format=feed",
+      "logoUrl": "https://www.mjustice.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/justice.jpg",
+      "categoryId": "justice",
+      "checkIntervalMinutes": 1440
+    },
+    {
+      "id": "habitat",
+      "name": "وزارة السكن والعمران والمدينة",
+      "url": "https://www.mhuv.gov.dz",
+      "rssUrl": "https://www.mhuv.gov.dz/feed/",
+      "logoUrl": "https://www.mhuv.gov.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/habitat.jpg",
+      "categoryId": "realEstate",
+      "checkIntervalMinutes": 1440
+    },
+    {
+      "id": "commerce",
+      "name": "وزارة التجارة وترقية الصادرات",
+      "url": "https://www.mincommerce.gov.dz",
+      "rssUrl": "https://www.mincommerce.gov.dz/feed/",
+      "logoUrl": "https://www.mincommerce.gov.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/commerce.jpg",
+      "categoryId": "commerce",
+      "checkIntervalMinutes": 1440
+    },
+    {
+      "id": "transport",
+      "name": "وزارة النقل",
+      "url": "https://www.mintransport.gov.dz",
+      "rssUrl": "https://www.mintransport.gov.dz/feed/",
+      "logoUrl": "https://www.mintransport.gov.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/transport.jpg",
+      "categoryId": "transport",
+      "checkIntervalMinutes": 1440
+    },
+    {
+      "id": "numerique",
+      "name": "وزارة الرقمنة والإحصاء",
+      "url": "https://www.mdn.gov.dz",
+      "rssUrl": "https://www.mdn.gov.dz/feed/",
+      "logoUrl": "https://www.mdn.gov.dz/images/logo.png",
+      "fallbackImage": "https://www.raqmanadz.com/images/fallbacks/numerique.jpg",
+      "categoryId": "dzds",
+      "checkIntervalMinutes": 1440
+    }
+  ]
+}
