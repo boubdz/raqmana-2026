@@ -15,18 +15,19 @@ export interface RequiredDocument {
 
 export const DOCUMENT_CATEGORIES = {
   all: { ar: "جميع الوثائق", en: "All Documents", icon: "📑" },
-  housing: { ar: "السكن والعقار", en: "Housing & Real Estate", icon: "🏠", color: "bg-blue-500/10 text-blue-600 border-blue-200 dark:border-blue-900" },
-  agriculture: { ar: "الفلاحة والموالون", en: "Agriculture & Livestock", icon: "🌾", color: "bg-emerald-500/10 text-emerald-600 border-emerald-200 dark:border-emerald-900" },
-  commerce: { ar: "التجارة والضرائب", en: "Commerce & Taxes", icon: "💼", color: "bg-amber-500/10 text-amber-600 border-amber-200 dark:border-amber-900" },
+  housing: { ar: "السكن والعقار والتعمير", en: "Housing & Construction", icon: "🏠", color: "bg-blue-500/10 text-blue-600 border-blue-200 dark:border-blue-900" },
+  agriculture: { ar: "الفلاحة والموالون والري", en: "Agriculture & Water", icon: "🌾", color: "bg-emerald-500/10 text-emerald-600 border-emerald-200 dark:border-emerald-900" },
+  commerce: { ar: "التجارة والشركات والضرائب", en: "Commerce & Investment", icon: "💼", color: "bg-amber-500/10 text-amber-600 border-amber-200 dark:border-amber-900" },
   transport: { ar: "النقل والمركبات", en: "Transport & Vehicles", icon: "🚗", color: "bg-purple-500/10 text-purple-600 border-purple-200 dark:border-purple-900" },
-  permits: { ar: "الرخص والتراخيص", en: "Permits & Licenses", icon: "🛡️", color: "bg-red-500/10 text-red-600 border-red-200 dark:border-red-900" },
-  social: { ar: "التشغيل والضمان والتقاعد", en: "Social & Retirement", icon: "🏥", color: "bg-teal-500/10 text-teal-600 border-teal-200 dark:border-teal-900" },
-  interior: { ar: "الهوية والحالة المدنية", en: "Civil Status & Identity", icon: "🏛️", color: "bg-indigo-500/10 text-indigo-600 border-indigo-200 dark:border-indigo-900" },
+  permits: { ar: "الرخص والأنشطة المقننة", en: "Permits & Licenses", icon: "🛡️", color: "bg-red-500/10 text-red-600 border-red-200 dark:border-red-900" },
+  social: { ar: "الضمان والتشغيل والتضامن", en: "Social & Solidarity", icon: "🏥", color: "bg-teal-500/10 text-teal-600 border-teal-200 dark:border-teal-900" },
+  interior: { ar: "الهوية والخدمة الوطنية والتعليم", en: "Civil, Military & Education", icon: "🏛️", color: "bg-indigo-500/10 text-indigo-600 border-indigo-200 dark:border-indigo-900" },
+  justice: { ar: "العدالة والشؤون القانونية", en: "Justice & Legal", icon: "⚖️", color: "bg-rose-500/10 text-rose-600 border-rose-200 dark:border-rose-900" },
 };
 
 export const documentGuideData: RequiredDocument[] = [
   // ═══════════════════════════════════════════════════════════════════════
-  // 1. السكن والعقار (Housing & Real Estate)
+  // 1. السكن والعقار والتعمير (Housing, Real Estate & Urbanism)
   // ═══════════════════════════════════════════════════════════════════════
   {
     id: "social-housing",
@@ -173,13 +174,140 @@ export const documentGuideData: RequiredDocument[] = [
       ]
     }
   },
+  {
+    id: "building-permit",
+    name: { ar: "ملف رخصة البناء (Permis de Construire)", en: "Building Construction Permit File" },
+    category: "housing",
+    department: { ar: "مصلحة التعمير بالبلدية / مديرية التعمير (DUC)", en: "Municipal Urbanism Dept / DUC" },
+    officialUrl: "https://www.interieur.gov.dz",
+    fees: { ar: "رسم رخصة البناء يحسب حسب المساحة المبنية", en: "Calculated based on built area" },
+    processingTime: { ar: "شهر إلى 3 أشهر من تاريخ الإيداع", en: "1 to 3 months" },
+    items: {
+      ar: [
+        "طلب رخصة البناء موقع من طرف المالك أو موكله القانوني (استمارة البلدية)",
+        "سند ملكية القطعة الأرضية (عقد ملكية مشهر أو شهادة حيازة رسمية)",
+        "شهادة التعمير (Certificat d'urbanisme) حديثة لم تمضِ عليها سنة",
+        "الملف المعماري المعد والمؤشر من طرف مهندس معماري معتمد (05 نسخ)",
+        "الملف الهندسي المدني المعد من طرف مهندس في الهندسة المدنية (الهيكل المقاوم للزلازل)",
+        "مخطط الموقع (Plan de situation) ومخطط الكتلة (Plan de masse) بمقياس 1/500 أو 1/200",
+        "مخطط الربط بالشبكات المختلفة (الماء، الغاز، الكهرباء، التطهير الصرف الصحي)",
+        "وصل إيداع الملف بمكتب التعمير البلدي"
+      ],
+      en: [
+        "Building permit application form signed by owner or representative",
+        "Registered land title deed or official possession deed",
+        "Recent urban planning certificate (Under 1 year)",
+        "Architectural plans stamped by certified architect (5 copies)",
+        "Civil engineering blueprints (Earthquake-resistant structural calculations)",
+        "Location plan and master layout plan (1/500 or 1/200 scale)",
+        "Utility connections plan (Water, electricity, gas, sanitation)",
+        "Municipal urbanism submission receipt"
+      ]
+    }
+  },
+  {
+    id: "conformity-certificate",
+    name: { ar: "ملف شهادة المطابقة للبناية (Certificat de Conformité)", en: "Building Compliance Certificate" },
+    category: "housing",
+    department: { ar: "مصلحة التعمير بالبلدية", en: "Municipal Urban Planning Bureau" },
+    officialUrl: "https://www.interieur.gov.dz",
+    items: {
+      ar: [
+        "طلب استخراج شهادة المطابقة موجه إلى رئيس المجلس الشعبي البلدي",
+        "نسخة من رخصة البناء المسلمة والمخططات المعمارية المصادق عليها",
+        "شهادة إتمام الأشغال الكبرى والتهيئة محررة من طرف المهندس المعماري المشرف",
+        "تقرير معاينة اللجنة التقنية المشتركة (التعمير، الحماية المدنية، مكاتب الدراسات)",
+        "صور فوتوغرافية للواجهات الخارجية للبناية"
+      ],
+      en: [
+        "Compliance request to Municipal Mayor",
+        "Copy of delivered building permit and approved blueprints",
+        "Completion of major works certificate signed by supervising architect",
+        "Joint technical committee inspection report (Urbanism, Civil Protection)",
+        "Photographs of building exterior facades"
+      ]
+    }
+  },
+  {
+    id: "demolition-permit",
+    name: { ar: "ملف رخصة الهدم (Permis de Démolir)", en: "Demolition Permit File" },
+    category: "housing",
+    department: { ar: "البلدية / مديرية البناء والتعمير", en: "Municipality / Urban Planning" },
+    officialUrl: "https://www.interieur.gov.dz",
+    items: {
+      ar: [
+        "استمارة طلب رخصة الهدم تسحب من البلدية",
+        "سند الملكية المشهر للبناية المراد هدمها",
+        "تقرير خبرة تقنية من مهندس مدني معتمد يثبت هشاشة البناية أو دواعي الهدم",
+        "مخطط تفصيلي لمراحل الهدم وتأمين المباني المجاورة والمشاة",
+        "تعهد بإخلاء وإعادة تدوير ركام ومخلفات الهدم إلى المفارغ العمومية المرخصة"
+      ],
+      en: [
+        "Demolition permit application form from municipality",
+        "Registered title deed of building to be demolished",
+        "Technical expert report from certified civil engineer on structural weakness",
+        "Detailed demolition execution & neighbor safety plan",
+        "Commitment to clear and transport demolition debris to authorized landfills"
+      ]
+    }
+  },
+  {
+    id: "livret-foncier",
+    name: { ar: "ملف استخراج الدفتر العقاري ومسح الأراضي (Cadastre)", en: "Land Book (Livret Foncier) & Cadastre File" },
+    category: "housing",
+    department: { ar: "المحافظة العقارية / مديرية مسح الأراضي الولائية", en: "Land Registry / Cadastre Directorate" },
+    officialUrl: "https://mfdgi.gov.dz",
+    items: {
+      ar: [
+        "العقد التوثيقي الأصلي المشهر بالمحافظة العقارية",
+        "المستند المسحي (Document d'arpentage) ومخطط التعيين العقاري المسلم من مصالح المسح",
+        "استمارة طلب إعداد الدفتر العقاري (نموذج المحافظة العقارية)",
+        "شهادة المطابقة مع السجل العقاري وسجل الأملاك العقارية المشهرة",
+        "نسخة من بطاقة التعريف الوطنية للمالك",
+        "وصل تسديد رسوم تحرير وإشهار الدفتر العقاري"
+      ],
+      en: [
+        "Original notarized deed registered with Land Registry",
+        "Cadastral survey document (Document d'arpentage) and layout plan",
+        "Land book issuance application form",
+        "Compliance certificate with registered property ledger",
+        "Copy of property owner national identity card",
+        "Payment receipt for land book preparation and publication fees"
+      ]
+    }
+  },
+  {
+    id: "conformity-law-0815",
+    name: { ar: "ملف تسوية البنايات غير المكتملة (قانون 08-15)", en: "Unfinished Buildings Regularization (Law 08-15)" },
+    category: "housing",
+    department: { ar: "لجنة الدائرة لمطابقة البنايات / البلدية", en: "District Regularization Committee" },
+    officialUrl: "https://www.interieur.gov.dz",
+    items: {
+      ar: [
+        "التصريح بمطابقة البناية أو إتمامها (نموذج القانون 08-15)",
+        "عقد الملكية أو سند شغل القطعة الأرضية",
+        "المخطط المعماري للوضع القائم للبناية المنجزة معتمد من مهندس معماري",
+        "تقرير وصفي تقني للأشغال المتبقية لتشطيب الواجهات الخارجية",
+        "صور فوتوغرافية واضحة لواجهات البناية ومحيطها",
+        "وصل إيداع الملف بالأمانة التقنية للدائرة"
+      ],
+      en: [
+        "Declaration of building conformity/completion (Law 08-15 form)",
+        "Property title or land occupancy deed",
+        "Architectural as-built plans approved by certified architect",
+        "Technical descriptive report on remaining exterior finishing works",
+        "Clear photos of building facades and surrounding environment",
+        "District technical secretariat submission receipt"
+      ]
+    }
+  },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // 2. الفلاحة والموالون والري (Agriculture & Livestock)
+  // 2. الفلاحة والموالون والري (Agriculture, Livestock & Water)
   // ═══════════════════════════════════════════════════════════════════════
   {
     id: "fellah-card",
-    name: { ar: "ملف استخراج بطاقة الفلاح", en: "Farmer Card (Carte Fellah)" },
+    name: { ar: "ملف استخراج بطاقة الفلاح (Chambre d'Agriculture)", en: "Farmer Card (Carte Fellah)" },
     category: "agriculture",
     department: { ar: "الغرفة الفلاحية الولائية (Chambre d'Agriculture)", en: "Provincial Agricultural Chamber" },
     officialUrl: "https://madr.gov.dz",
@@ -282,7 +410,7 @@ export const documentGuideData: RequiredDocument[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // 3. التجارة والضرائب والاستثمار (Commerce & Taxes)
+  // 3. التجارة والشركات والاستثمار والضرائب (Commerce, Investment & Taxes)
   // ═══════════════════════════════════════════════════════════════════════
   {
     id: "commercial-register",
@@ -309,6 +437,61 @@ export const documentGuideData: RequiredDocument[] = [
         "Copy of biometric national ID card",
         "CNRC registration fee payment receipt",
         "Prior authorization or license for regulated commercial activities"
+      ]
+    }
+  },
+  {
+    id: "sarl-company-creation",
+    name: { ar: "ملف تأسيس شركة ذات مسؤولية محدودة (SARL / EURL)", en: "SARL / EURL Company Incorporation File" },
+    category: "commerce",
+    department: { ar: "الموثق / المركز الوطني للسجل التجاري / البنك", en: "Notary / CNRC / Bank" },
+    officialUrl: "https://sidjilcom.cnrc.dz",
+    items: {
+      ar: [
+        "شهادة حجز ومطابقة التسمية التجارية المسلمة من المركز الوطني للسجل التجاري (CNRC)",
+        "القانون الأساسي التأسيسي للشركة (Statuts) محرر وموثق لدى موثق معتمد",
+        "شهادة بنكية تثبت إيداع رأس المال التأسيسي في حساب بنكي مجمد خاص بالشركة",
+        "عقد إيجار موثق أو سند ملكية المقر الاجتماعي للشركة مسجل بقباضة الضرائب",
+        "صحيفة السوابق القضائية رقم 03 وشهادة الميلاد والبطاقة الوطنية للمسير والشركاء",
+        "وصل نشر إعلان التأسيس في النشرة الرسمية للإعلانات القانونية (BOAL) وجريدة وطنية",
+        "استمارة القيد واستخراج السجل التجاري الإلكتروني للشركات"
+      ],
+      en: [
+        "Trade name reservation & availability certificate from CNRC",
+        "Company Articles of Association (Statuts) notarized by notary",
+        "Bank certificate confirming incorporation capital deposit into escrow account",
+        "Registered notarized headquarters lease agreement or title deed",
+        "Criminal records No. 3, birth certificates & ID copies for managers and partners",
+        "Publication receipt in Legal Gazette (BOAL) and national newspaper",
+        "Corporate electronic Commercial Register registration form"
+      ]
+    }
+  },
+  {
+    id: "nesda-startup-grant",
+    name: { ar: "ملف دعم وتمويل المشاريع المصغرة (NESDA - أناد سابقاً)", en: "NESDA Micro-Enterprise Financing File" },
+    category: "commerce",
+    department: { ar: "الوكالة الوطنية لدعم وتنمية المقاولاتية (NESDA)", en: "National Entrepreneurship Agency (NESDA)" },
+    officialUrl: "https://www.nesda.dz",
+    fees: { ar: "قروض ميسرة بدون فوائد ودعم عتاد الدولة", en: "Interest-free loans & equipment support" },
+    items: {
+      ar: [
+        "استمارة التسجيل الإلكتروني عبر منصة الوكالة الوطنية لدعم المقاولاتية (NESDA)",
+        "بطاقة التسجيل كطالب عمل مسلمة من الوكالة الوطنية للتشغيل (ANEM)",
+        "شهادة التكوين المهني أو دبلوم التعليم العالي أو شهادة التأهيل في التخصص المراد إطلاقه",
+        "الدراسة التقنية والاقتصادية والمخطط التجاري للمشروع (Business Plan)",
+        "الفواتير الشكلية (Factures Proforma) الخاصة بالتجهيزات والعتاد من موردين معتمدين",
+        "شهادة إقامة وبطاقة التعريف الوطنية وصور شمسية",
+        "التعهد بالمساهمة الشخصية في تركيبة التمويل (5% إلى 15%)"
+      ],
+      en: [
+        "Digital registration form via NESDA national portal",
+        "Job-seeker registration card from ANEM",
+        "Vocational diploma, university degree, or qualification certificate in project field",
+        "Technical and financial business feasibility plan",
+        "Proforma invoices for equipment and machinery from certified suppliers",
+        "Residence certificate, national ID card, and photos",
+        "Commitment to personal equity contribution (5% to 15%)"
       ]
     }
   },
@@ -387,8 +570,62 @@ export const documentGuideData: RequiredDocument[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // 4. النقل والمواصلات (Transport & Vehicles)
+  // 4. النقل والمواصلات والمركبات (Transport & Vehicles)
   // ═══════════════════════════════════════════════════════════════════════
+  {
+    id: "auto-ecole-license",
+    name: { ar: "ملف رخصة فتح مدرسة تعليم السياقة (Auto-École)", en: "Driving School Accreditation License" },
+    category: "transport",
+    department: { ar: "مديرية النقل بالولاية (Direction des Transports)", en: "Provincial Transport Directorate" },
+    officialUrl: "https://www.transport.gov.dz",
+    items: {
+      ar: [
+        "شهادة الكفاءة المهنية لتعليم السياقة (CAPEP) المسلمة من وزارة النقل",
+        "عقد ملكية أو عقد إيجار موثق لمحل تجاري لا تقل مساحته عن 20 متر مربع مع قاعة تدريس مجهزة",
+        "البطاقة الرمادية لمركبتين (02) على الأقل مخصصتين لتعليم السياقة مجهزتين بدواسات تحكم مزدوجة",
+        "محضر المراقبة التقنية للمركبات وشهادات التأمين التجاري لتعليم السياقة",
+        "شهادة السوابق القضائية رقم 03 للمسير والمدربين المعتمدين",
+        "شهادة الفحص الطبي للرؤية واللياقة البدنية للمدرب",
+        "المخطط الهندسي للمحل ومحضر معاينة لجنة النقل الولائية"
+      ],
+      en: [
+        "CAPEP driving instructor professional competence certificate",
+        "Commercial lease or title for premises of at least 20m² with equipped classroom",
+        "Vehicle registration cards for at least 2 dual-control driving school vehicles",
+        "Technical inspection reports and commercial driving instruction insurance policies",
+        "Clean criminal records No. 3 for manager and certified instructors",
+        "Medical physical and vision fitness certificates for instructors",
+        "Premises architectural plan and Provincial Transport Commission inspection report"
+      ]
+    }
+  },
+  {
+    id: "car-rental-license",
+    name: { ar: "ملف رخصة وكالة كراء السيارات (Location de Voitures)", en: "Car Rental Agency License File" },
+    category: "transport",
+    department: { ar: "مديرية النقل الولائية / وزارة النقل", en: "Transport Directorate" },
+    officialUrl: "https://www.transport.gov.dz",
+    items: {
+      ar: [
+        "دفتر شروط ممارسة نشاط كراء السيارات السياحية مؤشر وممضي",
+        "السجل التجاري الخاص بنشاط كراء المركبات بدون سائق",
+        "إثبات حيازة حظيرة سيارات تحتوي على أسطول لا يقل عن 10 مركبات سياحية جديدة (أقل من سنتين)",
+        "البطاقات الرمادية للمركبات مسجلة باسم الوكالة أو عقد تمويل ليزينغ (Leasing)",
+        "عقود التأمين الشامل الشامل لكافة أسطول المركبات وحوادث الركاب",
+        "عقد ملكية أو إيجار المحل التجاري والموقف المخصص للسيارات",
+        "شهادة السوابق القضائية للمسير وبطاقة التعريف الوطنية"
+      ],
+      en: [
+        "Signed terms of reference for passenger car rental activity",
+        "Commercial Register for vehicle rental without driver",
+        "Proof of vehicle fleet of at least 10 new vehicles (Under 2 years old)",
+        "Vehicle registration cards in agency name or bank leasing contracts",
+        "Comprehensive insurance policies covering all fleet vehicles and passengers",
+        "Commercial agency lease/title deed and dedicated parking facility",
+        "Criminal record extract No. 3 and national ID of manager"
+      ]
+    }
+  },
   {
     id: "taxi-license",
     name: { ar: "ملف رخصة استغلال سيارة أجرة (تاكسي)", en: "Taxi Exploitation Permit File" },
@@ -472,8 +709,61 @@ export const documentGuideData: RequiredDocument[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // 5. الرخص المقننة والتراخيص الولائية والشرطة (Regulated Permits & Security)
+  // 5. الرخص المقننة والتراخيص الولائية والمهنية (Regulated Permits & Licenses)
   // ═══════════════════════════════════════════════════════════════════════
+  {
+    id: "pharmacy-license",
+    name: { ar: "ملف رخصة فتح صيدلية خاصة (Officine Pharmaceutique)", en: "Private Pharmacy Operating License" },
+    category: "permits",
+    department: { ar: "مديرية الصحة والسكان (DSP) / عمادة الصيادلة", en: "Health Directorate (DSP) / Pharmacy Council" },
+    officialUrl: "https://www.sante.gov.dz",
+    notes: { ar: "تخضع رخصة الفتح لشرط الخريطة الصحية وتوفر حصة شاغرة ومسافة 200 متر عن أقرب صيدلية.", en: "Subject to 200m distance rule and health zoning map." },
+    items: {
+      ar: [
+        "شهادة التخرج في الصيدلة (Diplôme de Pharmacien) الأصلية أو مصادق عليها",
+        "شهادة التسجيل في جدول المجلس الوطني لعمادة الأطباء والصيادلة للعام الجاري",
+        "مقرر الموافقة المبدئية أو رخصة التنصيب المسلمة من مديرية الصحة والسكان (DSP)",
+        "عقد ملكية أو عقد إيجار موثق للمحل التجاري ومخطط المحل بمقاييس التهيئة والتخزين",
+        "محضر معاينة مطابقة المحل للصحة والسلامة والمسافة القانونية (200 متر) من طرف مفتش الصيدلة",
+        "شهادة السوابق القضائية رقم 03 وشهادة الجنسية وبطاقة التعريف الوطنية",
+        "تعهد باحترام جدول المناوبة الليلية والخدمة الصيدلانية المستمرة"
+      ],
+      en: [
+        "Original or certified pharmacy degree diploma",
+        "Active registration certificate with National Council of Pharmacists",
+        "Prior installation authorization decree from Health Directorate (DSP)",
+        "Notarized commercial lease/deed with storage layout blueprints",
+        "On-site compliance and 200-meter zoning inspection report by state pharmacy inspector",
+        "Criminal record extract No. 3, nationality certificate, and ID",
+        "Commitment to adhere to night shift and continuous pharmaceutical service schedule"
+      ]
+    }
+  },
+  {
+    id: "medical-clinic-license",
+    name: { ar: "ملف اعتماد فتح عيادة طبية أو مخبر تحاليل", en: "Medical Clinic / Analysis Lab License" },
+    category: "permits",
+    department: { ar: "مديرية الصحة والسكان (DSP) / مجلس أخلاقيات الطب", en: "Health Directorate / Medical Ethics Council" },
+    officialUrl: "https://www.sante.gov.dz",
+    items: {
+      ar: [
+        "شهادة الدكتوراه في الطب العام أو شهادة الاختصاص الطبي أو البيولوجيا الطبية",
+        "شهادة التسجيل في المجلس الجهوي لأخلاقيات مهنة الطب",
+        "عقد إيجار أو ملكية العيادة أو المخبر مطابق لمعايير السلامة واستقبال المرضى",
+        "المخطط الهندسي للعيادة يوضح قاعة العلاج، قاعة الانتظار، وشبكات التطهير والتخلص من النفايات الطبية (DASRI)",
+        "عقد مع مؤسسة معتمدة لجمع ومعالجة النفايات الطبية الخطرة",
+        "محضر معاينة المطابقة التقنية والتجهيزات من مفتشية الصحة العمومية"
+      ],
+      en: [
+        "Medical doctorate degree or medical specialization diploma",
+        "Medical Ethics Council registration certificate",
+        "Clinic lease or title deed meeting sanitary and accessibility standards",
+        "Layout blueprint showing consultation rooms, waiting area, and biomedical waste disposal (DASRI)",
+        "Contract with certified medical waste disposal company",
+        "Technical and medical equipment compliance inspection report from Health Inspectorate"
+      ]
+    }
+  },
   {
     id: "cctv-permit",
     name: { ar: "ملف رخصة تركيب كاميرات المراقبة للشركات والمحلات", en: "CCTV Surveillance Cameras Installation Permit" },
@@ -583,7 +873,7 @@ export const documentGuideData: RequiredDocument[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // 6. الضمان الاجتماعي والتشغيل والتقاعد (Social Security, Employment & Retirement)
+  // 6. الضمان الاجتماعي والتشغيل والتضامن (Social Security & Solidarity)
   // ═══════════════════════════════════════════════════════════════════════
   {
     id: "chifa-card",
@@ -610,6 +900,34 @@ export const documentGuideData: RequiredDocument[] = [
         "Digital photo with plain white background",
         "Family civil status certificate for beneficiaries (Spouse, children)",
         "School/university certificates for dependent children over 18"
+      ]
+    }
+  },
+  {
+    id: "handicap-card-pension",
+    name: { ar: "ملف بطاقة الإعاقة والمنحة الجزافية للتضامن (AFS)", en: "Disability Card & Solidarity Grant File" },
+    category: "social",
+    department: { ar: "مديرية النشاط الاجتماعي والتضامن (DASS) / مصلحة الشؤون الاجتماعية بالبلدية", en: "Social Action Directorate (DASS)" },
+    officialUrl: "https://www.msnfcf.gov.dz",
+    fees: { ar: "منحة شهرية لذوي الاحتياجات الخاصة مجانية", en: "Monthly disability grant" },
+    items: {
+      ar: [
+        "استمارة طلب الاستفادة من المنحة وبطاقة الإعاقة تسحب من البلدية أو مكاتب DASS",
+        "تقرير طبي وصفي مفصل محرر من طرف طبيب أخصائي في الصحة العمومية يحدد نسبة وطبيعة العجز",
+        "محضر وقرار اللجنة الطبية الولائية المتخصصة للتربية الخاصة والتوجيه المهني",
+        "شهادة عدم العمل وعدم تقاضي أي أجر أو معاش من صناديق الضمان الاجتماعي",
+        "شهادة الإقامة سارية المفعول وشهادة ميلاد المعني رقم 12",
+        "صك بريدي مشطوب (Chèque CCP barré) باسم المستفيد أو وليه الشرعي",
+        "صورتان شمسيتان ونسخة من بطاقة التعريف الوطنية"
+      ],
+      en: [
+        "Disability card and solidarity grant application form from DASS",
+        "Detailed medical report by public hospital specialist assessing disability degree",
+        "Provincial Specialized Medical Committee assessment decree",
+        "Non-work and non-pension certificate from social security funds",
+        "Valid residence certificate and birth certificate No. 12",
+        "Voided CCP check in beneficiary or legal guardian name",
+        "2 photos and copy of national ID"
       ]
     }
   },
@@ -670,8 +988,89 @@ export const documentGuideData: RequiredDocument[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // 7. الهوية والحالة المدنية والعدالة (Civil Status, Identity & Justice)
+  // 7. الهوية والحالة المدنية والخدمة الوطنية والتعليم (Civil, Military & Education)
   // ═══════════════════════════════════════════════════════════════════════
+  {
+    id: "military-service-support-exemption",
+    name: { ar: "ملف الإعفاء من الخدمة الوطنية (الكفالة العائلية / السند الوحيد)", en: "Military Service Family Support Exemption" },
+    category: "interior",
+    department: { ar: "مركز الخدمة الوطنية بالناحية العسكرية / الدائرة", en: "National Service Center / Military Region" },
+    officialUrl: "https://www.mdn.dz",
+    notes: { ar: "يمنح للشاب الذي يثبت أنه المتكفل المادي الوحيد بالعائلة لعجز أو وفاة الوالد.", en: "Granted to sole family breadwinner due to father disability/death." },
+    items: {
+      ar: [
+        "طلب خطي موجه إلى السيد اللواء وزير الدفاع الوطني / قائد مركز الخدمة الوطنية",
+        "شهادة الكفالة العائلية تسحب من البلدية أو المصالح الاجتماعية للدائرة",
+        "شهادة عائلية حديثة للحالة المدنية للوالدين",
+        "شهادة عدم عمل الوالد أو شهادة العجز الطبي أو كشف الراتب/معاش التقاعد إن وُجد",
+        "شهادة وفاة الوالد (في حال الوفاة) أو عقد الطلاق (في حال انفصال الوالدين)",
+        "شهادات عمل وكشوف رواتب الإخوة الذكور أو شهادات مدرسية لمن هم في طور الدراسة",
+        "شهادة عمل وكشف الراتب الأخير للمكلف بالملف تثبت قدرته على الإعالة",
+        "بطاقة الخدمة الوطنية أو الإحصاء البيومتري وصورتان شمسيتان"
+      ],
+      en: [
+        "Written request to National Service Center Commander",
+        "Family support guardianship certificate from municipality",
+        "Recent family status certificate of parents",
+        "Father unemployment certificate, medical disability certificate, or pension slip",
+        "Father death certificate or parents divorce decree (if applicable)",
+        "Employment certificates & pay slips of brothers or school certificates for students",
+        "Applicant work certificate & salary slip proving financial support ability",
+        "National service census card and 2 photos"
+      ]
+    }
+  },
+  {
+    id: "military-medical-exemption",
+    name: { ar: "ملف الإعفاء الطبي من الخدمة الوطنية", en: "Military Service Medical Exemption File" },
+    category: "interior",
+    department: { ar: "اللجنة الطبية العسكرية لانتقاء وتجنيد الأفراد", en: "Military Medical Selection Board" },
+    officialUrl: "https://www.mdn.dz",
+    items: {
+      ar: [
+        "الاستدعاء الرسمي أو أمر الانتقاء الطبي الموجه من مركز الخدمة الوطنية",
+        "الملف الطبي الكامل والمفصل (تقارير المستشفيات الجامعية CHU، تقارير العمليات الجراحية)",
+        "الأشعة والتحاليل الطبية الحديثة المؤكدة للحالة الصحية أو المرض المزمن",
+        "بطاقة الفحص والتشخيص أمام الطبيب العسكري في جلسة الانتقاء الطبي",
+        "بطاقة التعريف الوطنية وصورتان شمسيتان"
+      ],
+      en: [
+        "Official medical selection call-up order",
+        "Complete medical history file (University Hospital CHU reports, surgical notes)",
+        "Recent X-rays and lab test results confirming medical condition",
+        "Military doctor examination record during selection board session",
+        "National ID card and 2 photos"
+      ]
+    }
+  },
+  {
+    id: "foreign-degree-equivalence",
+    name: { ar: "ملف معادلة الشهادات الجامعية الأجنبية بالجزائر", en: "Foreign University Degree Equivalence File" },
+    category: "interior",
+    department: { ar: "وزارة التعليم العالي والبحث العلمي (MESRS) / مديرية المعادلات", en: "Ministry of Higher Education (MESRS)" },
+    officialUrl: "https://www.mesrs.dz",
+    fees: { ar: "معالجة إلكترونية مجانية عبر بوابة الوزارة", en: "Free online processing" },
+    items: {
+      ar: [
+        "استمارة طلب المعادلة عبر المنصة الرقمية الرسمية لوزارة التعليم العالي (progres.mesrs.dz)",
+        "نسخة مطابقة للأصل من الشهادة الجامعية الأجنبية المحصل عليها",
+        "كشوف النقاط لجميع سنوات المسار الجامعي مصادق عليها ومترجمة رسمياً للغة العربية",
+        "نسخة من أطروحة الدكتوراه أو مذكرة التخرج الماستر مع ملخص الأطروحة",
+        "شهادة إثبات الإقامة في بلد الدراسة طيلة فترة التكوين أو جواز السفر متضمناً أختام الدخول والخروج",
+        "نسخة من شهادة البكالوريا الجزائرية الأصلية أو ما يعادلها",
+        "نسخة من بطاقة التعريف الوطنية البيومترية"
+      ],
+      en: [
+        "Online equivalence application form via MESRS Progres portal",
+        "Certified copy of foreign university degree diploma",
+        "Certified transcripts for all academic study years with official Arabic translation",
+        "Copy of Master/PhD thesis along with dissertation summary",
+        "Proof of legal residence in study country during study period or passport entry/exit stamps",
+        "Original Algerian Baccalaureate diploma copy",
+        "Copy of biometric national identity card"
+      ]
+    }
+  },
   {
     id: "passport-biometric",
     name: { ar: "ملف استخراج وتجديد جواز السفر البيومتري", en: "Biometric Passport Issuance & Renewal" },
@@ -735,30 +1134,6 @@ export const documentGuideData: RequiredDocument[] = [
     }
   },
   {
-    id: "casier-judiciaire",
-    name: { ar: "صحيفة السوابق القضائية وشهادة الجنسية (القضاء)", en: "Criminal Record Extract & Nationality Certificate" },
-    category: "justice",
-    department: { ar: "المحكمة / البوابة الإلكترونية لوزارة العدل", en: "Court / Ministry of Justice Portal" },
-    officialUrl: "https://portail.mjustice.dz",
-    fees: { ar: "مجانية عبر البوابة الرقمية الموقعة إلكترونياً", en: "Free online digitally signed" },
-    items: {
-      ar: [
-        "استخراج صحيفة السوابق القضائية رقم 03 إلكترونياً: يتم مباشرة عبر البوابة الرقمية لوزارة العدل بدون أي وثيقة",
-        "استخراج شهادة الجنسية إلكترونياً: يتم عبر بوابة وزارة العدل بعد تسجيل الهوية الرقمية",
-        "في حال الاستخراج الورقي من المحكمة لشهادة الجنسية: شهادة ميلاد المعني (رقم 12)",
-        "شهادة ميلاد الأب وشهادة ميلاد الجد لإثبات تسلسل النسب الجزائري",
-        "بطاقة التعريف الوطنية وطابع جبائي"
-      ],
-      en: [
-        "Online Criminal Record No. 3: Directly generated via Justice Portal with digital signature",
-        "Online Nationality Certificate: Generated via Justice Portal with digital identity",
-        "For paper court nationality request: Applicant birth certificate No. 12",
-        "Father and grandfather birth certificates proving Algerian lineage",
-        "National ID card and tax stamp"
-      ]
-    }
-  },
-  {
     id: "marriage-contract",
     name: { ar: "ملف عقد الزواج الإداري ورخصة الزواج", en: "Civil Marriage Contract & Health File" },
     category: "interior",
@@ -782,6 +1157,63 @@ export const documentGuideData: RequiredDocument[] = [
         "Presence of legal guardian (Wali) for the bride",
         "Military marriage authorization (For military and security personnel)",
         "Judicial court authorization for polygamy or minor marriage"
+      ]
+    }
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // 8. العدالة والشؤون القانونية (Justice & Legal)
+  // ═══════════════════════════════════════════════════════════════════════
+  {
+    id: "legal-aid-assistance",
+    name: { ar: "ملف المساعدة القضائية (Assistance Judiciaire للمحاكم)", en: "Free Legal Aid Application (Courts)" },
+    category: "justice",
+    department: { ar: "مكتب المساعدة القضائية لدى وكيل الجمهورية / المحكمة", en: "Legal Aid Bureau / Prosecutor Office" },
+    officialUrl: "https://portail.mjustice.dz",
+    fees: { ar: "تكفل الدولة بأتعاب المحامي والمصاريف القضائية مجاناً", en: "Free state-sponsored legal representation" },
+    notes: { ar: "تمنح للمعوزين وذوي الدخل المحدود الذين لا تسمح مواردهم بتحمل تكاليف التقاضي.", en: "Granted to low-income citizens unable to afford court fees." },
+    items: {
+      ar: [
+        "طلب خطي موجه إلى السيد رئيس مكتب المساعدة القضائية لدى المحكمة أو المجلس القضائي",
+        "شهادة عدم الخضوع للضريبة (جدول الضرائب مصفى C20) أو كشف الراتب الذي يثبت ضعف الدخل",
+        "شهادة عدم العمل أو كشف معاش التضامن والمنحة الجزافية",
+        "شهادة عائلية للحالة المدنية لإثبات حجم الأعباء الأسرية",
+        "شهادة إقامة بدائرة اختصاص المحكمة المختصة",
+        "عرض موجز لموضوع النزاع أو القضية مع نسخ من الوثائق والمستندات المؤيدة",
+        "نسخة من الحكم أو القرار القضائي المطعون فيه في حال الاستئناف أو النقض"
+      ],
+      en: [
+        "Written request to President of Legal Aid Bureau at Court",
+        "Non-taxation certificate (C20 tax sheet) or pay slip proving low income",
+        "Unemployment certificate or solidarity pension statement",
+        "Family civil status certificate proving family dependents",
+        "Residence certificate within court jurisdiction",
+        "Brief summary of legal dispute with supporting documents",
+        "Copy of challenged court judgment or ruling in case of appeal"
+      ]
+    }
+  },
+  {
+    id: "casier-judiciaire",
+    name: { ar: "صحيفة السوابق القضائية وشهادة الجنسية (القضاء)", en: "Criminal Record Extract & Nationality Certificate" },
+    category: "justice",
+    department: { ar: "المحكمة / البوابة الإلكترونية لوزارة العدل", en: "Court / Ministry of Justice Portal" },
+    officialUrl: "https://portail.mjustice.dz",
+    fees: { ar: "مجانية عبر البوابة الرقمية الموقعة إلكترونياً", en: "Free online digitally signed" },
+    items: {
+      ar: [
+        "استخراج صحيفة السوابق القضائية رقم 03 إلكترونياً: يتم مباشرة عبر البوابة الرقمية لوزارة العدل بدون أي وثيقة",
+        "استخراج شهادة الجنسية إلكترونياً: يتم عبر بوابة وزارة العدل بعد تسجيل الهوية الرقمية",
+        "في حال الاستخراج الورقي من المحكمة لشهادة الجنسية: شهادة ميلاد المعني (رقم 12)",
+        "شهادة ميلاد الأب وشهادة ميلاد الجد لإثبات تسلسل النسب الجزائري",
+        "بطاقة التعريف الوطنية وطابع جبائي"
+      ],
+      en: [
+        "Online Criminal Record No. 3: Directly generated via Justice Portal with digital signature",
+        "Online Nationality Certificate: Generated via Justice Portal with digital identity",
+        "For paper court nationality request: Applicant birth certificate No. 12",
+        "Father and grandfather birth certificates proving Algerian lineage",
+        "National ID card and tax stamp"
       ]
     }
   }

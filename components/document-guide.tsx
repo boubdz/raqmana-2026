@@ -24,6 +24,41 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
 
+  // Request new unlisted document state
+  const [reqDocName, setReqDocName] = useState("");
+  const [reqDocEmail, setReqDocEmail] = useState("");
+  const [reqLoading, setReqLoading] = useState(false);
+  const [reqSuccess, setReqSuccess] = useState(false);
+  const [reqError, setReqError] = useState("");
+
+  const handleRequestNewDoc = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reqDocName.trim()) return;
+    setReqLoading(true);
+    setReqError("");
+    try {
+      const FORMSPREE_ID = "mlgqjoda";
+      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          document_request: reqDocName.trim(),
+          email: reqDocEmail.trim() || "غير مزود",
+          _subject: `📌 طلب إضافة ملف إداري جديد: ${reqDocName.trim()}`,
+          date: new Date().toLocaleString("ar-DZ", { timeZone: "Africa/Algiers" }),
+        }),
+      });
+      setReqSuccess(true);
+      setReqDocName("");
+      setReqDocEmail("");
+      setTimeout(() => setReqSuccess(false), 6000);
+    } catch {
+      setReqError("حدث خطأ أثناء الإرسال، يرجى المحاولة لاحقاً.");
+    } finally {
+      setReqLoading(false);
+    }
+  };
+
   // Category counts
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = { all: documentGuideData.length };
@@ -384,6 +419,64 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
           </div>
 
         </div>
+
+        {/* Request Unlisted Document Section */}
+        <div className="mt-14 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 border border-teal-800/30 text-white shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 end-0 -mt-8 -me-8 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="max-w-3xl mx-auto text-center space-y-3 mb-6 relative z-10">
+            <Badge className="bg-white/10 text-white border-white/20 px-3 py-1 text-xs font-black">
+              {language === 'ar' ? '💡 لم تجد الملف الذي تبحث عنه؟' : '💡 Did not find your document?'}
+            </Badge>
+            <h3 className="text-2xl md:text-3xl font-black tracking-tight">
+              {language === 'ar' ? 'اطلب إضافة ملف إداري أو رخصة غير مدرجة' : 'Request adding a new administrative file or license'}
+            </h3>
+            <p className="text-white/70 text-sm max-w-xl mx-auto">
+              {language === 'ar' 
+                ? 'اكتب اسم الملف أو الرخصة المطلوبة، وسيقوم فريق رقمنة بالتحقق من الشروط القانونية والمراسيم التنفيذية وإضافتها للدليل فوراً.'
+                : 'Enter the document name and our team will verify the legal decrees and add it to the directory immediately.'}
+            </p>
+          </div>
+
+          <form onSubmit={handleRequestNewDoc} className="max-w-xl mx-auto space-y-3 relative z-10">
+            <div className="flex flex-col sm:flex-row gap-2.5">
+              <Input
+                type="text"
+                placeholder={language === 'ar' ? 'مثال: ملف رخصة فتح مخبزة، رخصة نقل أموات...' : 'e.g. Bakery operating permit...'}
+                value={reqDocName}
+                onChange={(e) => setReqDocName(e.target.value)}
+                required
+                className="h-13 rounded-2xl bg-white/10 border-white/20 text-white placeholder:text-white/40 text-sm focus-visible:ring-primary"
+              />
+              <Input
+                type="email"
+                placeholder={language === 'ar' ? 'بريدك (اختياري للإشعار)' : 'Email (Optional)'}
+                value={reqDocEmail}
+                onChange={(e) => setReqDocEmail(e.target.value)}
+                className="h-13 rounded-2xl bg-white/10 border-white/20 text-white placeholder:text-white/40 text-sm focus-visible:ring-primary sm:w-56"
+                dir="ltr"
+              />
+              <Button
+                type="submit"
+                disabled={reqLoading}
+                className="h-13 px-6 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm shrink-0 shadow-lg"
+              >
+                {reqLoading ? (language === 'ar' ? 'جاري الإرسال...' : 'Sending...') : (language === 'ar' ? 'إرسال الطلب 🚀' : 'Submit 🚀')}
+              </Button>
+            </div>
+
+            {reqSuccess && (
+              <p className="text-emerald-400 text-xs font-bold text-center pt-2">
+                ✓ {language === 'ar' ? 'تم استلام طلبك بنجاح! سنقوم بدراسة شروط الملف وإضافته للدليل في أقرب وقت.' : 'Request received! We will add it soon.'}
+              </p>
+            )}
+
+            {reqError && (
+              <p className="text-red-400 text-xs font-bold text-center pt-2">{reqError}</p>
+            )}
+          </form>
+        </div>
+
       </div>
     </section>
   );
