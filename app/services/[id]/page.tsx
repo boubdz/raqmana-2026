@@ -1,4 +1,5 @@
 import { getAllDetailedServices, getDetailedServiceById } from "@/lib/category-mapper";
+import { getEnrichedServiceContent } from "@/lib/service-content-enricher";
 import { seoArticles } from "@/lib/seo-articles-data";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -10,16 +11,20 @@ import Link from "next/link";
 import { Metadata } from "next";
 import {
   ExternalLink,
-  Globe,
   Smartphone,
   ShieldCheck,
   ChevronLeft,
-  Sparkles,
   Info,
   CheckCircle2,
   FileText,
   LayoutGrid,
-  ArrowRight
+  ArrowRight,
+  HelpCircle,
+  ListChecks,
+  Clock,
+  Coins,
+  Building2,
+  Users,
 } from "lucide-react";
 
 type Props = {
@@ -91,8 +96,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const categoryTitle = categoryNamesAr[service.category.id] || "الخدمات الحكومية";
-  const title = `${service.name.ar} 2026 — رابط المنصة والدليل الرسمي | رقمنة`;
-  const description = `${service.name.ar} (${domain}): الدليل المباشر للخدمة الرقمية الرسمية في الجزائر 2026. الشروط، خطوات التسجيل، ورابط الدخول المباشر دون إعلانات.`;
+  const enriched = getEnrichedServiceContent(service);
+  const title = `${service.name.ar} 2026 — رابط المنصة والشروط والدليل الرسمي | رقمنة`;
+  const description = `${service.name.ar} (${domain}): ${enriched.detailedDescription.slice(0, 150)}... الشروط، خطوات الاستخدام، ورابط الدخول المباشر.`;
 
   return {
     title,
@@ -103,6 +109,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       domain,
       `تسجيل ${service.name.ar}`,
       `رابط ${service.name.ar}`,
+      `شروط ${service.name.ar}`,
       categoryTitle,
       "رقمنة الجزائر",
       "الخدمات الرقمية الجزائرية",
@@ -144,6 +151,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
   const categoryTitle = categoryNamesAr[service.category.id] || "الخدمات الحكومية";
+  const enriched = getEnrichedServiceContent(service);
 
   // Fetch related services from the same category for dense internal linking
   const allServices = getAllDetailedServices();
@@ -158,33 +166,82 @@ export default async function ServiceDetailPage({ params }: Props) {
     return text.includes(target) || slug.includes(service.category.id);
   }).slice(0, 3);
 
-  // Schema.org JSON-LD for rich Google snippet
-  const jsonLd = {
+  // Structured Data (JSON-LD) for Google Rich Snippets
+  const jsonLdGraph = {
     "@context": "https://schema.org",
-    "@type": "GovernmentService",
-    "name": service.name.ar,
-    "alternateName": service.name.en,
-    "url": service.url,
-    "provider": {
-      "@type": "GovernmentOrganization",
-      "name": categoryTitle,
-    },
-    "serviceType": "Public Digital Service",
-    "areaServed": {
-      "@type": "Country",
-      "name": "Algeria",
-    },
-    "description": `${service.name.ar}: خدمة رقمية رسمية في الجزائر متاحة للمواطنين عبر منصة ${domain}.`,
+    "@graph": [
+      {
+        "@type": "GovernmentService",
+        "name": service.name.ar,
+        "alternateName": service.name.en,
+        "url": service.url,
+        "provider": {
+          "@type": "GovernmentOrganization",
+          "name": enriched.governingBody || categoryTitle,
+        },
+        "serviceType": "Public Digital Service",
+        "areaServed": {
+          "@type": "Country",
+          "name": "Algeria",
+        },
+        "description": enriched.detailedDescription,
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": enriched.faqs.map((faq) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer,
+          },
+        })),
+      },
+      {
+        "@type": "HowTo",
+        "name": `كيفية استخدام ${service.name.ar}`,
+        "description": enriched.detailedDescription,
+        "step": enriched.steps.map((st, idx) => ({
+          "@type": "HowToStep",
+          "position": idx + 1,
+          "name": st.title,
+          "text": st.detail,
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "الرئيسية",
+            "item": "https://www.raqmanadz.com",
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": categoryTitle,
+            "item": `https://www.raqmanadz.com/categories/${service.category.id}`,
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": service.name.ar,
+            "item": `https://www.raqmanadz.com/services/${service.id}`,
+          },
+        ],
+      },
+    ],
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col" dir="rtl">
       <Header />
 
-      {/* Inject Schema.org */}
+      {/* Inject Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
       />
 
       <main className="flex-1 py-8 px-4 sm:px-6">
@@ -231,7 +288,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      منصة رسمية معتمدة
+                      منصة رسمية معتمدة 2026
                     </span>
                   </div>
 
@@ -257,6 +314,41 @@ export default async function ServiceDetailPage({ params }: Props) {
               </a>
             </div>
 
+            {/* Quick Information Matrix */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-border/40">
+              <div className="p-3 rounded-2xl bg-muted/40 border border-border/50 space-y-1">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-muted-foreground">
+                  <Building2 className="w-3.5 h-3.5 text-primary" />
+                  <span>الجهة المشرفة</span>
+                </div>
+                <p className="text-xs font-bold text-foreground truncate">{enriched.governingBody}</p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-muted/40 border border-border/50 space-y-1">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-muted-foreground">
+                  <Users className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>الفئة المستفيدة</span>
+                </div>
+                <p className="text-xs font-bold text-foreground truncate">{enriched.targetAudience}</p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-muted/40 border border-border/50 space-y-1">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-muted-foreground">
+                  <Clock className="w-3.5 h-3.5 text-amber-500" />
+                  <span>وقت المعالجة</span>
+                </div>
+                <p className="text-xs font-bold text-foreground truncate">{enriched.estimatedTime}</p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-muted/40 border border-border/50 space-y-1">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-muted-foreground">
+                  <Coins className="w-3.5 h-3.5 text-blue-500" />
+                  <span>التكلفة والرسوم</span>
+                </div>
+                <p className="text-xs font-bold text-foreground truncate">{enriched.cost}</p>
+              </div>
+            </div>
+
             {/* Toolbar: Views, Ratings, Report */}
             <div className="mt-6 pt-4 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-4">
               <ServiceToolbarBar
@@ -268,37 +360,62 @@ export default async function ServiceDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Service Guide & Information Section */}
+          {/* Detailed Editorial Description */}
           <div className="p-6 sm:p-8 rounded-3xl border border-border/60 bg-card space-y-6">
             <div className="flex items-center gap-2 text-primary font-bold text-lg border-b border-border/40 pb-3">
               <Info className="w-5 h-5" />
-              <h2>دليل ودواعي استعمال {service.name.ar}</h2>
+              <h2>نظرة عامة ودليل استعمال {service.name.ar}</h2>
             </div>
 
             <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
-              تعتبر منصة <strong>{service.name.ar}</strong> إحدى الخدمات الرقمية الهامة المتاحة للمواطنين في الجزائر ضمن قطاع <strong>{categoryTitle}</strong>. تتيح المنصة إمكانية الوصول المباشر للخدمة عبر الرابط الرسمي المعتمد <code>{domain}</code> وتسهيل الإجراءات الإدارية المعنية على مدار 24 ساعة.
+              {enriched.detailedDescription}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-2">
-                <div className="flex items-center gap-2 text-sm font-bold text-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>المتطلبات والشروط</span>
-                </div>
-                <p className="text-xs text-muted-foreground leading-normal">
-                  التوفر على الاتصال بالإنترنت والهوية الرقمية أو رقم الوثيقة البيومترية المعنية برقم التعريف الوطني NIN.
-                </p>
+            {/* Prerequisites & Required Documents */}
+            <div className="p-5 rounded-2xl bg-muted/30 border border-border/60 space-y-3">
+              <div className="flex items-center gap-2 text-sm font-black text-foreground">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <span>الشروط والمتطلبات الأساسية للاستفادة</span>
               </div>
+              <ul className="space-y-2">
+                {enriched.prerequisites.map((req, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-muted-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                    <span className="leading-relaxed">{req}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-              <div className="p-4 rounded-2xl bg-muted/40 border border-border/60 space-y-2">
-                <div className="flex items-center gap-2 text-sm font-bold text-foreground">
-                  <ShieldCheck className="w-4 h-4 text-blue-500" />
-                  <span>الأمان والحماية</span>
-                </div>
-                <p className="text-xs text-muted-foreground leading-normal">
-                  رابط موثق ومشفّر ببروتوكول HTTPS الرسمي دون وجود أي وسائط أو إعلانات خارجية.
-                </p>
+            {/* Security Note */}
+            <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/20 flex items-start gap-3">
+              <ShieldCheck className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <h4 className="text-xs font-black text-blue-600 dark:text-blue-400">الأمان والموثوقية القانونية</h4>
+                <p className="text-xs text-muted-foreground leading-relaxed">{enriched.securityNote}</p>
               </div>
+            </div>
+          </div>
+
+          {/* Step by Step Interactive Usage Guide */}
+          <div className="p-6 sm:p-8 rounded-3xl border border-border/60 bg-card space-y-6">
+            <div className="flex items-center gap-2 text-primary font-bold text-lg border-b border-border/40 pb-3">
+              <ListChecks className="w-5 h-5" />
+              <h2>خطوات الاستفادة من {service.name.ar} (دليل 2026)</h2>
+            </div>
+
+            <div className="space-y-4">
+              {enriched.steps.map((st, idx) => (
+                <div key={idx} className="flex items-start gap-4 p-4 rounded-2xl bg-muted/30 border border-border/40 hover:border-primary/40 transition-colors">
+                  <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-primary text-primary-foreground text-sm font-black flex items-center justify-center shadow-md">
+                    {idx + 1}
+                  </span>
+                  <div className="space-y-1">
+                    <h3 className="text-sm font-black text-foreground">{st.title}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{st.detail}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Button to official site */}
@@ -307,13 +424,34 @@ export default async function ServiceDetailPage({ params }: Props) {
                 href={service.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-md hover:bg-emerald-700 transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm shadow-md transition-colors"
               >
                 <span>الدخول المباشر لمنصة {service.name.ar} ({domain})</span>
                 <ExternalLink className="w-4 h-4" />
               </a>
             </div>
           </div>
+
+          {/* FAQ Section */}
+          {enriched.faqs.length > 0 && (
+            <div className="p-6 sm:p-8 rounded-3xl border border-border/60 bg-card space-y-6">
+              <div className="flex items-center gap-2 text-primary font-bold text-lg border-b border-border/40 pb-3">
+                <HelpCircle className="w-5 h-5" />
+                <h2>الأسئلة الشائعة حول {service.name.ar}</h2>
+              </div>
+              <div className="space-y-3">
+                {enriched.faqs.map((faq, idx) => (
+                  <div key={idx} className="p-4 sm:p-5 rounded-2xl bg-muted/30 border border-border/40 space-y-2">
+                    <h3 className="text-sm font-black text-foreground flex items-start gap-2">
+                      <span className="text-primary flex-shrink-0 font-mono font-black">س:</span>
+                      <span>{faq.question}</span>
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed ps-5">{faq.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Related Articles for SEO Interlinking */}
           {relatedArticles.length > 0 && (
@@ -428,3 +566,4 @@ export default async function ServiceDetailPage({ params }: Props) {
     </div>
   );
 }
+
