@@ -138,28 +138,34 @@ export function DocumentAssistant() {
     e.preventDefault();
     const cleanEmail = emailInput.trim().toLowerCase();
     if (!cleanEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
-      setEmailError("يرجى إدخال بريد إلكتروني صحيح (مثل: name@gmail.com)");
+      setEmailError("يرجى إدخال بريد إلكتروني صحيح (مثل: yourname@gmail.com)");
       return;
     }
     setEmailError("");
     setEmailSubmitting(true);
 
     try {
-      // Send subscription to /api/subscribe
-      await fetch("/api/subscribe", {
+      // Send subscription & validation to /api/subscribe
+      const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: cleanEmail }),
       });
 
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        setEmailError(data.error || "تعذر التحقق من صحة البريد الإلكتروني. يرجى إدخال بريد حقيقي نشط.");
+        setEmailSubmitting(false);
+        return;
+      }
+
+      // Success: Save email and unlock
       localStorage.setItem("raqmana_user_email", cleanEmail);
       setUserEmail(cleanEmail);
       setIsEmailUnlocked(true);
     } catch {
-      // Even on network error, allow user to continue
-      localStorage.setItem("raqmana_user_email", cleanEmail);
-      setUserEmail(cleanEmail);
-      setIsEmailUnlocked(true);
+      setEmailError("حدث خطأ في الاتصال بالخادم أثناء التحقق. يرجى المحاولة بعد قليل.");
     } finally {
       setEmailSubmitting(false);
     }
@@ -667,9 +673,6 @@ export function DocumentAssistant() {
                   {includeSignature && (
                     <p className="text-sm font-bold text-black/70">توقيع المعني:</p>
                   )}
-                </div>
-                <div className="h-20 w-20 rounded-full border-2 border-dashed border-black/20 flex items-center justify-center text-[9px] font-black text-black/30 uppercase -rotate-12">
-                   Raqmana DZ
                 </div>
               </div>
             </div>
