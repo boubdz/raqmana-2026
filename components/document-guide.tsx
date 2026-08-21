@@ -1,30 +1,49 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { documentGuideData, RequiredDocument } from "@/lib/document-guide-data";
+import Link from "next/link";
+import { documentGuideData, DOCUMENT_CATEGORIES, RequiredDocument } from "@/lib/document-guide-data";
 import { useLanguage } from "@/contexts/language-context";
 import { 
   FileText, Search, CheckCircle2, ChevronRight, 
-  ExternalLink, Info, Printer, Share2, ClipboardList
+  ExternalLink, Info, Printer, Share2, ClipboardList,
+  Building2, Banknote, Clock, Sparkles, Copy, Check, Filter
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+type CategoryKey = keyof typeof DOCUMENT_CATEGORIES;
+
 export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) {
-  const { language, t, dir } = useLanguage();
+  const { language, dir } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDoc, setSelectedDoc] = useState<RequiredDocument | null>(null);
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>("all");
+  const [selectedDoc, setSelectedDoc] = useState<RequiredDocument | null>(documentGuideData[0]);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [copied, setCopied] = useState(false);
+
+  // Category counts
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: documentGuideData.length };
+    documentGuideData.forEach(d => {
+      counts[d.category] = (counts[d.category] || 0) + 1;
+    });
+    return counts;
+  }, []);
 
   const filteredDocs = useMemo(() => {
-    const query = searchQuery.toLowerCase();
-    return documentGuideData.filter(doc => 
-      doc.name[language].toLowerCase().includes(query) ||
-      doc.category.toLowerCase().includes(query)
-    );
-  }, [searchQuery, language]);
+    const query = searchQuery.trim().toLowerCase();
+    return documentGuideData.filter(doc => {
+      const matchCat = activeCategory === "all" || doc.category === activeCategory;
+      const matchQuery = !query || 
+        doc.name[language].toLowerCase().includes(query) ||
+        doc.department[language].toLowerCase().includes(query) ||
+        doc.items[language].some(it => it.toLowerCase().includes(query));
+      return matchCat && matchQuery;
+    });
+  }, [searchQuery, activeCategory, language]);
 
   const toggleItem = (index: number) => {
     if (!selectedDoc) return;
@@ -34,12 +53,36 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
 
   const resetChecks = () => setCheckedItems({});
 
-  const categoryLabels: Record<string, { ar: string, en: string, color: string }> = {
-    interior: { ar: "الداخلية", en: "Interior", color: "bg-blue-500/10 text-blue-600" },
-    justice: { ar: "العدل", en: "Justice", color: "bg-emerald-500/10 text-emerald-600" },
-    employment: { ar: "التشغيل", en: "Employment", color: "bg-amber-500/10 text-amber-600" },
-    transport: { ar: "النقل", en: "Transport", color: "bg-purple-500/10 text-purple-600" },
+  const handleCopyChecklist = async () => {
+    if (!selectedDoc) return;
+    const lines = [
+      `📋 قائمة الوثائق المطلوبة لـ: ${selectedDoc.name[language]}`,
+      `🏢 الجهة المسؤولة: ${selectedDoc.department[language]}`,
+      selectedDoc.fees ? `💰 الرسوم / الطوابع: ${selectedDoc.fees[language]}` : '',
+      `\nالوثائق:`,
+      ...selectedDoc.items[language].map((it, idx) => {
+        const isDone = checkedItems[`${selectedDoc.id}-${idx}`] ? ' [جاهزة ✓]' : ' [ ]';
+        return `${idx + 1}. ${it}${isDone}`;
+      }),
+      `\nالمصدر: دليل الوثائق الإدارية - رقمنة الجزائر (https://www.raqmanadz.com/document-guide)`
+    ].filter(Boolean).join('\n');
+
+    try {
+      await navigator.clipboard.writeText(lines);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {}
   };
+
+  const completedCount = useMemo(() => {
+    if (!selectedDoc) return 0;
+    return Object.keys(checkedItems).filter(
+      k => k.startsWith(selectedDoc.id) && checkedItems[k]
+    ).length;
+  }, [selectedDoc, checkedItems]);
+
+  const totalCount = selectedDoc?.items[language]?.length || 0;
+  const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
     <section id="document-guide" className={hideHeader ? "" : "py-24 bg-white dark:bg-[#080808]"} dir={dir}>
@@ -47,151 +90,299 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
         
         {/* Header */}
         {!hideHeader && (
-        <div className="mb-16 text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest mb-6">
-            <ClipboardList className="h-3 w-3" />
-            {language === 'ar' ? 'دليل تكوين الملفات' : 'Document Checklist Guide'}
+          <div className="mb-14 text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest mb-4">
+              <ClipboardList className="h-3.5 w-3.5" />
+              {language === 'ar' ? 'الدليل الشامل للوثائق والرخص الإدارية 2026' : 'Comprehensive Algerian Documents Guide 2026'}
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-[#1a1a1a] dark:text-white">
+              {language === 'ar' ? 'ماذا تحتاج لتكوين ملفك الإداري؟' : 'What do you need for your file?'}
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg font-medium leading-relaxed">
+              {language === 'ar' 
+                ? 'دليل تفاعلي يضم ملفات السكن، الفلاحة، السجل التجاري، الضرائب، الرخص المقننة، والضمان الاجتماعي وفق أحدث القوانين الجزائرية.'
+                : 'Interactive directory covering housing, agriculture, commercial register, taxes, licenses, and social security in Algeria.'}
+            </p>
           </div>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-6 text-[#1a1a1a] dark:text-white uppercase">
-            {language === 'ar' ? 'ماذا أحتاج لملفي؟' : 'What do I need for my file?'}
-          </h2>
-          <p className="text-muted-foreground/60 text-lg font-medium">
-            {language === 'ar' 
-              ? 'دليل تفاعلي للوثائق المطلوبة في الإدارات الجزائرية، محدث وفقاً لآخر التعليمات الوزارية لعام 2026.'
-              : 'Interactive guide for required documents in Algerian administrations, updated with the latest 2026 ministerial instructions.'}
-          </p>
-        </div>
         )}
 
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
+        {/* Category Filters Bar */}
+        <div className="mb-8 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {(Object.keys(DOCUMENT_CATEGORIES) as CategoryKey[]).map((catKey) => {
+            const cat = DOCUMENT_CATEGORIES[catKey];
+            const isActive = activeCategory === catKey;
+            const count = categoryCounts[catKey] || 0;
+            return (
+              <button
+                key={catKey}
+                onClick={() => {
+                  setActiveCategory(catKey);
+                  const firstInCat = catKey === 'all' 
+                    ? documentGuideData[0] 
+                    : documentGuideData.find(d => d.category === catKey);
+                  if (firstInCat) setSelectedDoc(firstInCat);
+                }}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold shrink-0 transition-all border ${
+                  isActive
+                    ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-[1.02]"
+                    : "bg-black/[0.02] dark:bg-white/[0.02] border-black/5 dark:border-white/10 hover:bg-black/[0.05] text-muted-foreground"
+                }`}
+              >
+                <span>{cat.icon}</span>
+                <span>{cat[language]}</span>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
+                  isActive ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
+                }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
           
-          {/* Sidebar - Search & List */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="relative group">
-              <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-primary transition-colors" />
+          {/* Sidebar - Search & List (4 cols) */}
+          <div className="lg:col-span-4 space-y-4">
+            <div className="relative">
+              <Search className="absolute top-1/2 start-4 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" />
               <Input 
-                placeholder={language === 'ar' ? 'ابحث عن وثيقة...' : 'Search for a document...'}
+                placeholder={language === 'ar' ? 'ابحث عن ملف، رخصة، أو وثيقة...' : 'Search for a document or license...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-14 ps-12 rounded-2xl bg-black/[0.02] dark:bg-white/[0.02] border-black/5 dark:border-white/5 focus-visible:ring-primary/20"
+                className="h-13 ps-11 rounded-2xl bg-black/[0.02] dark:bg-white/[0.02] border-black/10 dark:border-white/10 text-sm font-medium focus-visible:ring-primary"
               />
             </div>
 
-            <div className="space-y-3 overflow-y-auto max-h-[600px] pr-2 custom-scrollbar">
-              {filteredDocs.map((doc) => (
-                <button
-                  key={doc.id}
-                  onClick={() => {
-                    setSelectedDoc(doc);
-                    resetChecks();
-                  }}
-                  className={`w-full flex items-center justify-between p-5 rounded-2xl border transition-all duration-300 ${
-                    selectedDoc?.id === doc.id 
-                      ? "bg-primary text-white border-primary shadow-xl shadow-primary/20 scale-[1.02]" 
-                      : "bg-white dark:bg-[#0c0c0c] border-black/5 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02]"
-                  }`}
+            <div className="text-xs font-bold text-muted-foreground px-1 flex items-center justify-between">
+              <span>{filteredDocs.length} {language === 'ar' ? 'ملف متوفر' : 'documents found'}</span>
+              {activeCategory !== 'all' && (
+                <button 
+                  onClick={() => setActiveCategory('all')} 
+                  className="text-primary hover:underline"
                 >
-                  <div className="flex flex-col items-start gap-1">
-                    <span className="font-bold text-sm tracking-tight">{doc.name[language]}</span>
-                    <Badge variant="secondary" className={`text-[9px] uppercase font-black tracking-widest ${
-                      selectedDoc?.id === doc.id ? "bg-white/20 text-white" : categoryLabels[doc.category].color
-                    }`}>
-                      {categoryLabels[doc.category][language]}
-                    </Badge>
-                  </div>
-                  <ChevronRight className={`h-4 w-4 opacity-30 ${dir === 'rtl' ? 'rotate-180' : ''}`} />
+                  {language === 'ar' ? 'عرض الكل' : 'View all'}
                 </button>
-              ))}
+              )}
+            </div>
+
+            <div className="space-y-2.5 overflow-y-auto max-h-[620px] pr-1.5 custom-scrollbar">
+              {filteredDocs.map((doc) => {
+                const isSelected = selectedDoc?.id === doc.id;
+                const catMeta = DOCUMENT_CATEGORIES[doc.category];
+                return (
+                  <button
+                    key={doc.id}
+                    onClick={() => {
+                      setSelectedDoc(doc);
+                      resetChecks();
+                    }}
+                    className={`w-full text-start flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 ${
+                      isSelected 
+                        ? "bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-[1.01]" 
+                        : "bg-card border-black/5 dark:border-white/5 hover:border-primary/30 hover:bg-accent/40"
+                    }`}
+                  >
+                    <div className="flex flex-col items-start gap-1.5 min-w-0 pr-2">
+                      <span className="font-bold text-sm tracking-tight line-clamp-1">
+                        {doc.name[language]}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className={`text-[10px] px-2 py-0.5 rounded-lg border font-bold ${
+                          isSelected ? "bg-white/20 text-white border-transparent" : (catMeta?.color || "")
+                        }`}>
+                          {catMeta?.icon} {catMeta?.[language]}
+                        </Badge>
+                      </div>
+                    </div>
+                    <ChevronRight className={`h-4 w-4 shrink-0 opacity-40 ${dir === 'rtl' ? 'rotate-180' : ''}`} />
+                  </button>
+                );
+              })}
+
+              {filteredDocs.length === 0 && (
+                <div className="text-center py-12 px-4 rounded-2xl border border-dashed text-muted-foreground">
+                  <p className="text-sm font-bold">{language === 'ar' ? 'لم يتم العثور على نتائج' : 'No results found'}</p>
+                  <p className="text-xs mt-1 text-muted-foreground/60">{language === 'ar' ? 'جرب البحث بكلمات أخرى' : 'Try searching different keywords'}</p>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Main Content - Interactive Checklist */}
+          {/* Main Content - Interactive Checklist (8 cols) */}
           <div className="lg:col-span-8">
             {selectedDoc ? (
-              <Card className="rounded-[2.5rem] border-black/5 dark:border-white/5 bg-white dark:bg-[#0c0c0c] p-8 md:p-12 shadow-2xl overflow-hidden relative group">
-                {/* Decorative background element */}
-                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary/5 rounded-full blur-[80px] group-hover:bg-primary/10 transition-all duration-700" />
+              <Card className="rounded-3xl border-black/10 dark:border-white/10 bg-card p-6 md:p-10 shadow-xl overflow-hidden relative">
                 
-                <div className="relative">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-                    <div className="space-y-2">
-                      <h3 className="text-3xl font-black tracking-tighter">{selectedDoc.name[language]}</h3>
-                      <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground/60">
-                         <span className="flex items-center gap-1.5 uppercase tracking-widest">
-                            <Info className="h-3 w-3" /> {language === 'ar' ? 'تحديث 2026' : '2026 Update'}
-                         </span>
-                         {selectedDoc.officialUrl && (
-                            <a href={selectedDoc.officialUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline uppercase tracking-widest">
-                               <ExternalLink className="h-3 w-3" /> {language === 'ar' ? 'الموقع الرسمي' : 'Official Site'}
-                            </a>
-                         )}
+                {/* Header Info */}
+                <div className="border-b border-border/50 pb-6 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-transparent font-black text-xs">
+                          {DOCUMENT_CATEGORIES[selectedDoc.category]?.icon} {DOCUMENT_CATEGORIES[selectedDoc.category]?.[language]}
+                        </Badge>
+                        <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                          ✓ {language === 'ar' ? 'محدث 2026' : 'Updated 2026'}
+                        </span>
                       </div>
+                      <h3 className="text-2xl md:text-3xl font-black text-foreground tracking-tight">
+                        {selectedDoc.name[language]}
+                      </h3>
                     </div>
-                    <div className="flex gap-2">
-                       <Button variant="outline" size="icon" className="rounded-xl border-black/5 dark:border-white/5" onClick={() => window.print()}>
-                          <Printer className="h-4 w-4" />
-                       </Button>
-                       <Button variant="outline" size="icon" className="rounded-xl border-black/5 dark:border-white/5">
-                          <Share2 className="h-4 w-4" />
-                       </Button>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={handleCopyChecklist} 
+                        className="rounded-xl gap-1.5 text-xs font-bold h-10 px-3"
+                      >
+                        {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
+                        <span>{copied ? (language === 'ar' ? 'تم النسخ' : 'Copied') : (language === 'ar' ? 'نسخ القائمة' : 'Copy')}</span>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => window.print()} 
+                        className="rounded-xl gap-1.5 text-xs font-bold h-10 px-3"
+                      >
+                        <Printer className="h-4 w-4" />
+                        <span>{language === 'ar' ? 'طباعة' : 'Print'}</span>
+                      </Button>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between mb-6">
-                       <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground/40">
-                          {language === 'ar' ? 'الوثائق المطلوبة' : 'Required Documents'}
-                       </h4>
-                       <span className="text-[10px] font-black text-primary/50">
-                          {Object.keys(checkedItems).filter(k => k.startsWith(selectedDoc.id) && checkedItems[k]).length} / {selectedDoc.items[language].length}
-                       </span>
+                  {/* Metadata Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
+                    <div className="flex items-center gap-2.5 p-3 rounded-xl bg-muted/40 border border-border/40 text-xs">
+                      <Building2 className="h-4 w-4 text-primary shrink-0" />
+                      <div>
+                        <span className="text-muted-foreground block text-[10px]">{language === 'ar' ? 'الجهة المسؤولة' : 'Authority'}</span>
+                        <span className="font-bold">{selectedDoc.department[language]}</span>
+                      </div>
                     </div>
 
-                    <div className="grid gap-3">
-                      {selectedDoc.items[language].map((item, idx) => (
+                    {selectedDoc.fees && (
+                      <div className="flex items-center gap-2.5 p-3 rounded-xl bg-muted/40 border border-border/40 text-xs">
+                        <Banknote className="h-4 w-4 text-amber-500 shrink-0" />
+                        <div>
+                          <span className="text-muted-foreground block text-[10px]">{language === 'ar' ? 'الرسوم / الطابع' : 'Fees / Stamp'}</span>
+                          <span className="font-bold">{selectedDoc.fees[language]}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedDoc.officialUrl && (
+                      <a 
+                        href={selectedDoc.officialUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="flex items-center justify-between p-3 rounded-xl bg-primary/5 hover:bg-primary/10 border border-primary/20 text-xs text-primary font-bold transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <ExternalLink className="h-4 w-4 shrink-0" />
+                          <span>{language === 'ar' ? 'المنصة / الاستمارة الرسمية' : 'Official Portal'}</span>
+                        </div>
+                        <ChevronRight className={`h-3.5 w-3.5 ${dir === 'rtl' ? 'rotate-180' : ''}`} />
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Special Notes / Instructions Alert */}
+                  {selectedDoc.notes && (
+                    <div className="mt-4 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs font-bold text-amber-800 dark:text-amber-300 flex items-start gap-2.5">
+                      <Info className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                      <span>{selectedDoc.notes[language]}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Progress Bar */}
+                <div className="mb-6 bg-muted/40 p-4 rounded-2xl border border-border/40">
+                  <div className="flex items-center justify-between text-xs font-black mb-2">
+                    <span className="text-muted-foreground">
+                      {language === 'ar' ? 'الوثائق التي قمت بتجهيزها:' : 'Documents prepared:'}
+                    </span>
+                    <span className="text-primary font-mono text-sm">
+                      {completedCount} / {totalCount} ({progressPercent}%)
+                    </span>
+                  </div>
+                  <div className="w-full h-2.5 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-emerald-500 transition-all duration-300 rounded-full"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Checklist Items */}
+                <div className="space-y-3">
+                  <h4 className="text-xs font-black uppercase tracking-wider text-muted-foreground">
+                    {language === 'ar' ? 'عناصر الملف الإداري (اضغط على الوثيقة لتأكيد تجهيزها):' : 'File Checklist (Click to mark as prepared):'}
+                  </h4>
+
+                  <div className="grid gap-2.5">
+                    {selectedDoc.items[language].map((item, idx) => {
+                      const isDone = !!checkedItems[`${selectedDoc.id}-${idx}`];
+                      return (
                         <div 
                           key={idx}
                           onClick={() => toggleItem(idx)}
-                          className={`group/item flex items-center gap-4 p-5 rounded-2xl border transition-all duration-300 cursor-pointer ${
-                            checkedItems[`${selectedDoc.id}-${idx}`]
-                              ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-                              : "bg-black/[0.01] dark:bg-white/[0.01] border-black/5 dark:border-white/5 hover:border-primary/30"
+                          className={`group flex items-start gap-3.5 p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                            isDone
+                              ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                              : "bg-card hover:bg-accent/40 border-black/5 dark:border-white/5 hover:border-primary/30"
                           }`}
                         >
-                          <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-all ${
-                            checkedItems[`${selectedDoc.id}-${idx}`]
+                          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-all mt-0.5 ${
+                            isDone
                               ? "bg-emerald-500 border-emerald-500 text-white"
-                              : "border-black/10 dark:border-white/10 group-hover/item:border-primary/50"
+                              : "border-muted-foreground/30 group-hover:border-primary"
                           }`}>
-                            {checkedItems[`${selectedDoc.id}-${idx}`] && <CheckCircle2 className="h-3.5 w-3.5" />}
+                            {isDone && <Check className="h-3 w-3" strokeWidth={3} />}
                           </div>
-                          <span className={`font-bold tracking-tight leading-relaxed ${
-                            checkedItems[`${selectedDoc.id}-${idx}`] ? "line-through opacity-50" : ""
+                          <span className={`text-sm font-semibold leading-relaxed ${
+                            isDone ? "line-through opacity-60" : "text-foreground"
                           }`}>
                             {item}
                           </span>
                         </div>
-                      ))}
-                    </div>
+                      );
+                    })}
                   </div>
                 </div>
+
+                {/* Direct CTA to Smart Document Assistant */}
+                <div className="mt-8 pt-6 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4 bg-primary/5 -mx-6 -mb-6 md:-mx-10 md:-mb-10 p-6 md:p-8 rounded-b-3xl">
+                  <div className="space-y-1 text-center sm:text-start">
+                    <h5 className="text-sm font-black flex items-center justify-center sm:justify-start gap-1.5 text-primary">
+                      <Sparkles className="h-4 w-4" />
+                      {language === 'ar' ? 'هل تحتاج صياغة طلب خطي أو عريضة لهذا الملف؟' : 'Need a written request or appeal for this file?'}
+                    </h5>
+                    <p className="text-xs text-muted-foreground">
+                      {language === 'ar' ? 'استخدم المساعد الذكي لصياغة طلبك الإداري بضغطة زر وبصيغة رسمية 100%' : 'Use AI assistant to generate official Algerian administrative letters in 1 click'}
+                    </p>
+                  </div>
+                  <Button asChild className="rounded-xl font-black shrink-0 shadow-lg shadow-primary/20">
+                    <Link href="/document-assistant">
+                      {language === 'ar' ? 'صياغة الطلب الآن ⚡' : 'Draft Request Now ⚡'}
+                    </Link>
+                  </Button>
+                </div>
+
               </Card>
             ) : (
-              <div className="h-full min-h-[400px] flex flex-col items-center justify-center rounded-[2.5rem] border-2 border-dashed border-black/5 dark:border-white/5 bg-black/[0.01] dark:bg-white/[0.01] p-12 text-center">
-                <div className="h-24 w-24 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center mb-8 animate-pulse">
-                  <FileText className="h-10 w-10 text-muted-foreground/30" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 opacity-50">
-                  {language === 'ar' ? 'اختر وثيقة من القائمة' : 'Select a document from the list'}
+              <div className="h-full min-h-[400px] flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-border p-12 text-center bg-card">
+                <FileText className="h-12 w-12 text-muted-foreground/40 mb-4 animate-pulse" />
+                <h3 className="text-lg font-bold text-muted-foreground">
+                  {language === 'ar' ? 'اختر وثيقة من القائمة لعرض تفاصيلها' : 'Select a document from the list'}
                 </h3>
-                <p className="text-sm text-muted-foreground/40 max-w-xs">
-                  {language === 'ar' 
-                    ? 'سيظهر لك دليل كامل بكل ما تحتاجه لتكوين ملفك الإداري.'
-                    : 'A complete guide of everything you need to form your administrative file will appear.'}
-                </p>
               </div>
             )}
           </div>
+
         </div>
       </div>
     </section>
