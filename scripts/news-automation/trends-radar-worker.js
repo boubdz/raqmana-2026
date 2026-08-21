@@ -1,17 +1,13 @@
 /**
- * trends-radar-worker.js — رادار ترندات قوقل والأخبار الجزائرية الكبرى (v3.0)
- * ===========================================================================
- * يدمج بين:
- * 1. رصد Google Trends في الجزائر (geo=DZ).
- * 2. زحف ومسح الأخبار الأكثر تداولاً في المواقع الإخبارية الجزائرية الكبرى (الشروق، النهار، البلاد، دزاير توب، APS).
- * 3. [قاعدة المصداقية والتحقق]: مطابقة الترند مع قاعدة الأخبار الرسمية والهيئات الحكومية (267 جهة).
- *    ⚠ إذا لم نجد خبراً موثوقاً أو مصدراً رسمياً يؤكد الموضوع، يتم تجاهله فوراً وكتابة 0 مقالات.
- * 4. استخراج الصور الرسمية عبر axios و cheerio مع منع التزييف والهلوسة تماماً.
- * 5. صياغة مقال سيو حصري (1000-1500 كلمة) بـ Gemini مع قسم الأسئلة الشائعة (FAQ).
- * 6. الفهرسة الفورية عبر IndexNow و Google Indexing API.
- *
- * الاستخدام:
- *   node scripts/news-automation/trends-radar-worker.js
+ * trends-radar-worker.js — رادار ترندات قوقل والإعلام الجزائري (v3.1 — بنظام الفلترة الإدارية الصارم)
+ * ===============================================================================================
+ * 🛡 الحماية الصارمة من المحتوى غير المرتبط:
+ * 1. استبعاد فوري لأي أخبار حوادث (اصطدام، غرق، حرائق، قتلى، جرحى)، جرائم (مخدرات، توقيف، سرقة، محاكم)،
+ *    رياضة، فن، فضائح، ونشرات جوية.
+ * 2. مطابقة إدارية دقيقة وحصرية (Administrative Whitelist) مع الخدمات والمعاملات العمومية والمنصات الرسمية.
+ * 3. إذا لم يثبت ارتباط الموضوع بخدمة حكومية أو معاملة إدارية رسمية، يتم تجاهله فوراً ويكتب 0 مقالات.
+ * 4. استخراج الصورة الرسمية عبر cheerio و axios، ومنع Gemini تماماً من توليد أي وسوم صور.
+ * 5. كتابة مقال سيو حصري (1000 - 1500 كلمة) مع قسم الأسئلة الشائعة (FAQ) والفهرسة الفورية (IndexNow).
  */
 
 'use strict';
@@ -26,10 +22,11 @@ const Parser = require('rss-parser');
 const googleTrends = require('google-trends-api');
 
 const rssParser = new Parser({
-  timeout: 10000,
+  timeout: 12000,
   headers: {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    'Accept-Language': 'ar,fr;q=0.9,en;q=0.8',
   },
 });
 
@@ -50,8 +47,7 @@ const CONFIG = {
   SITES_CONFIG: path.join(__dirname, 'sites-config.json'),
   ARTICLES_JSON: path.join(ROOT_DIR, 'lib', 'custom-articles-data.json'),
   HISTORY_FILE: path.join(__dirname, 'history.json'),
-  MAX_TREND_ARTICLES_PER_RUN: 2, // حد أقصى للحفاظ على جودة استثنائية
-  DEFAULT_PLACEHOLDER: '/images/default-placeholder.png',
+  MAX_TREND_ARTICLES_PER_RUN: 2,
 };
 
 if (!CONFIG.GEMINI_API_KEY) {
@@ -59,24 +55,46 @@ if (!CONFIG.GEMINI_API_KEY) {
   process.exit(1);
 }
 
-// ─── كلمات الاستبعاد (استبعاد الرياضة والمشاهير والسياسة الدولية) ──
-const EXCLUDE_KEYWORDS = [
-  'كرة', 'مباراة', 'فريق', 'دوري', 'كأس', 'رونالدو', 'ميسي', 'نادي', 'لاعب', 'هدف',
-  'تصفيات', 'منتخب', 'ريال', 'برشلونة', 'أرسنال', 'ليفربول', 'سيتي', 'marseille',
-  'madrid', 'barcelona', 'champions', 'league', 'football', 'match',
-  'مطرب', 'فنان', 'ممثل', 'مسلسل', 'أغنية', 'فيلم', 'سينما', 'تيك توك',
-  'روسيا', 'أوكرانيا', 'إسرائيل', 'غزة', 'ترامب', 'بايدن',
+// ════════════════════════════════════════════════════════════════
+// 🚫 القائمة السوداء الصارمة (استبعاد الحوادث، الجرائم، الرياضة، الفن)
+// ════════════════════════════════════════════════════════════════
+const STRICT_EXCLUDE_LIST = [
+  // الحوادث والكوارث
+  'حادث', 'حوادث', 'اصطدام', 'جرحى', 'قتلى', 'ضحايا', 'مصرع', 'وفاة', 'جثة', 'جثث',
+  'غرق', 'غريق', 'حريق', 'حرائق', 'انفجار', 'انهيار', 'انقلاب', 'تفحم', 'دهس',
+  // الجرائم، المخدرات، والشرطة
+  'مخدرات', 'مهلوسات', 'أقراص', 'مروج', 'عصابة', 'توقيف', 'حبس', 'سجن', 'جريمة',
+  'مقتل', 'اغتيال', 'اعتداء', 'سرقة', 'نصب', 'احتيال', 'فضائح', 'فضيحة', 'محكمة',
+  'جنايات', 'وكيل الجمهورية', 'تسلل', 'حراقة', 'تهريب', 'إحباط', 'حجز', 'ضبط',
+  // الرياضة وكرة القدم
+  'مباراة', 'دوري', 'كأس', 'منتخب', 'مدرب', 'لاعب', 'أهداف', 'رونالدو', 'ميسي',
+  'بلماضي', 'بيتكوفيتش', 'محرز', 'بلايلي', 'اتحاد العاصمة', 'مولودية', 'شبيبة القبائل',
+  'شباب بلوزداد', 'وفاق سطيف', 'ريال', 'برشلونة', 'أرسنال', 'ليفربول', 'سيتي', 'marseille',
+  // الفن والترفيه والمشاهير
+  'أفلام', 'مسلسل', 'أغنية', 'فنان', 'مطرب', 'ممثلة', 'تيك توك', 'يوتيوب',
+  // الطقس والمنوعات
+  'طقس', 'نشرة جوية', 'أمطار رعدية', 'رياح قوية', 'حرارة قياسية', 'زلزال', 'هزة أرضية',
+  // السياسة الدولية
+  'روسيا', 'أوكرانيا', 'إسرائيل', 'غزة', 'ترامب', 'بايدن', 'ماكرون',
 ];
 
-// ─── قاعدة بيانات مطابقة الخدمات والمصادر الرسمية المعتمدة ───────
-const OFFICIAL_GOV_DATABASE = [
+// ════════════════════════════════════════════════════════════════
+// 🎯 القائمة الإدارية البيضاء المعتمدة (Administrative Whitelist)
+// ════════════════════════════════════════════════════════════════
+const STRICT_ADMINISTRATIVE_DATABASE = [
   {
     topic: 'education',
     name: 'وزارة التربية الوطنية والتعليم',
     officialUrl: 'https://www.education.gov.dz',
     portalUrl: 'https://awlyaa.education.gov.dz',
     categoryId: 'education',
-    keywords: ['بكالوريا', 'باك', 'bac', 'بيام', 'bem', 'أوليائي', 'awlya', 'فضاء الأولياء', 'ابتدائي', 'متوسط', 'ثانوي', 'دخول مدرسي', 'منحة 5000', 'كشف النقاط', 'onec', 'تربية', 'أساتذة', 'توجيه', 'شهادة التعليم'],
+    // عبارات مركبة دقيقة لا تحتمل الخطأ
+    phrases: [
+      'فضاء الأولياء', 'منصة أوليائي', 'awlyaa', 'awlya', 'شهادة البكالوريا', 'نتائج البكالوريا',
+      'نتائج الباك', 'شهادة التعليم المتوسط', 'نتائج البيام', 'المنحة المدرسية', 'منحة 5000',
+      'كشف النقاط', 'مسابقة التربية', 'مسابقة توظيف الأساتذة', 'التسجيل في التحضيري',
+      'التسجيل في الابتدائي', 'الدخول المدرسي', 'الديوان الوطني للامتحانات', 'onec dz',
+    ],
   },
   {
     topic: 'university',
@@ -84,7 +102,11 @@ const OFFICIAL_GOV_DATABASE = [
     officialUrl: 'https://www.mesrs.dz',
     portalUrl: 'https://progres.mesrs.dz/webetu',
     categoryId: 'university',
-    keywords: ['جامعة', 'بروقرس', 'progres', 'تحويلات جامعية', 'منحة جامعية', 'إيواء', 'نقل جامعي', 'تسجيلات جامعية', 'دكتوراه', 'ماستر', 'ليسانس'],
+    phrases: [
+      'منصة بروقرس', 'منصة progres', 'التحويلات الجامعية', 'التسجيلات الجامعية',
+      'منحة التعليم العالي', 'المنحة الجامعية', 'الإيواء الجامعي', 'توجيه حاملي البكالوريا',
+      'مسابقة الدكتوراه', 'mesrs dz',
+    ],
   },
   {
     topic: 'employment',
@@ -92,7 +114,11 @@ const OFFICIAL_GOV_DATABASE = [
     officialUrl: 'https://www.anem.dz',
     portalUrl: 'https://minha.anem.dz',
     categoryId: 'employment',
-    keywords: ['منحة البطالة', 'بطالة', 'anem', 'وسيط', 'wassit', 'طالب عمل', 'تجديد منحة', 'مسابقة توظيف', 'عقود التشغيل', 'توظيف', 'عروض عمل', 'منحة'],
+    phrases: [
+      'منحة البطالة', 'تجديد منحة البطالة', 'منصة وسيط', 'منصة minha', 'anem dz',
+      'wassit anem', 'طالب عمل', 'مسابقة التوظيف العمومي', 'عقود ما قبل التشغيل',
+      'جهاز المساعدة على الإدماج',
+    ],
   },
   {
     topic: 'housing',
@@ -100,7 +126,11 @@ const OFFICIAL_GOV_DATABASE = [
     officialUrl: 'https://www.aadl.com.dz',
     portalUrl: 'https://aadl3inscription2024.dz',
     categoryId: 'realEstate',
-    keywords: ['عدل', 'aadl', 'عدل 3', 'سكن ترقوي', 'lpp', 'سكن اجتماعي', 'سكن تساهمي', 'lpa', 'وكالة عدل', 'مكتتبي عدل', 'طعون عدل', 'شهادة السلبية'],
+    phrases: [
+      'عدل 3', 'aadl 3', 'سكنات عدل', 'وكالة عدل', 'مكتتبي عدل', 'طعون عدل',
+      'سكن ترقوي مدعم', 'سكن lpp', 'سكن lpa', 'سكن اجتماعي', 'شهادة السلبية',
+      'البوابة الرقمية لوزارة السكن',
+    ],
   },
   {
     topic: 'post',
@@ -108,15 +138,21 @@ const OFFICIAL_GOV_DATABASE = [
     officialUrl: 'https://www.poste.dz',
     portalUrl: 'https://eccp.poste.dz',
     categoryId: 'post',
-    keywords: ['بريد الجزائر', 'بطاقة ذهبية', 'الذهبية', 'بريدي موب', 'baridimob', 'eccp', 'تخليص', 'حساب بريدي', 'ccp', 'كشف رصيد'],
+    phrases: [
+      'البطاقة الذهبية', 'بريد الجزائر', 'تطبيق بريدي موب', 'baridimob',
+      'منصة eccp', 'الحساب البريدي الجاري ccp', 'طلب البطاقة الذهبية',
+    ],
   },
   {
     topic: 'socialSecurity',
-    name: 'الصندوق الوطني للتأمينات الاجتماعية (CNAS / CNR)',
+    name: 'الصندوق الوطني للضمان الاجتماعي والتقاعد (CNAS / CNR)',
     officialUrl: 'https://www.cnas.dz',
     portalUrl: 'https://elhanaa.cnas.dz',
     categoryId: 'socialSecurity',
-    keywords: ['بطاقة الشفاء', 'شفاء', 'cnas', 'casnos', 'فضاء الهناء', 'elhanaa', 'عطلة مرضية', 'تقاعد', 'cnr', 'ضمان اجتماعي', 'منحة التقاعد'],
+    phrases: [
+      'بطاقة الشفاء', 'فضاء الهناء', 'elhanaa cnas', 'صندوق الضمان الاجتماعي',
+      'cnas dz', 'casnos', 'صندوق التقاعد cnr', 'منحة التقاعد', 'زيادة معاشات التقاعد',
+    ],
   },
   {
     topic: 'interior',
@@ -124,7 +160,11 @@ const OFFICIAL_GOV_DATABASE = [
     officialUrl: 'https://www.interieur.gov.dz',
     portalUrl: 'https://passeport.interieur.gov.dz',
     categoryId: 'interior',
-    keywords: ['جواز سفر', 'بيومتري', 'بطاقة تعريف', 'شهادة ميلاد', 'رخصة سياقة', 'سياقة بالتنقيط', 'حالة مدنية', 'بلدية', 'دائرة', 'ولاية', 'ترقيم السيارات'],
+    phrases: [
+      'جواز السفر البيومتري', 'بطاقة التعريف البيومترية', 'شهادة الميلاد الرقمية',
+      'رخصة السياقة بالتنقيط', 'الحالة المدنية الرقمية', 'استخراج الوثائق الإدارية',
+      'ترقيم السيارات الجديد', 'موقع وزارة الداخلية الجزائرية',
+    ],
   },
   {
     topic: 'tax',
@@ -132,7 +172,10 @@ const OFFICIAL_GOV_DATABASE = [
     officialUrl: 'https://www.mfdgi.gov.dz',
     portalUrl: 'https://anae.dz',
     categoryId: 'tax',
-    keywords: ['ضرائب', 'ضريبة', 'مقاول ذاتي', 'anae', 'سجل تجاري', 'sidjilcom', 'تصريح جبائي', 'رقم التعريف الجبائي', 'nif', 'nis'],
+    phrases: [
+      'المقاول الذاتي', 'منصة anae', 'السجل التجاري الإلكتروني', 'منصة سجلكم',
+      'sidjilcom', 'الرقم الجبائي nif', 'التصريح الجبائي الإلكتروني', 'جباية dz',
+    ],
   },
   {
     topic: 'bills',
@@ -140,11 +183,14 @@ const OFFICIAL_GOV_DATABASE = [
     officialUrl: 'https://www.sonelgaz.dz',
     portalUrl: 'https://pay.sonelgaz.dz',
     categoryId: 'bills',
-    keywords: ['سونلغاز', 'فاتورة الكهرباء', 'الجزائرية للمياه', 'ade', 'دفع فواتير', 'عداد الكهرباء', 'انقطاع الكهرباء'],
+    phrases: [
+      'فاتورة الكهرباء سونلغاز', 'دفع فاتورة سونلغاز', 'تطبيق sonelgaz',
+      'الجزائرية للمياه ade', 'دفع فاتورة المياه',
+    ],
   },
 ];
 
-// ─── إدارة سجل العمليات (history.json) ────────────────────────
+// ─── إدارة سجل العمليات لمنع التكرار (history.json) ───────────
 function loadHistory() {
   if (fs.existsSync(CONFIG.HISTORY_FILE)) {
     try { return JSON.parse(fs.readFileSync(CONFIG.HISTORY_FILE, 'utf8')); } catch {}
@@ -157,64 +203,60 @@ function saveHistory(history) {
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 1: زحف المواقع الإخبارية الجزائرية الكبرى (جديد)]
+// [المرحلة 1: زحف المواقع الإخبارية الجزائرية الكبرى]
 // ════════════════════════════════════════════════════════════════
-/**
- * 💡 كيفية إضافة مصدر إخباري جديد:
- * افتح ملف sites-config.json وأضف عنصراً جديداً في مصفوفة "algerian_news_sources":
- * {
- *   "id": "اسم_المصدر",
- *   "name": "اسم الجريدة أو الموقع",
- *   "url": "https://example.dz",
- *   "rssUrl": "https://example.dz/feed"
- * }
- */
 async function crawlAlgerianNewsSources(sources) {
   const trendingNews = [];
   console.log('📡 [الزحف الإخباري] فحص خراطيم المواقع الإخبارية الجزائرية الكبرى...');
 
   for (const src of sources) {
     try {
-      const feed = await rssParser.parseURL(src.rssUrl);
-      if (!feed || !feed.items) continue;
+      // استخدام axios مع headers واقعية لتفادي مشكلة الـ timeout
+      const response = await axios.get(src.rssUrl, {
+        timeout: 8000,
+        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        },
+      });
 
-      // أخذ أول 5 أخبار عاجلة من كل مصدر
-      const topItems = feed.items.slice(0, 5);
-      for (const item of topItems) {
-        const title = (item.title || '').trim();
-        const link = item.link || '';
-        const snippet = item.contentSnippet || item.content || item.summary || '';
-        const pubDate = item.pubDate || item.isoDate || new Date().toISOString();
+      const feed = await rssParser.parseString(response.data);
+      if (feed && feed.items) {
+        const topItems = feed.items.slice(0, 8);
+        for (const item of topItems) {
+          const title = (item.title || '').trim();
+          const link = item.link || '';
+          const snippet = item.contentSnippet || item.content || item.summary || '';
+          const pubDate = item.pubDate || item.isoDate || new Date().toISOString();
 
-        if (title) {
-          trendingNews.push({
-            title,
-            link,
-            snippet,
-            pubDate,
-            sourceName: src.name,
-            sourceId: src.id,
-            origin: 'algerian_media',
-          });
+          if (title) {
+            trendingNews.push({
+              title,
+              link,
+              snippet,
+              pubDate,
+              sourceName: src.name,
+            });
+          }
         }
       }
     } catch (err) {
-      console.warn(`   ⚠ تعذر جلب أخبار ${src.name}: ${err.message}`);
+      console.warn(`   ⚠ تعذر جلب ${src.name}: ${err.message}`);
     }
   }
 
-  console.log(`   ✔ تم استخراج ${trendingNews.length} خبراً متداولاً من الإعلام الجزائري.`);
+  console.log(`   ✔ تم استخراج ${trendingNews.length} خبراً مرشحاً من الصحافة الجزائرية.`);
   return trendingNews;
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 2: جلب ترندات جوجل الحية في الجزائر (Google Trends)]
+// [المرحلة 2: جلب ترندات جوجل الجزائرية (Google Trends DZ)]
 // ════════════════════════════════════════════════════════════════
 async function fetchGoogleTrendsDZ() {
   const trends = [];
   console.log('📡 [ترندات قوقل] جلب الكلمات الأكثر بحثاً في الجزائر (geo: DZ)...');
 
-  // أ. محاولة عبر Google Trends RSS
   const rssUrls = [
     'https://trends.google.com/trending/rss?geo=DZ',
     'https://trends.google.com/trends/trendingsearches/daily/rss?geo=DZ',
@@ -223,7 +265,7 @@ async function fetchGoogleTrendsDZ() {
   for (const url of rssUrls) {
     try {
       const response = await axios.get(url, {
-        timeout: 10000,
+        timeout: 8000,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Accept': 'application/rss+xml, application/xml, text/xml, */*',
@@ -249,14 +291,13 @@ async function fetchGoogleTrendsDZ() {
             snippet,
             pubDate: it.pubDate || new Date().toISOString(),
             sourceName: 'Google Trends DZ',
-            origin: 'google_trends',
           });
         }
       }
     } catch {}
   }
 
-  // ب. محاولة دعم عبر google-trends-api
+  // دعم احتياطي عبر google-trends-api
   if (trends.length === 0) {
     try {
       const res = await googleTrends.dailyTrends({ geo: 'DZ' });
@@ -273,7 +314,6 @@ async function fetchGoogleTrendsDZ() {
               snippet: article?.snippet || article?.title || '',
               pubDate: new Date().toISOString(),
               sourceName: 'Google Trends API',
-              origin: 'google_trends',
             });
           }
         }
@@ -286,41 +326,33 @@ async function fetchGoogleTrendsDZ() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 3: التحقق والمطابقة الرسمية (منع المحتوى الرديء)]
+// [المرحلة 3: التحقق الصارم والمطابقة الإدارية (Zero False Positives)]
 // ════════════════════════════════════════════════════════════════
-/**
- * ⚠ القاعدة الحاسمة:
- * إذا لم نجد تطابقاً مؤكداً مع قاعدة البيانات الرسمية أو موضوعاً خدمياً موثوقاً،
- * يتم استبعاد الموضوع تماماً ولا يُكتب عنه أي مقال.
- */
-function verifyAndMatchOfficialSource(trendItem) {
+function verifyAndMatchAdministrativeOnly(trendItem) {
   const fullText = `${trendItem.title} ${trendItem.snippet}`.toLowerCase();
 
-  // 1. فلتر الاستبعاد الفوري (رياضة، فن، سياسة دولية)
-  const isExcluded = EXCLUDE_KEYWORDS.some((ex) => {
-    if (ex.length <= 4) {
-      return new RegExp(`\\b${ex}\\b`, 'i').test(fullText);
-    }
-    return fullText.includes(ex.toLowerCase());
+  // 1. الفحص الصارم الأول: استبعاد الحوادث والجرائم والرياضة والفن فوراً
+  const isBanned = STRICT_EXCLUDE_LIST.some((bannedWord) => {
+    return fullText.includes(bannedWord.toLowerCase());
   });
-  if (isExcluded) return null;
 
-  // 2. التحقق من مطابقة الموضوع مع إحدى الجهات الحكومية أو الخدمية المعتمدة
-  for (const official of OFFICIAL_GOV_DATABASE) {
-    const isMatch = official.keywords.some((kw) => {
-      const kwLower = kw.toLowerCase();
-      if (kwLower.length <= 4 && /^[a-z0-9]+$/i.test(kwLower)) {
-        return new RegExp(`\\b${kwLower}\\b`, 'i').test(fullText);
-      }
-      return fullText.includes(kwLower);
+  if (isBanned) {
+    return null; // مستبعد فوراً (حادث، جريمة، مخدرات، رياضة، مشاهير)
+  }
+
+  // 2. الفحص الصارم الثاني: المطابقة الإلزامية مع العبارات الإدارية المعتمدة
+  for (const official of STRICT_ADMINISTRATIVE_DATABASE) {
+    const isExactMatch = official.phrases.some((phrase) => {
+      return fullText.includes(phrase.toLowerCase());
     });
 
-    if (isMatch) {
-      return official; // تم التحقق والربط بالجهة الرسمية
+    if (isExactMatch) {
+      return official; // تم التحقق والربط بالجهة الرسمية والخدمة المعتمدة
     }
   }
 
-  return null; // لم يطابق أي جهة رسمية ⬅ يتم تجاهله
+  // إذا لم يطابق أي عبارة إدارية حكومية واضحة ⬅ يتم استبعاده تماماً
+  return null;
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -336,7 +368,7 @@ async function extractOfficialImage(pageUrl) {
       timeout: 8000,
       httpsAgent: new https.Agent({ rejectUnauthorized: false }),
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       },
       maxRedirects: 3,
@@ -367,7 +399,7 @@ function isValidImageUrl(url) {
   if (!url || url.length < 8) return false;
   const lower = url.toLowerCase();
   if (lower.includes('logo') || lower.includes('icon') || lower.includes('avatar')) return false;
-  return /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(lower) || lower.includes('/uploads/') || lower.includes('image');
+  return /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(lower) || lower.includes('/uploads/') || lower.includes('communique');
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -382,11 +414,11 @@ async function generateTrendArticleWithGemini(trendItem, matchedOfficial) {
 5. ممنوع منعاً باتاً كتابة أي كود HTML للصور أو إضافة روابط صور، لأن السكريبت الخارجي يتكفل بالصور. أنت تكتب النص فقط.
 6. يجب أن يكون اللغة عربية فصيحة، مع مراعاة المصطلحات المتداولة في الجزائر.
 
-[بيانات الترند والتحقق الرسمي]:
-- موضوع الترند الرائج: ${trendItem.title}
+[بيانات الخدمة والمعاملة الحكومية المعتمدة]:
+- موضوع الترند والخدمة: ${trendItem.title}
 - الجهة الرسمية المختصة: ${matchedOfficial.name}
 - الرابط والمنصة الرسمية: ${matchedOfficial.portalUrl || matchedOfficial.officialUrl}
-- سياق الخبر ومعطياته: ${trendItem.snippet || 'موضوع متداول في الجزائر يهم المواطنين.'}
+- سياق الخبر ومعطياته: ${trendItem.snippet || 'دليل شامل حول الخدمة والإجراءات الإدارية.'}
 - مصدر الرصد: ${trendItem.sourceName} (${trendItem.link || matchedOfficial.portalUrl})
 
 [الإخراج المطلوب]: ابدأ مباشرة بعنوان # H1 دون أي هوامش أو تعليقات خارجية.`;
@@ -489,7 +521,7 @@ function parseTrendToArticleJson(rawText, trendItem, matchedOfficial, officialIm
   const article = {
     title,
     introduction: introduction || sanitizedText.slice(0, 500),
-    sections: sections.length > 0 ? sections : [{ heading: 'تفاصيل الدليل والمعلومات الكاملة', content: sanitizedText }],
+    sections: sections.length > 0 ? sections : [{ heading: 'دليل الإجراءات والتفاصيل الكاملة', content: sanitizedText }],
     sourceMinistry: matchedOfficial.name,
     categoryId: matchedOfficial.categoryId,
     dateStr: new Date().toLocaleDateString('ar-DZ', { year: 'numeric', month: 'long', day: 'numeric' }),
@@ -507,7 +539,6 @@ function parseTrendToArticleJson(rawText, trendItem, matchedOfficial, officialIm
     ],
   };
 
-  // ربط الصورة الرسمية فقط إن وُجدت
   if (officialImageUrl) {
     article.featuredImage = {
       url: officialImageUrl,
@@ -562,72 +593,65 @@ function pingIndexNow(url) {
 // ─── المحرك الرئيسي ───────────────────────────────────────────
 async function main() {
   console.log('\n' + '='.repeat(65));
-  console.log('🔥 RAQMANA — رادار تصيد الترندات والإعلام الجزائري (v3.0)');
-  console.log('🛡 قاعدة التحقق: مطابقة مع 267 جهة رسمية (0 مقالات عند عدم التحقق)');
+  console.log('🔥 RAQMANA — رادار تصيد الترندات والإعلام الجزائري (v3.1)');
+  console.log('🛡 الفلترة الصارمة: خدمات ومعاملات عمومية فقط | حظر الحوادث والجرائم 100%');
   console.log('='.repeat(65) + '\n');
 
   const history = loadHistory();
   if (!history.processedTrends) history.processedTrends = {};
 
-  // 1. قراءة إعدادات المصادر
   const sitesConfig = JSON.parse(fs.readFileSync(CONFIG.SITES_CONFIG, 'utf8'));
   const newsSources = sitesConfig.algerian_news_sources || [];
 
-  // 2. جلب ترندات قوقل + الأخبار الرائجة من الصحف الجزائرية
   const [googleTrendsList, mediaNewsList] = await Promise.all([
     fetchGoogleTrendsDZ(),
     crawlAlgerianNewsSources(newsSources),
   ]);
 
   const allCandidateTrends = [...googleTrendsList, ...mediaNewsList];
-  console.log(`\n📊 إجمالي المرشحات للتحليل: ${allCandidateTrends.length} موضوع متداول.`);
+  console.log(`\n📊 إجمالي المواضيع المرصودة للتحليل: ${allCandidateTrends.length} موضوع.`);
 
   let writtenCount = 0;
 
   for (const item of allCandidateTrends) {
     const itemKey = item.title.toLowerCase().trim();
 
-    // تجاوز المواضيع المعالجة سابقاً
-    if (history.processedTrends[itemKey] || history.processedItems[item.link]) {
+    if (history.processedTrends[itemKey] || (item.link && history.processedItems[item.link])) {
       continue;
     }
 
-    // 3. التحقق والمطابقة الرسمية
-    const matchedOfficial = verifyAndMatchOfficialSource(item);
+    // 🛡 الفحص الصارم المزدوج: استبعاد الحوادث/الجرائم + المطابقة الإدارية الحصرية
+    const matchedOfficial = verifyAndMatchAdministrativeOnly(item);
     if (!matchedOfficial) {
-      continue; // لم يثبت ارتباطه بموضوع خدمي أو رسمي موثوق ⬅ تجاهل تام
+      // تم استبعاده (حادث، جريمة، رياضة، أو موضوع عام غير إداري) ⬅ تجاهل تام
+      continue;
     }
 
     if (writtenCount >= CONFIG.MAX_TREND_ARTICLES_PER_RUN) {
-      console.log(`\n⏸ تم بلوغ حد المقالات الحصرية في هذه الجلسة (${CONFIG.MAX_TREND_ARTICLES_PER_RUN}).`);
+      console.log(`\n⏸ تم بلوغ حد المقالات في هذه الجلسة (${CONFIG.MAX_TREND_ARTICLES_PER_RUN}).`);
       break;
     }
 
-    console.log(`\n🎯 [صيد ثمين مُوثّق]: "${item.title}"`);
+    console.log(`\n🎯 [صيد إداري وخدماتي حقيقي مُوثّق]: "${item.title}"`);
     console.log(`   🏛 الجهة المعتمدة: ${matchedOfficial.name}`);
 
     try {
-      // 4. استخراج الصورة الرسمية
       process.stdout.write('   🖼 استخراج الصورة الرسمية...');
       const officialImage = item.link ? await extractOfficialImage(item.link) : null;
-      console.log(officialImage ? ` ✅ صورة موثقة من الرابط` : ` ℹ بدون بيان مصور (نص احترافي نقي)`);
+      console.log(officialImage ? ` ✅ صورة موثقة من الرابط` : ` ℹ بدون بيان مصور (نص نقي)`);
 
-      // 5. صياغة المقال بـ Gemini
-      process.stdout.write('   ✍ صياغة المقال السيو الخارق بـ Gemini...');
+      process.stdout.write('   ✍ صياغة المقال السيو بـ Gemini...');
       const rawText = await generateTrendArticleWithGemini(item, matchedOfficial);
       console.log(' ✅');
 
-      // 6. تحويل وحفظ المقال
       const { slug, article } = parseTrendToArticleJson(rawText, item, matchedOfficial, officialImage);
       saveArticle(slug, article);
-      console.log(`   💾 تم الحفظ بنجاح: /articles/${slug}`);
+      console.log(`   💾 تم الحفظ: /articles/${slug}`);
 
-      // 7. الفهرسة الفورية
       const articleUrl = `https://www.raqmanadz.com/articles/${slug}`;
       pingIndexNow(articleUrl);
       console.log(`   ⚡ تم إرسال تنبيه الأرشفة الفورية (IndexNow)`);
 
-      // 8. تحديث سجل التاريخ
       history.processedTrends[itemKey] = {
         slug,
         title: item.title,
@@ -651,7 +675,7 @@ async function main() {
   saveHistory(history);
 
   console.log('\n' + '='.repeat(65));
-  console.log(`🎉 اكتمل تشغيل الرادار — تم صيد وكتابة ${writtenCount} مقال ترند رسمي موثق!`);
+  console.log(`🎉 اكتمل تشغيل الرادار — تم صيد وكتابة ${writtenCount} مقال إداري وخدماتي رسمي موثق!`);
   console.log('='.repeat(65) + '\n');
 }
 

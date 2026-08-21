@@ -170,17 +170,17 @@
   ],
   "algerian_news_sources": [
     {
-      "id": "echorouk",
-      "name": "الشروق أونلاين",
-      "url": "https://www.echoroukonline.com",
-      "rssUrl": "https://www.echoroukonline.com/feed",
-      "category": "general_news"
-    },
-    {
       "id": "ennahar",
       "name": "النهار أونلاين",
       "url": "https://www.ennaharonline.com",
       "rssUrl": "https://www.ennaharonline.com/feed/",
+      "category": "general_news"
+    },
+    {
+      "id": "echorouk",
+      "name": "الشروق أونلاين",
+      "url": "https://www.echoroukonline.com",
+      "rssUrl": "https://www.echoroukonline.com/feed",
       "category": "general_news"
     },
     {
@@ -191,17 +191,10 @@
       "category": "general_news"
     },
     {
-      "id": "dzairtube",
-      "name": "دزاير توب",
-      "url": "https://dzair-tube.dz",
-      "rssUrl": "https://dzair-tube.dz/feed/",
-      "category": "general_news"
-    },
-    {
       "id": "aps_ar",
       "name": "وكالة الأنباء الجزائرية (APS)",
       "url": "https://www.aps.dz/ar",
-      "rssUrl": "https://www.aps.dz/ar/algerie/societe?format=feed&type=rss",
+      "rssUrl": "https://www.aps.dz/ar/algerie?format=feed&type=rss",
       "category": "official_news"
     }
   ]
