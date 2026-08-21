@@ -57,14 +57,6 @@ jobs:
       - name: '📦 تثبيت تبعيات الرادار'
         run: npm install --no-save rss-parser cheerio axios google-trends-api
 
-      - name: '🔐 إنشاء ملف service-account.json'
-        env:
-          SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-        run: |
-          if [ -n "$SERVICE_ACCOUNT_KEY" ]; then
-            echo "$SERVICE_ACCOUNT_KEY" > service-account.json
-          fi
-
       - name: '🔥 تشغيل رادار الترندات وصيد الأخبار'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -73,6 +65,7 @@ jobs:
 
       - name: '📡 تشغيل محرك الفهرسة'
         env:
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/indexing-process.js
 
@@ -83,10 +76,6 @@ jobs:
           git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
           git diff --staged --quiet || git commit -m "🔥 auto: Trending articles $(date +'%Y-%m-%d %H:%M')"
           git push || echo "لا توجد تغييرات لرفعها"
-
-      - name: '🧹 تنظيف ملف المفاتيح الحساس'
-        if: always()
-        run: rm -f service-account.json
 
   # ════════════════════════════════════════════════════════════
   # JOB 2 — الأخبار الحكومية الرسمية (كل ساعة)
@@ -116,14 +105,6 @@ jobs:
       - name: '📦 تثبيت تبعيات الأخبار'
         run: npm install --no-save rss-parser cheerio axios
 
-      - name: '🔐 إنشاء ملف service-account.json'
-        env:
-          SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-        run: |
-          if [ -n "$SERVICE_ACCOUNT_KEY" ]; then
-            echo "$SERVICE_ACCOUNT_KEY" > service-account.json
-          fi
-
       - name: '🤖 تشغيل محرك الأخبار الرسمية — Tier 1'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -132,6 +113,7 @@ jobs:
 
       - name: '📡 تشغيل محرك الفهرسة'
         env:
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/indexing-process.js
 
@@ -142,10 +124,6 @@ jobs:
           git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
           git diff --staged --quiet || git commit -m "🏛 auto: Official news articles $(date +'%Y-%m-%d %H:%M')"
           git push || echo "لا توجد تغييرات لرفعها"
-
-      - name: '🧹 تنظيف ملف المفاتيح الحساس'
-        if: always()
-        run: rm -f service-account.json
 
   # ════════════════════════════════════════════════════════════
   # JOB 3 — المواقع الحكومية اليومية Tier 2 (يومياً 3:00 ص)
@@ -175,15 +153,6 @@ jobs:
       - name: '📦 تثبيت تبعيات الأخبار'
         run: npm install --no-save rss-parser cheerio axios
 
-      - name: '🔐 إنشاء ملف service-account.json'
-        env:
-          SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-        run: |
-          if [ -n "$SERVICE_ACCOUNT_KEY" ]; then
-            echo "$SERVICE_ACCOUNT_KEY" > service-account.json
-          fi
-
-
       - name: '🤖 تشغيل محرك الأخبار — Tier 2'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -192,6 +161,7 @@ jobs:
 
       - name: '📡 تشغيل محرك الفهرسة'
         env:
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/indexing-process.js
 
@@ -203,6 +173,3 @@ jobs:
           git diff --staged --quiet || git commit -m "🌙 auto: Tier2 daily articles $(date +'%Y-%m-%d')"
           git push || echo "لا توجد تغييرات لرفعها"
 
-      - name: '🧹 تنظيف ملف المفاتيح الحساس'
-        if: always()
-        run: rm -f service-account.json

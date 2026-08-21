@@ -226,10 +226,20 @@ async function main() {
   else console.log(`   ⚠ خطأ IndexNow: ${indexNowRes.statusCode || indexNowRes.error}`);
 
   // د. Google Indexing API
-  if (fs.existsSync(CONFIG.SERVICE_ACCOUNT)) {
+  let creds = null;
+  if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
+    try {
+      creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+    } catch {}
+  } else if (fs.existsSync(CONFIG.SERVICE_ACCOUNT)) {
+    try {
+      creds = JSON.parse(fs.readFileSync(CONFIG.SERVICE_ACCOUNT, 'utf8'));
+    } catch {}
+  }
+
+  if (creds && creds.client_email && creds.private_key) {
     console.log('\n🤖 إرسال لـ Google Indexing API...');
     try {
-      const creds = JSON.parse(fs.readFileSync(CONFIG.SERVICE_ACCOUNT, 'utf8'));
       const token = await getGoogleToken(creds);
 
       // تحميل الحالة
