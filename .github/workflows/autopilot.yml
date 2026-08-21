@@ -1,42 +1,45 @@
-name: 🤖 Raqmana News Autopilot
+name: 🤖 Raqmana News & Trends Autopilot
 
 on:
   schedule:
-    # ─── Tier 1: كل 15 دقيقة (أهم 10 مواقع) ───────────────────
-    - cron: '*/15 * * * *'
-    # ─── Tier 2: مرة واحدة يومياً الساعة 3:00 فجراً ─────────────
+    # ─── Cron 1: الأخبار الحكومية الرسمية (كل ساعة) ───────────
+    - cron: '0 * * * *'
+    # ─── Cron 2: رادار الترندات والإعلام الجزائري (كل 3 ساعات: 9ص إلى 12 ليلاً بتوقيت الجزائر) ───
+    - cron: '0 8,11,14,17,20,23 * * *'
+    # ─── Cron 3: المواقع الثانوية Tier 2 (يومياً الساعة 3:00 فجراً بتوقيت الجزائر) ────────────
     - cron: '0 2 * * *'
 
-  # تشغيل يدوي من واجهة GitHub Actions
+  # تشغيل يدوي مخصص من واجهة GitHub Actions
   workflow_dispatch:
     inputs:
-      tier:
-        description: 'الطبقة المراد تشغيلها (1 أو 2 أو all)'
-        required: false
-        default: '1'
+      job_type:
+        description: 'نوع المهمة المراد تشغيلها فوراً'
+        required: true
+        default: 'trends'
         type: choice
         options:
-          - '1'
-          - '2'
+          - 'official'
+          - 'trends'
+          - 'daily_tier2'
           - 'all'
 
-# منع تشغيل أكثر من نسخة في نفس الوقت
+# منع تعارض التشغيل المتزامن
 concurrency:
   group: raqmana-autopilot
   cancel-in-progress: false
 
 jobs:
   # ════════════════════════════════════════════════════════════
-  # JOB 1 — Tier 1: أهم المواقع (كل 15 دقيقة)
+  # JOB 1 — رادار الترندات والإعلام الجزائري (Google Trends + Media)
   # ════════════════════════════════════════════════════════════
-  tier1-news:
-    name: '⚡ Tier 1 — مواقع التراند (كل 15 دقيقة)'
+  trends-radar:
+    name: '🔥 رادار الترندات والإعلام الجزائري'
     runs-on: ubuntu-latest
 
-    # تشغيل فقط عند cron الـ 15 دقيقة أو يدوياً بـ tier=1 أو all
+    # تشغيل عند Cron 2 أو يدوياً بـ trends أو all
     if: |
-      github.event_name == 'workflow_dispatch' && (github.event.inputs.tier == '1' || github.event.inputs.tier == 'all') ||
-      (github.event_name == 'schedule' && github.event.schedule == '*/15 * * * *')
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'trends' || github.event.inputs.job_type == 'all')) ||
+      (github.event_name == 'schedule' && github.event.schedule == '0 8,11,14,17,20,23 * * *')
 
     steps:
       - name: '📥 Checkout المستودع'
@@ -51,50 +54,99 @@ jobs:
       - name: '📦 تثبيت التبعيات'
         run: npm ci --prefer-offline
 
-      - name: '📦 تثبيت تبعيات سكريبت الأخبار والترندات'
-        run: npm install --no-save xml2js cheerio axios
+      - name: '📦 تثبيت تبعيات الرادار'
+        run: npm install --no-save rss-parser cheerio axios google-trends-api
 
       - name: '🔐 إنشاء ملف service-account.json'
         run: echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}' > service-account.json
 
-      - name: '🔥 تشغيل رادار تصيد ترندات قوقل الجزائر'
+      - name: '🔥 تشغيل رادار الترندات وصيد الأخبار'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/trends-radar-worker.js
-
-      - name: '🤖 تشغيل محرك الأخبار — Tier 1'
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          NODE_ENV: production
-        run: node scripts/news-automation/auto-news-worker.js --tier=1
 
       - name: '📡 تشغيل محرك الفهرسة'
         env:
           NODE_ENV: production
         run: node scripts/news-automation/indexing-process.js
 
-      - name: '💾 حفظ التغييرات في Git'
+      - name: '💾 حفظ ونشر المقالات في Git'
         run: |
           git config user.name "Raqmana News Bot"
           git config user.email "bot@raqmanadz.com"
-          git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/news-state.json scripts/news-automation/trends-state.json || true
-          git diff --staged --quiet || git commit -m "🤖 auto: Trends & Tier1 articles $(date +'%Y-%m-%d %H:%M')"
+          git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
+          git diff --staged --quiet || git commit -m "🔥 auto: Trending articles $(date +'%Y-%m-%d %H:%M')"
           git push || echo "لا توجد تغييرات لرفعها"
 
-      - name: '🧹 حذف ملف الاعتماد الحساس'
+      - name: '🧹 تنظيف ملف المفاتيح الحساس'
         if: always()
         run: rm -f service-account.json
 
   # ════════════════════════════════════════════════════════════
-  # JOB 2 — Tier 2: باقي المواقع (مرة يومياً)
+  # JOB 2 — الأخبار الحكومية الرسمية (كل ساعة)
   # ════════════════════════════════════════════════════════════
-  tier2-news:
-    name: '🌙 Tier 2 — باقي المواقع (يومياً 3:00 ص)'
+  official-news:
+    name: '🏛 الأخبار الحكومية الرسمية (كل ساعة)'
     runs-on: ubuntu-latest
 
+    # تشغيل عند Cron 1 أو يدوياً بـ official أو all
     if: |
-      github.event_name == 'workflow_dispatch' && (github.event.inputs.tier == '2' || github.event.inputs.tier == 'all') ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'official' || github.event.inputs.job_type == 'all')) ||
+      (github.event_name == 'schedule' && github.event.schedule == '0 * * * *')
+
+    steps:
+      - name: '📥 Checkout المستودع'
+        uses: actions/checkout@v4
+
+      - name: '🟢 إعداد Node.js 20'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: '📦 تثبيت التبعيات'
+        run: npm ci --prefer-offline
+
+      - name: '📦 تثبيت تبعيات الأخبار'
+        run: npm install --no-save rss-parser cheerio axios
+
+      - name: '🔐 إنشاء ملف service-account.json'
+        run: echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}' > service-account.json
+
+      - name: '🤖 تشغيل محرك الأخبار الرسمية — Tier 1'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NODE_ENV: production
+        run: node scripts/news-automation/auto-news-worker.js
+
+      - name: '📡 تشغيل محرك الفهرسة'
+        env:
+          NODE_ENV: production
+        run: node scripts/news-automation/indexing-process.js
+
+      - name: '💾 حفظ ونشر المقالات في Git'
+        run: |
+          git config user.name "Raqmana News Bot"
+          git config user.email "bot@raqmanadz.com"
+          git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
+          git diff --staged --quiet || git commit -m "🏛 auto: Official news articles $(date +'%Y-%m-%d %H:%M')"
+          git push || echo "لا توجد تغييرات لرفعها"
+
+      - name: '🧹 تنظيف ملف المفاتيح الحساس'
+        if: always()
+        run: rm -f service-account.json
+
+  # ════════════════════════════════════════════════════════════
+  # JOB 3 — المواقع الحكومية اليومية Tier 2 (يومياً 3:00 ص)
+  # ════════════════════════════════════════════════════════════
+  daily-tier2:
+    name: '🌙 المواقع الحكومية الثانوية (يومياً 3:00 ص)'
+    runs-on: ubuntu-latest
+
+    # تشغيل عند Cron 3 أو يدوياً بـ daily_tier2 أو all
+    if: |
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'daily_tier2' || github.event.inputs.job_type == 'all')) ||
       (github.event_name == 'schedule' && github.event.schedule == '0 2 * * *')
 
     steps:
@@ -110,8 +162,8 @@ jobs:
       - name: '📦 تثبيت التبعيات'
         run: npm ci --prefer-offline
 
-      - name: '📦 تثبيت تبعيات سكريبت الأخبار'
-        run: npm install --no-save xml2js cheerio
+      - name: '📦 تثبيت تبعيات الأخبار'
+        run: npm install --no-save rss-parser cheerio axios
 
       - name: '🔐 إنشاء ملف service-account.json'
         run: echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}' > service-account.json
@@ -127,14 +179,14 @@ jobs:
           NODE_ENV: production
         run: node scripts/news-automation/indexing-process.js
 
-      - name: '💾 حفظ التغييرات في Git'
+      - name: '💾 حفظ ونشر المقالات في Git'
         run: |
           git config user.name "Raqmana News Bot"
           git config user.email "bot@raqmanadz.com"
-          git add lib/custom-articles-data.json public/auto-news-sitemap.xml || true
-          git diff --staged --quiet || git commit -m "🤖 auto: Tier2 daily articles $(date +'%Y-%m-%d')"
+          git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
+          git diff --staged --quiet || git commit -m "🌙 auto: Tier2 daily articles $(date +'%Y-%m-%d')"
           git push || echo "لا توجد تغييرات لرفعها"
 
-      - name: '🧹 حذف ملف الاعتماد الحساس'
+      - name: '🧹 تنظيف ملف المفاتيح الحساس'
         if: always()
         run: rm -f service-account.json

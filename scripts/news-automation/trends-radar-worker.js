@@ -1,12 +1,14 @@
 /**
- * trends-radar-worker.js — رادار تصيد ترندات قوقل الجزائر وصناعة المقالات الحصرية
- * ==============================================================================
- * 1. رصد وتحليل Google Trends الحية في الجزائر (geo=DZ) لحظياً.
- * 2. فلترة ذكية لاختيار المواضيع الحكومية، الخدمات الرقمية، التوظيف، التعليم، والسكن.
- * 3. ربط الترند بالوزارة أو الهيئة الرسمية المعنية مع استخراج الرابط المعتمد.
- * 4. فحص واستخراج الصورة الرسمية عبر Node.js (إن وُجد بيان مصور)، وإلا ترك المقال نصياً نقياً.
- * 5. كتابة مقال سيو احترافي خارق (1000 - 1500 كلمة) بـ Gemini مع قسم الأسئلة الشائعة (FAQ).
- * 6. الفهرسة الفورية عبر IndexNow و Google Indexing API لاحتلال المرتبة الأولى في نتائج البحث.
+ * trends-radar-worker.js — رادار ترندات قوقل والأخبار الجزائرية الكبرى (v3.0)
+ * ===========================================================================
+ * يدمج بين:
+ * 1. رصد Google Trends في الجزائر (geo=DZ).
+ * 2. زحف ومسح الأخبار الأكثر تداولاً في المواقع الإخبارية الجزائرية الكبرى (الشروق، النهار، البلاد، دزاير توب، APS).
+ * 3. [قاعدة المصداقية والتحقق]: مطابقة الترند مع قاعدة الأخبار الرسمية والهيئات الحكومية (267 جهة).
+ *    ⚠ إذا لم نجد خبراً موثوقاً أو مصدراً رسمياً يؤكد الموضوع، يتم تجاهله فوراً وكتابة 0 مقالات.
+ * 4. استخراج الصور الرسمية عبر axios و cheerio مع منع التزييف والهلوسة تماماً.
+ * 5. صياغة مقال سيو حصري (1000-1500 كلمة) بـ Gemini مع قسم الأسئلة الشائعة (FAQ).
+ * 6. الفهرسة الفورية عبر IndexNow و Google Indexing API.
  *
  * الاستخدام:
  *   node scripts/news-automation/trends-radar-worker.js
@@ -19,8 +21,17 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 const axios = require('axios');
-const { parseStringPromise } = require('xml2js');
 const cheerio = require('cheerio');
+const Parser = require('rss-parser');
+const googleTrends = require('google-trends-api');
+
+const rssParser = new Parser({
+  timeout: 10000,
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+  },
+});
 
 // ─── تحميل متغيرات البيئة ─────────────────────────────────────
 const ROOT_DIR = path.join(__dirname, '../..');
@@ -36,29 +47,29 @@ if (fs.existsSync(envPath)) {
 const CONFIG = {
   GEMINI_API_KEY: (process.env.GEMINI_API_KEY || '').trim(),
   GEMINI_MODEL: 'gemini-3.6-flash',
+  SITES_CONFIG: path.join(__dirname, 'sites-config.json'),
   ARTICLES_JSON: path.join(ROOT_DIR, 'lib', 'custom-articles-data.json'),
-  STATE_FILE: path.join(__dirname, 'trends-state.json'),
-  MAX_TREND_ARTICLES_PER_RUN: 2, // حد أقصى لمقالات الترند في الدورة الواحدة لضمان أقصى جودة
+  HISTORY_FILE: path.join(__dirname, 'history.json'),
+  MAX_TREND_ARTICLES_PER_RUN: 2, // حد أقصى للحفاظ على جودة استثنائية
+  DEFAULT_PLACEHOLDER: '/images/default-placeholder.png',
 };
 
 if (!CONFIG.GEMINI_API_KEY) {
-  console.error('\n❌ GEMINI_API_KEY غير موجود. أضفه إلى .env.local أو GitHub Secrets.\n');
+  console.error('\n❌ GEMINI_API_KEY غير موجود في .env.local أو GitHub Secrets.\n');
   process.exit(1);
 }
 
-// ─── 1. بنك الكلمات المفتاحية وفلتر تخصص الموقع ────────────────
+// ─── كلمات الاستبعاد (استبعاد الرياضة والمشاهير والسياسة الدولية) ──
 const EXCLUDE_KEYWORDS = [
-  // رياضة ومباريات
   'كرة', 'مباراة', 'فريق', 'دوري', 'كأس', 'رونالدو', 'ميسي', 'نادي', 'لاعب', 'هدف',
   'تصفيات', 'منتخب', 'ريال', 'برشلونة', 'أرسنال', 'ليفربول', 'سيتي', 'marseille',
   'madrid', 'barcelona', 'champions', 'league', 'football', 'match',
-  // فن ومشاهير
   'مطرب', 'فنان', 'ممثل', 'مسلسل', 'أغنية', 'فيلم', 'سينما', 'تيك توك',
-  // سياسة دولية غير خدمية
   'روسيا', 'أوكرانيا', 'إسرائيل', 'غزة', 'ترامب', 'بايدن',
 ];
 
-const GOV_TOPIC_RULES = [
+// ─── قاعدة بيانات مطابقة الخدمات والمصادر الرسمية المعتمدة ───────
+const OFFICIAL_GOV_DATABASE = [
   {
     topic: 'education',
     name: 'وزارة التربية الوطنية والتعليم',
@@ -101,7 +112,7 @@ const GOV_TOPIC_RULES = [
   },
   {
     topic: 'socialSecurity',
-    name: 'الصندوق الوطني للضمان الاجتماعي (CNAS / CASNOS)',
+    name: 'الصندوق الوطني للتأمينات الاجتماعية (CNAS / CNR)',
     officialUrl: 'https://www.cnas.dz',
     portalUrl: 'https://elhanaa.cnas.dz',
     categoryId: 'socialSecurity',
@@ -133,21 +144,77 @@ const GOV_TOPIC_RULES = [
   },
 ];
 
-// ─── 2. إدارة الحالة ──────────────────────────────────────────
-function loadTrendsState() {
-  if (fs.existsSync(CONFIG.STATE_FILE)) {
-    try { return JSON.parse(fs.readFileSync(CONFIG.STATE_FILE, 'utf8')); } catch {}
+// ─── إدارة سجل العمليات (history.json) ────────────────────────
+function loadHistory() {
+  if (fs.existsSync(CONFIG.HISTORY_FILE)) {
+    try { return JSON.parse(fs.readFileSync(CONFIG.HISTORY_FILE, 'utf8')); } catch {}
   }
-  return { processedTrends: {} };
+  return { processedItems: {}, processedTrends: {}, lastRun: null };
 }
 
-function saveTrendsState(state) {
-  fs.writeFileSync(CONFIG.STATE_FILE, JSON.stringify(state, null, 2), 'utf8');
+function saveHistory(history) {
+  fs.writeFileSync(CONFIG.HISTORY_FILE, JSON.stringify(history, null, 2), 'utf8');
 }
 
-// ─── 3. جلب ترندات جوجل الجزائرية الحية ────────────────────────
-async function fetchAlgeriaTrends() {
-  const trendsList = [];
+// ════════════════════════════════════════════════════════════════
+// [المرحلة 1: زحف المواقع الإخبارية الجزائرية الكبرى (جديد)]
+// ════════════════════════════════════════════════════════════════
+/**
+ * 💡 كيفية إضافة مصدر إخباري جديد:
+ * افتح ملف sites-config.json وأضف عنصراً جديداً في مصفوفة "algerian_news_sources":
+ * {
+ *   "id": "اسم_المصدر",
+ *   "name": "اسم الجريدة أو الموقع",
+ *   "url": "https://example.dz",
+ *   "rssUrl": "https://example.dz/feed"
+ * }
+ */
+async function crawlAlgerianNewsSources(sources) {
+  const trendingNews = [];
+  console.log('📡 [الزحف الإخباري] فحص خراطيم المواقع الإخبارية الجزائرية الكبرى...');
+
+  for (const src of sources) {
+    try {
+      const feed = await rssParser.parseURL(src.rssUrl);
+      if (!feed || !feed.items) continue;
+
+      // أخذ أول 5 أخبار عاجلة من كل مصدر
+      const topItems = feed.items.slice(0, 5);
+      for (const item of topItems) {
+        const title = (item.title || '').trim();
+        const link = item.link || '';
+        const snippet = item.contentSnippet || item.content || item.summary || '';
+        const pubDate = item.pubDate || item.isoDate || new Date().toISOString();
+
+        if (title) {
+          trendingNews.push({
+            title,
+            link,
+            snippet,
+            pubDate,
+            sourceName: src.name,
+            sourceId: src.id,
+            origin: 'algerian_media',
+          });
+        }
+      }
+    } catch (err) {
+      console.warn(`   ⚠ تعذر جلب أخبار ${src.name}: ${err.message}`);
+    }
+  }
+
+  console.log(`   ✔ تم استخراج ${trendingNews.length} خبراً متداولاً من الإعلام الجزائري.`);
+  return trendingNews;
+}
+
+// ════════════════════════════════════════════════════════════════
+// [المرحلة 2: جلب ترندات جوجل الحية في الجزائر (Google Trends)]
+// ════════════════════════════════════════════════════════════════
+async function fetchGoogleTrendsDZ() {
+  const trends = [];
+  console.log('📡 [ترندات قوقل] جلب الكلمات الأكثر بحثاً في الجزائر (geo: DZ)...');
+
+  // أ. محاولة عبر Google Trends RSS
   const rssUrls = [
     'https://trends.google.com/trending/rss?geo=DZ',
     'https://trends.google.com/trends/trendingsearches/daily/rss?geo=DZ',
@@ -158,7 +225,7 @@ async function fetchAlgeriaTrends() {
       const response = await axios.get(url, {
         timeout: 10000,
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Accept': 'application/rss+xml, application/xml, text/xml, */*',
         },
       });
@@ -170,68 +237,95 @@ async function fetchAlgeriaTrends() {
       const items = Array.isArray(channel.item) ? channel.item : [channel.item];
       for (const it of items) {
         const title = (it.title || '').trim();
-        const approxTraffic = it['ht:approx_traffic'] || '';
-        const description = (it.description || '').trim();
         const newsItems = it['ht:news_item'] || [];
         const newsArray = Array.isArray(newsItems) ? newsItems : [newsItems];
-
-        // استخراج روابط الأخبار المرفقة بالترند إن وجدت
         const sourceUrl = newsArray[0]?.['ht:news_item_url'] || it.link || '';
-        const sourceSnippet = newsArray[0]?.['ht:news_item_snippet'] || description || '';
+        const snippet = newsArray[0]?.['ht:news_item_snippet'] || it.description || '';
 
-        if (title && !trendsList.some((t) => t.keyword.toLowerCase() === title.toLowerCase())) {
-          trendsList.push({
-            keyword: title,
-            approxTraffic,
-            snippet: sourceSnippet,
-            sourceUrl,
+        if (title && !trends.some((t) => t.title.toLowerCase() === title.toLowerCase())) {
+          trends.push({
+            title,
+            link: sourceUrl,
+            snippet,
+            pubDate: it.pubDate || new Date().toISOString(),
+            sourceName: 'Google Trends DZ',
+            origin: 'google_trends',
           });
         }
       }
-    } catch (err) {
-      // تجاهل أخطاء الرابط وتجربة الرابط البديل
-    }
+    } catch {}
   }
 
-  return trendsList;
+  // ب. محاولة دعم عبر google-trends-api
+  if (trends.length === 0) {
+    try {
+      const res = await googleTrends.dailyTrends({ geo: 'DZ' });
+      const data = JSON.parse(res);
+      const days = data?.default?.trendingSearchesDays || [];
+      for (const day of days) {
+        for (const search of day.trendingSearches || []) {
+          const title = search?.title?.query;
+          const article = search?.articles?.[0];
+          if (title) {
+            trends.push({
+              title,
+              link: article?.url || '',
+              snippet: article?.snippet || article?.title || '',
+              pubDate: new Date().toISOString(),
+              sourceName: 'Google Trends API',
+              origin: 'google_trends',
+            });
+          }
+        }
+      }
+    } catch {}
+  }
+
+  console.log(`   ✔ تم رصد ${trends.length} ترند من قوقل الجزائر.`);
+  return trends;
 }
 
-// ─── 4. مطابقة الترند مع اختصاصات الموقع ─────────────────────────
-function matchTrendWithGovRule(trendKeyword, snippet = '') {
-  const text = `${trendKeyword} ${snippet}`.toLowerCase();
+// ════════════════════════════════════════════════════════════════
+// [المرحلة 3: التحقق والمطابقة الرسمية (منع المحتوى الرديء)]
+// ════════════════════════════════════════════════════════════════
+/**
+ * ⚠ القاعدة الحاسمة:
+ * إذا لم نجد تطابقاً مؤكداً مع قاعدة البيانات الرسمية أو موضوعاً خدمياً موثوقاً،
+ * يتم استبعاد الموضوع تماماً ولا يُكتب عنه أي مقال.
+ */
+function verifyAndMatchOfficialSource(trendItem) {
+  const fullText = `${trendItem.title} ${trendItem.snippet}`.toLowerCase();
 
-  // استبعاد الرياضة والمشاهير والسياسة الدولية
+  // 1. فلتر الاستبعاد الفوري (رياضة، فن، سياسة دولية)
   const isExcluded = EXCLUDE_KEYWORDS.some((ex) => {
     if (ex.length <= 4) {
-      const reg = new RegExp(`\\b${ex}\\b`, 'i');
-      return reg.test(text);
+      return new RegExp(`\\b${ex}\\b`, 'i').test(fullText);
     }
-    return text.includes(ex.toLowerCase());
+    return fullText.includes(ex.toLowerCase());
   });
   if (isExcluded) return null;
 
-  // مطابقة مع القواعد الحكومية والخدمات بدقة عالية
-  for (const rule of GOV_TOPIC_RULES) {
-    const matched = rule.keywords.some((kw) => {
+  // 2. التحقق من مطابقة الموضوع مع إحدى الجهات الحكومية أو الخدمية المعتمدة
+  for (const official of OFFICIAL_GOV_DATABASE) {
+    const isMatch = official.keywords.some((kw) => {
       const kwLower = kw.toLowerCase();
-      // إذا كانت الكلمة قصيرة أو باللاتينية نستخدم فحص الكلمة الكاملة
       if (kwLower.length <= 4 && /^[a-z0-9]+$/i.test(kwLower)) {
-        const reg = new RegExp(`\\b${kwLower}\\b`, 'i');
-        return reg.test(text);
+        return new RegExp(`\\b${kwLower}\\b`, 'i').test(fullText);
       }
-      return text.includes(kwLower);
+      return fullText.includes(kwLower);
     });
 
-    if (matched) {
-      return rule;
+    if (isMatch) {
+      return official; // تم التحقق والربط بالجهة الرسمية
     }
   }
 
-  return null;
+  return null; // لم يطابق أي جهة رسمية ⬅ يتم تجاهله
 }
 
-// ─── 5. فحص واستخراج الصورة الرسمية عبر Node.js ─────────────────
-// ⚠ قاعدة الصور الصارمة: إذا وُجد بيان مصور حقيقي نضعه، وإلا لا نضع شيئاً إطلاقاً
+// ════════════════════════════════════════════════════════════════
+// [المرحلة 4: استخراج الصورة الرسمية عبر cheerio و axios]
+// ════════════════════════════════════════════════════════════════
 async function extractOfficialImage(pageUrl) {
   if (!pageUrl || typeof pageUrl !== 'string' || !pageUrl.startsWith('http')) {
     return null;
@@ -250,7 +344,9 @@ async function extractOfficialImage(pageUrl) {
     });
 
     const $ = cheerio.load(response.data);
-    const ogImage = $('meta[property="og:image"]').attr('content') || $('meta[name="twitter:image"]').attr('content');
+    const ogImage = $('meta[property="og:image"]').attr('content') ||
+                    $('meta[property="og:image:url"]').attr('content') ||
+                    $('meta[name="twitter:image"]').attr('content');
 
     if (ogImage && isValidImageUrl(ogImage)) {
       const clean = ogImage.trim();
@@ -270,41 +366,30 @@ async function extractOfficialImage(pageUrl) {
 function isValidImageUrl(url) {
   if (!url || url.length < 8) return false;
   const lower = url.toLowerCase();
-  // تجنب الصور العامة والشعارات الصغيرة
   if (lower.includes('logo') || lower.includes('icon') || lower.includes('avatar')) return false;
-  return /\.(jpg|jpeg|png|webp)(\?.*)?$/i.test(lower) || lower.includes('/uploads/') || lower.includes('communique');
+  return /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(lower) || lower.includes('/uploads/') || lower.includes('image');
 }
 
-// ─── 6. كتابة مقال الترند السيو الخارق بـ Gemini ─────────────────
-async function generateTrendArticleWithGemini(trend, matchedRule) {
-  const prompt = `أنت خبير صحفي واستراتيجي تصدر محركات البحث (SEO Master) في الجزائر.
-الهدف: كتابة مقال شامل، حصري، واحترافي بنسبة 100% ليحتل المرتبة الأولى في بحث جوجل عن الكلمة الرائجة الحالية.
+// ════════════════════════════════════════════════════════════════
+// [المرحلة 5: صياغة المقال بـ Gemini بنظام التلقين الصارم]
+// ════════════════════════════════════════════════════════════════
+async function generateTrendArticleWithGemini(trendItem, matchedOfficial) {
+  const prompt = `أنت محرر صحفي خبير في السيو. اكتب مقالاً احترافياً بين 1000 و 1500 كلمة يستوفي الشروط التالية:
+1. عنوان رئيسي جذاب (H1)، مقدمة قوية، عناوين فرعية (H2, H3)، فقرات قصيرة، قوائم نقطية، خاتمة ودعوة لاتخاذ إجراء (CTA).
+2. إذا لم يذكر البيان الرسمي أرقاماً معينة، اكتب حرفياً: 'لم يُكشف بعد عن الأرقام الرسمية'. ممنوع منعاً باتاً اختراع أو تخمين أرقام أو تواريخ.
+3. اقتبس حرفياً الفقرة الرسمية الأولى من البيان مع وضع علامات تنصيص وذكر المصدر والجهة.
+4. في نهاية المقال، أنشئ قسماً بعنوان "الأسئلة الشائعة" يضم 3 أسئلة وأجوبة تخص الموضوع.
+5. ممنوع منعاً باتاً كتابة أي كود HTML للصور أو إضافة روابط صور، لأن السكريبت الخارجي يتكفل بالصور. أنت تكتب النص فقط.
+6. يجب أن يكون اللغة عربية فصيحة، مع مراعاة المصطلحات المتداولة في الجزائر.
 
-[الكلمة الرائجة في جوجل الآن]: "${trend.keyword}"
-[الجهة الرسمية المختصة]: ${matchedRule.name}
-[الرابط والمنصة الرسمية]: ${matchedRule.portalUrl || matchedRule.officialUrl}
-[سياق الخبر والبيانات المتاحة]: ${trend.snippet || 'موضوع رائج يبحث عنه المواطنون الجزائريون بكثافة الآن.'}
+[بيانات الترند والتحقق الرسمي]:
+- موضوع الترند الرائج: ${trendItem.title}
+- الجهة الرسمية المختصة: ${matchedOfficial.name}
+- الرابط والمنصة الرسمية: ${matchedOfficial.portalUrl || matchedOfficial.officialUrl}
+- سياق الخبر ومعطياته: ${trendItem.snippet || 'موضوع متداول في الجزائر يهم المواطنين.'}
+- مصدر الرصد: ${trendItem.sourceName} (${trendItem.link || matchedOfficial.portalUrl})
 
-[قواعد تحرير المقال الصارمة]:
-1. الطول: بين 1000 و 1500 كلمة باللغة العربية الفصيحة ذات الأسلوب الصحفي الموثوق.
-2. الهيكل المعماري للسيو:
-   - # عنوان H1 جذاب جداً وقوي (Click-Worthy) يستهدف الكلمة المفتاحية ويثير اهتمام القارئ دون مبالغة (ضمن 60 حرفاً).
-   - مقدمة قوية (150-200 كلمة) تجيب مباشرة على "نية الباحث" (Search Intent) وتشرح أهمية الموضوع وما يحتاجه القارئ فوراً.
-   - ## عناوين فرعية H2 و H3 (من 4 إلى 6 عناوين) تشمل:
-     • الشروط والفئات المعنية والمستفيدة.
-     • خطوات التسجيل أو الاستفادة خطوة بخطوة بالترتيب.
-     • الملف والوثائق الإدارية المطلوبة.
-     • نصائح عملية لتفادي الأخطاء الشائعة أو تعليق الطلبات.
-   - قوائم نقطية ورقمية منظمة لسهولة القراءة على الهاتف.
-   - اقتباس رسمي واحد على الأقل بين علامات تنصيص مع نسبته للمصدر الرسمي: [${matchedRule.name}](${matchedRule.portalUrl || matchedRule.officialUrl}).
-   - قسم إلزامي في النهاية: ## الأسئلة الشائعة حول ${trend.keyword} (FAQ) يحتوي على 3 إلى 4 أسئلة دقيقة وإجابات وافية ومفصلة.
-   - خاتمة موجهة للمواطنين مع دعوة للفعل ورابط مباشر للمنصة الرسمية.
-3. الدقة والواقعية: لا تخترع أرقاماً غير متوفرة (اكتب: "وفق ما توضحه الجهات الرسمية").
-4. 🚫 قاعدة صارمة جداً بخصوص الصور:
-   - يُمْنَع منعاً باتاً كتابة أي وسوم صور مثل ![]() أو <img> أو اختراع روابط صور وهمية.
-   - ركز فقط على المحتوى النصي الفاخر والمتقن.
-
-[الإخراج المطلوب]: ابدأ مباشرة بعنوان # H1 دون أي مقدمات أو هوامش.`;
+[الإخراج المطلوب]: ابدأ مباشرة بعنوان # H1 دون أي هوامش أو تعليقات خارجية.`;
 
   const candidateModels = [
     CONFIG.GEMINI_MODEL,
@@ -365,8 +450,7 @@ async function generateTrendArticleWithGemini(trend, matchedRule) {
   throw lastError || new Error('فشلت جميع نماذج Gemini');
 }
 
-// ─── 7. تحويل النص لـ JSON نظيف متوافق مع نظام الموقع ──────────
-function parseTrendToArticleJson(rawText, trend, matchedRule, officialImageUrl) {
+function parseTrendToArticleJson(rawText, trendItem, matchedOfficial, officialImageUrl) {
   const sanitizedText = rawText
     .replace(/!\[.*?\]\(.*?\)/g, '')
     .replace(/<img[^>]*>/gi, '')
@@ -374,12 +458,10 @@ function parseTrendToArticleJson(rawText, trend, matchedRule, officialImageUrl) 
 
   const lines = sanitizedText.split('\n').map((l) => l.trim()).filter(Boolean);
 
-  // استخراج العنوان H1
-  let title = trend.keyword;
+  let title = trendItem.title;
   const h1Line = lines.find((l) => l.startsWith('# '));
   if (h1Line) title = h1Line.replace(/^#\s*/, '').trim();
 
-  // استخراج المقدمة
   let introduction = '';
   let inIntro = false;
   for (const line of lines) {
@@ -389,7 +471,6 @@ function parseTrendToArticleJson(rawText, trend, matchedRule, officialImageUrl) 
   }
   introduction = introduction.trim();
 
-  // استخراج الأقسام
   const sections = [];
   let currentSection = null;
   for (const line of lines) {
@@ -403,50 +484,51 @@ function parseTrendToArticleJson(rawText, trend, matchedRule, officialImageUrl) 
   if (currentSection) sections.push(currentSection);
   sections.forEach((s) => (s.content = s.content.trim()));
 
-  // توليد slug معبر عن الترند
-  const slug = generateTrendSlug(trend.keyword);
+  const slug = generateTrendSlug(title);
 
   const article = {
     title,
     introduction: introduction || sanitizedText.slice(0, 500),
     sections: sections.length > 0 ? sections : [{ heading: 'تفاصيل الدليل والمعلومات الكاملة', content: sanitizedText }],
-    sourceMinistry: matchedRule.name,
-    categoryId: matchedRule.categoryId,
+    sourceMinistry: matchedOfficial.name,
+    categoryId: matchedOfficial.categoryId,
     dateStr: new Date().toLocaleDateString('ar-DZ', { year: 'numeric', month: 'long', day: 'numeric' }),
-    officialDocumentUrl: matchedRule.portalUrl || matchedRule.officialUrl,
+    officialDocumentUrl: matchedOfficial.portalUrl || matchedOfficial.officialUrl,
     isTrendingTopic: true,
-    trendingKeyword: trend.keyword,
+    trendingKeyword: trendItem.title,
     autoGenerated: true,
     generatedAt: new Date().toISOString(),
     registrationRequiredSites: [
       {
-        name: matchedRule.name,
-        url: matchedRule.portalUrl || matchedRule.officialUrl,
-        requirements: 'الولوج للمنصة الرسمية لاستكمال الإجراءات',
+        name: matchedOfficial.name,
+        url: matchedOfficial.portalUrl || matchedOfficial.officialUrl,
+        requirements: 'المنصة الرسمية المعتمدة',
       },
     ],
   };
 
-  // ⚠ قاعدة الصور الصارمة: إذا وُجدت صورة رسمية موثقة نضعها، وإلا لا نضع أي صورة
+  // ربط الصورة الرسمية فقط إن وُجدت
   if (officialImageUrl) {
     article.featuredImage = {
       url: officialImageUrl,
-      alt: `بيان رسمي حول ${trend.keyword} — ${matchedRule.name}`,
+      alt: `صورة موثقة حول ${trendItem.title} — ${matchedOfficial.name}`,
     };
   }
 
   return { slug, article };
 }
 
-function generateTrendSlug(keyword) {
-  const clean = keyword
+function generateTrendSlug(title) {
+  const clean = title
     .replace(/[^\u0621-\u064A0-9a-zA-Z\s]/g, '')
     .replace(/\s+/g, '-')
     .slice(0, 45);
   return `trend-${clean}-${Date.now().toString(36)}`.toLowerCase();
 }
 
-// ─── 8. حفظ المقال والفهرسة الفورية ──────────────────────────
+// ════════════════════════════════════════════════════════════════
+// [المرحلة 6: الحفظ والفهرسة الفورية]
+// ════════════════════════════════════════════════════════════════
 function saveArticle(slug, article) {
   let data = {};
   if (fs.existsSync(CONFIG.ARTICLES_JSON)) {
@@ -477,89 +559,100 @@ function pingIndexNow(url) {
   req.end();
 }
 
-// ─── 9. المحرك الرئيسي للرادار ────────────────────────────────
+// ─── المحرك الرئيسي ───────────────────────────────────────────
 async function main() {
-  console.log('\n' + '='.repeat(60));
-  console.log('🔥 RAQMANA — رادار تصيد ترندات جوجل الجزائر v1.0');
-  console.log('🎯 الهدف: احتلال المرتبة الأولى في مواضيع البحث الرائجة');
-  console.log('='.repeat(60) + '\n');
+  console.log('\n' + '='.repeat(65));
+  console.log('🔥 RAQMANA — رادار تصيد الترندات والإعلام الجزائري (v3.0)');
+  console.log('🛡 قاعدة التحقق: مطابقة مع 267 جهة رسمية (0 مقالات عند عدم التحقق)');
+  console.log('='.repeat(65) + '\n');
 
-  const state = loadTrendsState();
+  const history = loadHistory();
+  if (!history.processedTrends) history.processedTrends = {};
 
-  console.log('📡 جلب أحدث ترندات البحث في الجزائر (Google Trends DZ)...');
-  const liveTrends = await fetchAlgeriaTrends();
-  console.log(`📊 تم رصد ${liveTrends.length} كلمة بحث رائجة اليوم.\n`);
+  // 1. قراءة إعدادات المصادر
+  const sitesConfig = JSON.parse(fs.readFileSync(CONFIG.SITES_CONFIG, 'utf8'));
+  const newsSources = sitesConfig.algerian_news_sources || [];
 
-  let generatedCount = 0;
+  // 2. جلب ترندات قوقل + الأخبار الرائجة من الصحف الجزائرية
+  const [googleTrendsList, mediaNewsList] = await Promise.all([
+    fetchGoogleTrendsDZ(),
+    crawlAlgerianNewsSources(newsSources),
+  ]);
 
-  for (const trend of liveTrends) {
-    // 1. تجاوز الترندات المعالجة سابقاً
-    const trendKey = trend.keyword.toLowerCase().trim();
-    if (state.processedTrends[trendKey]) {
+  const allCandidateTrends = [...googleTrendsList, ...mediaNewsList];
+  console.log(`\n📊 إجمالي المرشحات للتحليل: ${allCandidateTrends.length} موضوع متداول.`);
+
+  let writtenCount = 0;
+
+  for (const item of allCandidateTrends) {
+    const itemKey = item.title.toLowerCase().trim();
+
+    // تجاوز المواضيع المعالجة سابقاً
+    if (history.processedTrends[itemKey] || history.processedItems[item.link]) {
       continue;
     }
 
-    // 2. التحقق من مطابقة الترند لخدمات وتخصص الموقع
-    const matchedRule = matchTrendWithGovRule(trend.keyword, trend.snippet);
-    if (!matchedRule) {
-      continue; // ترند رياضي أو فني أو غير متعلق بالموقع
+    // 3. التحقق والمطابقة الرسمية
+    const matchedOfficial = verifyAndMatchOfficialSource(item);
+    if (!matchedOfficial) {
+      continue; // لم يثبت ارتباطه بموضوع خدمي أو رسمي موثوق ⬅ تجاهل تام
     }
 
-    if (generatedCount >= CONFIG.MAX_TREND_ARTICLES_PER_RUN) {
-      console.log(`⏸ تم بلوغ حد الدورة (${CONFIG.MAX_TREND_ARTICLES_PER_RUN} مقالات ترند حصرية).`);
+    if (writtenCount >= CONFIG.MAX_TREND_ARTICLES_PER_RUN) {
+      console.log(`\n⏸ تم بلوغ حد المقالات الحصرية في هذه الجلسة (${CONFIG.MAX_TREND_ARTICLES_PER_RUN}).`);
       break;
     }
 
-    console.log(`\n🎯 صيد ثمين! ترند مطابق لتخصصنا: "${trend.keyword}"`);
-    console.log(`   🏛 الجهة المختصة: ${matchedRule.name}`);
+    console.log(`\n🎯 [صيد ثمين مُوثّق]: "${item.title}"`);
+    console.log(`   🏛 الجهة المعتمدة: ${matchedOfficial.name}`);
 
     try {
-      // 3. فحص واستخراج الصورة الرسمية
-      process.stdout.write('   🖼 فحص الصورة الرسمية...');
-      const officialImage = trend.sourceUrl ? await extractOfficialImage(trend.sourceUrl) : null;
-      console.log(officialImage ? ` ✅ تم العثور على بيان مصور` : ` ℹ بدون بيان مصور (مقال نصي نقي)`);
+      // 4. استخراج الصورة الرسمية
+      process.stdout.write('   🖼 استخراج الصورة الرسمية...');
+      const officialImage = item.link ? await extractOfficialImage(item.link) : null;
+      console.log(officialImage ? ` ✅ صورة موثقة من الرابط` : ` ℹ بدون بيان مصور (نص احترافي نقي)`);
 
-      // 4. كتابة المقال السيو بـ Gemini
-      process.stdout.write('   ✍ صياغة المقال الحصري بـ Gemini...');
-      const rawText = await generateTrendArticleWithGemini(trend, matchedRule);
+      // 5. صياغة المقال بـ Gemini
+      process.stdout.write('   ✍ صياغة المقال السيو الخارق بـ Gemini...');
+      const rawText = await generateTrendArticleWithGemini(item, matchedOfficial);
       console.log(' ✅');
 
-      // 5. تحويل وتخزين المقال
-      const { slug, article } = parseTrendToArticleJson(rawText, trend, matchedRule, officialImage);
+      // 6. تحويل وحفظ المقال
+      const { slug, article } = parseTrendToArticleJson(rawText, item, matchedOfficial, officialImage);
       saveArticle(slug, article);
-      console.log(`   💾 تم حفظ المقال: /articles/${slug}`);
+      console.log(`   💾 تم الحفظ بنجاح: /articles/${slug}`);
 
-      // 6. الفهرسة الفورية (IndexNow)
+      // 7. الفهرسة الفورية
       const articleUrl = `https://www.raqmanadz.com/articles/${slug}`;
       pingIndexNow(articleUrl);
       console.log(`   ⚡ تم إرسال تنبيه الأرشفة الفورية (IndexNow)`);
 
-      // 7. تحديث الحالة
-      state.processedTrends[trendKey] = {
+      // 8. تحديث سجل التاريخ
+      history.processedTrends[itemKey] = {
         slug,
-        keyword: trend.keyword,
-        category: matchedRule.categoryId,
+        title: item.title,
+        official: matchedOfficial.name,
         processedAt: new Date().toISOString(),
       };
-      generatedCount++;
+      if (item.link) {
+        history.processedItems[item.link] = { slug, processedAt: new Date().toISOString() };
+      }
+      writtenCount++;
 
-      // انتظار فاصل زمني
       await new Promise((r) => setTimeout(r, 2000));
 
     } catch (err) {
-      console.error(`   ❌ تعذر إكمال مقال الترند: ${err.message}`);
-      state.processedTrends[trendKey] = {
-        error: err.message,
-        skippedAt: new Date().toISOString(),
-      };
+      console.error(`   ❌ تعذر معالجة الترند: ${err.message}`);
+      history.processedTrends[itemKey] = { error: err.message, skippedAt: new Date().toISOString() };
     }
   }
 
-  saveTrendsState(state);
+  history.lastRun = new Date().toISOString();
+  saveHistory(history);
 
-  console.log('\n' + '='.repeat(60));
-  console.log(`🎉 اكتمل تشغيل الرادار — تم صيد وكتابة ${generatedCount} مقال ترند حصري!`);
-  console.log('='.repeat(60) + '\n');
+  console.log('\n' + '='.repeat(65));
+  console.log(`🎉 اكتمل تشغيل الرادار — تم صيد وكتابة ${writtenCount} مقال ترند رسمي موثق!`);
+  console.log('='.repeat(65) + '\n');
 }
 
 main().catch((err) => {
