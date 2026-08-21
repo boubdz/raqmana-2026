@@ -78,10 +78,15 @@ const STRICT_EXCLUDE_LIST = [
   'طقس', 'نشرة جوية', 'أمطار رعدية', 'رياح قوية', 'حرارة قياسية', 'زلزال', 'هزة أرضية',
   // السياسة الدولية والاقتصاد الكلي العام غير المتعلق بالخدمات الإدارية
   'روسيا', 'أوكرانيا', 'إسرائيل', 'غزة', 'ترامب', 'بايدن', 'ماكرون',
+  // ━ الدين والشعائر — ممنوع 100% بلا استثناء ━
+  // ملاحظة: "أضاحي / أضحية" مستبعدة نهائياً. السكريبت لا يستطيع التحقق من موسمية الخبر، فيكتب عن عيد الأضحى وقد مضى منذ أسابيع
+  'عيد الأضحى', 'عيد الفطر', 'أضاحي', 'أضحية', 'صلاة العيد', 'خطبة الجمعة',
+  'الخطبة الدينية', 'الوعظ والإرشاد', 'الفتوى', 'شعائر الحج', 'رمضان', 'التراويح',
+  'ليلة القدر', 'الهلال', 'رؤية الهلال', 'الفتوى الدينية', 'الشعائر الدينية',
 ];
 
 // ─── مرشح APS النهائي: استبعاد السياسة الخارجية والاقتصاد الكلي العام ─────
-// يُطبَّق خصيصاً على أخبار APS قبل كتابة أي مقال
+// يُطبَّق خصيصاً على أخبار APS بعد اجتياز القائمة السوداء العامة أعلاه
 const APS_FINAL_FILTER_EXCLUDE = [
   // العلاقات الدولية والدبلوماسية
   'علاقات دولية', 'وزير الخارجية', 'دبلوماسية', 'السفير الجزائري', 'التعاون الدولي',
@@ -91,8 +96,6 @@ const APS_FINAL_FILTER_EXCLUDE = [
   'أسعار البترول', 'أوبك', 'opec', 'تصدير الغاز', 'عجز الميزانية',
   // العسكرية والأمن القومي (ما عدا الخدمة الوطنية والتجنيد)
   'المناورات العسكرية', 'التدريبات القتالية', 'الأسلحة', 'الدفاع الوطني الاستراتيجي',
-  // الدين والشعائر (ما عدا ما له علاقة بالخدمات كأضاحي العيد)
-  'الخطبة الدينية', 'الوعظ والإرشاد', 'الشعائر الدينية', 'الفتوى',
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -391,7 +394,8 @@ async function crawlAlgerianNewsSources(sources) {
               title,
               link,
               snippet,
-              pubDate,
+              // ━ null بدلاً من التاريخ الحالي: إذا كان RSS لا يحمل pubDate حقيقياً، سترفضه مصفاة 48 ساعة
+              pubDate: item.pubDate || item.isoDate || null,
               sourceName: src.name,
               isTier1Official: false,
             });
@@ -442,11 +446,13 @@ async function fetchGoogleTrendsDZ() {
         const snippet = newsArray[0]?.['ht:news_item_snippet'] || it.description || '';
 
         if (title && !trends.some((t) => t.title.toLowerCase() === title.toLowerCase())) {
+          // ━ pubDate الحقيقي من RSS الترند، أو null إذا كان فارغاً
+          const trendPubDate = it.pubDate || null;
           trends.push({
             title,
             link: sourceUrl,
             snippet,
-            pubDate: it.pubDate || new Date().toISOString(),
+            pubDate: trendPubDate,
             sourceName: 'Google Trends DZ',
             isTier1Official: false,
           });
@@ -469,7 +475,8 @@ async function fetchGoogleTrendsDZ() {
               title,
               link: article?.url || '',
               snippet: article?.snippet || article?.title || '',
-              pubDate: new Date().toISOString(),
+              // ━ ترندات جوجل API لا تحمل pubDate دقيقاً، نضعها null لترفضها المصفاة
+              pubDate: null,
               sourceName: 'Google Trends API',
               isTier1Official: false,
             });
@@ -954,7 +961,22 @@ async function main() {
       continue;
     }
 
-    // التحقق والمطابقة الإدارية مع دعم دلالات APS
+    // ─── مصفاة الوقت (48 ساعة) ━ صارمة لجميع المصادر بلا استثناء ───
+    // قاعدة 1: خبر بدون تاريخ نشر → مرفوض فوراً (لا يمكن التحقق من حداثته)
+    if (!item.pubDate) {
+      console.log(`   ⏩ تجاهل (بدون تاريخ نشر): ${item.title.slice(0, 50)}`);
+      history.processedTrends[itemKey] = { skippedReason: 'no_pubdate', skippedAt: new Date().toISOString() };
+      continue;
+    }
+    // قاعدة 2: خبر أقدم من 48 ساعة → مرفوض فوراً
+    const itemDate = new Date(item.pubDate);
+    const nowTs = Date.now();
+    const ageHours = (nowTs - itemDate.getTime()) / (1000 * 60 * 60);
+    if (isNaN(ageHours) || ageHours > 48) {
+      console.log(`   ⏩ تجاهل (${Math.round(ageHours)} ساعة — أقدم من 48 ساعة): ${item.title.slice(0, 50)}`);
+      history.processedTrends[itemKey] = { skippedReason: 'older_than_48h', ageHours: Math.round(ageHours), skippedAt: new Date().toISOString() };
+      continue;
+    }
     const matchedOfficial = verifyAndMatchAdministrativeWithAPS(item);
     if (!matchedOfficial) {
       continue; // تم استبعاده

@@ -61,13 +61,21 @@ if (!CONFIG.GEMINI_API_KEY) {
   process.exit(1);
 }
 
-// ─── كلمات الاستبعاد (فلتر التخصص الذكي) ──────────────────────
+// ─── كلمات الاستبعاد (فلتر التخصص الذكي) ──────────────
 const EXCLUDE_KEYWORDS = [
+  // الرياضة وكرة القدم
   'كرة', 'مباراة', 'فريق', 'دوري', 'كأس', 'رونالدو', 'ميسي', 'نادي', 'لاعب', 'هدف',
   'تصفيات', 'منتخب', 'ريال', 'برشلونة', 'أرسنال', 'ليفربول', 'سيتي', 'marseille',
   'madrid', 'barcelona', 'champions', 'league', 'football', 'match',
+  // الفن والترفيه
   'مطرب', 'فنان', 'ممثل', 'مسلسل', 'أغنية', 'فيلم', 'سينما', 'تيك توك',
+  // السياسة الدولية
   'روسيا', 'أوكرانيا', 'إسرائيل', 'غزة', 'ترامب', 'بايدن',
+  // ━ الدين والشعائر — ممنوع 100% ━
+  // ملاحظة: "أضاحي" مستبعدة نهائياً لأنها مجال فصلي تنتهي بعد العيد، والسكريبت ليس لديه آلية للتحقق من موسميته
+  'عيد الأضحى', 'عيد الفطر', 'أضاحي', 'أضحية', 'صلاة العيد', 'خطبة الجمعة',
+  'الخطبة الدينية', 'الوعظ والإرشاد', 'الفتوى', 'شعائر الحج', 'رمضان', 'التراويح',
+  'ليلة القدر', 'الهلال', 'رؤية الهلال', 'الفتوى الدينية', 'الشعائر الدينية',
 ];
 
 // ─── قراءة إعدادات المواقع ────────────────────────────────────
@@ -110,7 +118,8 @@ async function fetchFeedItems(rssUrl) {
         title: (item.title || '').trim(),
         link: item.link || item.guid || '',
         description: item.contentSnippet || item.content || item.summary || '',
-        pubDate: item.pubDate || item.isoDate || new Date().toISOString(),
+        // ━ لا يُستبدل بالتاريخ الحالي إذا كان pubDate فارغاً — null يجعل المصفاة ترفضه فوراً
+        pubDate: item.pubDate || item.isoDate || null,
         guid: item.guid || item.link || item.title,
       }));
     }
@@ -128,7 +137,8 @@ async function fetchFeedItems(rssUrl) {
           title: (item.title || '').trim(),
           link: item.link || item.guid || '',
           description: item.contentSnippet || item.content || item.summary || '',
-          pubDate: item.pubDate || item.isoDate || new Date().toISOString(),
+          // ━ null بدلاً من التاريخ الحالي — يضمن رفض الأخبار بدون تاريخ
+          pubDate: item.pubDate || item.isoDate || null,
           guid: item.guid || item.link || item.title,
         }));
       }
@@ -459,7 +469,11 @@ async function processSite(site, history, articlesCount) {
         continue;
       }
 
-      // 4. مصفاة الوقت (48 ساعة)
+      // 4. مصفاة الوقت (48 ساعة) ━ صارمة: خبر بدون تاريخ = مرفوض 100%
+      if (!item.pubDate) {
+        history.processedItems[item.guid || item.link] = { skippedReason: 'no_pubdate', skippedAt: new Date().toISOString() };
+        continue;
+      }
       const newsDate = new Date(item.pubDate);
       const now = new Date();
       const diffHours = (now.getTime() - newsDate.getTime()) / (1000 * 60 * 60);
