@@ -2,9 +2,9 @@ name: 🤖 Raqmana News & Trends Autopilot
 
 on:
   schedule:
-    # ─── Cron 1: الأخبار الحكومية الرسمية (كل ساعة) ───────────
-    - cron: '0 * * * *'
-    # ─── Cron 2: رادار الترندات والإعلام الجزائري (كل 3 ساعات: 9ص إلى 12 ليلاً بتوقيت الجزائر) ───
+    # ─── Cron 1: الأخبار الحكومية الرسمية (كل 3 ساعات توفيراً لـ Gemini و GitHub Actions) ───
+    - cron: '0 */3 * * *'
+    # ─── Cron 2: رادار الترندات وAPS والإعلام الجزائري (كل 3 ساعات: 9ص إلى 12 ليلاً بتوقيت الجزائر) ───
     - cron: '0 8,11,14,17,20,23 * * *'
     # ─── Cron 3: المواقع الثانوية Tier 2 (يومياً الساعة 3:00 فجراً بتوقيت الجزائر) ────────────
     - cron: '0 2 * * *'
@@ -93,7 +93,7 @@ jobs:
     # تشغيل عند Cron 1 أو يدوياً بـ official أو all
     if: |
       (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'official' || github.event.inputs.job_type == 'all')) ||
-      (github.event_name == 'schedule' && github.event.schedule == '0 * * * *')
+      (github.event_name == 'schedule' && github.event.schedule == '0 */3 * * *')
 
     steps:
       - name: '📥 Checkout المستودع'
