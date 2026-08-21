@@ -820,12 +820,44 @@ function parseTrendToArticleJson(rawText, trendItem, matchedOfficial, officialIm
   return { slug, article };
 }
 
+// خريطة تحويل الأحرف العربية إلى ما يقابلها بالأحرف اللاتينية (ASCII-safe slugs)
+const ARABIC_TO_LATIN = {
+  'ا': 'a', 'أ': 'a', 'إ': 'a', 'آ': 'a', 'ء': 'a',
+  'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': 'h',
+  'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
+  'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't',
+  'ظ': 'dh', 'ع': 'a', 'غ': 'gh', 'ف': 'f', 'ق': 'q',
+  'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ه': 'h',
+  'و': 'w', 'ي': 'y', 'ى': 'a', 'ة': 'a', 'ئ': 'y',
+  'ؤ': 'w', 'لا': 'la', 'لأ': 'la', 'لآ': 'la', 'لإ': 'li',
+  '\u064b': '', '\u064c': '', '\u064d': '', '\u064e': '', '\u064f': '',
+  '\u0650': '', '\u0651': '', '\u0652': '',
+};
+
+function arabicToSlug(text) {
+  let result = '';
+  for (let i = 0; i < text.length; i++) {
+    const twoChar = text.slice(i, i + 2);
+    if (ARABIC_TO_LATIN[twoChar] !== undefined) {
+      result += ARABIC_TO_LATIN[twoChar];
+      i++;
+    } else if (ARABIC_TO_LATIN[text[i]] !== undefined) {
+      result += ARABIC_TO_LATIN[text[i]];
+    } else if (/[a-zA-Z0-9]/.test(text[i])) {
+      result += text[i].toLowerCase();
+    } else if (/\s/.test(text[i])) {
+      result += '-';
+    }
+    // skip anything else (punctuation, symbols)
+  }
+  return result.replace(/-{2,}/g, '-').replace(/^-|-$/g, '');
+}
+
 function generateTrendSlug(title) {
-  const clean = title
-    .replace(/[^\u0621-\u064A0-9a-zA-Z\s]/g, '')
-    .replace(/\s+/g, '-')
-    .slice(0, 45);
-  return `trend-${clean}-${Date.now().toString(36)}`.toLowerCase();
+  // ننتج slug نقي ASCII فقط لضمان عمل Next.js routing بدون أخطاء URL-encoding
+  const ascii = arabicToSlug(title).slice(0, 50);
+  const id = Date.now().toString(36); // معرّف قصير فريد
+  return `trend-${ascii || 'article'}-${id}`;
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -836,8 +868,36 @@ function saveArticle(slug, article) {
   if (fs.existsSync(CONFIG.ARTICLES_JSON)) {
     try { data = JSON.parse(fs.readFileSync(CONFIG.ARTICLES_JSON, 'utf8')); } catch {}
   }
-  data[slug] = article;
-  fs.writeFileSync(CONFIG.ARTICLES_JSON, JSON.stringify(data, null, 2), 'utf8');
+
+  // ─── ترحيل تلقائي: تحويل slugs العربية القديمة إلى slugs ASCII آمنة ────
+  // هذا يُصلح الـ 404 للمقالات التي نُشرت بـ slugs عربية سابقاً
+  const migratedData = {};
+  let migrationCount = 0;
+  for (const [existingSlug, existingArticle] of Object.entries(data)) {
+    const hasArabic = /[\u0600-\u06FF]/.test(existingSlug);
+    if (hasArabic) {
+      // استخراج الجزء الذي بعد 'trend-' وقبل المعرّف الأخير
+      const innerPart = existingSlug.replace(/^trend-/, '').replace(/-[a-z0-9]+$/, '');
+      const asciiPart = arabicToSlug(innerPart).slice(0, 50);
+      const suffix = existingSlug.match(/-([a-z0-9]+)$/);
+      const newSlug = `trend-${asciiPart || 'article'}-${suffix ? suffix[1] : Date.now().toString(36)}`;
+      if (!data[newSlug]) {
+        migratedData[newSlug] = existingArticle;
+        migrationCount++;
+        console.log(`   🔄 ترحيل slug: ${existingSlug} → ${newSlug}`);
+      } else {
+        migratedData[existingSlug] = existingArticle; // احتفظ بالقديم إذا الجديد موجود
+      }
+    } else {
+      migratedData[existingSlug] = existingArticle;
+    }
+  }
+  if (migrationCount > 0) {
+    console.log(`   ✅ تم ترحيل ${migrationCount} slug(s) عربية إلى ASCII`);
+  }
+
+  migratedData[slug] = article;
+  fs.writeFileSync(CONFIG.ARTICLES_JSON, JSON.stringify(migratedData, null, 2), 'utf8');
 }
 
 function pingIndexNow(url) {

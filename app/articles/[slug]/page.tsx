@@ -19,9 +19,30 @@ type Props = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function findArticleAndSlug(articles: Record<string, any>, rawSlug: string) {
+  if (!rawSlug) return { article: null, realSlug: "" };
+  if (articles[rawSlug]) return { article: articles[rawSlug], realSlug: rawSlug };
+  try {
+    const decoded = decodeURIComponent(rawSlug);
+    if (articles[decoded]) return { article: articles[decoded], realSlug: decoded };
+  } catch {}
+  try {
+    const encoded = encodeURIComponent(rawSlug);
+    if (articles[encoded]) return { article: articles[encoded], realSlug: encoded };
+  } catch {}
+  return { article: null, realSlug: rawSlug };
+}
+
 export async function generateStaticParams() {
   const articles = getAllArticlesMerged();
-  return Object.keys(articles).map((slug) => ({ slug }));
+  const allSlugs = new Set<string>();
+  for (const s of Object.keys(articles)) {
+    allSlugs.add(s);
+    try {
+      allSlugs.add(decodeURIComponent(s));
+    } catch {}
+  }
+  return Array.from(allSlugs).map((slug) => ({ slug }));
 }
 
 const highConvertingArticleMetadata: Record<string, { title: string; description: string }> = {
@@ -78,7 +99,7 @@ const highConvertingArticleMetadata: Record<string, { title: string; description
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const articles = getAllArticlesMerged();
-  const article = articles[slug];
+  const { article, realSlug } = findArticleAndSlug(articles, slug);
 
   if (!article) {
     return {
@@ -86,7 +107,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const highConv = highConvertingArticleMetadata[slug];
+  const highConv = highConvertingArticleMetadata[realSlug] || highConvertingArticleMetadata[slug];
   const title = highConv ? highConv.title : `${article.title} — رقمنة الجزائر 2026`;
   const description = highConv ? highConv.description : (article.introduction?.substring(0, 160) || "الدليل المعتمد والرابط المباشر للخدمات الرقمية في الجزائر 2026 ⚡");
 
@@ -94,16 +115,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: `https://www.raqmanadz.com/articles/${slug}`,
+      canonical: `https://www.raqmanadz.com/articles/${realSlug || slug}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://www.raqmanadz.com/articles/${slug}`,
+      url: `https://www.raqmanadz.com/articles/${realSlug || slug}`,
       type: "article",
       images: [
         {
-          url: `https://www.raqmanadz.com/articles/${slug}/opengraph-image`,
+          url: `https://www.raqmanadz.com/articles/${realSlug || slug}/opengraph-image`,
           width: 1200,
           height: 630,
           alt: title,
@@ -114,7 +135,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [`https://www.raqmanadz.com/articles/${slug}/opengraph-image`],
+      images: [`https://www.raqmanadz.com/articles/${realSlug || slug}/opengraph-image`],
     },
   };
 }
@@ -125,13 +146,13 @@ import { getCategoryIdForSlug, getAllDetailedServices } from "@/lib/category-map
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
   const articles = getAllArticlesMerged();
-  const article = articles[slug];
+  const { article, realSlug } = findArticleAndSlug(articles, slug);
 
   if (!article) {
     notFound();
   }
 
-  const categoryId = (article as any).categoryId || getCategoryIdForSlug(slug);
+  const categoryId = (article as any).categoryId || getCategoryIdForSlug(realSlug || slug);
   const allServices = getAllDetailedServices();
   const relatedServices = allServices
     .filter((s) => s.category.id === categoryId)
@@ -183,9 +204,9 @@ export default async function ArticlePage({ params }: Props) {
               {/* Social Proof Toolbar */}
               <div className="mb-8 max-w-md">
                 <ServiceToolbarBar
-                  serviceId={`article_${slug}`}
+                  serviceId={`article_${realSlug || slug}`}
                   serviceTitle={article.title}
-                  url={`/articles/${slug}`}
+                  url={`/articles/${realSlug || slug}`}
                   initialViews={54200}
                   initialRating={4.8}
                 />

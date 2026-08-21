@@ -38,7 +38,16 @@ export function saveCustomArticle(slug: string, article: SeoArticle): boolean {
 
 export function getCustomArticleBySlug(slug: string): SeoArticle | null {
   const custom = getCustomArticles();
-  return custom[slug] || null;
+  if (custom[slug]) return custom[slug];
+  try {
+    const decoded = decodeURIComponent(slug);
+    if (custom[decoded]) return custom[decoded];
+  } catch {}
+  try {
+    const encoded = encodeURIComponent(slug);
+    if (custom[encoded]) return custom[encoded];
+  } catch {}
+  return null;
 }
 
 export function deleteCustomArticle(slug: string): boolean {

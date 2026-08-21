@@ -1,7 +1,6 @@
 import { ImageResponse } from 'next/og';
-import { seoArticles } from '@/lib/seo-articles-data';
+import { getAllArticlesMerged } from '@/lib/custom-articles-store';
 
-export const runtime = 'edge';
 export const alt = 'رقمنة الجزائر — مقال';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -44,7 +43,13 @@ type Props = {
 
 export default async function ArticleOGImage({ params }: Props) {
   const { slug } = await params;
-  const article = seoArticles[slug];
+  const articles = getAllArticlesMerged();
+  let article = articles[slug];
+  if (!article) {
+    try {
+      article = articles[decodeURIComponent(slug)];
+    } catch {}
+  }
 
   const title = article?.title ?? 'مقال رقمنة الجزائر';
   const intro = article?.introduction?.substring(0, 120) ?? '';
