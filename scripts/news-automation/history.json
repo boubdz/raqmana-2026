@@ -139,6 +139,10 @@
     "https://www.mesrs.dz/?p=82318": {
       "skippedReason": "excluded_category",
       "skippedAt": "2026-08-21T12:27:34.940Z"
+    },
+    "https://www.ennaharonline.com/%d9%83%d9%86%d8%a7%d9%86-%d8%a7%d9%84%d8%ac%d8%b2%d8%a7%d8%a6%d8%b1-%d8%aa%d9%88%d9%82%d8%b9-%d8%a7%d8%aa%d9%81%d8%a7%d9%82%d9%8a%d8%a9-%d9%84%d9%86%d9%82%d9%84-100-%d8%a3%d9%84%d9%81-%d8%b7%d9%86/": {
+      "slug": "trend-aldlyl-alshaml-llastfada-mn-alkht-albhry-altsdyry--mt3eml5h",
+      "processedAt": "2026-08-21T20:31:04.869Z"
     }
   },
   "processedTrends": {
@@ -204,7 +208,14 @@
       "skippedReason": "older_than_48h",
       "ageHours": null,
       "skippedAt": "2026-08-21T11:31:44.943Z"
+    },
+    "كنان الجزائر توقع اتفاقية لنقل 100 ألف طن من مواد البناء نحو موريتانيا ودول الجوار": {
+      "slug": "trend-aldlyl-alshaml-llastfada-mn-alkht-albhry-altsdyry--mt3eml5h",
+      "title": "كنان الجزائر توقع اتفاقية لنقل 100 ألف طن من مواد البناء نحو موريتانيا ودول الجوار",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "النهار أونلاين",
+      "processedAt": "2026-08-21T20:31:04.869Z"
     }
   },
-  "lastRun": "2026-08-21T18:24:40.378Z"
+  "lastRun": "2026-08-21T20:31:06.873Z"
 }
