@@ -98,36 +98,77 @@ export async function POST(req: Request) {
       }
     }
 
-    // ----- الاحتياط: Groq -----
+    // ----- الاحتياط 1: Groq -----
     if (!generatedText && groqApiKey) {
-      const groq = new Groq({ apiKey: groqApiKey });
-
-      const response = await groq.chat.completions.create({
-        model: 'llama-3.1-8b-instant',
-        messages: [
-          {
-            role: 'system',
-            content: `اكتب النموذج بالهيكل التالي بدقة:
-            1. السطر الأول فقط: "الجمهورية الجزائرية الديمقراطية الشعبية" (مرة واحدة فقط، لا تكررها).
-            2. جدول بعمودين:
-               - اليمين: الاسم الكامل: ......، العنوان: ......، رقم الهاتف: ......، البريد الإلكتروني: ......
-               - اليسار: إلى السيد/ة: ......، المؤسسة/المديرية: ......، العنوان: ......
-            3. الموضوع: ثم المحتوى.
-            4. بعد المحتوى، أضف عبارة ختامية مهذبة مناسبة (مثل: "وتفضلوا بقبول فائق التقدير والاحترام." أو "وتقبلوا خالص الشكر والامتنان." أو "وتفضلوا بقبول خالص التقدير.") حسب الجهة المرسل إليها.
-            5. في الأسفل (يسار الصفحة): التوقيع: (فقط هذه الكلمة).
-            6. لا تضع عناوين علوية. لا تستخدم تفخيم.`,
-          },
-          {
-            role: 'user',
-            content: `المطلوب: ${description}`,
-          },
-        ],
-        temperature: 0.3,
-        max_tokens: 800,
-      });
-
-      generatedText = response.choices[0]?.message?.content || '';
+      try {
+        const groq = new Groq({ apiKey: groqApiKey });
+        const response = await groq.chat.completions.create({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            {
+              role: 'system',
+              content: `اكتب النموذج بالهيكل التالي بدقة:
+              1. السطر الأول فقط: "الجمهورية الجزائرية الديمقراطية الشعبية" (مرة واحدة فقط، لا تكررها).
+              2. جدول بعمودين:
+                 - اليمين: الاسم الكامل: ......، العنوان: ......، رقم الهاتف: ......، البريد الإلكتروني: ......
+                 - اليسار: إلى السيد/ة: ......، المؤسسة/المديرية: ......، العنوان: ......
+              3. الموضوع: ثم المحتوى.
+              4. بعد المحتوى، أضف عبارة ختامية مهذبة مناسبة (مثل: "وتفضلوا بقبول فائق التقدير والاحترام." أو "وتقبلوا خالص الشكر والامتنان." أو "وتفضلوا بقبول خالص التقدير.") حسب الجهة المرسل إليها.
+              5. في الأسفل (يسار الصفحة): التوقيع: (فقط هذه الكلمة).
+              6. لا تضع عناوين علوية. لا تستخدم تفخيم.`,
+            },
+            {
+              role: 'user',
+              content: `المطلوب: ${description}`,
+            },
+          ],
+          temperature: 0.3,
+          max_tokens: 800,
+        });
+        generatedText = response.choices[0]?.message?.content || '';
+      } catch (groqErr) {
+        console.warn('Groq fallback error:', groqErr);
+      }
     }
+
+    // ----- الاحتياط 2: Google Gemini (حصري ومجاني وآمن) -----
+    const geminiApiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    if (!generatedText && geminiApiKey) {
+      try {
+        const geminiPrompt = `أنت مساعد كتابة النماذج والعرائض الإدارية الجزائرية الرسمية.
+اكتب وثيقة إدارية بالهيكل التالي بدقة متناهية:
+1. السطر الأول فقط: "الجمهورية الجزائرية الديمقراطية الشعبية" (مرة واحدة فقط، لا تكررها).
+2. جدول أو أسطر بيانات بعمودين:
+   - الطرف الأيمن: الاسم واللقب: ......، العنوان: ......، رقم الهاتف: ......، البريد الإلكتروني: ......
+   - الطرف الأيسر: إلى السيد/ة: ......، المؤسسة/الجهة الوصية: ......، العنوان: ......
+3. سطر "الموضوع:" يليه المحتوى المطلوب بأسلوب ${toneInstruction || 'رسمي إداري جزائري رصين'}.
+4. عبارة ختامية مهذبة لائقة بالجهة الإدارية.
+5. في أسفل اليسار: كلمة "التوقيع:" فقط.
+ممنوع كتابة أي مقدمات أو شروحات خارج الوثيقة.
+
+بيانات الطلب:
+${description}`;
+
+        const geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey.trim()}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: geminiPrompt }] }],
+              generationConfig: { temperature: 0.3, maxOutputTokens: 800 },
+            }),
+          }
+        );
+        if (geminiRes.ok) {
+          const gData = await geminiRes.json();
+          generatedText = gData?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        }
+      } catch (gErr) {
+        console.warn('Gemini fallback error:', gErr);
+      }
+    }
+
 
     // ===== دالة تنظيف قوية =====
     function cleanGeneratedText(text: string): string {
