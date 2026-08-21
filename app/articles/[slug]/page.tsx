@@ -158,28 +158,81 @@ export default async function ArticlePage({ params }: Props) {
     .filter((s) => s.category.id === categoryId)
     .slice(0, 6);
 
-  // Generate JSON-LD for SEO
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": article.title,
-    "description": `رقمنة الجزائر: ${article.introduction.substring(0, 140)}`,
-    "author": {
-      "@type": "Organization",
-      "name": "رقمنة الجزائر",
-      "url": "https://www.raqmanadz.com"
+  // Generate Enhanced JSON-LD for Google Rich Snippets (Article + Breadcrumbs + FAQPage)
+  const schemas: any[] = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": article.title,
+      "description": `رقمنة الجزائر: ${article.introduction.substring(0, 150)}`,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://www.raqmanadz.com/articles/${realSlug || slug}`
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "رقمنة الجزائر",
+        "url": "https://www.raqmanadz.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "رقمنة الجزائر",
+        "url": "https://www.raqmanadz.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.raqmanadz.com/android-chrome-512x512.png"
+        }
+      },
+      "keywords": "رقمنة الجزائر, خدمات رقمية, الجزائر 2026, دليل المعاملات الإدارية"
     },
-    "publisher": {
-      "@type": "Organization",
-      "name": "رقمنة الجزائر",
-      "url": "https://www.raqmanadz.com"
-    },
-    "keywords": "رقمنة الجزائر, خدمات رقمية, الجزائر 2026"
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://www.raqmanadz.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "المقالات والأدلة",
+          "item": "https://www.raqmanadz.com/articles"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": article.title,
+          "item": `https://www.raqmanadz.com/articles/${realSlug || slug}`
+        }
+      ]
+    }
+  ];
+
+  // Inject FAQPage Schema if FAQs exist (enables Google Rich Snippets in Search)
+  const faqsList = (article as any).faqs || [];
+  if (faqsList && faqsList.length > 0) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqsList.map((f: { question: string; answer: string }) => ({
+        "@type": "Question",
+        "name": f.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": f.answer
+        }
+      }))
+    });
+  }
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#050505]" dir="rtl">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {schemas.map((s, idx) => (
+        <script key={idx} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />
+      ))}
       <Header />
       
       <main className="pb-32 pt-32">
@@ -266,6 +319,29 @@ export default async function ArticlePage({ params }: Props) {
                           </a>
                         )}
                       </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* FAQ Accordion Component */}
+              {(article as any).faqs && (article as any).faqs.length > 0 && (
+                <div className="mt-16 bg-muted/20 dark:bg-white/[0.02] border border-border/60 rounded-[2rem] p-8">
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="text-2xl">❓</span>
+                    <h3 className="text-2xl font-black text-[#1a1a1a] dark:text-white">الأسئلة الشائعة حول هذا الدليل</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {(article as any).faqs.map((faq: { question: string; answer: string }, idx: number) => (
+                      <details key={idx} className="group bg-white dark:bg-[#111] border border-black/5 dark:border-white/5 rounded-2xl p-6 transition-all [&_summary::-webkit-details-marker]:hidden">
+                        <summary className="flex items-center justify-between cursor-pointer font-bold text-base md:text-lg text-foreground group-hover:text-primary transition-colors select-none">
+                          <span>{faq.question}</span>
+                          <span className="ml-2 transition-transform duration-300 group-open:rotate-180 text-primary text-xl">▾</span>
+                        </summary>
+                        <p className="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed pt-4 border-t border-border/40">
+                          {faq.answer}
+                        </p>
+                      </details>
                     ))}
                   </div>
                 </div>
