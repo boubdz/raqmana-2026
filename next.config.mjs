@@ -64,8 +64,17 @@ const nextConfig = {
       { source: '/categories/complaint.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/request.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/orientation', destination: '/categories/university', permanent: true },
-      { source: '/admin/trend', destination: '/admin/trends', permanent: true },
       { source: '/categories/:slug.html', destination: '/categories/:slug', permanent: true },
+      // ✅ 301 Redirects for duplicate article/category routes to resolve Google Search Console Duplicate Canonical issue
+      { source: '/articles/youth', destination: '/categories/youth', permanent: true },
+      { source: '/articles/banking', destination: '/categories/banking', permanent: true },
+      { source: '/articles/justice', destination: '/categories/justice', permanent: true },
+      { source: '/articles/eVisa', destination: '/categories/foreignAffairs', permanent: true },
+      { source: '/articles/dzds', destination: '/categories/dzds', permanent: true },
+      { source: '/articles/startups', destination: '/categories/commerce', permanent: true },
+      { source: '/articles/insurance', destination: '/categories/insurance', permanent: true },
+      { source: '/articles/agricultureWater', destination: '/categories/agriculture', permanent: true },
+      { source: '/articles/cnrc', destination: '/categories/cnrc', permanent: true },
     ];
   },
 
