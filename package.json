@@ -14,6 +14,7 @@
         "index:now": "node scripts/index-master.mjs --indexnow",
         "index:google": "node scripts/index-master.mjs --google",
         "news": "node scripts/news-automation/auto-news-worker.js",
+        "news:trends": "node scripts/news-automation/trends-radar-worker.js",
         "news:tier2": "node scripts/news-automation/auto-news-worker.js --tier=2",
         "news:all": "node scripts/news-automation/auto-news-worker.js --all",
         "news:index": "node scripts/news-automation/indexing-process.js"

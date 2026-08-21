@@ -51,11 +51,17 @@ jobs:
       - name: '📦 تثبيت التبعيات'
         run: npm ci --prefer-offline
 
-      - name: '📦 تثبيت تبعيات سكريبت الأخبار'
-        run: npm install --no-save xml2js cheerio
+      - name: '📦 تثبيت تبعيات سكريبت الأخبار والترندات'
+        run: npm install --no-save xml2js cheerio axios
 
       - name: '🔐 إنشاء ملف service-account.json'
         run: echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}' > service-account.json
+
+      - name: '🔥 تشغيل رادار تصيد ترندات قوقل الجزائر'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NODE_ENV: production
+        run: node scripts/news-automation/trends-radar-worker.js
 
       - name: '🤖 تشغيل محرك الأخبار — Tier 1'
         env:
@@ -72,8 +78,8 @@ jobs:
         run: |
           git config user.name "Raqmana News Bot"
           git config user.email "bot@raqmanadz.com"
-          git add lib/custom-articles-data.json public/auto-news-sitemap.xml || true
-          git diff --staged --quiet || git commit -m "🤖 auto: Tier1 news articles $(date +'%Y-%m-%d %H:%M')"
+          git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/news-state.json scripts/news-automation/trends-state.json || true
+          git diff --staged --quiet || git commit -m "🤖 auto: Trends & Tier1 articles $(date +'%Y-%m-%d %H:%M')"
           git push || echo "لا توجد تغييرات لرفعها"
 
       - name: '🧹 حذف ملف الاعتماد الحساس'
