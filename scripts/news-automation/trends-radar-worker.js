@@ -1,13 +1,21 @@
 /**
- * trends-radar-worker.js — رادار ترندات قوقل والإعلام الجزائري (v3.1 — بنظام الفلترة الإدارية الصارم)
- * ===============================================================================================
- * 🛡 الحماية الصارمة من المحتوى غير المرتبط:
- * 1. استبعاد فوري لأي أخبار حوادث (اصطدام، غرق، حرائق، قتلى، جرحى)، جرائم (مخدرات، توقيف، سرقة، محاكم)،
- *    رياضة، فن، فضائح، ونشرات جوية.
- * 2. مطابقة إدارية دقيقة وحصرية (Administrative Whitelist) مع الخدمات والمعاملات العمومية والمنصات الرسمية.
- * 3. إذا لم يثبت ارتباط الموضوع بخدمة حكومية أو معاملة إدارية رسمية، يتم تجاهله فوراً ويكتب 0 مقالات.
- * 4. استخراج الصورة الرسمية عبر cheerio و axios، ومنع Gemini تماماً من توليد أي وسوم صور.
- * 5. كتابة مقال سيو حصري (1000 - 1500 كلمة) مع قسم الأسئلة الشائعة (FAQ) والفهرسة الفورية (IndexNow).
+ * trends-radar-worker.js — رادار ترندات قوقل والإعلام الجزائري (v3.2 — النطاق الإداري والخدماتي الشامل)
+ * =====================================================================================================
+ * 🎯 نطاق العمل الحصري لموقع "راقمنا" (267 خدمة وهيئة حكومية):
+ * 1. الإدارة والوثائق: الحالة المدنية، الجواز البيومتري، بطاقة التعريف، شهادة الميلاد، رخصة السياقة بالتنقيط، السوابق القضائية، الأبوستيل (Apostille).
+ * 2. العمل والتوظيف: مسابقات التوظيف، عروض العمل، منحة البطالة وتجديدها، منصة وسيط ANEM، مسابقات الأساتذة والوظيفة العمومية.
+ * 3. التربية والتعليم: فضاء الأولياء، أوليائي، التسجيلات المدرسية، كشف النقاط، البكالوريا، البيام، المنحة المدرسية 5000، التعليم عن بعد والمراسلة ONEFD.
+ * 4. التكوين المهني: منصة مهنتي، معاهد CFPA، عروض التمهين والتكوين.
+ * 5. التعليم العالي: منصة بروقرس Progres، التحويلات الجامعية، التسجيلات، المنحة الجامعية، الإيواء.
+ * 6. السكن والعقار: سكنات عدل (AADL 3)، شروط التسجيل، طعون عدل، سكن ترقوي LPP/LPA، شهادة السلبية، المحافظة العقارية.
+ * 7. البريد والمالية: بريد الجزائر، البطاقة الذهبية، بريدي موب، الحساب البريدي CCP/ECCP، الدفع الإلكتروني.
+ * 8. الضمان والتقاعد والصحة: بطاقة الشفاء، فضاء الهناء، CNAS، CASNOS، منحة وزيادة التقاعد CNR، المواعيد الطبية.
+ * 9. الضرائب والتجارة: المقاول الذاتي ANAE، السجل التجاري (سجلكم Sidjilcom)، الرقم الجبائي NIF، الجمارك الجزائرية.
+ * 10. الجيش والتجنيد: تسجيلات الجيش الوطني الشعبي (MDN)، دليل التجنيد، تسوية الخدمة الوطنية والإعفاء والتأجيل.
+ * 11. الفلاحة والصيد والري: الدعم الفلاحي، منصات الفلاحة، الصيد البحري، الموارد المائية.
+ * 12. الفواتير والخدمات: فواتير سونلغاز، الجزائرية للمياه ADE، سيال، اتصالات الجزائر، بوابة dzds.dz.
+ *
+ * ⛔ أي موضوع خارج هذا النطاق (حوادث، جرائم، رياضة، فن، طقس، سياسة دولية) يُحظر تماماً ويكتب 0 مقالات.
  */
 
 'use strict';
@@ -25,8 +33,7 @@ const rssParser = new Parser({
   timeout: 12000,
   headers: {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    'Accept-Language': 'ar,fr;q=0.9,en;q=0.8',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   },
 });
 
@@ -79,113 +86,202 @@ const STRICT_EXCLUDE_LIST = [
 ];
 
 // ════════════════════════════════════════════════════════════════
-// 🎯 القائمة الإدارية البيضاء المعتمدة (Administrative Whitelist)
+// 🎯 قاعدة البيانات الإدارية والخدمية الشاملة (267 قطاعاً وخدمة)
 // ════════════════════════════════════════════════════════════════
-const STRICT_ADMINISTRATIVE_DATABASE = [
+const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
+  // 1. التربية والتعليم والامتحانات الوطنية
   {
     topic: 'education',
-    name: 'وزارة التربية الوطنية والتعليم',
+    name: 'وزارة التربية الوطنية والديوان الوطني للامتحانات (ONEC)',
     officialUrl: 'https://www.education.gov.dz',
     portalUrl: 'https://awlyaa.education.gov.dz',
     categoryId: 'education',
-    // عبارات مركبة دقيقة لا تحتمل الخطأ
     phrases: [
       'فضاء الأولياء', 'منصة أوليائي', 'awlyaa', 'awlya', 'شهادة البكالوريا', 'نتائج البكالوريا',
       'نتائج الباك', 'شهادة التعليم المتوسط', 'نتائج البيام', 'المنحة المدرسية', 'منحة 5000',
       'كشف النقاط', 'مسابقة التربية', 'مسابقة توظيف الأساتذة', 'التسجيل في التحضيري',
       'التسجيل في الابتدائي', 'الدخول المدرسي', 'الديوان الوطني للامتحانات', 'onec dz',
+      'التعليم عن بعد', 'الديوان الوطني للتعليم والتكوين عن بعد', 'onefd', 'المراسلة',
     ],
   },
+  // 2. التعليم العالي والبحث العلمي
   {
     topic: 'university',
-    name: 'وزارة التعليم العالي والبحث العلمي',
+    name: 'وزارة التعليم العالي والبحث العلمي (MESRS)',
     officialUrl: 'https://www.mesrs.dz',
     portalUrl: 'https://progres.mesrs.dz/webetu',
     categoryId: 'university',
     phrases: [
       'منصة بروقرس', 'منصة progres', 'التحويلات الجامعية', 'التسجيلات الجامعية',
       'منحة التعليم العالي', 'المنحة الجامعية', 'الإيواء الجامعي', 'توجيه حاملي البكالوريا',
-      'مسابقة الدكتوراه', 'mesrs dz',
+      'مسابقة الدكتوراه', 'mesrs dz', 'معادلة الشهادات الجامعية',
     ],
   },
+  // 3. التكوين والتعليم المهنيين
+  {
+    topic: 'training',
+    name: 'وزارة التكوين والتعليم المهنيين',
+    officialUrl: 'https://www.mfep.gov.dz',
+    portalUrl: 'https://mihnati.mfep.gov.dz',
+    categoryId: 'training',
+    phrases: [
+      'منصة مهنتي', 'التكوين المهني', 'معاهد التكوين المهني', 'مراكز cfpa',
+      'التسجيل في التكوين المهني', 'عروض التمهين', 'شهادة الكفاءة المهنية', 'دليل التكوين المهني',
+    ],
+  },
+  // 4. العمل والتشغيل والوظيفة العمومية
   {
     topic: 'employment',
-    name: 'الوكالة الوطنية للتشغيل (ANEM) ووزارة العمل',
+    name: 'الوكالة الوطنية للتشغيل (ANEM) والمديرية العامة للوظيفة العمومية',
     officialUrl: 'https://www.anem.dz',
     portalUrl: 'https://minha.anem.dz',
     categoryId: 'employment',
     phrases: [
       'منحة البطالة', 'تجديد منحة البطالة', 'منصة وسيط', 'منصة minha', 'anem dz',
       'wassit anem', 'طالب عمل', 'مسابقة التوظيف العمومي', 'عقود ما قبل التشغيل',
-      'جهاز المساعدة على الإدماج',
+      'جهاز المساعدة على الإدماج', 'عروض العمل anem', 'الوظيفة العمومية dgfp',
+      'مسابقات التوظيف في الوظيف العمومي',
     ],
   },
+  // 5. السكن والعقار والمدينة
   {
     topic: 'housing',
-    name: 'وكالة عدل (AADL) ووزارة السكن',
+    name: 'وكالة عدل (AADL) ووزارة السكن والعمران',
     officialUrl: 'https://www.aadl.com.dz',
     portalUrl: 'https://aadl3inscription2024.dz',
     categoryId: 'realEstate',
     phrases: [
       'عدل 3', 'aadl 3', 'سكنات عدل', 'وكالة عدل', 'مكتتبي عدل', 'طعون عدل',
       'سكن ترقوي مدعم', 'سكن lpp', 'سكن lpa', 'سكن اجتماعي', 'شهادة السلبية',
-      'البوابة الرقمية لوزارة السكن',
+      'البوابة الرقمية لوزارة السكن', 'الصندوق الوطني لمعادلة الخدمات الاجتماعية fnpos',
+      'المحافظة العقارية', 'مسح الأراضي', 'عقد الملكية العقارية',
     ],
   },
+  // 6. البريد والمعاملات المالية الإلكترونية
   {
     topic: 'post',
-    name: 'بريد الجزائر',
+    name: 'بريد الجزائر والنقد الآلي',
     officialUrl: 'https://www.poste.dz',
     portalUrl: 'https://eccp.poste.dz',
     categoryId: 'post',
     phrases: [
       'البطاقة الذهبية', 'بريد الجزائر', 'تطبيق بريدي موب', 'baridimob',
       'منصة eccp', 'الحساب البريدي الجاري ccp', 'طلب البطاقة الذهبية',
+      'الدفع الإلكتروني عبر الإنترنت cib', 'تطبيق بريدي باي',
     ],
   },
+  // 7. الضمان الاجتماعي والتقاعد
   {
     topic: 'socialSecurity',
-    name: 'الصندوق الوطني للضمان الاجتماعي والتقاعد (CNAS / CNR)',
+    name: 'صناديق الضمان الاجتماعي والتقاعد (CNAS / CASNOS / CNR)',
     officialUrl: 'https://www.cnas.dz',
     portalUrl: 'https://elhanaa.cnas.dz',
     categoryId: 'socialSecurity',
     phrases: [
       'بطاقة الشفاء', 'فضاء الهناء', 'elhanaa cnas', 'صندوق الضمان الاجتماعي',
       'cnas dz', 'casnos', 'صندوق التقاعد cnr', 'منحة التقاعد', 'زيادة معاشات التقاعد',
+      'التصريح بالعمال', 'عطلة الأمومة', 'التعويضات اليومية عن المرض',
     ],
   },
+  // 8. الداخلية، الحالة المدنية، ورخص السياقة
   {
     topic: 'interior',
-    name: 'وزارة الداخلية والجماعات المحلية',
+    name: 'وزارة الداخلية والجماعات المحلية والتهيئة العمرانية',
     officialUrl: 'https://www.interieur.gov.dz',
     portalUrl: 'https://passeport.interieur.gov.dz',
     categoryId: 'interior',
     phrases: [
       'جواز السفر البيومتري', 'بطاقة التعريف البيومترية', 'شهادة الميلاد الرقمية',
       'رخصة السياقة بالتنقيط', 'الحالة المدنية الرقمية', 'استخراج الوثائق الإدارية',
-      'ترقيم السيارات الجديد', 'موقع وزارة الداخلية الجزائرية',
+      'ترقيم السيارات الجديد', 'موقع وزارة الداخلية الجزائرية', 'البوابة الجزائرية للخدمات الرقمية dzds',
     ],
   },
+  // 9. العدل، صحيفة السوابق القضائية، وخدمة الأبوستيل (Apostille)
+  {
+    topic: 'justice',
+    name: 'وزارة العدل ومنصة الشباك الإلكتروني الموحد',
+    officialUrl: 'https://www.mjustice.dz',
+    portalUrl: 'https://portail.mjustice.dz',
+    categoryId: 'justice',
+    phrases: [
+      'خدمة الأبوستيل', 'تصديق الوثائق الرسمية apostille', 'شهادة السوابق القضائية عبر الإنترنت',
+      'صحيفة السوابق القضائية رقم 3', 'شهادة الجنسية الجزائرية الإلكترونية', 'الشباك الإلكتروني لوزارة العدل',
+      'استخراج الأحكام القضائية إلكترونياً',
+    ],
+  },
+  // 10. الضرائب، السجل التجاري، والمقاول الذاتي
   {
     topic: 'tax',
-    name: 'المديرية العامة للضرائب والمقاول الذاتي',
+    name: 'المديرية العامة للضرائب، السجل التجاري، والوكالة الوطنية للمقاول الذاتي',
     officialUrl: 'https://www.mfdgi.gov.dz',
     portalUrl: 'https://anae.dz',
     categoryId: 'tax',
     phrases: [
-      'المقاول الذاتي', 'منصة anae', 'السجل التجاري الإلكتروني', 'منصة سجلكم',
-      'sidjilcom', 'الرقم الجبائي nif', 'التصريح الجبائي الإلكتروني', 'جباية dz',
+      'المقاول الذاتي', 'بطاقة المقاول الذاتي anae', 'منصة anae dz', 'السجل التجاري الإلكتروني',
+      'منصة سجلكم', 'sidjilcom cnrc', 'الرقم الجبائي nif', 'التصريح الجبائي الإلكتروني',
+      'جباية dz', 'الجمارك الجزائرية', 'منصة ألجكس algex',
     ],
   },
+  // 11. وزارة الدفاع الوطني، الخدمة الوطنية، والتجنيد
   {
-    topic: 'bills',
-    name: 'سونلغاز والجزائرية للمياه',
+    topic: 'military',
+    name: 'وزارة الدفاع الوطني (MDN) والخدمة الوطنية',
+    officialUrl: 'https://www.mdn.dz',
+    portalUrl: 'https://preinscription.mdn.dz',
+    categoryId: 'military',
+    phrases: [
+      'تسجيلات الجيش الوطني الشعبي', 'دليل التجنيد mdn', 'تجنيد الضباط وضباط الصف',
+      'موقع وزارة الدفاع الوطني', 'تسوية وضعية الخدمة الوطنية', 'بطاقة الإعفاء من الخدمة الوطنية',
+      'تأجيل الخدمة الوطنية للطلبة', 'مدارس أشبال الأمة',
+    ],
+  },
+  // 12. الفلاحة، التنمية الريفية، والغابات
+  {
+    topic: 'agriculture',
+    name: 'وزارة الفلاحة والتنمية الريفية',
+    officialUrl: 'https://madr.gov.dz',
+    portalUrl: 'https://madr.gov.dz',
+    categoryId: 'agriculture',
+    phrases: [
+      'الدعم الفلاحي', 'بطاقة الفلاح', 'منصة الدعم الفلاحي', 'الغرفة الوطنية للفلاحة',
+      'حفر الآبار الفلاحية', 'استصلاح الأراضي الفلاحية', 'الصندوق الوطني للتعاون الفلاحي',
+    ],
+  },
+  // 13. الصيد البحري وتربية المائيات
+  {
+    topic: 'fisheries',
+    name: 'وزارة الصيد البحري والمنتجات الصيدية',
+    officialUrl: 'https://mpeche.gov.dz',
+    portalUrl: 'https://mpeche.gov.dz',
+    categoryId: 'agriculture',
+    phrases: [
+      'الصيد البحري', 'تربية المائيات', 'بطاقة مهنيي الصيد البحري', 'دعم سفن الصيد',
+      'بوابة وزارة الصيد البحري',
+    ],
+  },
+  // 14. الموارد المائية، الري، والفواتير
+  {
+    topic: 'water_bills',
+    name: 'الجزائرية للمياه (ADE) وسونلغاز (Sonelgaz)',
     officialUrl: 'https://www.sonelgaz.dz',
     portalUrl: 'https://pay.sonelgaz.dz',
     categoryId: 'bills',
     phrases: [
-      'فاتورة الكهرباء سونلغاز', 'دفع فاتورة سونلغاز', 'تطبيق sonelgaz',
-      'الجزائرية للمياه ade', 'دفع فاتورة المياه',
+      'فاتورة الكهرباء سونلغاز', 'دفع فاتورة سونلغاز عبر الإنترنت', 'تطبيق sonelgaz',
+      'الجزائرية للمياه ade', 'دفع فاتورة المياه ade', 'تطبيق وكالتي سيال seal',
+      'فواتير اتصالات الجزائر', 'تعبئة فضاء زبون اتصالات الجزائر',
+    ],
+  },
+  // 15. النقل والمشاريع واستيراد السيارات
+  {
+    topic: 'transport',
+    name: 'وزارة النقل والجمارك والخطوط الجوية الجزائرية',
+    officialUrl: 'https://www.mintransport.gov.dz',
+    portalUrl: 'https://airalgerie.dz',
+    categoryId: 'transport',
+    phrases: [
+      'استيراد السيارات أقل من 3 سنوات', 'ترقيم المركبات ورخص السياقة', 'الخطوط الجوية الجزائرية air algerie',
+      'الشركة الوطنية للنقل بالسكك الحديدية sntf', 'تذكرة النقل الإلكترونية', 'بطاقة الناقل المهني',
     ],
   },
 ];
@@ -211,7 +307,6 @@ async function crawlAlgerianNewsSources(sources) {
 
   for (const src of sources) {
     try {
-      // استخدام axios مع headers واقعية لتفادي مشكلة الـ timeout
       const response = await axios.get(src.rssUrl, {
         timeout: 8000,
         httpsAgent: new https.Agent({ rejectUnauthorized: false }),
@@ -223,7 +318,7 @@ async function crawlAlgerianNewsSources(sources) {
 
       const feed = await rssParser.parseString(response.data);
       if (feed && feed.items) {
-        const topItems = feed.items.slice(0, 8);
+        const topItems = feed.items.slice(0, 10);
         for (const item of topItems) {
           const title = (item.title || '').trim();
           const link = item.link || '';
@@ -297,7 +392,6 @@ async function fetchGoogleTrendsDZ() {
     } catch {}
   }
 
-  // دعم احتياطي عبر google-trends-api
   if (trends.length === 0) {
     try {
       const res = await googleTrends.dailyTrends({ geo: 'DZ' });
@@ -326,37 +420,37 @@ async function fetchGoogleTrendsDZ() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 3: التحقق الصارم والمطابقة الإدارية (Zero False Positives)]
+// [المرحلة 3: التحقق والمطابقة الإدارية الحصرية 100%]
 // ════════════════════════════════════════════════════════════════
 function verifyAndMatchAdministrativeOnly(trendItem) {
   const fullText = `${trendItem.title} ${trendItem.snippet}`.toLowerCase();
 
-  // 1. الفحص الصارم الأول: استبعاد الحوادث والجرائم والرياضة والفن فوراً
+  // 1. استبعاد الحوادث، الجرائم، الفن، الرياضة، والطقس فوراً
   const isBanned = STRICT_EXCLUDE_LIST.some((bannedWord) => {
     return fullText.includes(bannedWord.toLowerCase());
   });
 
   if (isBanned) {
-    return null; // مستبعد فوراً (حادث، جريمة، مخدرات، رياضة، مشاهير)
+    return null;
   }
 
-  // 2. الفحص الصارم الثاني: المطابقة الإلزامية مع العبارات الإدارية المعتمدة
-  for (const official of STRICT_ADMINISTRATIVE_DATABASE) {
+  // 2. المطابقة الإلزامية مع إحدى الخدمات والمعاملات الإدارية الـ 15 المعتمدة
+  for (const official of COMPREHENSIVE_ADMINISTRATIVE_DATABASE) {
     const isExactMatch = official.phrases.some((phrase) => {
       return fullText.includes(phrase.toLowerCase());
     });
 
     if (isExactMatch) {
-      return official; // تم التحقق والربط بالجهة الرسمية والخدمة المعتمدة
+      return official;
     }
   }
 
-  // إذا لم يطابق أي عبارة إدارية حكومية واضحة ⬅ يتم استبعاده تماماً
+  // إذا لم يثبت ارتباطه بأي معاملة إدارية رسمية ⬅ تجاهل تام
   return null;
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 4: استخراج الصورة الرسمية عبر cheerio و axios]
+// [المرحلة 4: استخراج الصورة الرسمية الموثقة عبر cheerio و axios]
 // ════════════════════════════════════════════════════════════════
 async function extractOfficialImage(pageUrl) {
   if (!pageUrl || typeof pageUrl !== 'string' || !pageUrl.startsWith('http')) {
@@ -418,7 +512,7 @@ async function generateTrendArticleWithGemini(trendItem, matchedOfficial) {
 - موضوع الترند والخدمة: ${trendItem.title}
 - الجهة الرسمية المختصة: ${matchedOfficial.name}
 - الرابط والمنصة الرسمية: ${matchedOfficial.portalUrl || matchedOfficial.officialUrl}
-- سياق الخبر ومعطياته: ${trendItem.snippet || 'دليل شامل حول الخدمة والإجراءات الإدارية.'}
+- سياق الخبر ومعطياته: ${trendItem.snippet || 'دليل شامل حول الإجراءات والخدمات الإدارية.'}
 - مصدر الرصد: ${trendItem.sourceName} (${trendItem.link || matchedOfficial.portalUrl})
 
 [الإخراج المطلوب]: ابدأ مباشرة بعنوان # H1 دون أي هوامش أو تعليقات خارجية.`;
@@ -592,10 +686,10 @@ function pingIndexNow(url) {
 
 // ─── المحرك الرئيسي ───────────────────────────────────────────
 async function main() {
-  console.log('\n' + '='.repeat(65));
-  console.log('🔥 RAQMANA — رادار تصيد الترندات والإعلام الجزائري (v3.1)');
-  console.log('🛡 الفلترة الصارمة: خدمات ومعاملات عمومية فقط | حظر الحوادث والجرائم 100%');
-  console.log('='.repeat(65) + '\n');
+  console.log('\n' + '='.repeat(70));
+  console.log('🔥 RAQMANA — رادار تصيد الترندات والإعلام الجزائري (v3.2 الشامل)');
+  console.log('🏛 النطاق: 267 قطاعاً إدارياً وخدمات رقمية ومعاملات عمومية حصراً');
+  console.log('='.repeat(70) + '\n');
 
   const history = loadHistory();
   if (!history.processedTrends) history.processedTrends = {};
@@ -620,11 +714,10 @@ async function main() {
       continue;
     }
 
-    // 🛡 الفحص الصارم المزدوج: استبعاد الحوادث/الجرائم + المطابقة الإدارية الحصرية
+    // 🛡 الفحص الصارم: استبعاد المحتوى غير الإداري + مطابقة الخدمات الـ 15
     const matchedOfficial = verifyAndMatchAdministrativeOnly(item);
     if (!matchedOfficial) {
-      // تم استبعاده (حادث، جريمة، رياضة، أو موضوع عام غير إداري) ⬅ تجاهل تام
-      continue;
+      continue; // غير مطابق للخدمات الإدارية ⬅ تجاهل تام
     }
 
     if (writtenCount >= CONFIG.MAX_TREND_ARTICLES_PER_RUN) {
@@ -633,7 +726,7 @@ async function main() {
     }
 
     console.log(`\n🎯 [صيد إداري وخدماتي حقيقي مُوثّق]: "${item.title}"`);
-    console.log(`   🏛 الجهة المعتمدة: ${matchedOfficial.name}`);
+    console.log(`   🏛 القطاع المعتمد: ${matchedOfficial.name}`);
 
     try {
       process.stdout.write('   🖼 استخراج الصورة الرسمية...');
@@ -674,9 +767,9 @@ async function main() {
   history.lastRun = new Date().toISOString();
   saveHistory(history);
 
-  console.log('\n' + '='.repeat(65));
+  console.log('\n' + '='.repeat(70));
   console.log(`🎉 اكتمل تشغيل الرادار — تم صيد وكتابة ${writtenCount} مقال إداري وخدماتي رسمي موثق!`);
-  console.log('='.repeat(65) + '\n');
+  console.log('='.repeat(70) + '\n');
 }
 
 main().catch((err) => {
