@@ -173,6 +173,18 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
               </button>
             );
           })}
+
+          {/* Request Button in Category Bar */}
+          <button
+            onClick={() => {
+              const el = document.getElementById('request-document-form');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-xs font-black bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition-all shrink-0 shadow-sm"
+          >
+            <span>✨</span>
+            <span>{language === 'ar' ? '+ طلب ملف غير مدرج' : '+ Request Unlisted File'}</span>
+          </button>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8 items-start">
@@ -236,9 +248,25 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
               })}
 
               {filteredDocs.length === 0 && (
-                <div className="text-center py-12 px-4 rounded-2xl border border-dashed text-muted-foreground">
+                <div className="text-center py-10 px-4 rounded-2xl border border-dashed border-border bg-card/50 text-muted-foreground space-y-3">
                   <p className="text-sm font-bold">{language === 'ar' ? 'لم يتم العثور على نتائج' : 'No results found'}</p>
-                  <p className="text-xs mt-1 text-muted-foreground/60">{language === 'ar' ? 'جرب البحث بكلمات أخرى' : 'Try searching different keywords'}</p>
+                  <p className="text-xs text-muted-foreground/70">
+                    {language === 'ar' 
+                      ? `هل تبحث عن «${searchQuery}»؟` 
+                      : `Looking for "${searchQuery}"?`}
+                  </p>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setReqDocName(searchQuery);
+                      const el = document.getElementById('request-document-form');
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="rounded-xl text-xs font-black bg-primary hover:bg-primary/90 text-primary-foreground gap-1.5 shadow-md"
+                  >
+                    <span>🚀</span>
+                    <span>{language === 'ar' ? 'اطلب إضافة هذا الملف فوراً' : 'Request this file now'}</span>
+                  </Button>
                 </div>
               )}
             </div>
@@ -421,7 +449,7 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
         </div>
 
         {/* Request Unlisted Document Section */}
-        <div className="mt-14 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 border border-teal-800/30 text-white shadow-2xl relative overflow-hidden">
+        <div id="request-document-form" className="mt-14 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 border border-teal-800/30 text-white shadow-2xl relative overflow-hidden scroll-mt-24">
           <div className="absolute top-0 end-0 -mt-8 -me-8 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
           
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-6 relative z-10">

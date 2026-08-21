@@ -76,6 +76,13 @@ export default function DocumentGuidePage() {
                   <FileText className="h-4 w-4 text-purple-400" />
                   قائمة تفاعلية
                 </div>
+                <a 
+                  href="#request-document-form" 
+                  className="flex items-center gap-2 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-4 py-1.5 text-sm font-bold backdrop-blur-sm border border-amber-500/30 transition-all"
+                >
+                  <span>✨</span>
+                  <span>اطلب إضافة ملف غير موجود</span>
+                </a>
               </div>
             </div>
           </div>
