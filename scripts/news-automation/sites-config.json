@@ -191,11 +191,17 @@
       "category": "general_news"
     },
     {
-      "id": "aps_ar",
-      "name": "وكالة الأنباء الجزائرية (APS)",
-      "url": "https://www.aps.dz/ar",
-      "rssUrl": "https://www.aps.dz/ar/algerie?format=feed&type=rss",
-      "category": "official_news"
+      "id": "aps_official",
+      "name": "وكالة الأنباء الجزائرية الرسمية (APS)",
+      "url": "https://www.aps.dz",
+      "portalUrl": "https://www.aps.dz/algerie/actualite-nationale/",
+      "category": "official_primary_source",
+      "isTier1Official": true,
+      "sections": [
+        "https://www.aps.dz/algerie/actualite-nationale/",
+        "https://www.aps.dz/economie/",
+        "https://www.aps.dz/societe/"
+      ]
     }
   ]
 }

@@ -1,21 +1,13 @@
 /**
- * trends-radar-worker.js — رادار ترندات قوقل والإعلام الجزائري (v3.2 — النطاق الإداري والخدماتي الشامل)
- * =====================================================================================================
- * 🎯 نطاق العمل الحصري لموقع "راقمنا" (267 خدمة وهيئة حكومية):
- * 1. الإدارة والوثائق: الحالة المدنية، الجواز البيومتري، بطاقة التعريف، شهادة الميلاد، رخصة السياقة بالتنقيط، السوابق القضائية، الأبوستيل (Apostille).
- * 2. العمل والتوظيف: مسابقات التوظيف، عروض العمل، منحة البطالة وتجديدها، منصة وسيط ANEM، مسابقات الأساتذة والوظيفة العمومية.
- * 3. التربية والتعليم: فضاء الأولياء، أوليائي، التسجيلات المدرسية، كشف النقاط، البكالوريا، البيام، المنحة المدرسية 5000، التعليم عن بعد والمراسلة ONEFD.
- * 4. التكوين المهني: منصة مهنتي، معاهد CFPA، عروض التمهين والتكوين.
- * 5. التعليم العالي: منصة بروقرس Progres، التحويلات الجامعية، التسجيلات، المنحة الجامعية، الإيواء.
- * 6. السكن والعقار: سكنات عدل (AADL 3)، شروط التسجيل، طعون عدل، سكن ترقوي LPP/LPA، شهادة السلبية، المحافظة العقارية.
- * 7. البريد والمالية: بريد الجزائر، البطاقة الذهبية، بريدي موب، الحساب البريدي CCP/ECCP، الدفع الإلكتروني.
- * 8. الضمان والتقاعد والصحة: بطاقة الشفاء، فضاء الهناء، CNAS، CASNOS، منحة وزيادة التقاعد CNR، المواعيد الطبية.
- * 9. الضرائب والتجارة: المقاول الذاتي ANAE، السجل التجاري (سجلكم Sidjilcom)، الرقم الجبائي NIF، الجمارك الجزائرية.
- * 10. الجيش والتجنيد: تسجيلات الجيش الوطني الشعبي (MDN)، دليل التجنيد، تسوية الخدمة الوطنية والإعفاء والتأجيل.
- * 11. الفلاحة والصيد والري: الدعم الفلاحي، منصات الفلاحة، الصيد البحري، الموارد المائية.
- * 12. الفواتير والخدمات: فواتير سونلغاز، الجزائرية للمياه ADE، سيال، اتصالات الجزائر، بوابة dzds.dz.
- *
- * ⛔ أي موضوع خارج هذا النطاق (حوادث، جرائم، رياضة، فن، طقس، سياسة دولية) يُحظر تماماً ويكتب 0 مقالات.
+ * trends-radar-worker.js — رادار ترندات قوقل ووكالة الأنباء الجزائرية الرسمية (v3.3)
+ * ===================================================================================
+ * 1. [المصدر المفضل الأول - Tier 1]: زحف وكالة الأنباء الجزائرية الرسمية (APS) واستخدامها كمرجع رسمي مؤكد (Fallback).
+ * 2. [الرادار الإخباري]: رصد ترندات قوقل الجزائرية (Google Trends DZ) والصحف الكبرى.
+ * 3. [توسيع الدلالات الإدارية لـ APS]: التقاط كل خبر رسمي يذكر أي وزارة أو قطاع خدمي جزائري.
+ * 4. [الحماية الصارمة من المحتوى الرديء]: حظر 100% لأخبار الحوادث، الجرائم، الرياضة، الفن، والسياسة الدولية حتى من APS.
+ * 5. [استخراج الصور الموثقة]: جلب og:image الحقيقية فقط بـ cheerio و axios.
+ * 6. [الكتابة الاحترافية]: صياغة مقال سيو حصري (1000 - 1500 كلمة) بـ Gemini مع قسم الأسئلة الشائعة (FAQ).
+ * 7. [الفهرسة الفورية]: إرسال إشعار فوري لـ IndexNow و Google Indexing API.
  */
 
 'use strict';
@@ -73,6 +65,9 @@ const STRICT_EXCLUDE_LIST = [
   'مخدرات', 'مهلوسات', 'أقراص', 'مروج', 'عصابة', 'توقيف', 'حبس', 'سجن', 'جريمة',
   'مقتل', 'اغتيال', 'اعتداء', 'سرقة', 'نصب', 'احتيال', 'فضائح', 'فضيحة', 'محكمة',
   'جنايات', 'وكيل الجمهورية', 'تسلل', 'حراقة', 'تهريب', 'إحباط', 'حجز', 'ضبط',
+  // التعازي الفردية والمناسبات التاريخية والسياسية
+  'تعزية', 'يعزي', 'نعى', 'ينعى', 'وفاة شيخ', 'اليوم الوطني للمجاهد', 'مؤتمر الصومام',
+  'هجومات الشمال القسنطيني', 'ثورة التحرير', 'عيد الاستقلال', 'عيد الثورة',
   // الرياضة وكرة القدم
   'مباراة', 'دوري', 'كأس', 'منتخب', 'مدرب', 'لاعب', 'أهداف', 'رونالدو', 'ميسي',
   'بلماضي', 'بيتكوفيتش', 'محرز', 'بلايلي', 'اتحاد العاصمة', 'مولودية', 'شبيبة القبائل',
@@ -89,7 +84,6 @@ const STRICT_EXCLUDE_LIST = [
 // 🎯 قاعدة البيانات الإدارية والخدمية الشاملة (267 قطاعاً وخدمة)
 // ════════════════════════════════════════════════════════════════
 const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
-  // 1. التربية والتعليم والامتحانات الوطنية
   {
     topic: 'education',
     name: 'وزارة التربية الوطنية والديوان الوطني للامتحانات (ONEC)',
@@ -102,9 +96,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
       'كشف النقاط', 'مسابقة التربية', 'مسابقة توظيف الأساتذة', 'التسجيل في التحضيري',
       'التسجيل في الابتدائي', 'الدخول المدرسي', 'الديوان الوطني للامتحانات', 'onec dz',
       'التعليم عن بعد', 'الديوان الوطني للتعليم والتكوين عن بعد', 'onefd', 'المراسلة',
+      'وزارة التربية الوطنية', 'وزير التربية', 'مديريات التربية',
     ],
   },
-  // 2. التعليم العالي والبحث العلمي
   {
     topic: 'university',
     name: 'وزارة التعليم العالي والبحث العلمي (MESRS)',
@@ -114,10 +108,10 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'منصة بروقرس', 'منصة progres', 'التحويلات الجامعية', 'التسجيلات الجامعية',
       'منحة التعليم العالي', 'المنحة الجامعية', 'الإيواء الجامعي', 'توجيه حاملي البكالوريا',
-      'مسابقة الدكتوراه', 'mesrs dz', 'معادلة الشهادات الجامعية',
+      'مسابقة الدكتوراه', 'mesrs dz', 'معادلة الشهادات الجامعية', 'الدخول الجامعي',
+      'وزارة التعليم العالي', 'وزير التعليم العالي',
     ],
   },
-  // 3. التكوين والتعليم المهنيين
   {
     topic: 'training',
     name: 'وزارة التكوين والتعليم المهنيين',
@@ -127,9 +121,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'منصة مهنتي', 'التكوين المهني', 'معاهد التكوين المهني', 'مراكز cfpa',
       'التسجيل في التكوين المهني', 'عروض التمهين', 'شهادة الكفاءة المهنية', 'دليل التكوين المهني',
+      'وزارة التكوين المهني', 'وزير التكوين المهني',
     ],
   },
-  // 4. العمل والتشغيل والوظيفة العمومية
   {
     topic: 'employment',
     name: 'الوكالة الوطنية للتشغيل (ANEM) والمديرية العامة للوظيفة العمومية',
@@ -140,10 +134,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
       'منحة البطالة', 'تجديد منحة البطالة', 'منصة وسيط', 'منصة minha', 'anem dz',
       'wassit anem', 'طالب عمل', 'مسابقة التوظيف العمومي', 'عقود ما قبل التشغيل',
       'جهاز المساعدة على الإدماج', 'عروض العمل anem', 'الوظيفة العمومية dgfp',
-      'مسابقات التوظيف في الوظيف العمومي',
+      'مسابقات التوظيف في الوظيف العمومي', 'وزارة العمل والتشغيل', 'وزير العمل',
     ],
   },
-  // 5. السكن والعقار والمدينة
   {
     topic: 'housing',
     name: 'وكالة عدل (AADL) ووزارة السكن والعمران',
@@ -154,10 +147,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
       'عدل 3', 'aadl 3', 'سكنات عدل', 'وكالة عدل', 'مكتتبي عدل', 'طعون عدل',
       'سكن ترقوي مدعم', 'سكن lpp', 'سكن lpa', 'سكن اجتماعي', 'شهادة السلبية',
       'البوابة الرقمية لوزارة السكن', 'الصندوق الوطني لمعادلة الخدمات الاجتماعية fnpos',
-      'المحافظة العقارية', 'مسح الأراضي', 'عقد الملكية العقارية',
+      'المحافظة العقارية', 'مسح الأراضي', 'عقد الملكية العقارية', 'وزارة السكن', 'وزير السكن',
     ],
   },
-  // 6. البريد والمعاملات المالية الإلكترونية
   {
     topic: 'post',
     name: 'بريد الجزائر والنقد الآلي',
@@ -167,10 +159,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'البطاقة الذهبية', 'بريد الجزائر', 'تطبيق بريدي موب', 'baridimob',
       'منصة eccp', 'الحساب البريدي الجاري ccp', 'طلب البطاقة الذهبية',
-      'الدفع الإلكتروني عبر الإنترنت cib', 'تطبيق بريدي باي',
+      'الدفع الإلكتروني عبر الإنترنت cib', 'تطبيق بريدي باي', 'وزارة البريد والمواصلات السلكية واللاسلكية',
     ],
   },
-  // 7. الضمان الاجتماعي والتقاعد
   {
     topic: 'socialSecurity',
     name: 'صناديق الضمان الاجتماعي والتقاعد (CNAS / CASNOS / CNR)',
@@ -183,7 +174,6 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
       'التصريح بالعمال', 'عطلة الأمومة', 'التعويضات اليومية عن المرض',
     ],
   },
-  // 8. الداخلية، الحالة المدنية، ورخص السياقة
   {
     topic: 'interior',
     name: 'وزارة الداخلية والجماعات المحلية والتهيئة العمرانية',
@@ -194,9 +184,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
       'جواز السفر البيومتري', 'بطاقة التعريف البيومترية', 'شهادة الميلاد الرقمية',
       'رخصة السياقة بالتنقيط', 'الحالة المدنية الرقمية', 'استخراج الوثائق الإدارية',
       'ترقيم السيارات الجديد', 'موقع وزارة الداخلية الجزائرية', 'البوابة الجزائرية للخدمات الرقمية dzds',
+      'وزارة الداخلية والجماعات المحلية', 'وزير الداخلية', 'الولاة', 'البلديات',
     ],
   },
-  // 9. العدل، صحيفة السوابق القضائية، وخدمة الأبوستيل (Apostille)
   {
     topic: 'justice',
     name: 'وزارة العدل ومنصة الشباك الإلكتروني الموحد',
@@ -206,10 +196,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'خدمة الأبوستيل', 'تصديق الوثائق الرسمية apostille', 'شهادة السوابق القضائية عبر الإنترنت',
       'صحيفة السوابق القضائية رقم 3', 'شهادة الجنسية الجزائرية الإلكترونية', 'الشباك الإلكتروني لوزارة العدل',
-      'استخراج الأحكام القضائية إلكترونياً',
+      'استخراج الأحكام القضائية إلكترونياً', 'وزارة العدل', 'وزير العدل حافظ الأختام',
     ],
   },
-  // 10. الضرائب، السجل التجاري، والمقاول الذاتي
   {
     topic: 'tax',
     name: 'المديرية العامة للضرائب، السجل التجاري، والوكالة الوطنية للمقاول الذاتي',
@@ -219,10 +208,10 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'المقاول الذاتي', 'بطاقة المقاول الذاتي anae', 'منصة anae dz', 'السجل التجاري الإلكتروني',
       'منصة سجلكم', 'sidjilcom cnrc', 'الرقم الجبائي nif', 'التصريح الجبائي الإلكتروني',
-      'جباية dz', 'الجمارك الجزائرية', 'منصة ألجكس algex',
+      'جباية dz', 'الجمارك الجزائرية', 'منصة ألجكس algex', 'وزارة المالية', 'وزير المالية',
+      'وزارة التجارة', 'وزير التجارة',
     ],
   },
-  // 11. وزارة الدفاع الوطني، الخدمة الوطنية، والتجنيد
   {
     topic: 'military',
     name: 'وزارة الدفاع الوطني (MDN) والخدمة الوطنية',
@@ -232,10 +221,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'تسجيلات الجيش الوطني الشعبي', 'دليل التجنيد mdn', 'تجنيد الضباط وضباط الصف',
       'موقع وزارة الدفاع الوطني', 'تسوية وضعية الخدمة الوطنية', 'بطاقة الإعفاء من الخدمة الوطنية',
-      'تأجيل الخدمة الوطنية للطلبة', 'مدارس أشبال الأمة',
+      'تأجيل الخدمة الوطنية للطلبة', 'مدارس أشبال الأمة', 'وزارة الدفاع الوطني',
     ],
   },
-  // 12. الفلاحة، التنمية الريفية، والغابات
   {
     topic: 'agriculture',
     name: 'وزارة الفلاحة والتنمية الريفية',
@@ -245,9 +233,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'الدعم الفلاحي', 'بطاقة الفلاح', 'منصة الدعم الفلاحي', 'الغرفة الوطنية للفلاحة',
       'حفر الآبار الفلاحية', 'استصلاح الأراضي الفلاحية', 'الصندوق الوطني للتعاون الفلاحي',
+      'وزارة الفلاحة والتنمية الريفية', 'وزير الفلاحة',
     ],
   },
-  // 13. الصيد البحري وتربية المائيات
   {
     topic: 'fisheries',
     name: 'وزارة الصيد البحري والمنتجات الصيدية',
@@ -256,10 +244,9 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     categoryId: 'agriculture',
     phrases: [
       'الصيد البحري', 'تربية المائيات', 'بطاقة مهنيي الصيد البحري', 'دعم سفن الصيد',
-      'بوابة وزارة الصيد البحري',
+      'بوابة وزارة الصيد البحري', 'وزارة الصيد البحري', 'وزير الصيد البحري',
     ],
   },
-  // 14. الموارد المائية، الري، والفواتير
   {
     topic: 'water_bills',
     name: 'الجزائرية للمياه (ADE) وسونلغاز (Sonelgaz)',
@@ -269,10 +256,10 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'فاتورة الكهرباء سونلغاز', 'دفع فاتورة سونلغاز عبر الإنترنت', 'تطبيق sonelgaz',
       'الجزائرية للمياه ade', 'دفع فاتورة المياه ade', 'تطبيق وكالتي سيال seal',
-      'فواتير اتصالات الجزائر', 'تعبئة فضاء زبون اتصالات الجزائر',
+      'فواتير اتصالات الجزائر', 'تعبئة فضاء زبون اتصالات الجزائر', 'وزارة الطاقة والمناجم',
+      'وزارة الموارد المائية والري',
     ],
   },
-  // 15. النقل والمشاريع واستيراد السيارات
   {
     topic: 'transport',
     name: 'وزارة النقل والجمارك والخطوط الجوية الجزائرية',
@@ -282,6 +269,7 @@ const COMPREHENSIVE_ADMINISTRATIVE_DATABASE = [
     phrases: [
       'استيراد السيارات أقل من 3 سنوات', 'ترقيم المركبات ورخص السياقة', 'الخطوط الجوية الجزائرية air algerie',
       'الشركة الوطنية للنقل بالسكك الحديدية sntf', 'تذكرة النقل الإلكترونية', 'بطاقة الناقل المهني',
+      'وزارة النقل', 'وزير النقل',
     ],
   },
 ];
@@ -299,13 +287,71 @@ function saveHistory(history) {
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 1: زحف المواقع الإخبارية الجزائرية الكبرى]
+// [المصدر المفضل الأول - Tier 1]: زحف وكالة الأنباء الجزائرية الرسمية (APS)
+// ════════════════════════════════════════════════════════════════
+async function crawlAPSOfficial() {
+  const apsNews = [];
+  console.log('🏛 [وكالة الأنباء الجزائرية APS] فحص النشرات الوطنية والاقتصادية الرسمية...');
+
+  const apsSections = [
+    { url: 'https://www.aps.dz', label: 'الرئيسية' },
+    { url: 'https://www.aps.dz/algerie/actualite-nationale/', label: 'الشؤون الوطنية' },
+    { url: 'https://www.aps.dz/economie/', label: 'الشؤون الاقتصادية والمالية' },
+    { url: 'https://www.aps.dz/societe/', label: 'المجتمع والخدمات' },
+  ];
+
+  for (const sec of apsSections) {
+    try {
+      const response = await axios.get(sec.url, {
+        timeout: 8000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        },
+      });
+
+      const $ = cheerio.load(response.data);
+      $('a').each((_, el) => {
+        const title = $(el).text().trim();
+        let href = $(el).attr('href') || '';
+
+        // استخراج المقالات الإخبارية المباشرة
+        if (title && title.length > 25 && href && !href.startsWith('#') && (href.includes('/actualite-nationale/') || href.includes('/presidence-news/') || href.includes('/economie/') || href.includes('/societe/'))) {
+          if (!href.startsWith('http')) {
+            href = href.startsWith('/') ? `https://www.aps.dz${href}` : `https://www.aps.dz/${href}`;
+          }
+
+          if (!apsNews.some((a) => a.title === title || a.link === href)) {
+            apsNews.push({
+              title,
+              link: href,
+              snippet: title,
+              pubDate: new Date().toISOString(),
+              sourceName: 'وكالة الأنباء الجزائرية الرسمية (APS)',
+              isTier1Official: true,
+            });
+          }
+        }
+      });
+    } catch (err) {
+      console.warn(`   ⚠ تعذر جلب قسم APS (${sec.label}): ${err.message}`);
+    }
+  }
+
+  console.log(`   ✔ تم استخراج ${apsNews.length} خبراً رسمياً من وكالة الأنباء الجزائرية (APS).`);
+  return apsNews;
+}
+
+// ════════════════════════════════════════════════════════════════
+// [المرحلة 2: زحف المواقع الإخبارية الجزائرية الكبرى]
 // ════════════════════════════════════════════════════════════════
 async function crawlAlgerianNewsSources(sources) {
   const trendingNews = [];
   console.log('📡 [الزحف الإخباري] فحص خراطيم المواقع الإخبارية الجزائرية الكبرى...');
 
   for (const src of sources) {
+    if (src.id === 'aps_official') continue; // تم معالجة APS كـ Tier 1 منفصل
+
     try {
       const response = await axios.get(src.rssUrl, {
         timeout: 8000,
@@ -332,6 +378,7 @@ async function crawlAlgerianNewsSources(sources) {
               snippet,
               pubDate,
               sourceName: src.name,
+              isTier1Official: false,
             });
           }
         }
@@ -346,7 +393,7 @@ async function crawlAlgerianNewsSources(sources) {
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 2: جلب ترندات جوجل الجزائرية (Google Trends DZ)]
+// [المرحلة 3: جلب ترندات جوجل الجزائرية (Google Trends DZ)]
 // ════════════════════════════════════════════════════════════════
 async function fetchGoogleTrendsDZ() {
   const trends = [];
@@ -386,6 +433,7 @@ async function fetchGoogleTrendsDZ() {
             snippet,
             pubDate: it.pubDate || new Date().toISOString(),
             sourceName: 'Google Trends DZ',
+            isTier1Official: false,
           });
         }
       }
@@ -408,6 +456,7 @@ async function fetchGoogleTrendsDZ() {
               snippet: article?.snippet || article?.title || '',
               pubDate: new Date().toISOString(),
               sourceName: 'Google Trends API',
+              isTier1Official: false,
             });
           }
         }
@@ -420,21 +469,21 @@ async function fetchGoogleTrendsDZ() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 3: التحقق والمطابقة الإدارية الحصرية 100%]
+// [المرحلة 4: التحقق والمطابقة الإدارية مع دعم دلالات APS الواسعة]
 // ════════════════════════════════════════════════════════════════
-function verifyAndMatchAdministrativeOnly(trendItem) {
-  const fullText = `${trendItem.title} ${trendItem.snippet}`.toLowerCase();
+function verifyAndMatchAdministrativeWithAPS(item) {
+  const fullText = `${item.title} ${item.snippet}`.toLowerCase();
 
-  // 1. استبعاد الحوادث، الجرائم، الفن، الرياضة، والطقس فوراً
+  // 1. استبعاد الحوادث، الجرائم، الفن، الرياضة، والطقس والمناسبات التاريخية فوراً (100% Blacklist)
   const isBanned = STRICT_EXCLUDE_LIST.some((bannedWord) => {
     return fullText.includes(bannedWord.toLowerCase());
   });
 
   if (isBanned) {
-    return null;
+    return null; // مستبعد فوراً
   }
 
-  // 2. المطابقة الإلزامية مع إحدى الخدمات والمعاملات الإدارية الـ 15 المعتمدة
+  // 2. المطابقة الإلزامية مع الخدمات والمعاملات الإدارية المعتمدة
   for (const official of COMPREHENSIVE_ADMINISTRATIVE_DATABASE) {
     const isExactMatch = official.phrases.some((phrase) => {
       return fullText.includes(phrase.toLowerCase());
@@ -445,12 +494,84 @@ function verifyAndMatchAdministrativeOnly(trendItem) {
     }
   }
 
+  // 3. توسيع دلالي حصري لأخبار وكالة الأنباء الجزائرية الرسمية (APS Fallback):
+  if (item.isTier1Official) {
+    const apsWhitelistRules = [
+      {
+        topic: 'university',
+        keywords: ['جامعة', 'جامعي', 'التعليم العالي', 'الطلبة', 'البحث العلمي', 'الدخول الجامعي', 'الإقامات الجامعية'],
+      },
+      {
+        topic: 'education',
+        keywords: ['وزارة التربية', 'الدخول المدرسي', 'التلاميذ', 'المدرسي', 'المنظومة التربوية', 'المؤسسات التعليمية', 'مديريات التربية', 'الإطعام المدرسي', 'النقل المدرسي'],
+      },
+      {
+        topic: 'housing',
+        keywords: ['وزارة السكن', 'سكنات عدل', 'السكن الترقوي', 'السكن الاجتماعي', 'قطاع السكن', 'العمران والمدينة', 'برامج الإسكان'],
+      },
+      {
+        topic: 'employment',
+        keywords: ['وزارة العمل', 'الوظيفة العمومية', 'منحة البطالة', 'سوق الشغل', 'عروض التوظيف', 'التشغيل'],
+      },
+      {
+        topic: 'agriculture',
+        keywords: ['وزارة الفلاحة', 'الإنتاج الفلاحي', 'المحاصيل الزراعية', 'شعبة الحبوب', 'التنمية الريفية', 'المستثمرات الفلاحية'],
+      },
+      {
+        topic: 'transport',
+        keywords: ['وزارة النقل', 'السكك الحديدية', 'الخطوط الجوية', 'النقل البري', 'استيراد السيارات', 'الموانئ'],
+      },
+      {
+        topic: 'water_bills',
+        keywords: ['الموارد المائية', 'محطات التحلية', 'قطاع الري', 'التزويد بالمياه الشروب', 'سونلغاز', 'توزيع الكهرباء والغاز', 'الجزائرية للمياه'],
+      },
+      {
+        topic: 'tax',
+        keywords: ['وزارة المالية', 'التحصيل الضريبي', 'الرقمنة الجبائية', 'الجمارك الجزائرية', 'وزارة التجارة', 'السجل التجاري'],
+      },
+      {
+        topic: 'interior',
+        keywords: ['وزارة الداخلية', 'الجماعات المحلية', 'الوثائق البيومترية', 'الحالة المدنية', 'عصرنة المرفق العام', 'الرقمنة الإدارية', 'الولاة', 'البلديات'],
+      },
+      {
+        topic: 'justice',
+        keywords: ['وزارة العدل', 'المنظومة القضائية', 'الشباك الإلكتروني', 'خدمة الأبوستيل', 'السوابق القضائية'],
+      },
+      {
+        topic: 'training',
+        keywords: ['وزارة التكوين المهني', 'مراكز التكوين المهني', 'عروض التمهين', 'دخول التكوين المهني'],
+      },
+      {
+        topic: 'fisheries',
+        keywords: ['وزارة الصيد البحري', 'تربية المائيات', 'سفن الصيد البحري', 'الإنتاج الصيدي'],
+      },
+      {
+        topic: 'post',
+        keywords: ['بريد الجزائر', 'البطاقة الذهبية', 'بريدي موب', 'الحسابات البريدية الجارية', 'وزارة البريد'],
+      },
+      {
+        topic: 'socialSecurity',
+        keywords: ['الضمان الاجتماعي', 'بطاقة الشفاء', 'صندوق التقاعد', 'معاشات المتقاعدين', 'التأمين الصحي'],
+      },
+      {
+        topic: 'military',
+        keywords: ['وزارة الدفاع الوطني', 'الجيش الوطني الشعبي', 'دليل التجنيد', 'الخدمة الوطنية'],
+      },
+    ];
+
+    for (const rule of apsWhitelistRules) {
+      if (rule.keywords.some((kw) => fullText.includes(kw.toLowerCase()))) {
+        return COMPREHENSIVE_ADMINISTRATIVE_DATABASE.find((d) => d.topic === rule.topic);
+      }
+    }
+  }
+
   // إذا لم يثبت ارتباطه بأي معاملة إدارية رسمية ⬅ تجاهل تام
   return null;
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 4: استخراج الصورة الرسمية الموثقة عبر cheerio و axios]
+// [المرحلة 5: استخراج الصورة الرسمية الموثقة عبر cheerio و axios]
 // ════════════════════════════════════════════════════════════════
 async function extractOfficialImage(pageUrl) {
   if (!pageUrl || typeof pageUrl !== 'string' || !pageUrl.startsWith('http')) {
@@ -493,27 +614,27 @@ function isValidImageUrl(url) {
   if (!url || url.length < 8) return false;
   const lower = url.toLowerCase();
   if (lower.includes('logo') || lower.includes('icon') || lower.includes('avatar')) return false;
-  return /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(lower) || lower.includes('/uploads/') || lower.includes('communique');
+  return /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(lower) || lower.includes('/uploads/') || lower.includes('article') || lower.includes('communique');
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 5: صياغة المقال بـ Gemini بنظام التلقين الصارم]
+// [المرحلة 6: صياغة المقال بـ Gemini بنظام التلقين الصارم]
 // ════════════════════════════════════════════════════════════════
 async function generateTrendArticleWithGemini(trendItem, matchedOfficial) {
   const prompt = `أنت محرر صحفي خبير في السيو. اكتب مقالاً احترافياً بين 1000 و 1500 كلمة يستوفي الشروط التالية:
 1. عنوان رئيسي جذاب (H1)، مقدمة قوية، عناوين فرعية (H2, H3)، فقرات قصيرة، قوائم نقطية، خاتمة ودعوة لاتخاذ إجراء (CTA).
 2. إذا لم يذكر البيان الرسمي أرقاماً معينة، اكتب حرفياً: 'لم يُكشف بعد عن الأرقام الرسمية'. ممنوع منعاً باتاً اختراع أو تخمين أرقام أو تواريخ.
-3. اقتبس حرفياً الفقرة الرسمية الأولى من البيان مع وضع علامات تنصيص وذكر المصدر والجهة.
+3. اقتبس حرفياً الفقرة الرسمية الأولى من البيان مع وضع علامات تنصيص وذكر المصدر والجهة: ${trendItem.sourceName}.
 4. في نهاية المقال، أنشئ قسماً بعنوان "الأسئلة الشائعة" يضم 3 أسئلة وأجوبة تخص الموضوع.
 5. ممنوع منعاً باتاً كتابة أي كود HTML للصور أو إضافة روابط صور، لأن السكريبت الخارجي يتكفل بالصور. أنت تكتب النص فقط.
 6. يجب أن يكون اللغة عربية فصيحة، مع مراعاة المصطلحات المتداولة في الجزائر.
 
 [بيانات الخدمة والمعاملة الحكومية المعتمدة]:
-- موضوع الترند والخدمة: ${trendItem.title}
+- موضوع الخبر والخدمة: ${trendItem.title}
 - الجهة الرسمية المختصة: ${matchedOfficial.name}
 - الرابط والمنصة الرسمية: ${matchedOfficial.portalUrl || matchedOfficial.officialUrl}
 - سياق الخبر ومعطياته: ${trendItem.snippet || 'دليل شامل حول الإجراءات والخدمات الإدارية.'}
-- مصدر الرصد: ${trendItem.sourceName} (${trendItem.link || matchedOfficial.portalUrl})
+- مصدر الرصد المعتمد: ${trendItem.sourceName} (${trendItem.link || matchedOfficial.portalUrl})
 
 [الإخراج المطلوب]: ابدأ مباشرة بعنوان # H1 دون أي هوامش أو تعليقات خارجية.`;
 
@@ -616,10 +737,10 @@ function parseTrendToArticleJson(rawText, trendItem, matchedOfficial, officialIm
     title,
     introduction: introduction || sanitizedText.slice(0, 500),
     sections: sections.length > 0 ? sections : [{ heading: 'دليل الإجراءات والتفاصيل الكاملة', content: sanitizedText }],
-    sourceMinistry: matchedOfficial.name,
+    sourceMinistry: trendItem.isTier1Official ? `وكالة الأنباء الجزائرية الرسمية (APS) — ${matchedOfficial.name}` : matchedOfficial.name,
     categoryId: matchedOfficial.categoryId,
     dateStr: new Date().toLocaleDateString('ar-DZ', { year: 'numeric', month: 'long', day: 'numeric' }),
-    officialDocumentUrl: matchedOfficial.portalUrl || matchedOfficial.officialUrl,
+    officialDocumentUrl: trendItem.link || matchedOfficial.portalUrl || matchedOfficial.officialUrl,
     isTrendingTopic: true,
     trendingKeyword: trendItem.title,
     autoGenerated: true,
@@ -652,7 +773,7 @@ function generateTrendSlug(title) {
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 6: الحفظ والفهرسة الفورية]
+// [المرحلة 7: الحفظ والفهرسة الفورية]
 // ════════════════════════════════════════════════════════════════
 function saveArticle(slug, article) {
   let data = {};
@@ -687,8 +808,8 @@ function pingIndexNow(url) {
 // ─── المحرك الرئيسي ───────────────────────────────────────────
 async function main() {
   console.log('\n' + '='.repeat(70));
-  console.log('🔥 RAQMANA — رادار تصيد الترندات والإعلام الجزائري (v3.2 الشامل)');
-  console.log('🏛 النطاق: 267 قطاعاً إدارياً وخدمات رقمية ومعاملات عمومية حصراً');
+  console.log('🔥 RAQMANA — رادار تصيد الترندات والإعلام الرسمي (v3.3)');
+  console.log('🏛 المصدر المفضل Tier 1: وكالة الأنباء الجزائرية الرسمية (APS)');
   console.log('='.repeat(70) + '\n');
 
   const history = loadHistory();
@@ -697,13 +818,16 @@ async function main() {
   const sitesConfig = JSON.parse(fs.readFileSync(CONFIG.SITES_CONFIG, 'utf8'));
   const newsSources = sitesConfig.algerian_news_sources || [];
 
-  const [googleTrendsList, mediaNewsList] = await Promise.all([
+  // جلب الأخبار: الأولوية لـ APS الرسمية، ثم ترندات قوقل، ثم الصحافة الكبرى
+  const [apsNewsList, googleTrendsList, mediaNewsList] = await Promise.all([
+    crawlAPSOfficial(),
     fetchGoogleTrendsDZ(),
     crawlAlgerianNewsSources(newsSources),
   ]);
 
-  const allCandidateTrends = [...googleTrendsList, ...mediaNewsList];
-  console.log(`\n📊 إجمالي المواضيع المرصودة للتحليل: ${allCandidateTrends.length} موضوع.`);
+  // دمج بالترتيب التفضيلي: APS أولاً كمرجع رسمي مؤكد
+  const allCandidateTrends = [...apsNewsList, ...googleTrendsList, ...mediaNewsList];
+  console.log(`\n📊 إجمالي المرشحات للتحليل: ${allCandidateTrends.length} موضوع.`);
 
   let writtenCount = 0;
 
@@ -714,10 +838,10 @@ async function main() {
       continue;
     }
 
-    // 🛡 الفحص الصارم: استبعاد المحتوى غير الإداري + مطابقة الخدمات الـ 15
-    const matchedOfficial = verifyAndMatchAdministrativeOnly(item);
+    // التحقق والمطابقة الإدارية مع دعم دلالات APS
+    const matchedOfficial = verifyAndMatchAdministrativeWithAPS(item);
     if (!matchedOfficial) {
-      continue; // غير مطابق للخدمات الإدارية ⬅ تجاهل تام
+      continue; // تم استبعاده
     }
 
     if (writtenCount >= CONFIG.MAX_TREND_ARTICLES_PER_RUN) {
@@ -725,7 +849,7 @@ async function main() {
       break;
     }
 
-    console.log(`\n🎯 [صيد إداري وخدماتي حقيقي مُوثّق]: "${item.title}"`);
+    console.log(`\n🎯 [صيد موثق من ${item.sourceName}]: "${item.title}"`);
     console.log(`   🏛 القطاع المعتمد: ${matchedOfficial.name}`);
 
     try {
@@ -749,6 +873,7 @@ async function main() {
         slug,
         title: item.title,
         official: matchedOfficial.name,
+        source: item.sourceName,
         processedAt: new Date().toISOString(),
       };
       if (item.link) {
