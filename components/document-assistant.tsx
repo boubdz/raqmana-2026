@@ -260,7 +260,10 @@ export function DocumentAssistant() {
       });
       const data = await response.json();
       if (data.generatedText) {
-        setGeneratedText(data.generatedText);
+        const cleanText = data.generatedText
+          .replace(/الجمهورية الجزائرية الديمقراطية الشعبية/g, '')
+          .trim();
+        setGeneratedText(cleanText);
       } else {
         setError(data.error || "فشل في توليد النص، يرجى المحاولة مرة أخرى.");
       }
