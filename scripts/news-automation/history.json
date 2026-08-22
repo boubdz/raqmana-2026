@@ -151,6 +151,14 @@
     "https://www.ennaharonline.com/%d8%a8%d8%af%d8%a7%d8%b1%d9%8a-%d9%8a%d9%8f%d8%b4%d8%a7%d8%b1%d9%83-%d9%81%d9%8a-%d8%a7%d9%84%d9%85%d8%b9%d8%b1%d8%b6-%d8%a7%d9%84%d8%af%d9%88%d9%84%d9%8a-%d9%84%d9%84%d9%81%d9%84%d8%a7%d8%ad%d8%a9/": {
       "slug": "trend-aldlyl-alshaml-lkhdmat-mnsa-progres-webetu-whadnat-mt4amlct",
       "processedAt": "2026-08-22T11:26:52.833Z"
+    },
+    "https://www.ennaharonline.com/%d8%a7%d9%84%d8%b3%d9%84%d8%b7%d8%a7%d8%aa-%d8%a7%d9%84%d9%85%d8%ad%d9%84%d9%8a%d8%a9-%d8%aa%d9%88%d8%a7%d8%b5%d9%84-%d8%ac%d9%87%d9%88%d8%af%d9%87%d8%a7-%d9%84%d8%af%d8%b9%d9%85-%d9%88%d8%aa%d8%b1/": {
+      "slug": "trend-aldlyl-alshaml-lmrafqa-almstthmryn-wrfa-alaraqyl-a-mt4h2c4l",
+      "processedAt": "2026-08-22T14:27:05.078Z"
+    },
+    "https://www.echoroukonline.com/%d8%a7%d9%84%d8%ab%d9%84%d8%a7%d8%ab%d8%a7%d8%a1-%d8%a7%d9%84%d9%85%d9%82%d8%a8%d9%84-%d8%b9%d8%b7%d9%84%d8%a9-%d9%85%d8%af%d9%81%d9%88%d8%b9%d8%a9-%d8%a7%d9%84%d8%a3%d8%ac%d8%b1-2": {
+      "slug": "trend-aldlyl-alshaml-lidara-alatl-almdfwaa-alajr-wajraaa-mt4h3zrz",
+      "processedAt": "2026-08-22T14:28:22.373Z"
     }
   },
   "processedTrends": {
@@ -242,7 +250,21 @@
       "official": "وزارة التعليم العالي والبحث العلمي (MESRS)",
       "source": "النهار أونلاين",
       "processedAt": "2026-08-22T11:26:52.833Z"
+    },
+    "السلطات المحلية تواصل جهودها لدعم وترقية الاستثمار": {
+      "slug": "trend-aldlyl-alshaml-lmrafqa-almstthmryn-wrfa-alaraqyl-a-mt4h2c4l",
+      "title": "السلطات المحلية تواصل جهودها لدعم وترقية الاستثمار",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "النهار أونلاين",
+      "processedAt": "2026-08-22T14:27:05.078Z"
+    },
+    "الثلاثاء المقبل عطلة مدفوعة الأجر": {
+      "slug": "trend-aldlyl-alshaml-lidara-alatl-almdfwaa-alajr-wajraaa-mt4h3zrz",
+      "title": "الثلاثاء المقبل عطلة مدفوعة الأجر",
+      "official": "الوكالة الوطنية للتشغيل (ANEM) والمديرية العامة للوظيفة العمومية",
+      "source": "الشروق أونلاين",
+      "processedAt": "2026-08-22T14:28:22.373Z"
     }
   },
-  "lastRun": "2026-08-22T12:20:59.511Z"
+  "lastRun": "2026-08-22T14:28:24.375Z"
 }
