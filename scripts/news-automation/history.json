@@ -175,6 +175,26 @@
     "https://www.ennaharonline.com/%d8%a7%d9%84%d9%88%d9%84%d8%a7%d8%a9-%d9%8a%d9%88%d8%a7%d8%b5%d9%84%d9%88%d9%86-%d8%ae%d8%b1%d8%ac%d8%a7%d8%aa%d9%87%d9%85-%d8%a7%d9%84%d9%85%d9%8a%d8%af%d8%a7%d9%86%d9%8a%d8%a9-%d8%b9%d8%a8%d8%b1/": {
       "slug": "trend-aldlyl-alshaml-llijraaat-alidarya-wtkfl-alwlaya-ba-mt5q1mxf",
       "processedAt": "2026-08-23T11:26:15.127Z"
+    },
+    "https://www.mesrs.dz/?p=82564": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-23T12:20:47.404Z"
+    },
+    "https://www.mesrs.dz/?p=82542": {
+      "skippedReason": "older_than_48h",
+      "skippedAt": "2026-08-23T12:20:47.404Z"
+    },
+    "https://www.mesrs.dz/?p=82525": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-23T12:20:47.404Z"
+    },
+    "https://www.mesrs.dz/?p=82501": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-23T12:20:47.404Z"
+    },
+    "https://www.mesrs.dz/?p=82475": {
+      "skippedReason": "older_than_48h",
+      "skippedAt": "2026-08-23T12:20:47.404Z"
     }
   },
   "processedTrends": {
@@ -385,5 +405,5 @@
       "processedAt": "2026-08-23T11:26:15.127Z"
     }
   },
-  "lastRun": "2026-08-23T11:26:17.131Z"
+  "lastRun": "2026-08-23T12:21:17.624Z"
 }
