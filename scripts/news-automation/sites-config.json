@@ -64,6 +64,7 @@
       "logoUrl": "https://www.ennaharonline.com/images/logo.png",
       "fallbackImage": "/images/default-placeholder.png",
       "categoryId": "digital",
+      "isMediaSite": true,
       "checkIntervalHours": 3
     },
     {
@@ -75,6 +76,7 @@
       "logoUrl": "https://www.echoroukonline.com/images/logo.png",
       "fallbackImage": "/images/default-placeholder.png",
       "categoryId": "economy",
+      "isMediaSite": true,
       "checkIntervalHours": 3
     },
     {
@@ -86,6 +88,7 @@
       "logoUrl": "https://www.elbilad.net/images/logo.png",
       "fallbackImage": "/images/default-placeholder.png",
       "categoryId": "economy",
+      "isMediaSite": true,
       "checkIntervalHours": 3
     }
   ],

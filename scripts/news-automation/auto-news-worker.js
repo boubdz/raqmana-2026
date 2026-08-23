@@ -54,9 +54,11 @@ const CONFIG = {
   ARTICLES_JSON: path.join(ROOT_DIR, 'lib', 'custom-articles-data.json'),
   HISTORY_FILE: path.join(__dirname, 'history.json'),
   MAX_ARTICLES_PER_RUN: 3,         // حد أقصى للمقالات في الجلسة الواحدة لتوفير الموارد
-  MAX_NEWS_AGE_HOURS: 720,         // مصفاة الوقت: أخبار الـ 720 ساعة (30 يوم) — المواقع الحكومية تنشر بشكل متقطع
+  MAX_NEWS_AGE_HOURS_GOV: 720,     // مواقع حكومية: 30 يوم (تنشر بشكل متقطع)
+  MAX_NEWS_AGE_HOURS_MEDIA: 48,    // مواقع إعلامية: 48 ساعة فقط (تنشر يومياً لكن بصخب كثير)
   DEFAULT_PLACEHOLDER: '/images/default-placeholder.png',
 };
+
 
 if (!CONFIG.GEMINI_API_KEY) {
   console.error('\n❌ GEMINI_API_KEY غير موجود في .env.local أو GitHub Secrets.\n');
@@ -551,7 +553,7 @@ async function processSite(site, history, articlesCount) {
         continue;
       }
 
-      // 4. مصفاة الوقت ━ مرنة: تدعم صيغ التاريخ المختلفة بما فيها صيغة البلاد
+      // 4. مصفاة الوقت ━ ذكية: الحكومية 30 يوم، الإعلامية 48 ساعة فقط
       if (!item.pubDate) {
         history.processedItems[item.guid || item.link] = { skippedReason: 'no_pubdate', skippedAt: new Date().toISOString() };
         continue;
@@ -565,8 +567,16 @@ async function processSite(site, history, articlesCount) {
       const now = new Date();
       const diffHours = isNaN(newsDate.getTime()) ? 0 : (now.getTime() - newsDate.getTime()) / (1000 * 60 * 60);
 
-      if (!isNaN(newsDate.getTime()) && diffHours > CONFIG.MAX_NEWS_AGE_HOURS) {
-        history.processedItems[item.guid || item.link] = { skippedReason: 'older_than_96h', skippedAt: new Date().toISOString() };
+      // الحد الزمني يختلف حسب نوع المصدر
+      const maxAgeHours = site.isMediaSite
+        ? CONFIG.MAX_NEWS_AGE_HOURS_MEDIA   // 48 ساعة للمواقع الإعلامية (صخب كثير)
+        : CONFIG.MAX_NEWS_AGE_HOURS_GOV;    // 720 ساعة للمواقع الحكومية (تنشر نادراً)
+
+      if (!isNaN(newsDate.getTime()) && diffHours > maxAgeHours) {
+        history.processedItems[item.guid || item.link] = {
+          skippedReason: site.isMediaSite ? 'media_older_than_48h' : 'gov_older_than_30d',
+          skippedAt: new Date().toISOString(),
+        };
         continue;
       }
 
