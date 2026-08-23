@@ -36,6 +36,14 @@ import {
 // أشهر النماذج الإدارية الجزائرية الأكثر طلباً
 const POPULAR_TEMPLATES = [
   {
+    id: "job_cv",
+    title: "سيرة ذاتية احترافية للتوظيف CV",
+    icon: "💼",
+    type: "cv",
+    tone: "formal",
+    prompt: "إنشاء سيرة ذاتية احترافية باللغة العربية لشغل منصب (أستاذ / مهندس / متصرف إداري / تقني) لدى (المؤسسة أو الشركة). المؤهل العلمي: شهادة (......) تخصص (......) دفعة (......). الخبرات والتربصات: (......). المهارات: الإعلام الآلي، التواصل، تسيير المشاريع. اللغات: العربية، الفرنسية، الإنجليزية. الوضعية تجاه الخدمة الوطنية: (معفى / مؤدى).",
+  },
+  {
     id: "employment_concours",
     title: "طلب مشاركة في مسابقة توظيف",
     icon: "📄",
@@ -123,13 +131,39 @@ export function DocumentAssistant() {
   const [isListening, setIsListening] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Check saved email on mount
+  // Check saved email on mount & parse query params
   useEffect(() => {
     try {
       const savedEmail = localStorage.getItem("raqmana_user_email");
       if (savedEmail && savedEmail.includes("@")) {
         setUserEmail(savedEmail);
         setIsEmailUnlocked(true);
+      }
+    } catch {}
+
+    // Auto populate from URL parameters (e.g. from Jobs page)
+    try {
+      if (typeof window !== "undefined" && window.location.search) {
+        const params = new URLSearchParams(window.location.search);
+        const urlDocType = params.get("docType");
+        const jobTitle = params.get("jobTitle") || params.get("title");
+        const org = params.get("organization") || params.get("org");
+
+        if (urlDocType === "cv" || urlDocType === "resume") {
+          setDocType("cv");
+          setTone("formal");
+          if (jobTitle || org) {
+            setDescription(`إنشاء سيرة ذاتية احترافية مخصصة لشغل منصب "${jobTitle || 'المترشح له'}" لدى "${org || 'المؤسسة المعنية'}".\n• المؤهل العلمي والشهادة: (أدخل تخصصك ومؤسسة التخرج هنا)\n• الخبرات المهنية والتربصات: (أدخل الخبرات إن وجدت)\n• المهارات والكفاءات: إتقان الحاسوب، العمل الجماعي، والبرمجيات الخاصة بالتخصص.\n• اللغات: العربية (اللغة الأم)، الفرنسية (جيد)، الإنجليزية (متوسط).\n• الوضعية تجاه الخدمة الوطنية: (معفى / مؤدى / مؤجل).`);
+          } else {
+            setDescription(POPULAR_TEMPLATES[0].prompt);
+          }
+        } else if (urlDocType === "concours-request" || urlDocType === "request") {
+          setDocType("request");
+          setTone("formal");
+          if (jobTitle || org) {
+            setDescription(`طلب خطي للمشاركة في مسابقة التوظيف لرتبة: ${jobTitle || '......'} لدى ${org || 'المؤسسة المعنية'}.\nيشرفني أن أتقدم إلى سيادتكم المحترمة بطلبي هذا قصد المشاركة في المسابقة المعلن عنها، وأحيطكم علماً أنني متحصل على شهادة (......) في تخصص (......) دفعة (......) وأستوفي كافة الشروط القانونية المطلوبة للالتحاق بالمنصب.`);
+          }
+        }
       }
     } catch {}
   }, []);
@@ -173,6 +207,8 @@ export function DocumentAssistant() {
 
   const getDocTypeName = () => {
     switch (docType) {
+      case "cv": return "سيرة ذاتية (CV)";
+      case "resume": return "سيرة ذاتية (CV)";
       case "request": return "طلب";
       case "petition": return "عريضة";
       case "complaint": return "شكوى";
@@ -481,6 +517,7 @@ export function DocumentAssistant() {
                   </SelectTrigger>
                   <SelectContent className="rounded-2xl border-border">
                     <SelectItem value="request">طلب إداري (خطي)</SelectItem>
+                    <SelectItem value="cv">سيرة ذاتية احترافية (CV)</SelectItem>
                     <SelectItem value="petition">عريضة / طعن رسمي</SelectItem>
                     <SelectItem value="complaint">شكوى رسمية</SelectItem>
                     <SelectItem value="affidavit">تصريح شرفي</SelectItem>

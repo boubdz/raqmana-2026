@@ -1,0 +1,159 @@
+[
+  {
+    "id": "job-private-software-engineer-algiers",
+    "slug": "job-private-software-engineer-algiers",
+    "title": "توظيف مهندس تطوير برمجيات (Full-Stack Developer)",
+    "organization": "مؤسسة ناشئة للحلول الرقمية والتطبيقات (SARL TechDz)",
+    "sector": "private",
+    "sectorNameAr": "القطاع الخاص والشركات",
+    "companyType": "private",
+    "wilaya": "16 الجزائر",
+    "degreeRequired": "شهادة مهندس دولة أو ماستر في الإعلام الآلي (BAC+5)",
+    "positionsCount": 3,
+    "publishDate": "2026-08-20",
+    "deadlineDate": "2026-09-30",
+    "status": "active",
+    "applicationMethod": "email",
+    "contactEmail": "recrutement@techdz-solutions.com",
+    "contractType": "عقد غير محدد المدة (CDI)",
+    "description": "تعلن شركة برمجيات بالجزائر العاصمة عن فتح باب التوظيف لمهندسين في تطوير تطبيقات الويب والأنظمة السحابية (React, Next.js, Node.js, PostgreSQL). بيئة عمل ديناميكية مع راتب محفز وإمكانية العمل عن بعد جزئياً.",
+    "conditions": [
+      "إتقان تقنيات الويب الحديثة (JavaScript / TypeScript / React / Next.js).",
+      "خبرة سابقة في تطوير واجهات برمجة التطبيقات (REST APIs).",
+      "القدرة على العمل الجماعي وحل المشكلات التقنية المعقدة.",
+      "التحكم الجيد في اللغتين الفرنسية والإنجليزية."
+    ],
+    "requiredDocuments": [
+      "سيرة ذاتية حديثة ومفصلة (CV) مع إبراز المشاريع المنجزة.",
+      "رابط الحساب على GitHub أو معرض الأعمال (Portfolio إن وجد)."
+    ],
+    "selectionMode": "انتقاء مباشر ومقابلة",
+    "tags": ["القطاع الخاص", "إعلام آلي", "برمجة", "الجزائر العاصمة", "CDI", "Next.js"]
+  },
+  {
+    "id": "job-private-accountant-oran",
+    "slug": "job-private-accountant-oran",
+    "title": "توظيف محاسب رئيسي ومسؤول مالية (Comptable Principal)",
+    "organization": "مجمع صناعي للتجارة والتوزيع (SPA Oran Distribution)",
+    "sector": "private",
+    "sectorNameAr": "القطاع الخاص والشركات",
+    "companyType": "private",
+    "wilaya": "31 وهران",
+    "degreeRequired": "شهادة ليسانس أو ماستر في المحاسبة والمالية (BAC+3 / BAC+5)",
+    "positionsCount": 2,
+    "publishDate": "2026-08-18",
+    "deadlineDate": "2026-09-25",
+    "status": "active",
+    "applicationMethod": "email",
+    "contactEmail": "rh-oran@orandistrib-dz.com",
+    "contractType": "عقد عمل CDI مع فترة تجربة",
+    "description": "مجمع تجاري وصناعي رائد بوهران يوظف محاسباً رئيسياً للإشراف على القيود المحاسبية، الجباية، التصريحات الضريبية (G50)، والتعامل مع برامج المحاسبة (PC Compta / Sage).",
+    "conditions": [
+      "خبرة لا تقل عن سنتين في المحاسبة العامة والجبائية في الشركات الخاصة.",
+      "إتقان برامج المحاسبة (PC Compta / PC Paie / Sage).",
+      "معرفة تامة بالقوانين الجبائية والتصريحات الجبائية الجزائرية.",
+      "الإقامة بولاية وهران أو البلديات المجاورة."
+    ],
+    "requiredDocuments": [
+      "سيرة ذاتية مهنية (CV) مع صورة.",
+      "نسخة من الشهادة الجامعية في المحاسبة أو المالية."
+    ],
+    "selectionMode": "انتقاء مباشر ومقابلة",
+    "tags": ["القطاع الخاص", "محاسبة", "مالية", "وهران", "PC Compta", "CDI"]
+  },
+  {
+    "id": "job-private-pharma-rep-constantine",
+    "slug": "job-private-pharma-rep-constantine",
+    "title": "توظيف مندوب دعاية طبية وصيدلانية (Délégué Médical)",
+    "organization": "مخبر صيدلاني وطني لصناعة الأدوية (Laboratoire PharmaDz)",
+    "sector": "private",
+    "sectorNameAr": "القطاع الخاص والشركات",
+    "companyType": "private",
+    "wilaya": "25 قسنطينة",
+    "degreeRequired": "شهادة دكتور في الصيدلة، طب عام، بيولوجيا أو بيوتكنولوجي",
+    "positionsCount": 4,
+    "publishDate": "2026-08-19",
+    "deadlineDate": "2026-09-28",
+    "status": "active",
+    "applicationMethod": "email",
+    "contactEmail": "recrutement.est@pharmadz-lab.com",
+    "contractType": "عقد عمل CDI + سيارة خدمة + عمولات أداء",
+    "description": "مخبر صيدلاني يوظف مندوبين طبيين لتمثيل وتغطية المستشفيات والعيادات الخاصة والصيدليات في ولايات الشرق الجزائري (قسنطينة، سطيف، ميلة، باتنة).",
+    "conditions": [
+      "شهادة جامعية في الصيدلة، الطب، البيولوجيا أو البيوكيمياء.",
+      "امتلاك رخصة سياقة صنف (ب) والقدرة على التنقل الميداني.",
+      "مهارات عالية في التواصل والإقناع والعرض العلمي.",
+      "إتقان اللغتين الفرنسية والعربية."
+    ],
+    "requiredDocuments": [
+      "سيرة ذاتية احترافية بصيغة PDF.",
+      "رسالة تحفيزية توضح الرغبة في التخصص الصيدلاني."
+    ],
+    "selectionMode": "انتقاء مباشر ومقابلة",
+    "tags": ["القطاع الخاص", "صيدلة", "دعاية طبية", "قسنطينة", "سطيف", "سيارة خدمة"]
+  },
+  {
+    "id": "job-anem-industrial-mechanic-blida",
+    "slug": "job-anem-industrial-mechanic-blida",
+    "title": "عرض تشغيل ANEM: تقني سامي في صيانة الآلات الكهروميكانيكية",
+    "organization": "الملحقة المحلية للتشغيل (ANEM البليدة) لصالح مصنع صناعات غذائية",
+    "sector": "anem",
+    "sectorNameAr": "وكالة التشغيل ANEM",
+    "companyType": "private",
+    "wilaya": "09 البليدة",
+    "anemOfferNumber": "OFFRE-ANEM-09-2026-4412",
+    "degreeRequired": "شهادة تقني سامي (TS) في الكهروميكانيك أو الصيانة الصناعية",
+    "positionsCount": 5,
+    "publishDate": "2026-08-21",
+    "deadlineDate": "2026-09-20",
+    "status": "active",
+    "applicationMethod": "online",
+    "applicationUrl": "https://wasitonline.anem.dz",
+    "contractType": "عقد عمل مدعم CTA / CDI",
+    "description": "تعلن الوكالة الوطنية للتشغيل بالبليدة عن عرض عمل مسجل تحت رقم (OFFRE-ANEM-09-2026-4412) لصالح مركب صناعي رائد في المنطقة الصناعية بن بولعيد. يشترط التسجيل في منصة وسيط أونلاين وبطاقة طالب عمل سارية.",
+    "conditions": [
+      "بطاقة طالب عمل سارية المفعول عبر منصة وسيط ANEM.",
+      "شهادة تقني سامي (TS) من معهد التكوين المهني في الصيانة الصناعية.",
+      "تسوية الوضعية تجاه الخدمة الوطنية للذكور.",
+      "الإقامة بولاية البليدة."
+    ],
+    "requiredDocuments": [
+      "التقدم مباشرة إلى الملحقة المحلية للتشغيل بالبليدة مصحوباً برقم العرض.",
+      "سيرة ذاتية مطبوعة (CV) وبطاقة التعريف الوطنية."
+    ],
+    "selectionMode": "انتقاء مباشر ومقابلة",
+    "tags": ["ANEM", "وكالة التشغيل", "البليدة", "صيانة صناعية", "تقني سامي", "وسيط"]
+  },
+  {
+    "id": "job-anem-hse-supervisor-ouargla",
+    "slug": "job-anem-hse-supervisor-ouargla",
+    "title": "عرض تشغيل ANEM: مشرف أمن وسلامة وبيئة (Superviseur HSE)",
+    "organization": "الملحقة المحلية للتشغيل حاسي مسعود (ANEM ورقلة) لصالح شركة خدمات بترولية",
+    "sector": "anem",
+    "sectorNameAr": "وكالة التشغيل ANEM",
+    "companyType": "private",
+    "wilaya": "30 ورقلة",
+    "anemOfferNumber": "OFFRE-HMD-2026-8891",
+    "degreeRequired": "شهادة ليسانس / مهندس في النظافة والأمن الصناعي (HSE)",
+    "positionsCount": 6,
+    "publishDate": "2026-08-22",
+    "deadlineDate": "2026-09-15",
+    "status": "active",
+    "applicationMethod": "online",
+    "applicationUrl": "https://wasitonline.anem.dz",
+    "contractType": "عقد عمل بنظام التناوب (Rotation 4x4) + الإطعام والإيواء",
+    "description": "عرض عمل صادر عبر منصة وسيط بالوكالة المحلية للتشغيل بحاسي مسعود لشغل منصب مشرف HSE لدى شركة مقاولة في الحقول النفطية. نظام عمل تناوبي 4 أسابيع عمل مقابل 4 أسابيع راحة مدفوعة الأجر.",
+    "conditions": [
+      "شهادة في النظافة والأمن الصناعي والبيئة (HSE).",
+      "التسجيل في منصة وسيط للتشغيل بالجنوب ورقم تسجيل صالح.",
+      "شهادة الإقامة بإحدى بلديات ولاية ورقلة أو حاسي مسعود.",
+      "التحكم في بروتوكولات السلامة في المنشآت البترولية."
+    ],
+    "requiredDocuments": [
+      "بطاقة طالب العمل ANEM.",
+      "سيرة ذاتية مفصلة (CV) مع شهادات التدريب والتربص في مجال HSE."
+    ],
+    "selectionMode": "انتقاء مباشر ومقابلة",
+    "tags": ["ANEM", "سوناطراك", "حاسي مسعود", "ورقلة", "HSE", "بترول", "Rotation"]
+  }
+]

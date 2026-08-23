@@ -8,6 +8,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ServiceCard } from "@/components/service-card";
 import { ParticlesBackground } from "@/components/particles-background";
+import { JobsLatestWidget } from "@/components/jobs-latest-widget";
 import { Button } from "@/components/ui/button";
 import {
   ChevronLeft,
@@ -351,6 +352,7 @@ export default async function CategoryPage({ params }: Props) {
 
   const IconComponent = iconMap[category.icon] || Info;
   const isAgriculture = id === "agriculture";
+  const isEmployment = id === "employment";
   const categoryName = categoryNamesAr[id] || id;
 
   const faqSchema = category.usageGuides ? {
@@ -731,6 +733,11 @@ export default async function CategoryPage({ params }: Props) {
                       <a href="https://adhahi.dz" target="_blank">زيارة المنصة</a>
                     </Button>
                   </div>
+                )}
+
+                {/* Jobs Widget for Employment category */}
+                {isEmployment && (
+                  <JobsLatestWidget />
                 )}
               </div>
             </div>

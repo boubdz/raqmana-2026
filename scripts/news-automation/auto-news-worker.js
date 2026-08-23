@@ -52,7 +52,7 @@ const CONFIG = {
   ARTICLES_JSON: path.join(ROOT_DIR, 'lib', 'custom-articles-data.json'),
   HISTORY_FILE: path.join(__dirname, 'history.json'),
   MAX_ARTICLES_PER_RUN: 3,         // حد أقصى للمقالات في الجلسة الواحدة لتوفير الموارد
-  MAX_NEWS_AGE_HOURS: 48,          // مصفاة الوقت: أخبار الـ 48 ساعة الأخيرة فقط
+  MAX_NEWS_AGE_HOURS: 96,          // مصفاة الوقت: أخبار الـ 96 ساعة الأخيرة (4 أيام)
   DEFAULT_PLACEHOLDER: '/images/default-placeholder.png',
 };
 
@@ -538,17 +538,22 @@ async function processSite(site, history, articlesCount) {
         continue;
       }
 
-      // 4. مصفاة الوقت (48 ساعة) ━ صارمة: خبر بدون تاريخ = مرفوض 100%
+      // 4. مصفاة الوقت ━ مرنة: تدعم صيغ التاريخ المختلفة بما فيها صيغة البلاد
       if (!item.pubDate) {
         history.processedItems[item.guid || item.link] = { skippedReason: 'no_pubdate', skippedAt: new Date().toISOString() };
         continue;
       }
-      const newsDate = new Date(item.pubDate);
+      let newsDate = new Date(item.pubDate);
+      if (isNaN(newsDate.getTime())) {
+        // دعم صيغة البلاد: "21:05 | 22-08-2026"
+        const m = String(item.pubDate).match(/(\d{2})-(\d{2})-(\d{4})/);
+        if (m) newsDate = new Date(`${m[3]}-${m[2]}-${m[1]}`);
+      }
       const now = new Date();
-      const diffHours = (now.getTime() - newsDate.getTime()) / (1000 * 60 * 60);
+      const diffHours = isNaN(newsDate.getTime()) ? 0 : (now.getTime() - newsDate.getTime()) / (1000 * 60 * 60);
 
-      if (isNaN(diffHours) || diffHours > CONFIG.MAX_NEWS_AGE_HOURS) {
-        history.processedItems[item.guid || item.link] = { skippedReason: 'older_than_48h', skippedAt: new Date().toISOString() };
+      if (!isNaN(newsDate.getTime()) && diffHours > CONFIG.MAX_NEWS_AGE_HOURS) {
+        history.processedItems[item.guid || item.link] = { skippedReason: 'older_than_96h', skippedAt: new Date().toISOString() };
         continue;
       }
 

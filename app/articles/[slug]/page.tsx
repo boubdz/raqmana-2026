@@ -280,7 +280,7 @@ export default async function ArticlePage({ params }: Props) {
               )}
               
               <div className="space-y-12">
-                {article.sections.map((section, index) => (
+                {article.sections.map((section: any, index: number) => (
                   <section key={index} className="scroll-mt-32">
                     <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] dark:text-white mb-6">
                       {section.heading}
@@ -296,7 +296,7 @@ export default async function ArticlePage({ params }: Props) {
                 <div className="mt-16 bg-primary/5 border border-primary/10 rounded-[2rem] p-8">
                   <h3 className="text-2xl font-bold mb-6 text-[#1a1a1a] dark:text-white">المنصات المتعلقة والشروط</h3>
                   <div className="space-y-6">
-                    {article.registrationRequiredSites.map((site, i) => (
+                    {article.registrationRequiredSites.map((site: any, i: number) => (
                       <div key={i} className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-white dark:bg-[#111] rounded-2xl shadow-sm border border-black/5 dark:border-white/5">
                         <div>
                           <h4 className="font-bold text-lg mb-2">{site.name}</h4>

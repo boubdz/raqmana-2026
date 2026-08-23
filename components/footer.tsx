@@ -86,9 +86,12 @@ export function Footer() {
   const navLinks = [
     { key: "nav.home", href: "/" },
     { key: "nav.services", href: "/#services" },
-    { key: "nav.directory", href: "/#directory" },
-    { key: "nav.documentGuide", href: "/document-guide" },
+    { key: "nav.jobs", href: "/jobs" },
+    { key: "nav.cvBuilder", href: "/cv-builder" },
     { key: "nav.assistant", href: "/document-assistant" },
+    { key: "nav.documentGuide", href: "/document-guide" },
+    { key: "nav.solutions", href: "/solutions" },
+    { key: "nav.articles", href: "/articles" },
   ];
 
   return (

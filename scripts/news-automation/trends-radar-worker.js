@@ -449,8 +449,8 @@ async function fetchGoogleTrendsDZ() {
         const snippet = newsArray[0]?.['ht:news_item_snippet'] || it.description || '';
 
         if (title && !trends.some((t) => t.title.toLowerCase() === title.toLowerCase())) {
-          // ━ pubDate الحقيقي من RSS الترند، أو null إذا كان فارغاً
-          const trendPubDate = it.pubDate || null;
+          // ━ ترندات Google دائماً حالية — إذا لم يحمل تاريخاً نستخدم الآن
+          const trendPubDate = it.pubDate || new Date().toISOString();
           trends.push({
             title,
             link: sourceUrl,
@@ -999,20 +999,32 @@ async function main() {
       continue;
     }
 
-    // ─── مصفاة الوقت (48 ساعة) ━ صارمة لجميع المصادر بلا استثناء ───
-    // قاعدة 1: خبر بدون تاريخ نشر → مرفوض فوراً (لا يمكن التحقق من حداثته)
+    // ─── مصفاة الوقت (96 ساعة) ─────────────────────────────────────────
+    // قاعدة 1: إذا لم يكن هناك تاريخ (الترندات من Google Trends) → نعتبره حالياً
     if (!item.pubDate) {
-      console.log(`   ⏩ تجاهل (بدون تاريخ نشر): ${item.title.slice(0, 50)}`);
-      history.processedTrends[itemKey] = { skippedReason: 'no_pubdate', skippedAt: new Date().toISOString() };
-      continue;
+      // ترندات Google بطبيعتها حالية — نعامله كخبر اليوم بدل رفضه
+      if (item.sourceName && item.sourceName.includes('Google Trends')) {
+        item.pubDate = new Date().toISOString();
+      } else {
+        console.log(`   ⏩ تجاهل (بدون تاريخ نشر): ${item.title.slice(0, 50)}`);
+        history.processedTrends[itemKey] = { skippedReason: 'no_pubdate', skippedAt: new Date().toISOString() };
+        continue;
+      }
     }
-    // قاعدة 2: خبر أقدم من 48 ساعة → مرفوض فوراً
-    const itemDate = new Date(item.pubDate);
+    // قاعدة 2: تحليل التاريخ بشكل مرن (يدعم صيغة البلاد: "21:05 | 22-08-2026")
+    let itemDate = new Date(item.pubDate);
+    if (isNaN(itemDate.getTime())) {
+      // محاولة تحليل صيغ العربية مثل "21:05 | 22-08-2026"
+      const m = String(item.pubDate).match(/(\d{2})-(\d{2})-(\d{4})/);
+      if (m) {
+        itemDate = new Date(`${m[3]}-${m[2]}-${m[1]}`);
+      }
+    }
     const nowTs = Date.now();
-    const ageHours = (nowTs - itemDate.getTime()) / (1000 * 60 * 60);
-    if (isNaN(ageHours) || ageHours > 48) {
-      console.log(`   ⏩ تجاهل (${Math.round(ageHours)} ساعة — أقدم من 48 ساعة): ${item.title.slice(0, 50)}`);
-      history.processedTrends[itemKey] = { skippedReason: 'older_than_48h', ageHours: Math.round(ageHours), skippedAt: new Date().toISOString() };
+    const ageHours = isNaN(itemDate.getTime()) ? 0 : (nowTs - itemDate.getTime()) / (1000 * 60 * 60);
+    if (!isNaN(itemDate.getTime()) && ageHours > 96) {
+      console.log(`   ⏩ تجاهل (${Math.round(ageHours)} ساعة — أقدم من 96 ساعة): ${item.title.slice(0, 50)}`);
+      history.processedTrends[itemKey] = { skippedReason: 'older_than_96h', ageHours: Math.round(ageHours), skippedAt: new Date().toISOString() };
       continue;
     }
     const matchedOfficial = verifyAndMatchAdministrativeWithAPS(item);
