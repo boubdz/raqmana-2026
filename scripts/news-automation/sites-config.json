@@ -9,62 +9,7 @@
       "logoUrl": "https://www.education.gov.dz/wp-content/uploads/logo.png",
       "fallbackImage": "/images/default-placeholder.png",
       "categoryId": "education",
-      "checkIntervalHours": 1
-    },
-    {
-      "id": "interieur",
-      "name": "وزارة الداخلية والجماعات المحلية",
-      "url": "https://www.interieur.gov.dz",
-      "rssUrl": "https://www.interieur.gov.dz/index.php/ar/?format=feed&type=rss",
-      "portalUrl": "https://passeport.interieur.gov.dz",
-      "logoUrl": "https://www.interieur.gov.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "interior",
-      "checkIntervalHours": 1
-    },
-    {
-      "id": "anem",
-      "name": "الوكالة الوطنية للتشغيل (ANEM)",
-      "url": "https://www.anem.dz",
-      "rssUrl": "https://www.anem.dz/feed/",
-      "portalUrl": "https://minha.anem.dz",
-      "logoUrl": "https://www.anem.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "employment",
-      "checkIntervalHours": 1
-    },
-    {
-      "id": "aadl",
-      "name": "الوكالة الوطنية لتحسين السكن وتطويره (AADL)",
-      "url": "https://www.aadl.com.dz",
-      "rssUrl": "https://www.aadl.com.dz/feed/",
-      "portalUrl": "https://aadl3inscription2024.dz",
-      "logoUrl": "https://www.aadl.com.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "realEstate",
-      "checkIntervalHours": 1
-    },
-    {
-      "id": "baridalgerie",
-      "name": "بريد الجزائر",
-      "url": "https://www.poste.dz",
-      "rssUrl": "https://www.poste.dz/feed/",
-      "portalUrl": "https://eccp.poste.dz",
-      "logoUrl": "https://www.poste.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "post",
-      "checkIntervalHours": 1
-    },
-    {
-      "id": "cnas",
-      "name": "الصندوق الوطني للتأمينات الاجتماعية للعمال الأجراء (CNAS)",
-      "url": "https://www.cnas.dz",
-      "rssUrl": "https://www.cnas.dz/feed/",
-      "portalUrl": "https://elhanaa.cnas.dz",
-      "logoUrl": "https://www.cnas.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "socialSecurity",
-      "checkIntervalHours": 1
+      "checkIntervalHours": 3
     },
     {
       "id": "mesrs",
@@ -75,40 +20,73 @@
       "logoUrl": "https://www.mesrs.dz/images/logo.png",
       "fallbackImage": "/images/default-placeholder.png",
       "categoryId": "university",
-      "checkIntervalHours": 1
+      "checkIntervalHours": 3
     },
     {
-      "id": "dgfip",
-      "name": "المديرية العامة للضرائب",
-      "url": "https://www.mfdgi.gov.dz",
-      "rssUrl": "https://www.mfdgi.gov.dz/index.php/ar/?format=feed",
-      "portalUrl": "https://mfdgi.gov.dz",
-      "logoUrl": "https://www.mfdgi.gov.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "tax",
-      "checkIntervalHours": 1
-    },
-    {
-      "id": "sonelgaz",
-      "name": "سونلغاز (Sonelgaz)",
-      "url": "https://www.sonelgaz.dz",
-      "rssUrl": "https://www.sonelgaz.dz/feed/",
-      "portalUrl": "https://pay.sonelgaz.dz",
-      "logoUrl": "https://www.sonelgaz.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "bills",
-      "checkIntervalHours": 1
-    },
-    {
-      "id": "cnr",
-      "name": "الصندوق الوطني للتقاعد (CNR)",
-      "url": "https://www.cnr.dz",
-      "rssUrl": "https://www.cnr.dz/index.php/ar/?format=feed",
-      "portalUrl": "https://retraite.cnr.dz",
-      "logoUrl": "https://www.cnr.dz/images/logo.png",
+      "id": "cnas",
+      "name": "الصندوق الوطني للتأمينات الاجتماعية للعمال الأجراء (CNAS)",
+      "url": "https://www.cnas.dz",
+      "rssUrl": "https://www.cnas.dz/feed/",
+      "portalUrl": "https://elhanaa.cnas.dz",
+      "logoUrl": "https://www.cnas.dz/images/logo.png",
       "fallbackImage": "/images/default-placeholder.png",
       "categoryId": "socialSecurity",
-      "checkIntervalHours": 1
+      "checkIntervalHours": 3
+    },
+    {
+      "id": "aadl",
+      "name": "الوكالة الوطنية لتحسين السكن وتطويره (AADL)",
+      "url": "https://www.aadl.com.dz",
+      "rssUrl": "https://www.aadl.com.dz/?format=feed&type=rss",
+      "portalUrl": "https://aadl3inscription2024.dz",
+      "logoUrl": "https://www.aadl.com.dz/images/logo.png",
+      "fallbackImage": "/images/default-placeholder.png",
+      "categoryId": "realEstate",
+      "checkIntervalHours": 3
+    },
+    {
+      "id": "commerce",
+      "name": "وزارة التجارة وترقية الصادرات",
+      "url": "https://www.mincommerce.gov.dz",
+      "rssUrl": "https://www.mincommerce.gov.dz/feed/",
+      "portalUrl": "https://sidjilcom.cnrc.dz",
+      "logoUrl": "https://www.mincommerce.gov.dz/images/logo.png",
+      "fallbackImage": "/images/default-placeholder.png",
+      "categoryId": "commerce",
+      "checkIntervalHours": 3
+    },
+    {
+      "id": "ennahar",
+      "name": "النهار أونلاين — الإجراءات الإدارية والرقمنة",
+      "url": "https://www.ennaharonline.com",
+      "rssUrl": "https://www.ennaharonline.com/feed/",
+      "portalUrl": "https://www.ennaharonline.com",
+      "logoUrl": "https://www.ennaharonline.com/images/logo.png",
+      "fallbackImage": "/images/default-placeholder.png",
+      "categoryId": "digital",
+      "checkIntervalHours": 3
+    },
+    {
+      "id": "echorouk",
+      "name": "الشروق أونلاين — الاقتصاد والخدمات",
+      "url": "https://www.echoroukonline.com",
+      "rssUrl": "https://www.echoroukonline.com/feed",
+      "portalUrl": "https://www.echoroukonline.com",
+      "logoUrl": "https://www.echoroukonline.com/images/logo.png",
+      "fallbackImage": "/images/default-placeholder.png",
+      "categoryId": "economy",
+      "checkIntervalHours": 3
+    },
+    {
+      "id": "elbilad",
+      "name": "البلاد — المستجدات الاقتصادية والخدمات",
+      "url": "https://www.elbilad.net",
+      "rssUrl": "https://www.elbilad.net/feed",
+      "portalUrl": "https://www.elbilad.net",
+      "logoUrl": "https://www.elbilad.net/images/logo.png",
+      "fallbackImage": "/images/default-placeholder.png",
+      "categoryId": "economy",
+      "checkIntervalHours": 3
     }
   ],
   "daily_sites_tier2": [
@@ -135,17 +113,6 @@
       "checkIntervalHours": 24
     },
     {
-      "id": "commerce",
-      "name": "وزارة التجارة وترقية الصادرات",
-      "url": "https://www.mincommerce.gov.dz",
-      "rssUrl": "https://www.mincommerce.gov.dz/feed/",
-      "portalUrl": "https://sidjilcom.cnrc.dz",
-      "logoUrl": "https://www.mincommerce.gov.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "commerce",
-      "checkIntervalHours": 24
-    },
-    {
       "id": "transport",
       "name": "وزارة النقل",
       "url": "https://www.mintransport.gov.dz",
@@ -166,30 +133,20 @@
       "fallbackImage": "/images/default-placeholder.png",
       "categoryId": "health",
       "checkIntervalHours": 24
+    },
+    {
+      "id": "dgfip",
+      "name": "المديرية العامة للضرائب",
+      "url": "https://www.mfdgi.gov.dz",
+      "rssUrl": "https://www.mfdgi.gov.dz/index.php/ar/?format=feed",
+      "portalUrl": "https://mfdgi.gov.dz",
+      "logoUrl": "https://www.mfdgi.gov.dz/images/logo.png",
+      "fallbackImage": "/images/default-placeholder.png",
+      "categoryId": "tax",
+      "checkIntervalHours": 24
     }
   ],
   "algerian_news_sources": [
-    {
-      "id": "ennahar",
-      "name": "النهار أونلاين",
-      "url": "https://www.ennaharonline.com",
-      "rssUrl": "https://www.ennaharonline.com/feed/",
-      "category": "general_news"
-    },
-    {
-      "id": "echorouk",
-      "name": "الشروق أونلاين",
-      "url": "https://www.echoroukonline.com",
-      "rssUrl": "https://www.echoroukonline.com/feed",
-      "category": "general_news"
-    },
-    {
-      "id": "elbilad",
-      "name": "البلاد",
-      "url": "https://www.elbilad.net",
-      "rssUrl": "https://www.elbilad.net/feed",
-      "category": "general_news"
-    },
     {
       "id": "aps_official",
       "name": "وكالة الأنباء الجزائرية الرسمية (APS)",

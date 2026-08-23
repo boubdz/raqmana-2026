@@ -32,6 +32,8 @@ const rssParser = new Parser({
   customFields: {
     item: ['media:content', 'enclosure', 'content:encoded'],
   },
+  // تجاوز أخطاء شهادات SSL للمواقع الحكومية
+  requestOptions: { rejectUnauthorized: false },
 });
 
 // ─── تحميل متغيرات البيئة ─────────────────────────────────────
@@ -52,7 +54,7 @@ const CONFIG = {
   ARTICLES_JSON: path.join(ROOT_DIR, 'lib', 'custom-articles-data.json'),
   HISTORY_FILE: path.join(__dirname, 'history.json'),
   MAX_ARTICLES_PER_RUN: 3,         // حد أقصى للمقالات في الجلسة الواحدة لتوفير الموارد
-  MAX_NEWS_AGE_HOURS: 96,          // مصفاة الوقت: أخبار الـ 96 ساعة الأخيرة (4 أيام)
+  MAX_NEWS_AGE_HOURS: 720,         // مصفاة الوقت: أخبار الـ 720 ساعة (30 يوم) — المواقع الحكومية تنشر بشكل متقطع
   DEFAULT_PLACEHOLDER: '/images/default-placeholder.png',
 };
 
@@ -65,13 +67,13 @@ if (!CONFIG.GEMINI_API_KEY) {
 const EXCLUDE_KEYWORDS = [
   // الرياضة وكرة القدم
   'كرة', 'مباراة', 'فريق', 'دوري', 'كأس', 'رونالدو', 'ميسي', 'نادي', 'لاعب', 'هدف',
-  'تصفيات', 'منتخب', 'ريال', 'برشلونة', 'أرسنال', 'ليفربول', 'سيتي', 'marseille',
+  'تصفيات', 'ريال', 'برشلونة', 'أرسنال', 'ليفربول', 'سيتي', 'marseille',
   'madrid', 'barcelona', 'champions', 'league', 'football', 'match',
   // الفن والترفيه
-  'مطرب', 'فنان', 'ممثل', 'مسلسل', 'أغنية', 'فيلم', 'سينما', 'تيك توك',
-  // الأخبار البروتوكولية والسياسية العامة واللقاءات التي لا تقدم خدمة إدارية للمواطن
+  'مطرب', 'ممثل', 'مسلسل', 'أغنية', 'فيلم', 'سينما', 'تيك توك',
+  // الأخبار البروتوكولية واللقاءات التي لا تقدم خدمة إدارية للمواطن
   'استقبل وزير', 'استقبل الوزير', 'محادثات بين', 'مباحثات بين', 'تبادل وجهات النظر',
-  'زيارة عمل وتفقد', 'زيارة تفقدية', 'تنصيب والي', 'حفل تكريم', 'جلسة عمل مغلقة',
+  'زيارة تفقدية', 'تنصيب والي', 'حفل تكريم', 'جلسة عمل مغلقة',
   'لقاء تشاوري', 'بيان مشترك بين', 'سفير دولة', 'سفيرة', 'دبلوماسية',
   // السياسة الدولية
   'روسيا', 'أوكرانيا', 'إسرائيل', 'غزة', 'ترامب', 'بايدن',
@@ -80,6 +82,16 @@ const EXCLUDE_KEYWORDS = [
   'الخطبة الدينية', 'الوعظ والإرشاد', 'الفتوى', 'شعائر الحج', 'رمضان', 'التراويح',
   'ليلة القدر', 'الهلال', 'رؤية الهلال', 'الفتوى الدينية', 'الشعائر الدينية',
 ];
+
+// كلمات مفتاحية ذات الصلة بالخدمات الإدارية — إذا وُجدت في الخبر يُمرَّر مباشرةً حتى لو كان المصدر إعلامياً
+const ADMIN_KEYWORDS_WHITELIST = [
+  'منصة', 'تسجيل', 'مسابقة توظيف', 'وظيف عمومي', 'استمارة', 'بطاقة',
+  'بطاقة الشفاء', 'خدمات إلكترونية', 'رقمنة', 'بلدية', 'منحة', 'تعويض',
+  'إجراءات', 'وثائق', 'ملف', 'طلب', 'مسابقة', 'ترقية', 'دراسة ملف',
+  'تسجيل إلكتروني', 'منصة رقمية', 'خدمة عمومية', 'شهادة', 'أجور',
+  'تقاعد', 'بطالة', 'إعانة', 'تأمين', 'رخصة', 'وكالة', 'سكن',
+];
+
 
 // ─── قراءة إعدادات المواقع ────────────────────────────────────
 const sitesConfig = JSON.parse(fs.readFileSync(CONFIG.SITES_CONFIG, 'utf8'));
@@ -530,9 +542,10 @@ async function processSite(site, history, articlesCount) {
         break;
       }
 
-      // 3. فلتر التخصص (استبعاد الرياضة والمشاهير)
+      // 3. فلتر التخصص — الـ whitelist يتغلب على قائمة الاستبعاد
       const fullText = `${item.title} ${item.description}`.toLowerCase();
-      const isExcluded = EXCLUDE_KEYWORDS.some((ex) => fullText.includes(ex.toLowerCase()));
+      const isWhitelisted = ADMIN_KEYWORDS_WHITELIST.some((kw) => fullText.includes(kw.toLowerCase()));
+      const isExcluded = !isWhitelisted && EXCLUDE_KEYWORDS.some((ex) => fullText.includes(ex.toLowerCase()));
       if (isExcluded) {
         history.processedItems[item.guid || item.link] = { skippedReason: 'excluded_category', skippedAt: new Date().toISOString() };
         continue;
