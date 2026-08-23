@@ -167,6 +167,14 @@
     "https://www.ennaharonline.com/%d8%aa%d8%b0%d8%a8%d8%b0%d8%a8-%d9%81%d9%8a-%d8%aa%d9%88%d8%b2%d9%8a%d8%b9-%d8%a7%d9%84%d9%85%d9%8a%d8%a7%d9%87-%d8%b9%d8%a8%d8%b1-4-%d8%a8%d9%84%d8%af%d9%8a%d8%a7%d8%aa-%d8%b4%d8%b1%d9%82-%d8%a7/": {
       "slug": "trend-aldlyl-alshaml-lidara-anqtaaat-almyah-wtlb-sharyj--mt5jzdxz",
       "processedAt": "2026-08-23T08:36:32.484Z"
+    },
+    "https://www.aps.dz/algerie/actualite-nationale/mt5n63mv-الولاة-يواصلون-خرجاتهم-الميدانية-لتسريع-إنجاز-المشاريع-التنموية": {
+      "slug": "trend-aldlyl-alshaml-lmtabaa-almsharya-altnmwya-wtqdym-a-mt5q0xjl",
+      "processedAt": "2026-08-23T11:25:42.242Z"
+    },
+    "https://www.ennaharonline.com/%d8%a7%d9%84%d9%88%d9%84%d8%a7%d8%a9-%d9%8a%d9%88%d8%a7%d8%b5%d9%84%d9%88%d9%86-%d8%ae%d8%b1%d8%ac%d8%a7%d8%aa%d9%87%d9%85-%d8%a7%d9%84%d9%85%d9%8a%d8%af%d8%a7%d9%86%d9%8a%d8%a9-%d8%b9%d8%a8%d8%b1/": {
+      "slug": "trend-aldlyl-alshaml-llijraaat-alidarya-wtkfl-alwlaya-ba-mt5q1mxf",
+      "processedAt": "2026-08-23T11:26:15.127Z"
     }
   },
   "processedTrends": {
@@ -361,7 +369,21 @@
       "skippedReason": "older_than_48h",
       "ageHours": null,
       "skippedAt": "2026-08-23T08:36:34.488Z"
+    },
+    "الولاة يواصلون خرجاتهم الميدانية لتسريع إنجاز المشاريع التنمويةالأحد 23 أوت 2026": {
+      "slug": "trend-aldlyl-alshaml-lmtabaa-almsharya-altnmwya-wtqdym-a-mt5q0xjl",
+      "title": "الولاة يواصلون خرجاتهم الميدانية لتسريع إنجاز المشاريع التنمويةالأحد 23 أوت 2026",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
+      "processedAt": "2026-08-23T11:25:42.242Z"
+    },
+    "الولاة يواصلون خرجاتهم الميدانية عبر مختلف ولايات الوطن": {
+      "slug": "trend-aldlyl-alshaml-llijraaat-alidarya-wtkfl-alwlaya-ba-mt5q1mxf",
+      "title": "الولاة يواصلون خرجاتهم الميدانية عبر مختلف ولايات الوطن",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "النهار أونلاين",
+      "processedAt": "2026-08-23T11:26:15.127Z"
     }
   },
-  "lastRun": "2026-08-23T09:20:51.234Z"
+  "lastRun": "2026-08-23T11:26:17.131Z"
 }
