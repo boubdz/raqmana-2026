@@ -42,6 +42,21 @@
     "https://www.aps.dz/algerie/actualite-nationale/mt5n63mv-الولاة-يواصلون-خرجاتهم-الميدانية-لتسريع-إنجاز-المشاريع-التنموية": {
       "slug": "trend-aldlyl-alshaml-ltqdym-shkawa-altnmya-almhlya-wmtab-mt69gkcy",
       "processedAt": "2026-08-23T20:29:44.354Z"
+    },
+    "https://www.education.gov.dz/?p=4330": {
+      "slug": "auto-aldlyl-alshaml-llatlaa-ala-ntayj-msabqa-altwdhyf-a-mt6b0mck",
+      "site": "education",
+      "processedAt": "2026-08-23T21:13:19.668Z"
+    },
+    "https://www.education.gov.dz/?p=4320": {
+      "slug": "auto-aldlyl-alshaml-lkhdmat-aldkhwl-almdrsy-abr-fdaa-al-mt6b1g5g",
+      "site": "education",
+      "processedAt": "2026-08-23T21:13:58.280Z"
+    },
+    "https://www.education.gov.dz/?p=4317": {
+      "slug": "auto-aldlyl-alshaml-lltrtybat-albydaghwjya-walkhdmat-al-mt6b2e3w",
+      "site": "education",
+      "processedAt": "2026-08-23T21:14:42.288Z"
     }
   },
   "processedTrends": {
@@ -123,5 +138,5 @@
       "processedAt": "2026-08-23T20:29:44.354Z"
     }
   },
-  "lastRun": "2026-08-23T20:29:46.356Z"
+  "lastRun": "2026-08-23T21:14:44.290Z"
 }
