@@ -195,6 +195,14 @@
     "https://www.mesrs.dz/?p=82475": {
       "skippedReason": "older_than_48h",
       "skippedAt": "2026-08-23T12:20:47.404Z"
+    },
+    "https://www.ennaharonline.com/%d9%84%d9%84%d9%8a%d9%88%d9%85-%d8%a7%d9%84%d8%ab%d8%a7%d9%86%d9%8a-%d8%aa%d9%88%d8%a7%d8%b5%d9%84-%d8%a7%d9%84%d9%85%d8%b4%d8%a7%d8%b1%d9%83%d8%a9-%d8%a7%d9%84%d8%ac%d8%b2%d8%a7%d8%a6%d8%b1%d9%8a/": {
+      "slug": "trend-aldlyl-alshaml-lltsjyl-fy-mnsa-almqawl-aldhaty-ana-mt5wk643",
+      "processedAt": "2026-08-23T14:28:37.508Z"
+    },
+    "https://www.echoroukonline.com/%d8%b3%d9%8a%d8%a7%d9%84-%d8%aa%d8%b0%d8%a8%d8%b0%d8%a8-%d9%81%d9%8a-%d8%aa%d9%88%d8%b2%d9%8a%d8%b9-%d8%a7%d9%84%d9%85%d9%8a%d8%a7%d9%87-%d8%b9%d8%a8%d8%b1-3-%d8%a8%d9%84%d8%af%d9%8a%d8%a7%d8%aa": {
+      "slug": "trend-aldlyl-alshaml-lidara-tdhbdhb-twzya-almyah-bshrq-a-mt5wl7n0",
+      "processedAt": "2026-08-23T14:29:26.131Z"
     }
   },
   "processedTrends": {
@@ -403,7 +411,31 @@
       "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
       "source": "النهار أونلاين",
       "processedAt": "2026-08-23T11:26:15.127Z"
+    },
+    "لليوم الثاني.. تواصل المشاركة الجزائرية في المعرض الدولي للفلاحة والغذائيات “أغرا-2026” بسلوفينيا": {
+      "slug": "trend-aldlyl-alshaml-lltsjyl-fy-mnsa-almqawl-aldhaty-ana-mt5wk643",
+      "title": "لليوم الثاني.. تواصل المشاركة الجزائرية في المعرض الدولي للفلاحة والغذائيات “أغرا-2026” بسلوفينيا",
+      "official": "المديرية العامة للضرائب، السجل التجاري، والوكالة الوطنية للمقاول الذاتي",
+      "source": "النهار أونلاين",
+      "processedAt": "2026-08-23T14:28:37.508Z"
+    },
+    "سيال: تذبذب في توزيع المياه عبر 3 بلديات شرق العاصمة": {
+      "slug": "trend-aldlyl-alshaml-lidara-tdhbdhb-twzya-almyah-bshrq-a-mt5wl7n0",
+      "title": "سيال: تذبذب في توزيع المياه عبر 3 بلديات شرق العاصمة",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "الشروق أونلاين",
+      "processedAt": "2026-08-23T14:29:26.131Z"
+    },
+    "27 شركة جزائرية لتعزّيز التعاون في الفلاحة والصناعات الغذائية مع شركاء سلوفينيين": {
+      "skippedReason": "older_than_48h",
+      "ageHours": null,
+      "skippedAt": "2026-08-23T14:29:28.134Z"
+    },
+    "ولاة الجمهورية يكثفون المتابعة الميدانية لتسريع إنجاز المشاريع التنموية": {
+      "skippedReason": "older_than_48h",
+      "ageHours": null,
+      "skippedAt": "2026-08-23T14:29:28.134Z"
     }
   },
-  "lastRun": "2026-08-23T12:21:17.624Z"
+  "lastRun": "2026-08-23T14:29:28.134Z"
 }
