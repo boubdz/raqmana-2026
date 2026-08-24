@@ -30,6 +30,14 @@ function findArticleAndSlug(articles: Record<string, any>, rawSlug: string) {
     const encoded = encodeURIComponent(rawSlug);
     if (articles[encoded]) return { article: articles[encoded], realSlug: encoded };
   } catch {}
+
+  // Fallback: search by oldSlug for renamed articles
+  for (const [key, item] of Object.entries(articles)) {
+    if (item.oldSlug === rawSlug) {
+      return { article: item, realSlug: key };
+    }
+  }
+
   return { article: null, realSlug: rawSlug };
 }
 

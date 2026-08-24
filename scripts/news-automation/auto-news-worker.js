@@ -395,16 +395,41 @@ function parseGeminiToArticleJson(rawText, newsItem, site, imageInfo) {
   const faqs = [];
   const faqSection = sections.find((s) => s.heading.includes('الأسئلة الشائعة') || s.heading.includes('FAQ'));
   if (faqSection) {
-    const qBlocks = faqSection.content.split(/\n(?=(?:[•\-*]|\d+\.|\*\*سؤال|\*\*س:|\*\*|\d+-))/);
-    for (const block of qBlocks) {
-      const match = block.match(/(?:[•\-*]|\d+\.|\*\*سؤال:?|\*\*س:?|\*\*|\d+-\s*)?\s*([^\n?؟]+[?؟])\s*\n*([\s\S]*)/i);
-      if (match && match[1] && match[2]) {
-        faqs.push({
-          question: match[1].replace(/^\*\*|\*\*$/g, '').replace(/^[•\-*0-9.]+\s*/, '').trim(),
-          answer: match[2].replace(/^ج:\s*|\*\*جواب:?\s*|\*\*/g, '').trim(),
-        });
+    const faqLines = faqSection.content.split('\n');
+    let currentQ = null;
+    let currentA = [];
+
+    const flushFaq = () => {
+      if (currentQ && currentA.length > 0 && faqs.length < 5) {
+        const ans = currentA.join(' ').replace(/\*+/g, '').trim();
+        if (ans.length > 10) faqs.push({ question: currentQ, answer: ans });
+      }
+      currentQ = null; currentA = [];
+    };
+
+    for (const rawLine of faqLines) {
+      const line = rawLine.trim().replace(/\*+/g, '').trim();
+      if (!line) { flushFaq(); continue; }
+
+      // كشف السؤال: يبدأ بـ س: أو سؤال: أو رقم أو ينتهي ب ؟ أو ?
+      const isQ = /^[س][اؤكصحزورتولمهلاة:]/u.test(line)
+               || /^\d+[\-\.\)]/u.test(line)
+               || (line.endsWith('?') || line.endsWith('؟'));
+      // كشف الجواب: يبدأ بـ ج: أو جواب:
+      const isA = /^[ج][واب:]/u.test(line);
+
+      if (isQ && !isA) {
+        flushFaq();
+        currentQ = line
+          .replace(/^[سسؤالكصحزورتولمهلاة:\d\-\.\)\s]+/u, '')
+          .replace(/[?؟]+$/, '').trim() + '؟';
+      } else if (isA && currentQ) {
+        currentA.push(line.replace(/^[ججواب:\s]+/u, '').trim());
+      } else if (currentQ) {
+        currentA.push(line);
       }
     }
+    flushFaq();
   }
 
   const slug = generateSlug(title, newsItem.guid);
