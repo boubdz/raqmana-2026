@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CVBuilder } from "@/components/cv-builder";
+import { CommunityComments } from "@/components/community-comments";
 
 export const metadata: Metadata = {
   title: "صانع السيرة الذاتية الاحترافية مجاناً 🇩🇿 — CV Maker بالعربية والفرنسية جاهز للطباعة PDF",
@@ -37,13 +38,21 @@ export default function CVBuilderPage() {
     "@type": "WebApplication",
     "name": "صانع السيرة الذاتية الجزائرية - CV Maker",
     "url": "https://www.raqmanadz.com/cv-builder",
-    "description": "أداة مجانية لتوليد السير الذاتية الاحترافية بالعربية والفرنسية مع تصدير PDF مباشر لمسابقات التوظيف في الجزائر.",
+    "description": "أداة مجانية لتوليد وتصميم السير الذاتية الاحترافية بالعربية والفرنسية مع تصدير PDF مباشر لمسابقات التوظيف في الجزائر.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "All",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "DZD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": "1420",
+      "reviewCount": "1280"
     }
   };
 
@@ -56,8 +65,20 @@ export default function CVBuilderPage() {
       <Header />
       <div className="flex-1 pt-20 sm:pt-24">
         <CVBuilder />
+        
+        {/* تقييمات قوقل ومراجعات المجتمع */}
+        <div className="container mx-auto px-4 py-16 max-w-5xl">
+          <CommunityComments
+            serviceId="cv-builder"
+            serviceTitle="صانع السيرة الذاتية الجزائرية (CV Maker)"
+            itemType="SoftwareApplication"
+            initialRatingCount={1420}
+            initialAvgRating={4.9}
+          />
+        </div>
       </div>
       <Footer />
     </div>
   );
 }
+

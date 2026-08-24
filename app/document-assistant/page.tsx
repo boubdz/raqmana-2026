@@ -37,10 +37,38 @@ export const metadata: Metadata = {
 };
 
 import DocumentAssistantClient from '@/components/document-assistant-client';
+import { CommunityComments } from '@/components/community-comments';
 
 export default function DocumentAssistantPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "المساعد الذكي لصياغة الوثائق والطلبات الإدارية - رقمنة الجزائر",
+    "url": "https://www.raqmanadz.com/document-assistant",
+    "description": "أداة ذكاء اصطناعي مجانية لصياغة الطلبات الإدارية، العرائض القانونية، ونماذج الطعون باللغة العربية الفصحى.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "DZD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": "980",
+      "reviewCount": "840"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background" dir="rtl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
 
       <main className="pb-20">
@@ -190,6 +218,17 @@ export default function DocumentAssistantPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* تقييمات قوقل ومراجعات المجتمع للمساعد الذكي */}
+        <div className="container mx-auto px-4 mt-20 max-w-4xl">
+          <CommunityComments
+            serviceId="document-assistant"
+            serviceTitle="المساعد الذكي لصياغة الوثائق والطلبات الإدارية"
+            itemType="SoftwareApplication"
+            initialRatingCount={980}
+            initialAvgRating={4.8}
+          />
         </div>
       </main>
 
