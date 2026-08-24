@@ -8,13 +8,12 @@ import { Metadata } from "next";
 import { CommunityComments } from "@/components/community-comments";
 
 export const metadata: Metadata = {
-  title: "رقمنة الجزائر — مقالات وأدلة الخدمات الرقمية",
-  description: "رقمنة الجزائر: شروحات مفصلة وأدلة عملية لاستخدام كل المنصات الرقمية الحكومية. تسجيل الخدمات، خطوات التسجيل، وآخر التحديثات في مكان واحد.",
+  title: "أدلة المعاملات الرقمية في الجزائر 2026 | رقمنة الجزائر",
+  description: "شروحات مفصلة وأدلة عملية لكل المنصات الرقمية الحكومية: التسجيل، الوثائق، خطوات التسجيل وحلول المشاكل الإدارية في الجزائر 2026.",
 };
 
-// تحديث فوري ديناميكي عند النشر أو التعديل
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 3600;
+
 
 const trendingSlugs = new Set(["mdn", "tawdhif", "aadl3", "chifa", "startups", "onec-concours-2026", "minha-batala-guide-2026"]);
 

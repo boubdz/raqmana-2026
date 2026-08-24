@@ -16,8 +16,8 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// إعادة التحقق كل ساعة — أفضل من force-dynamic لأداء SEO
+export const revalidate = 3600;
 
 function findArticleAndSlug(articles: Record<string, any>, rawSlug: string) {
   if (!rawSlug) return { article: null, realSlug: "" };
@@ -108,8 +108,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const highConv = highConvertingArticleMetadata[realSlug] || highConvertingArticleMetadata[slug];
-  const title = highConv ? highConv.title : `${article.title} — رقمنة الجزائر 2026`;
-  const description = highConv ? highConv.description : (article.introduction?.substring(0, 160) || "الدليل المعتمد والرابط المباشر للخدمات الرقمية في الجزائر 2026 ⚡");
+  // عنوان مختصر للـ meta (أقل من 65 حرف) بينما يبقى العنوان الكامل للصفحة
+  const rawTitle = article.title.replace(/^📋\s*/, '');
+  const shortTitle = rawTitle.length > 65 ? rawTitle.substring(0, 62) + '…' : rawTitle;
+  const title = highConv ? highConv.title : `${shortTitle} | رقمنة الجزائر`;
+  // وصف مخصص لكل مقال (أول 155 حرف من المقدمة بعد تنظيفها)
+  const cleanIntro = (article.introduction || '').replace(/[\n\r]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const description = highConv ? highConv.description : (cleanIntro.substring(0, 155) || `${shortTitle} — الدليل الرسمي والإجراءات الكاملة في الجزائر 2026 ⚡`);
 
   return {
     title,
@@ -158,21 +163,32 @@ export default async function ArticlePage({ params }: Props) {
     .filter((s) => s.category.id === categoryId)
     .slice(0, 6);
 
+  // توليد تاريخ النشر: من generatedAt أو dateStr أو تاريخ اليوم
+  const pubDateRaw = (article as any).generatedAt || (article as any).publishedAt || null;
+  const pubDateISO = pubDateRaw ? new Date(pubDateRaw).toISOString() : new Date().toISOString();
+  // حساب عدد الكلمات التقريبي
+  const allText = [article.introduction, ...(article.sections || []).map((s: any) => s.content)].join(' ');
+  const wordCount = allText.split(/\s+/).filter(Boolean).length;
+
   // Generate Enhanced JSON-LD for Google Rich Snippets (Article + Breadcrumbs + FAQPage)
   const schemas: any[] = [
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": article.title,
-      "description": `رقمنة الجزائر: ${article.introduction.substring(0, 150)}`,
+      "headline": article.title.replace(/^📋\s*/, '').substring(0, 110),
+      "description": (article.introduction || '').replace(/[\n\r]+/g, ' ').substring(0, 200),
+      "datePublished": pubDateISO,
+      "dateModified": pubDateISO,
+      "wordCount": wordCount,
+      "inLanguage": "ar-DZ",
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": `https://www.raqmanadz.com/articles/${realSlug || slug}`
       },
       "author": {
-        "@type": "Organization",
-        "name": "رقمنة الجزائر",
-        "url": "https://www.raqmanadz.com"
+        "@type": "Person",
+        "name": "فريق تحرير رقمنة الجزائر",
+        "url": "https://www.raqmanadz.com/about"
       },
       "publisher": {
         "@type": "Organization",
@@ -180,10 +196,17 @@ export default async function ArticlePage({ params }: Props) {
         "url": "https://www.raqmanadz.com",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.raqmanadz.com/android-chrome-512x512.png"
+          "url": "https://www.raqmanadz.com/android-chrome-512x512.png",
+          "width": 512,
+          "height": 512
         }
       },
-      "keywords": "رقمنة الجزائر, خدمات رقمية, الجزائر 2026, دليل المعاملات الإدارية"
+      "keywords": "رقمنة الجزائر, خدمات رقمية, الجزائر 2026, دليل المعاملات الإدارية",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "رقمنة الجزائر",
+        "url": "https://www.raqmanadz.com"
+      }
     },
     {
       "@context": "https://schema.org",
