@@ -72,6 +72,21 @@
       "slug": "auto-aldlyl-alshaml-l-mnsa-fdaa-alawlyaa-waltrtybat-alb-mt6iiy9m",
       "site": "education",
       "processedAt": "2026-08-24T00:43:32.222Z"
+    },
+    "https://www.education.gov.dz/?p=4291": {
+      "slug": "auto-aldlyl-alshaml-lkhdma-altsdyq-ala-alshhadat-walwth-mt6p1zam",
+      "site": "education",
+      "processedAt": "2026-08-24T03:46:17.727Z"
+    },
+    "https://www.mesrs.dz/?p=82603": {
+      "slug": "auto-aldlyl-alshaml-lbrnamj-alshraka-walbhth-alalmy-wal-mt6p2ohk",
+      "site": "mesrs",
+      "processedAt": "2026-08-24T03:46:50.365Z"
+    },
+    "https://www.mesrs.dz/?p=82584": {
+      "slug": "auto-aldlyl-alshaml-lkhdmat-aliywaa-waliqamat-aljamaya--mt6p3bap",
+      "site": "mesrs",
+      "processedAt": "2026-08-24T03:47:19.927Z"
     }
   },
   "processedTrends": {
@@ -153,5 +168,5 @@
       "processedAt": "2026-08-23T20:29:44.354Z"
     }
   },
-  "lastRun": "2026-08-24T02:58:38.779Z"
+  "lastRun": "2026-08-24T03:47:21.929Z"
 }
