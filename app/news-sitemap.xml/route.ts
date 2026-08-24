@@ -1,7 +1,6 @@
 import { getAllArticlesMerged } from '@/lib/custom-articles-store';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 1800;
 
 export async function GET() {
   const baseUrl = 'https://www.raqmanadz.com';
