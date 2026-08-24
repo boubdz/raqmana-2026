@@ -61,6 +61,7 @@ jobs:
       - name: '🔥 تشغيل رادار الترندات وصيد الأخبار'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/trends-radar-worker.js
 
@@ -109,6 +110,7 @@ jobs:
       - name: '🤖 تشغيل محرك الأخبار الرسمية — Tier 1'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/auto-news-worker.js
 
@@ -157,6 +159,7 @@ jobs:
       - name: '🤖 تشغيل محرك الأخبار — Tier 2'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/auto-news-worker.js --tier=2
 

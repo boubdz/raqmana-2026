@@ -85,6 +85,7 @@ scripts/news-automation/
 
 1. **`GEMINI_API_KEY`**: مفتاح Gemini API من [Google AI Studio](https://aistudio.google.com).
 2. **`GOOGLE_SERVICE_ACCOUNT_KEY`**: محتوى ملف `service-account.json` الخاص بـ Google Search Console.
+3. **`ONESIGNAL_REST_API_KEY`**: مفتاح REST API من [OneSignal Dashboard](https://dashboard.onesignal.com) ← Settings ← Keys & IDs ← "Raqmana Autopilot" Key.
 
 ---
 

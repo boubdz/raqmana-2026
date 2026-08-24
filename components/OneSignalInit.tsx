@@ -9,8 +9,8 @@ export function OneSignalInit() {
       (window as any).OneSignalDeferred = (window as any).OneSignalDeferred || [];
       (window as any).OneSignalDeferred.push(async function (OneSignal: any) {
         try {
-          await OneSignal.init({
-            appId: "0a805f59-03b6-41cf-92d4-6f25db136459",
+        await OneSignal.init({
+            appId: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID || "0a805f59-03b6-41cf-92d4-6f25db136459",
             allowLocalhostAsSecureOrigin: true,
             notifyButton: {
               enable: false, // We use custom UI or native slide prompt

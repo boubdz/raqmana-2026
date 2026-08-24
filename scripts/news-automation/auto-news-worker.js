@@ -546,6 +546,59 @@ function pingIndexNow(url) {
   req.end();
 }
 
+async function sendOneSignalPush({ title, message, url }) {
+  const appId = process.env.ONESIGNAL_APP_ID || '0a805f59-03b6-41cf-92d4-6f25db136459';
+  const apiKey = process.env.ONESIGNAL_REST_API_KEY;
+  if (!apiKey) {
+    console.warn('   ⚠️ [OneSignal] ONESIGNAL_REST_API_KEY غير موجود في البيئة — تم تخطي الإشعار');
+    return;
+  }
+
+  const payload = JSON.stringify({
+    app_id: appId,
+    included_segments: ['All', 'Subscribed Users'],
+    headings: { ar: title, en: title },
+    contents: { ar: message, en: message },
+    url: url || 'https://www.raqmanadz.com',
+    chrome_web_icon: 'https://www.raqmanadz.com/icon-192x192.png',
+    chrome_web_badge: 'https://www.raqmanadz.com/favicon-32x32.png',
+    priority: 10,
+  });
+
+  return new Promise((resolve) => {
+    const req = https.request(
+      {
+        hostname: 'onesignal.com',
+        path: '/api/v1/notifications',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': `Basic ${apiKey}`,
+          'Content-Length': Buffer.byteLength(payload),
+        },
+      },
+      (res) => {
+        let data = '';
+        res.on('data', (c) => (data += c));
+        res.on('end', () => {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            console.log(`   🔔 [OneSignal] تم إرسال إشعار فوري لهواتف المشتركين!`);
+          } else {
+            console.warn(`   ⚠️ [OneSignal] تنبيه: ${data}`);
+          }
+          resolve();
+        });
+      }
+    );
+    req.on('error', (e) => {
+      console.warn(`   ⚠️ [OneSignal Error]: ${e.message}`);
+      resolve();
+    });
+    req.write(payload);
+    req.end();
+  });
+}
+
 // ─── معالجة موقع حكومي واحد ──────────────────────────────────
 async function processSite(site, history, articlesCount) {
   console.log(`\n🔍 [المرحلة 1: الرصد] فحص: ${site.name} (${site.id})`);
@@ -650,6 +703,15 @@ async function processSite(site, history, articlesCount) {
         const articleUrl = `https://www.raqmanadz.com/articles/${slug}`;
         pingIndexNow(articleUrl);
         console.log(`   ⚡ تم إرسال تنبيه الفهرسة الفورية (IndexNow)`);
+
+        // 🔔 إرسال إشعار فوري لهواتف المشتركين
+        try {
+          await sendOneSignalPush({
+            title: `📢 جديد: ${article.title.slice(0, 60)}`,
+            message: `${article.introduction ? article.introduction.slice(0, 90) : 'دليل تفصيلي جديد في المنصة'} (اضغط للمتابعة)`,
+            url: articleUrl,
+          });
+        } catch {}
 
         history.processedItems[item.guid || item.link] = {
           slug,
