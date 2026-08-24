@@ -23,17 +23,6 @@
       "checkIntervalHours": 3
     },
     {
-      "id": "cnas",
-      "name": "الصندوق الوطني للتأمينات الاجتماعية للعمال الأجراء (CNAS)",
-      "url": "https://www.cnas.dz",
-      "rssUrl": "https://www.cnas.dz/feed/",
-      "portalUrl": "https://elhanaa.cnas.dz",
-      "logoUrl": "https://www.cnas.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "socialSecurity",
-      "checkIntervalHours": 3
-    },
-    {
       "id": "aadl",
       "name": "الوكالة الوطنية لتحسين السكن وتطويره (AADL)",
       "url": "https://www.aadl.com.dz",
