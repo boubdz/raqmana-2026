@@ -155,10 +155,11 @@ export function Footer() {
             <div className="h-4 w-px bg-black/10 dark:bg-white/10 hidden md:block" />
             <Link 
               href="/feedback" 
-              className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:text-primary transition-all hover:gap-3"
+              aria-label={language === 'ar' ? 'أرسل ملاحظاتك واقتراحاتك' : 'Send feedback'}
+              className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-foreground/80 hover:text-primary transition-all hover:gap-3"
             >
               {language === 'ar' ? 'أرسل ملاحظاتك' : 'Feedback'} 
-              <ExternalLink className="h-3.5 w-3.5 opacity-80" />
+              <ExternalLink className="h-3.5 w-3.5 opacity-80" aria-hidden="true" />
             </Link>
           </div>
 
@@ -168,9 +169,9 @@ export function Footer() {
               {t("footer.copyright")}
             </p>
             <div className="flex gap-8">
-               <Link href="/privacy-policy" className="text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors">Privacy Policy</Link>
-               <Link href="/terms-of-service" className="text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors">Terms of Service</Link>
-               <Link href="/sitemap" className="text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors">Sitemap</Link>
+               <Link href="/privacy-policy" aria-label="Privacy Policy - سياسة الخصوصية" className="text-xs font-bold uppercase tracking-widest text-foreground/80 hover:text-primary transition-colors">Privacy Policy</Link>
+               <Link href="/terms-of-service" aria-label="Terms of Service - شروط الاستخدام" className="text-xs font-bold uppercase tracking-widest text-foreground/80 hover:text-primary transition-colors">Terms of Service</Link>
+               <Link href="/sitemap" aria-label="Sitemap - خريطة الموقع" className="text-xs font-bold uppercase tracking-widest text-foreground/80 hover:text-primary transition-colors">Sitemap</Link>
             </div>
           </div>
         </div>

@@ -18,7 +18,7 @@ const alexandria = Alexandria({
   subsets: ["arabic", "latin"],
   variable: "--font-alexandria",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "600", "700", "900"],
 })
 
 export const metadata: Metadata = {
