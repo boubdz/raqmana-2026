@@ -1,17 +1,19 @@
 // app/page.tsx — Performance Optimized Server Component
+import dynamic from "next/dynamic";
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
 import { ServicesMarquee } from "@/components/services-marquee";
 import { NewsTicker } from "@/components/news-ticker";
-import { SeasonalEvents } from "@/components/seasonal-events";
 import { CategoriesSection } from "@/components/categories-section";
-import { SolutionsHub } from "@/components/solutions-hub";
-import { DigitalDirectory } from "@/components/digital-directory";
-import { Footer } from "@/components/footer";
-import { AIChatbot } from "@/components/ai-chatbot";
-
 import { TrendingServicesGrid } from "@/components/trending-services-grid";
-import { CommunityComments } from "@/components/community-comments";
+import { Footer } from "@/components/footer";
+
+// Dynamic imports for below-the-fold components
+const SeasonalEvents = dynamic(() => import("@/components/seasonal-events").then(m => m.SeasonalEvents));
+const SolutionsHub = dynamic(() => import("@/components/solutions-hub").then(m => m.SolutionsHub));
+const DigitalDirectory = dynamic(() => import("@/components/digital-directory").then(m => m.DigitalDirectory));
+const CommunityComments = dynamic(() => import("@/components/community-comments").then(m => m.CommunityComments));
+const AIChatbot = dynamic(() => import("@/components/ai-chatbot").then(m => m.AIChatbot));
 
 export default function Home() {
   // ✅ ItemList — يُدرج جميع الأقسام ويعطي غوغل فهرساً كاملاً للمحتوى
