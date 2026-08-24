@@ -162,6 +162,25 @@
       "slug": "auto-dlyl-haflat-alnql-alhdry-batna-etub-2026-alashtrak-mt77r2ii",
       "site": "ennahar",
       "processedAt": "2026-08-24T12:29:41.374Z"
+    },
+    "https://www.ennaharonline.com/?p=1646201": {
+      "slug": "auto-dlyl-altsjyl-walmsharka-fy-mhrjan-ryad-alfth-2026-mt7e89pm",
+      "site": "ennahar",
+      "processedAt": "2026-08-24T15:31:01.567Z"
+    },
+    "https://www.ennaharonline.com/?p=1646196": {
+      "slug": "auto-dlyl-sb-mnha-almrdwdya-lltrbya-2026-alkhtwat-walmt-mt7e8wu8",
+      "site": "ennahar",
+      "processedAt": "2026-08-24T15:31:31.526Z"
+    },
+    "https://www.ennaharonline.com/?p=1646193": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-24T15:31:33.528Z"
+    },
+    "https://www.ennaharonline.com/?p=1646189": {
+      "slug": "auto-dlyl-aliydaa-alqanwny-wtbaaa-alktb-fy-aljzayr-2026-mt7e9nc5",
+      "site": "ennahar",
+      "processedAt": "2026-08-24T15:32:05.866Z"
     }
   },
   "processedTrends": {
@@ -243,5 +262,5 @@
       "processedAt": "2026-08-23T20:29:44.354Z"
     }
   },
-  "lastRun": "2026-08-24T14:48:06.925Z"
+  "lastRun": "2026-08-24T15:32:07.869Z"
 }
