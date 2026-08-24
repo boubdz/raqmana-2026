@@ -29,6 +29,7 @@ import {
   BookOpen,
   Lock,
   Zap,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -197,12 +198,14 @@ export function CVBuilder() {
   const [targetOrgParam, setTargetOrgParam] = useState("");
   const previewRef = useRef<HTMLDivElement>(null);
 
-  // ── Email Gate ──────────────────────────────────────────────────
+  // ── Email Gate & Subscription State ─────────────────────────────
   const [userEmail, setUserEmail] = useState("");
   const [isEmailUnlocked, setIsEmailUnlocked] = useState(false);
   const [emailInput, setEmailInput] = useState("");
   const [emailSubmitting, setEmailSubmitting] = useState(false);
   const [emailError, setEmailError] = useState("");
+  const [showGateModal, setShowGateModal] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"print" | "ai" | null>(null);
 
   // Check saved email on mount (shared key with document-assistant)
   useEffect(() => {
@@ -230,15 +233,28 @@ export function CVBuilder() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: clean }),
       });
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        setEmailError(data.error || "بريد غير صالح، يرجى إدخال Gmail حقيقي ونشط.");
+      const resJson = await res.json();
+      if (!res.ok || resJson.error) {
+        setEmailError(resJson.error || "بريد غير صالح، يرجى إدخال Gmail حقيقي ونشط.");
         setEmailSubmitting(false);
         return;
       }
       localStorage.setItem("raqmana_user_email", clean);
       setUserEmail(clean);
       setIsEmailUnlocked(true);
+      setShowGateModal(false);
+
+      if (pendingAction === "print") {
+        setPendingAction(null);
+        setTimeout(() => {
+          window.print();
+        }, 300);
+      } else if (pendingAction === "ai") {
+        setPendingAction(null);
+        setTimeout(() => {
+          executeAiSummary();
+        }, 200);
+      }
     } catch {
       setEmailError("خطأ في الاتصال بالخادم، حاول مجدداً.");
     } finally {
@@ -271,8 +287,8 @@ export function CVBuilder() {
 
   const isRtl = data.lang === "ar";
 
-  // AI Summary Generator
-  const generateAiSummary = async () => {
+  // AI Summary Generator execution
+  const executeAiSummary = async () => {
     setIsAiGenerating(true);
     try {
       const prompt = data.lang === "ar"
@@ -299,6 +315,15 @@ export function CVBuilder() {
     }
   };
 
+  const generateAiSummary = async () => {
+    if (!isEmailUnlocked) {
+      setPendingAction("ai");
+      setShowGateModal(true);
+      return;
+    }
+    await executeAiSummary();
+  };
+
   // Image upload handling
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -315,6 +340,11 @@ export function CVBuilder() {
 
   // Print & PDF Export
   const handlePrint = () => {
+    if (!isEmailUnlocked) {
+      setPendingAction("print");
+      setShowGateModal(true);
+      return;
+    }
     window.print();
   };
 
@@ -369,90 +399,45 @@ export function CVBuilder() {
   return (
     <div className="min-h-screen bg-[#f8fafc] dark:bg-[#080808] text-foreground pb-24" dir={isRtl ? "rtl" : "ltr"}>
 
-      {/* ─── Email Gate ─────────────────────────────────────────────── */}
-      {!isEmailUnlocked ? (
-        <div className="min-h-screen flex items-center justify-center px-4 py-16">
-          <div className="w-full max-w-lg rounded-[2.5rem] bg-gradient-to-br from-indigo-900/90 via-blue-900/90 to-slate-900/90 border border-primary/30 p-8 md:p-12 text-white shadow-2xl backdrop-blur-xl relative overflow-hidden">
-            <div className="absolute -right-10 -bottom-10 h-48 w-48 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
-            <div className="absolute -left-10 -top-10 h-32 w-32 rounded-full bg-indigo-500/20 blur-2xl pointer-events-none" />
-
-            <div className="relative z-10 text-center space-y-6">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 border border-white/20 shadow-inner mx-auto">
-                <FileText className="h-8 w-8 text-primary" />
-              </div>
-
-              <div>
-                <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-2">
-                  أدخل بريدك الإلكتروني (Gmail) لاستخدام صانع السيرة الذاتية مجاناً 🇩🇿
-                </h2>
-                <p className="text-white/70 text-sm md:text-base leading-relaxed">
-                  اشترك مجاناً ببريدك الإلكتروني لفتح صانع السيرة الذاتية الاحترافية — نماذج عصرية وكلاسيكية بالعربية والفرنسية مع تصدير PDF مباشر.
-                </p>
-              </div>
-
-              {/* Features list */}
-              <div className="grid grid-cols-1 gap-2 text-right">
-                {[
-                  "✅ نماذج احترافية بالعربية والفرنسية",
-                  "✅ تصدير PDF مباشر وطباعة فورية",
-                  "✅ مخصص لمسابقات التوظيف الجزائرية",
-                  "✅ توليد ملخص ذكي بالذكاء الاصطناعي",
-                ].map((f) => (
-                  <p key={f} className="text-white/80 text-sm font-medium">{f}</p>
-                ))}
-              </div>
-
-              <form onSubmit={handleUnlockWithEmail} className="flex flex-col sm:flex-row gap-3 pt-2">
-                <Input
-                  type="email"
-                  placeholder="name@gmail.com"
-                  value={emailInput}
-                  onChange={(e) => setEmailInput(e.target.value)}
-                  required
-                  className="h-14 rounded-2xl bg-white/10 border-white/20 text-white placeholder:text-white/40 px-5 text-base focus-visible:ring-primary"
-                  dir="ltr"
-                />
-                <Button
-                  type="submit"
-                  disabled={emailSubmitting}
-                  className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground font-black text-base shadow-xl shrink-0 transition-transform hover:scale-105"
-                >
-                  {emailSubmitting ? "جاري التفعيل..." : "فتح الأداة ⚡"}
-                </Button>
-              </form>
-
-              {emailError && (
-                <p className="text-red-400 text-xs font-bold">{emailError}</p>
-              )}
-
-              <div className="flex items-center justify-center gap-2 text-xs text-white/60 pt-1">
-                <Lock className="h-3.5 w-3.5" />
-                <span>خدمة مجانية 100% — لا نشارك بريدك مع أي طرف ثالث</span>
-              </div>
+      {/* ─── Status / Subscription Alert Bar ────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 pt-4 mb-2">
+        {isEmailUnlocked ? (
+          <div className="flex items-center justify-between px-5 py-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4 text-emerald-500" />
+              <span>صانع السيرة الذاتية مُفعّل بالبريد: <strong className="font-mono">{userEmail}</strong></span>
             </div>
+            <button
+              onClick={() => {
+                localStorage.removeItem("raqmana_user_email");
+                setIsEmailUnlocked(false);
+                setUserEmail("");
+              }}
+              className="text-muted-foreground hover:text-foreground underline"
+            >
+              تغيير
+            </button>
           </div>
-        </div>
-      ) : (
-        <>
-          {/* Unlocked banner */}
-          <div className="max-w-7xl mx-auto px-4 pt-4">
-            <div className="flex items-center justify-between px-5 py-2.5 rounded-2xl bg-primary/10 border border-primary/20 text-xs font-bold text-primary mb-4">
-              <div className="flex items-center gap-2">
-                <Zap className="h-4 w-4" />
-                <span>صانع السيرة الذاتية مُفعّل بالبريد: <strong className="font-mono">{userEmail}</strong></span>
-              </div>
-              <button
-                onClick={() => {
-                  localStorage.removeItem("raqmana_user_email");
-                  setIsEmailUnlocked(false);
-                  setUserEmail("");
-                }}
-                className="text-muted-foreground hover:text-foreground underline"
-              >
-                تغيير
-              </button>
+        ) : (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border border-primary/20 text-xs">
+            <div className="flex items-center gap-2.5 text-foreground/90 font-medium">
+              <Sparkles className="h-4 w-4 text-primary shrink-0 animate-pulse" />
+              <span>
+                {isRtl
+                  ? "يمكنك ملء وتخصيص سيرتك الذاتية مجاناً — لتصدير ملف PDF عالي الجودة وتوليد النبذة بالذكاء الاصطناعي يُرجى تفعيل الاشتراك ببريد Gmail."
+                  : "Remplissez votre CV gratuitement — activez votre compte Gmail pour exporter en PDF et générer le profil IA."}
+              </span>
             </div>
+            <button
+              onClick={() => setShowGateModal(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-primary text-primary-foreground font-black text-xs hover:bg-primary/90 transition-all shrink-0 shadow-sm"
+            >
+              <Mail className="h-3.5 w-3.5" />
+              <span>{isRtl ? "تفعيل الاشتراك المجاني ⚡" : "Activer gratuitement"}</span>
+            </button>
           </div>
+        )}
+      </div>
 
       {/* ─── Top Control Bar ───────────────────────────────────────── */}
       <div className="bg-card/95 border border-border/80 px-4 sm:px-6 py-4 shadow-sm rounded-3xl max-w-7xl mx-auto mb-6">
@@ -1480,8 +1465,82 @@ export function CVBuilder() {
           }
         }
       `}</style>
-        </>
+
+      {/* ─── Subscription Gate Modal (Triggered on Print / AI) ─────── */}
+      {showGateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-lg rounded-[2.5rem] bg-gradient-to-br from-indigo-950/95 via-blue-950/95 to-slate-950/95 border border-primary/30 p-8 md:p-10 text-white shadow-2xl relative overflow-hidden">
+            <div className="absolute -right-10 -bottom-10 h-48 w-48 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+            <div className="absolute -left-10 -top-10 h-32 w-32 rounded-full bg-indigo-500/20 blur-2xl pointer-events-none" />
+
+            {/* Close Button */}
+            <button
+              onClick={() => {
+                setShowGateModal(false);
+                setPendingAction(null);
+              }}
+              className="absolute top-6 left-6 h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+              aria-label="Close modal"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div className="relative z-10 text-center space-y-5 pt-2">
+              <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 border border-white/20 shadow-inner mx-auto text-primary">
+                <Mail className="h-7 w-7" />
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-black tracking-tight mb-2">
+                  عذراً، أنت لست مشتركاً بعد! 🇩🇿
+                </h3>
+                <p className="text-white/75 text-xs md:text-sm leading-relaxed max-w-md mx-auto">
+                  يرجى إدخال بريدك الإلكتروني (Gmail) لفتح تحميل وتصدير سيرتك الذاتية بصيغة PDF فوراً وتفعيل أدوات الذكاء الاصطناعي مجاناً 100%.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-1.5 text-right bg-white/5 border border-white/10 p-3.5 rounded-2xl">
+                {[
+                  "✅ تصدير وطباعة PDF غير محدودة بجودة طباعة فائقة",
+                  "✅ نماذج احترافية مخصصة لمسابقات التوظيف الجزائرية",
+                  "✅ صياغة نبذة مهنية ذكية بالذكاء الاصطناعي بنقرة واحدة",
+                ].map((f) => (
+                  <p key={f} className="text-white/90 text-xs font-medium">{f}</p>
+                ))}
+              </div>
+
+              <form onSubmit={handleUnlockWithEmail} className="flex flex-col sm:flex-row gap-2.5 pt-1">
+                <Input
+                  type="email"
+                  placeholder="name@gmail.com"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  required
+                  className="h-13 rounded-2xl bg-white/10 border-white/20 text-white placeholder:text-white/40 px-4 text-sm focus-visible:ring-primary"
+                  dir="ltr"
+                />
+                <Button
+                  type="submit"
+                  disabled={emailSubmitting}
+                  className="h-13 px-6 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm shadow-xl shrink-0 transition-transform hover:scale-105"
+                >
+                  {emailSubmitting ? "جاري التفعيل..." : "تأكيد والبدء ⚡"}
+                </Button>
+              </form>
+
+              {emailError && (
+                <p className="text-red-400 text-xs font-bold">{emailError}</p>
+              )}
+
+              <div className="flex items-center justify-center gap-2 text-[11px] text-white/50 pt-1">
+                <Lock className="h-3.5 w-3.5" />
+                <span>خدمة مجانية 100% — لا نشارك بريدك مع أي طرف ثالث</span>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
 }
+
