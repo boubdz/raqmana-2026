@@ -200,6 +200,7 @@ jobs:
       - name: '⚡ تشغيل رادار مسابقات التوظيف والأرشفة الفورية'
         env:
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           NODE_ENV: production
         run: node scripts/scrape-concours.mjs
 

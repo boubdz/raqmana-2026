@@ -12,6 +12,7 @@ import path from 'path';
 import https from 'https';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
+import { sendPushNotification } from './onesignal-notifier.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -475,6 +476,17 @@ async function runSmartScraperAndIndexer() {
 
   // 2. Google Indexing API
   await indexUrlsWithGoogle(urlsToIndex);
+
+  // 3. OneSignal Web Push Notifications (إرسال إشعار فوري لهواتف المشتركين)
+  if (newJobCompetitions.length > 0) {
+    const topJob = newJobCompetitions[0];
+    console.log('───────────────────────────────────────────────────────────');
+    console.log(`🔔 جاري إرسال إشعار فوري لهواتف المشتركين عبر OneSignal...`);
+    const pushTitle = `💼 مسابقة توظيف جديدة: ${topJob.organization}`;
+    const pushMsg = `${topJob.title} — ولاية ${topJob.wilaya} (اضغط لمعرفة الشروط والملف)`;
+    const pushUrl = `${CONFIG.BASE_URL}/jobs/${topJob.slug}`;
+    await sendPushNotification({ title: pushTitle, message: pushMsg, url: pushUrl });
+  }
 
   console.log('═══════════════════════════════════════════════════════════');
   console.log('🎉 اكتملت العملية بنجاح! موقعك يتصدر بأحدث إعلانات التوظيف.');
