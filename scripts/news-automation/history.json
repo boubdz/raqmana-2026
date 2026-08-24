@@ -46,7 +46,8 @@
     "https://www.education.gov.dz/?p=4330": {
       "slug": "auto-aldlyl-alshaml-llatlaa-ala-ntayj-msabqa-altwdhyf-a-mt6b0mck",
       "site": "education",
-      "processedAt": "2026-08-23T21:13:19.668Z"
+      "processedAt": "2026-08-23T21:13:19.668Z",
+      "deletedAsDuplicate": true
     },
     "https://www.education.gov.dz/?p=4320": {
       "slug": "auto-aldlyl-alshaml-lkhdmat-aldkhwl-almdrsy-abr-fdaa-al-mt6b1g5g",
@@ -61,22 +62,26 @@
     "https://www.education.gov.dz/?p=4314": {
       "slug": "auto-aldlyl-alshaml-l-rznama-aldkhwl-almdrsy-wajraaat-a-mt6ihjb6",
       "site": "education",
-      "processedAt": "2026-08-24T00:42:26.195Z"
+      "processedAt": "2026-08-24T00:42:26.195Z",
+      "deletedAsDuplicate": true
     },
     "https://www.education.gov.dz/?p=4298": {
       "slug": "auto-aldlyl-alshaml-l-mnsa-wzara-altrbya-alwtnya-wastkh-mt6ii8ij",
       "site": "education",
-      "processedAt": "2026-08-24T00:42:58.848Z"
+      "processedAt": "2026-08-24T00:42:58.848Z",
+      "deletedAsDuplicate": true
     },
     "https://www.education.gov.dz/?p=4295": {
       "slug": "auto-aldlyl-alshaml-l-mnsa-fdaa-alawlyaa-waltrtybat-alb-mt6iiy9m",
       "site": "education",
-      "processedAt": "2026-08-24T00:43:32.222Z"
+      "processedAt": "2026-08-24T00:43:32.222Z",
+      "deletedAsDuplicate": true
     },
     "https://www.education.gov.dz/?p=4291": {
       "slug": "auto-aldlyl-alshaml-lkhdma-altsdyq-ala-alshhadat-walwth-mt6p1zam",
       "site": "education",
-      "processedAt": "2026-08-24T03:46:17.727Z"
+      "processedAt": "2026-08-24T03:46:17.727Z",
+      "deletedAsDuplicate": true
     },
     "https://www.mesrs.dz/?p=82603": {
       "slug": "auto-aldlyl-alshaml-lbrnamj-alshraka-walbhth-alalmy-wal-mt6p2ohk",
@@ -95,7 +100,8 @@
     "https://www.mesrs.dz/?p=82542": {
       "slug": "auto-aldlyl-alshaml-lkhdmat-aliywaa-alitaam-walnql-alja-mt6v6n08",
       "site": "mesrs",
-      "processedAt": "2026-08-24T06:37:52.778Z"
+      "processedAt": "2026-08-24T06:37:52.778Z",
+      "deletedAsDuplicate": true
     },
     "https://www.mesrs.dz/?p=82525": {
       "skippedReason": "excluded_category",
