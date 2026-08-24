@@ -87,6 +87,37 @@
       "slug": "auto-aldlyl-alshaml-lkhdmat-aliywaa-waliqamat-aljamaya--mt6p3bap",
       "site": "mesrs",
       "processedAt": "2026-08-24T03:47:19.927Z"
+    },
+    "https://www.mesrs.dz/?p=82564": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-24T06:37:03.322Z"
+    },
+    "https://www.mesrs.dz/?p=82542": {
+      "slug": "auto-aldlyl-alshaml-lkhdmat-aliywaa-alitaam-walnql-alja-mt6v6n08",
+      "site": "mesrs",
+      "processedAt": "2026-08-24T06:37:52.778Z"
+    },
+    "https://www.mesrs.dz/?p=82525": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-24T06:37:54.780Z"
+    },
+    "https://www.mesrs.dz/?p=82501": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-24T06:37:54.780Z"
+    },
+    "https://www.mesrs.dz/?p=82475": {
+      "slug": "auto-aldlyl-alshaml-lmrafqa-wdam-alnkhb-aljamaya-walmsh-mt6v745e",
+      "site": "mesrs",
+      "processedAt": "2026-08-24T06:38:14.985Z"
+    },
+    "https://www.mesrs.dz/?p=82416": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-24T06:38:16.987Z"
+    },
+    "https://www.mesrs.dz/?p=82399": {
+      "slug": "auto-aldlyl-alshaml-lbrnamj-dam-wtkrym-almsharya-alabtk-mt6v7lxs",
+      "site": "mesrs",
+      "processedAt": "2026-08-24T06:38:38.038Z"
     }
   },
   "processedTrends": {
@@ -168,5 +199,5 @@
       "processedAt": "2026-08-23T20:29:44.354Z"
     }
   },
-  "lastRun": "2026-08-24T03:47:21.929Z"
+  "lastRun": "2026-08-24T06:38:40.040Z"
 }
