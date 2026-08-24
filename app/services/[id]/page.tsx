@@ -116,7 +116,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ],
     metadataBase: new URL("https://www.raqmanadz.com"),
     alternates: {
-      canonical: `/services/${service.id}`,
+      canonical: `https://www.raqmanadz.com/services/${service.id}`,
     },
     openGraph: {
       title,

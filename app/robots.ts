@@ -6,16 +6,16 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        // السماح لجميع محركات البحث بالزحف الكامل
+        // السماح لجميع محركات البحث بالزحف الكامل للصفحات واستثناء الملفات البرمجية الداخلية
         userAgent: '*',
         allow: ['/'],
-        disallow: ['/api/', '/private/'],
+        disallow: ['/api/', '/private/', '/_next/static/media/'],
       },
       {
-        // ضمان وصول Googlebot لكل الصفحات
+        // ضمان وصول Googlebot لكل الصفحات واستثناء مسارات الصور المزدوجة
         userAgent: 'Googlebot',
         allow: ['/'],
-        disallow: [],
+        disallow: ['/api/', '/private/', '/_next/static/media/'],
       },
     ],
     sitemap: [
