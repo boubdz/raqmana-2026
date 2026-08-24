@@ -7,6 +7,7 @@ export async function GET() {
     { loc: `${baseUrl}/`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'daily', priority: '1.0' },
     { loc: `${baseUrl}/cv-builder`, lastmod: new Date().toISOString(), changefreq: 'daily', priority: '1.0' },
     { loc: `${baseUrl}/jobs`, lastmod: new Date().toISOString(), changefreq: 'daily', priority: '1.0' },
+    { loc: `${baseUrl}/jobs/post`, lastmod: new Date().toISOString(), changefreq: 'weekly', priority: '0.85' },
     { loc: `${baseUrl}/document-guide`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'daily', priority: '1.0' },
     { loc: `${baseUrl}/document-assistant`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'daily', priority: '1.0' },
     { loc: `${baseUrl}/articles`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'daily', priority: '0.95' },
