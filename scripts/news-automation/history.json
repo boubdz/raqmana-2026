@@ -124,6 +124,25 @@
       "slug": "auto-aldlyl-alshaml-lbrnamj-dam-wtkrym-almsharya-alabtk-mt6v7lxs",
       "site": "mesrs",
       "processedAt": "2026-08-24T06:38:38.038Z"
+    },
+    "https://www.mesrs.dz/?p=82383": {
+      "slug": "auto-dlyl-alalthaq-balmdrsa-alalya-llryadyat-2026-alshr-mt71lqhx",
+      "site": "mesrs",
+      "processedAt": "2026-08-24T09:37:34.836Z"
+    },
+    "https://www.ennaharonline.com/?p=1646044": {
+      "slug": "auto-dlyl-alijraaat-alidarya-lltsryh-balhwadth-waltamyn-mt71mq75",
+      "site": "ennahar",
+      "processedAt": "2026-08-24T09:38:21.093Z"
+    },
+    "https://www.ennaharonline.com/?p=1646054": {
+      "skippedReason": "excluded_category",
+      "skippedAt": "2026-08-24T09:38:23.094Z"
+    },
+    "https://www.ennaharonline.com/?p=1646046": {
+      "slug": "auto-dlyl-alkhdmat-alqnslya-waltaawn-byn-aljzayr-wmaly--mt71ngjt",
+      "site": "ennahar",
+      "processedAt": "2026-08-24T09:38:55.245Z"
     }
   },
   "processedTrends": {
@@ -205,5 +224,5 @@
       "processedAt": "2026-08-23T20:29:44.354Z"
     }
   },
-  "lastRun": "2026-08-24T08:53:37.383Z"
+  "lastRun": "2026-08-24T09:38:57.248Z"
 }
