@@ -130,6 +130,7 @@ const categoryNamesAr: Record<string, string> = {
   media: "الإعلام والاتصال",
   finance: "البنوك والمالية",
   retirement: "خدمات التقاعد CNR",
+  concours: "مسابقات التوظيف والوظيف العمومي",
 };
 
 const trendingKeywordsMap: Record<string, string[]> = {
@@ -153,6 +154,7 @@ const trendingKeywordsMap: Record<string, string[]> = {
   vehicles: ["فحص المركبات", "مركبتي", "تصاريح الاستيراد", "وزارة الطاقة والمناجم", "البطاقة الرمادية"],
   transport: ["حجز الجوية الجزائرية", "طاسيلي للطيران", "مواقيت القطارات SNTF", "SOGRAL", "حجز حافلات", "Yassir", "Heetch"],
   employment: ["anem.dz", "الوكالة الوطنية للتشغيل", "منحة البطالة", "تجديد بطاقة العمل", "منصة منحة", "طلب عمل في الجزائر"],
+  concours: ["مسابقات التوظيف 2026", "الوظيف العمومي الجزائر", "مسابقة الاساتذة 2026", "مسابقة سوناطراك", "مسابقة الشبه طبي", "استمارة معلومات للمشاركة في المسابقة", "طلب خطي للمشاركة في مسابقة", "concours fonction publique dz", "عروض عمل الجزائر"],
   commerce: ["وزارة التجارة", "حماية المستهلك", "أسعار السلع في الجزائر", "سجل تجاري", "Jibayatic"],
   customs: ["الجمارك الجزائرية", "تعريفة الجمارك", "طرود الجمارك", "قانون الجمارك", "خلية الإصغاء للجمارك"],
   autoEntrepreneur: ["المقاول الذاتي", "بطاقة المقاول الذاتي", "العمل الحر في الجزائر", "الامتيازات الجبائية للمقاول"],
@@ -352,7 +354,7 @@ export default async function CategoryPage({ params }: Props) {
 
   const IconComponent = iconMap[category.icon] || Info;
   const isAgriculture = id === "agriculture";
-  const isEmployment = id === "employment";
+  const isEmployment = id === "employment" || id === "concours";
   const categoryName = categoryNamesAr[id] || id;
 
   const faqSchema = category.usageGuides ? {

@@ -78,21 +78,21 @@ const nextConfig = {
       // ✅ 301 Permanent Redirects (Link Juice Transfer) from all deleted auto-articles to Homepage (/) & primary hubs
       { source: '/articles/shahadat-mt64ojuy', destination: '/categories/education', permanent: true },
       { source: '/articles/awliyaa-fadaa-tarbiya-mt64p71e', destination: '/categories/education', permanent: true },
-      { source: '/articles/raqmiya-musabaqa-natayij-mt64qa7b', destination: '/jobs', permanent: true },
+      { source: '/articles/raqmiya-musabaqa-natayij-mt64qa7b', destination: '/categories/concours', permanent: true },
       { source: '/articles/madrasi-dokhoul-awliyaa-mt6b1g5g', destination: '/categories/education', permanent: true },
       { source: '/articles/awliyaa-fadaa-raqmiya-mt6b2e3w', destination: '/categories/education', permanent: true },
       { source: '/articles/iiwaa-iqamat-jamiiya-mt6p3bap', destination: '/categories/university', permanent: true },
       { source: '/articles/jamiiya-ilmi-nukhab-mt6v745e', destination: '/categories/university', permanent: true },
       { source: '/articles/jamiiya-nukhab-ibtikaria-mt6v7lxs', destination: '/categories/university', permanent: true },
-      { source: '/articles/jaysh-madaris-mt4x9d9a', destination: '/jobs', permanent: true },
+      { source: '/articles/jaysh-madaris-mt4x9d9a', destination: '/categories/concours', permanent: true },
       { source: '/articles/tanmiya-mahaliya-shakawy-mt69gkcy', destination: '/categories/interior', permanent: true },
       { source: '/articles/shiraka-bahth-ilmi-mt6p2ohk', destination: '/categories/university', permanent: true },
       { source: '/articles/undefined', destination: '/', permanent: true },
       // ✅ Direct 1-Hop 301 Redirects for long legacy auto-generated slugs
-      { source: '/articles/trend-aldlyl-alshaml-lltjnyd-fy-mdars-wmwssat-aljysh-alw-mt4x9d9a', destination: '/jobs', permanent: true },
+      { source: '/articles/trend-aldlyl-alshaml-lltjnyd-fy-mdars-wmwssat-aljysh-alw-mt4x9d9a', destination: '/categories/concours', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-lltsdyq-ala-alshhadat-wkshwf-alnqat-mt64ojuy', destination: '/categories/education', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-l-almnsa-alrqmya-lwzara-altrbya-alw-mt64p71e', destination: '/categories/education', permanent: true },
-      { source: '/articles/auto-aldlyl-alshaml-llatlaa-ala-alntayj-alnhayya-wastkm-mt64qa7b', destination: '/jobs', permanent: true },
+      { source: '/articles/auto-aldlyl-alshaml-llatlaa-ala-alntayj-alnhayya-wastkm-mt64qa7b', destination: '/categories/concours', permanent: true },
       { source: '/articles/trend-aldlyl-alshaml-ltqdym-shkawa-altnmya-almhlya-wmtab-mt69gkcy', destination: '/categories/interior', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-lkhdmat-aldkhwl-almdrsy-abr-fdaa-al-mt6b1g5g', destination: '/categories/education', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-lltrtybat-albydaghwjya-walkhdmat-al-mt6b2e3w', destination: '/categories/education', permanent: true },
@@ -102,13 +102,13 @@ const nextConfig = {
       { source: '/articles/auto-aldlyl-alshaml-lbrnamj-dam-wtkrym-almsharya-alabtk-mt6v7lxs', destination: '/categories/university', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-lkhdma-altsdyq-ala-alshhadat-walwth-mt6p1zam', destination: '/categories/education', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-l-mnsa-wzara-altrbya-alwtnya-wastkh-mt6ii8ij', destination: '/categories/education', permanent: true },
-      { source: '/articles/auto-aldlyl-alshaml-llatlaa-ala-ntayj-msabqa-altwdhyf-a-mt6b0mck', destination: '/jobs', permanent: true },
+      { source: '/articles/auto-aldlyl-alshaml-llatlaa-ala-ntayj-msabqa-altwdhyf-a-mt6b0mck', destination: '/categories/concours', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-l-rznama-aldkhwl-almdrsy-wajraaat-a-mt6ihjb6', destination: '/categories/education', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-l-mnsa-fdaa-alawlyaa-waltrtybat-alb-mt6iiy9m', destination: '/categories/education', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-lkhdmat-aliywaa-alitaam-walnql-alja-mt6v6n08', destination: '/categories/university', permanent: true },
-      // ✅ 301 Redirect: جميع صفحات المسابقات الفردية تُعاد توجيهها للمركز المجمع /jobs
-      // هذا يمنع فهرسة 259 صفحة رقيقة ويصب كل سلطتها في صفحة /jobs الرئيسية
-      { source: '/jobs/:path*', destination: '/jobs', permanent: true },
+      // ✅ 301 Redirect: تحويل /jobs وجميع روابطها إلى صفحة القسم الرسمية /categories/concours
+      { source: '/jobs', destination: '/categories/concours', permanent: true },
+      { source: '/jobs/:path+', destination: '/categories/concours', permanent: true },
     ];
   },
 
