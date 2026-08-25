@@ -87,11 +87,6 @@ const nextConfig = {
       { source: '/articles/jaysh-madaris-mt4x9d9a', destination: '/jobs', permanent: true },
       { source: '/articles/tanmiya-mahaliya-shakawy-mt69gkcy', destination: '/categories/interior', permanent: true },
       { source: '/articles/shiraka-bahth-ilmi-mt6p2ohk', destination: '/categories/university', permanent: true },
-      { source: '/articles/auto-dlyl-:slug*', destination: '/', permanent: true },
-      { source: '/articles/trend-:slug*', destination: '/', permanent: true },
-      { source: '/articles/auto-aldlyl-:slug*', destination: '/', permanent: true },
-      { source: '/articles/auto-:slug*', destination: '/', permanent: true },
-      { source: '/articles/trend-aldlyl-:slug*', destination: '/', permanent: true },
       { source: '/articles/undefined', destination: '/', permanent: true },
       // ✅ Direct 1-Hop 301 Redirects for long legacy auto-generated slugs
       { source: '/articles/trend-aldlyl-alshaml-lltjnyd-fy-mdars-wmwssat-aljysh-alw-mt4x9d9a', destination: '/jobs', permanent: true },
@@ -113,7 +108,7 @@ const nextConfig = {
       { source: '/articles/auto-aldlyl-alshaml-lkhdmat-aliywaa-alitaam-walnql-alja-mt6v6n08', destination: '/categories/university', permanent: true },
       // ✅ 301 Redirect: جميع صفحات المسابقات الفردية تُعاد توجيهها للمركز المجمع /jobs
       // هذا يمنع فهرسة 259 صفحة رقيقة ويصب كل سلطتها في صفحة /jobs الرئيسية
-      { source: '/jobs/:slug', destination: '/jobs', permanent: true },
+      { source: '/jobs/:path*', destination: '/jobs', permanent: true },
     ];
   },
 
