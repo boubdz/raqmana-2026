@@ -791,6 +791,48 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "تطبيق Wassit ANEM (التشغيل)", en: "Wassit ANEM App" }, url: "https://play.google.com/store/apps/details?id=com.htech.wassit", isApp: true },
     ],
   },
+  // 20-bis. مسابقات التوظيف والوظيف العمومي
+  {
+    id: 'concours',
+    nameKey: 'category.concours',
+    icon: 'ClipboardList',
+    color: 'from-amber-500 to-orange-600',
+    officialSite: 'http://www.concours-fonction-publique.gov.dz/',
+    descriptionAr: 'بوابة مسابقات التوظيف في الجزائر 2026: إعلانات الوظيف العمومي، مسابقات التربية والتعليم، سوناطراك، الشبه طبي، والقطاع الخاص. شروط التسجيل، استمارات الترشح، وآخر المستجدات.',
+    usageGuides: [
+      {
+        title: 'خطوات التقدم لمسابقة الوظيف العمومي 2026',
+        steps: [
+          'الدخول إلى البوابة الرسمية (concours-fonction-publique.gov.dz).',
+          'البحث عن الإعلان حسب الولاية أو القطاع أو مستوى التعليم.',
+          'تحميل استمارة المعلومات للمشاركة في المسابقة.',
+          'تجهيز الملف: استمارة مملوءة، بطاقة التعريف، الشهادة، كشف النقاط، شهادة الإقامة، الوضعية تجاه الخدمة الوطنية.',
+          'تقديم الملف يدوياً أو بريدياً في الجهة المعنية قبل الموعد النهائي.'
+        ]
+      },
+      {
+        title: 'دليل تحضير طلب خطي للمسابقة',
+        steps: [
+          'استخدام صانع السيرة الذاتية في رقمنة لإنشاء CV احترافي.',
+          'استخدام المساعد الإداري الذكي لصياغة طلب خطي رسمي.',
+          'طباعة الطلب الخطي وتوقيعه يدوياً.',
+          'إرفاق الطلب بباقي الوثائق المطلوبة في الإعلان.',
+          'الإيداع قبل التاريخ المحدد في مقر الجهة المعلِنة.'
+        ]
+      }
+    ],
+    services: [
+      { name: { ar: '🏆 مستكشف مسابقات التوظيف (264 إعلان)', en: 'Job Competitions Explorer' }, url: '/jobs', isTrending: true },
+      { name: { ar: 'البوابة الرسمية للوظيف العمومي', en: 'Official Civil Service Portal' }, url: 'http://www.concours-fonction-publique.gov.dz/' },
+      { name: { ar: 'مسابقات وزارة التربية الوطنية', en: 'Education Ministry Competitions' }, url: 'https://www.education.gov.dz' },
+      { name: { ar: 'مسابقات سوناطراك والطاقة', en: 'Sonatrach & Energy Competitions' }, url: 'https://www.sonatrach.com/fr/carrieres.html' },
+      { name: { ar: 'مسابقات الشبه طبي والصحة', en: 'Paramedical & Health Competitions' }, url: 'https://www.sante.gov.dz' },
+      { name: { ar: 'إعلانات القطاع الخاص - ANEM', en: 'Private Sector Job Ads' }, url: 'https://wassitonline.anem.dz/postulation/LandingPage' },
+      { name: { ar: '📄 صانع السيرة الذاتية (CV)', en: 'CV Builder' }, url: '/cv-builder', isTrending: true },
+      { name: { ar: '✍️ كتابة طلب خطي بالذكاء الاصطناعي', en: 'AI Cover Letter Writer' }, url: '/document-assistant' },
+      { name: { ar: 'استمارة معلومات للمشاركة في المسابقة', en: 'Competition Entry Form' }, url: '/document-assistant' },
+    ],
+  },
   // 21. خدمات وزارة التجارة
   {
     id: "commerce",

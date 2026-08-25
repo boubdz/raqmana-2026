@@ -23,6 +23,7 @@ export const categoryPageMap: Record<string, string> = {
   vehicles: "/categories/vehicles",
   transport: "/categories/transport",
   employment: "/categories/employment",
+  concours: "/jobs",
   commerce: "/categories/commerce",
   customs: "/categories/customs",
   autoEntrepreneur: "/categories/autoEntrepreneur",
@@ -82,5 +83,6 @@ export const iconMap: Record<string, React.ElementType> = {
   Leaf: Lucide.Leaf,
   Droplets: Lucide.Droplets,
   Sparkles: Lucide.Sparkles,
-  Wallet: Lucide.Wallet
+  Wallet: Lucide.Wallet,
+  ClipboardList: Lucide.ClipboardList,
 };
