@@ -464,7 +464,7 @@ async function runSmartScraperAndIndexer() {
 
   // روابط الفهرسة الفورية
   const urlsToIndex = [
-    `${CONFIG.BASE_URL}/jobs`,
+    `${CONFIG.BASE_URL}/categories/mosbakat-toudif`,
     ...newJobCompetitions.map((j) => `${CONFIG.BASE_URL}/jobs/${j.slug}`),
   ];
 
@@ -484,7 +484,7 @@ async function runSmartScraperAndIndexer() {
     console.log(`🔔 جاري إرسال إشعار فوري لهواتف المشتركين عبر OneSignal...`);
     const pushTitle = `💼 مسابقة توظيف جديدة: ${topJob.organization}`;
     const pushMsg = `${topJob.title} — ولاية ${topJob.wilaya} (اضغط لمعرفة الشروط والملف)`;
-    const pushUrl = `${CONFIG.BASE_URL}/jobs/${topJob.slug}`;
+    const pushUrl = `${CONFIG.BASE_URL}/categories/mosbakat-toudif`;
     await sendPushNotification({ title: pushTitle, message: pushMsg, url: pushUrl });
   }
 
