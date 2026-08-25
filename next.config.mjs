@@ -111,6 +111,9 @@ const nextConfig = {
       { source: '/articles/auto-aldlyl-alshaml-l-rznama-aldkhwl-almdrsy-wajraaat-a-mt6ihjb6', destination: '/categories/education', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-l-mnsa-fdaa-alawlyaa-waltrtybat-alb-mt6iiy9m', destination: '/categories/education', permanent: true },
       { source: '/articles/auto-aldlyl-alshaml-lkhdmat-aliywaa-alitaam-walnql-alja-mt6v6n08', destination: '/categories/university', permanent: true },
+      // ✅ 301 Redirect: جميع صفحات المسابقات الفردية تُعاد توجيهها للمركز المجمع /jobs
+      // هذا يمنع فهرسة 259 صفحة رقيقة ويصب كل سلطتها في صفحة /jobs الرئيسية
+      { source: '/jobs/:slug', destination: '/jobs', permanent: true },
     ];
   },
 
