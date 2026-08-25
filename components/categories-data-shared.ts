@@ -23,7 +23,7 @@ export const categoryPageMap: Record<string, string> = {
   vehicles: "/categories/vehicles",
   transport: "/categories/transport",
   employment: "/categories/employment",
-  concours: "/categories/concours",
+  concours: "/jobs",
   commerce: "/categories/commerce",
   customs: "/categories/customs",
   autoEntrepreneur: "/categories/autoEntrepreneur",
