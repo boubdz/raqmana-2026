@@ -6,7 +6,7 @@ export async function GET() {
 
   const highActivityCategories = new Set([
     'bills', 'mobile', 'post', 'education', 'aadl',
-    'employment', 'university', 'interior', 'socialSecurity',
+    'employment', 'mosbakat-toudif', 'university', 'interior', 'socialSecurity',
   ]);
 
   const pad = (num: number) => String(num).padStart(2, '0');
