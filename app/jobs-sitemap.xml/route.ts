@@ -17,7 +17,7 @@ export async function GET() {
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${baseUrl}/jobs</loc>
+    <loc>${baseUrl}/categories/mosbakat-toudif</loc>
     <lastmod>${now}</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>

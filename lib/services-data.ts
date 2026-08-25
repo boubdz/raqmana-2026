@@ -793,8 +793,8 @@ export const serviceCategories: ServiceCategory[] = [
   },
   // 20-bis. مسابقات التوظيف والوظيف العمومي
   {
-    id: 'concours',
-    nameKey: 'category.concours',
+    id: "mosbakat-toudif",
+    nameKey: "category.mosbakatToudif",
     icon: 'ClipboardList',
     color: 'from-amber-500 to-orange-600',
     officialSite: 'http://www.concours-fonction-publique.gov.dz/',
