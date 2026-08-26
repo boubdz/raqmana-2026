@@ -42,6 +42,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp.next
+*.tsbuildinfo
 node_modules
 .env.local
 .vercel
