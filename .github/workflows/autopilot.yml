@@ -1,11 +1,9 @@
 name: 🤖 Raqmana News & Trends Autopilot
 
 on:
-  # ⏸ الجدولة التلقائية موقوفة مؤقتاً — يعمل يدوياً فقط
-  # schedule:
-  #   - cron: '0 */3 * * *'
-  #   - cron: '0 8,11,14,17,20,23 * * *'
-  #   - cron: '0 2 * * *'
+  schedule:
+    # تشغيل مجدول على مدار اليوم
+    - cron: '0 8,14,20 * * *'
 
   # تشغيل يدوي مخصص من واجهة GitHub Actions
   workflow_dispatch:
@@ -35,10 +33,9 @@ jobs:
     name: '🔥 رادار الترندات والإعلام الجزائري'
     runs-on: ubuntu-latest
 
-    # تشغيل عند Cron 2 أو يدوياً بـ trends أو all
     if: |
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'trends' || github.event.inputs.job_type == 'all')) ||
-      (github.event_name == 'schedule' && github.event.schedule == '0 8,11,14,17,20,23 * * *')
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'trends' || github.event.inputs.job_type == 'all'))
 
     steps:
       - name: '📥 Checkout المستودع'
@@ -54,12 +51,11 @@ jobs:
         run: npm ci --prefer-offline
 
       - name: '📦 تثبيت تبعيات الرادار'
-        run: npm install --no-save rss-parser cheerio axios google-trends-api
+        run: npm install --no-save rss-parser cheerio axios
 
       - name: '🔥 تشغيل رادار الترندات وصيد الأخبار'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/trends-radar-worker.js
 
@@ -78,16 +74,15 @@ jobs:
           git push || echo "لا توجد تغييرات لرفعها"
 
   # ════════════════════════════════════════════════════════════
-  # JOB 2 — الأخبار الحكومية الرسمية (كل ساعة)
+  # JOB 2 — الأخبار الحكومية الرسمية
   # ════════════════════════════════════════════════════════════
   official-news:
-    name: '🏛 الأخبار الحكومية الرسمية (كل ساعة)'
+    name: '🏛 الأخبار الحكومية الرسمية'
     runs-on: ubuntu-latest
 
-    # تشغيل عند Cron 1 أو يدوياً بـ official أو all
     if: |
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'official' || github.event.inputs.job_type == 'all')) ||
-      (github.event_name == 'schedule' && github.event.schedule == '0 */3 * * *')
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'official' || github.event.inputs.job_type == 'all'))
 
     steps:
       - name: '📥 Checkout المستودع'
@@ -108,7 +103,6 @@ jobs:
       - name: '🤖 تشغيل محرك الأخبار الرسمية — Tier 1'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/auto-news-worker.js
 
@@ -127,16 +121,14 @@ jobs:
           git push || echo "لا توجد تغييرات لرفعها"
 
   # ════════════════════════════════════════════════════════════
-  # JOB 3 — المواقع الحكومية اليومية Tier 2 (يومياً 3:00 ص)
+  # JOB 3 — المواقع الحكومية الثانوية Tier 2
   # ════════════════════════════════════════════════════════════
   daily-tier2:
-    name: '🌙 المواقع الحكومية الثانوية (يومياً 3:00 ص)'
+    name: '🌙 المواقع الحكومية الثانوية'
     runs-on: ubuntu-latest
 
-    # تشغيل عند Cron 3 أو يدوياً بـ daily_tier2 أو all
     if: |
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'daily_tier2' || github.event.inputs.job_type == 'all')) ||
-      (github.event_name == 'schedule' && github.event.schedule == '0 2 * * *')
+      github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'daily_tier2' || github.event.inputs.job_type == 'all')
 
     steps:
       - name: '📥 Checkout المستودع'
@@ -157,7 +149,6 @@ jobs:
       - name: '🤖 تشغيل محرك الأخبار — Tier 2'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           NODE_ENV: production
         run: node scripts/news-automation/auto-news-worker.js --tier=2
 
@@ -176,16 +167,15 @@ jobs:
           git push || echo "لا توجد تغييرات لرفعها"
 
   # ════════════════════════════════════════════════════════════
-  # JOB 4 — رادار مسابقات التوظيف والفهرسة الفورية (كل 3 ساعات)
+  # JOB 4 — رادار مسابقات التوظيف والفهرسة الفورية
   # ════════════════════════════════════════════════════════════
   jobs-radar:
     name: '💼 رادار مسابقات التوظيف والأرشفة الفورية'
     runs-on: ubuntu-latest
 
-    # تشغيل عند Cron 1, Cron 2, أو يدوياً بـ jobs أو all
     if: |
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'jobs' || github.event.inputs.job_type == 'all')) ||
-      (github.event_name == 'schedule')
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'jobs' || github.event.inputs.job_type == 'all'))
 
     steps:
       - name: '📥 Checkout المستودع'
@@ -200,7 +190,6 @@ jobs:
       - name: '⚡ تشغيل رادار مسابقات التوظيف والأرشفة الفورية'
         env:
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           NODE_ENV: production
         run: node scripts/scrape-concours.mjs
 
@@ -211,5 +200,6 @@ jobs:
           git add lib/official-concours-data.json || true
           git diff --staged --quiet || git commit -m "💼 auto: New job competitions & instant indexing $(date +'%Y-%m-%d %H:%M')"
           git push || echo "لا توجد مسابقات جديدة لرفعها"
+
 
 
