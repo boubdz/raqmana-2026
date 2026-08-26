@@ -9,13 +9,13 @@ export default function robots(): MetadataRoute.Robots {
         // السماح لجميع محركات البحث بالزحف الكامل للصفحات واستثناء الملفات البرمجية الداخلية
         userAgent: '*',
         allow: ['/'],
-        disallow: ['/api/', '/private/', '/_next/static/media/'],
+        disallow: ['/api/', '/private/', '/_next/static/media/', '/OneSignalSDKWorker.js', '/OneSignalSDKUpdaterWorker.js'],
       },
       {
         // ضمان وصول Googlebot لكل الصفحات واستثناء مسارات الصور المزدوجة
         userAgent: 'Googlebot',
         allow: ['/'],
-        disallow: ['/api/', '/private/', '/_next/static/media/'],
+        disallow: ['/api/', '/private/', '/_next/static/media/', '/OneSignalSDKWorker.js', '/OneSignalSDKUpdaterWorker.js'],
       },
     ],
     sitemap: [

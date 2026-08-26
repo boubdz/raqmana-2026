@@ -19,13 +19,15 @@ const http = require('http');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const Parser = require('rss-parser');
-const googleTrends = require('google-trends-api');
 
 const rssParser = new Parser({
   timeout: 12000,
   headers: {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  },
+  customFields: {
+    item: ['ht:news_item', 'ht:news_item_title', 'ht:news_item_snippet', 'ht:news_item_url', 'ht:news_item_source'],
   },
 });
 
@@ -415,11 +417,11 @@ async function crawlAlgerianNewsSources(sources) {
 }
 
 // ════════════════════════════════════════════════════════════════
-// [المرحلة 3: جلب ترندات جوجل الجزائرية (Google Trends DZ)]
+// [المرحلة 3: جلب ترندات جوجل الجزائرية (Google Trends DZ - Direct Live RSS)]
 // ════════════════════════════════════════════════════════════════
 async function fetchGoogleTrendsDZ() {
   const trends = [];
-  console.log('📡 [ترندات قوقل] جلب الكلمات الأكثر بحثاً في الجزائر (geo: DZ)...');
+  console.log('📡 [ترندات قوقل] جلب الكلمات الأكثر بحثاً في الجزائر مباشرة من Live RSS (geo: DZ)...');
 
   const rssUrls = [
     'https://trends.google.com/trending/rss?geo=DZ',
@@ -429,67 +431,41 @@ async function fetchGoogleTrendsDZ() {
   for (const url of rssUrls) {
     try {
       const response = await axios.get(url, {
-        timeout: 8000,
+        timeout: 10000,
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
           'Accept': 'application/rss+xml, application/xml, text/xml, */*',
         },
       });
 
-      const parsed = await parseStringPromise(response.data, { explicitArray: false });
-      const channel = parsed?.rss?.channel;
-      if (!channel || !channel.item) continue;
+      if (response.data) {
+        const feed = await rssParser.parseString(response.data);
+        if (feed && feed.items && feed.items.length > 0) {
+          for (const it of feed.items) {
+            const title = (it.title || '').trim();
+            const sourceUrl = it.link || (it['ht:news_item_url'] ? String(it['ht:news_item_url']) : '');
+            const snippet = it.contentSnippet || it.content || it['ht:news_item_snippet'] || '';
+            const trendPubDate = it.pubDate || it.isoDate || new Date().toISOString();
 
-      const items = Array.isArray(channel.item) ? channel.item : [channel.item];
-      for (const it of items) {
-        const title = (it.title || '').trim();
-        const newsItems = it['ht:news_item'] || [];
-        const newsArray = Array.isArray(newsItems) ? newsItems : [newsItems];
-        const sourceUrl = newsArray[0]?.['ht:news_item_url'] || it.link || '';
-        const snippet = newsArray[0]?.['ht:news_item_snippet'] || it.description || '';
-
-        if (title && !trends.some((t) => t.title.toLowerCase() === title.toLowerCase())) {
-          // ━ ترندات Google دائماً حالية — إذا لم يحمل تاريخاً نستخدم الآن
-          const trendPubDate = it.pubDate || new Date().toISOString();
-          trends.push({
-            title,
-            link: sourceUrl,
-            snippet,
-            pubDate: trendPubDate,
-            sourceName: 'Google Trends DZ',
-            isTier1Official: false,
-          });
-        }
-      }
-    } catch {}
-  }
-
-  if (trends.length === 0) {
-    try {
-      const res = await googleTrends.dailyTrends({ geo: 'DZ' });
-      const data = JSON.parse(res);
-      const days = data?.default?.trendingSearchesDays || [];
-      for (const day of days) {
-        for (const search of day.trendingSearches || []) {
-          const title = search?.title?.query;
-          const article = search?.articles?.[0];
-          if (title) {
-            trends.push({
-              title,
-              link: article?.url || '',
-              snippet: article?.snippet || article?.title || '',
-              // ━ ترندات جوجل API لا تحمل pubDate دقيقاً، نضعها null لترفضها المصفاة
-              pubDate: null,
-              sourceName: 'Google Trends API',
-              isTier1Official: false,
-            });
+            if (title && !trends.some((t) => t.title.toLowerCase() === title.toLowerCase())) {
+              trends.push({
+                title,
+                link: sourceUrl,
+                snippet,
+                pubDate: trendPubDate,
+                sourceName: 'Google Trends DZ (Live RSS)',
+                isTier1Official: false,
+              });
+            }
           }
         }
       }
-    } catch {}
+    } catch (err) {
+      console.warn(`   ⚠️ تعذر جلب ترند قوقل من ${url}: ${err.message}`);
+    }
   }
 
-  console.log(`   ✔ تم رصد ${trends.length} ترند من قوقل الجزائر.`);
+  console.log(`   ✔ تم رصد ${trends.length} ترند مباشر من قوقل الجزائر.`);
   return trends;
 }
 
@@ -966,58 +942,9 @@ function pingIndexNow(url) {
   req.end();
 }
 
-// 🔔 إرسال إشعار Push فوري لجميع المشتركين عبر OneSignal
-async function sendOneSignalPush({ title, message, url }) {
-  const appId = process.env.ONESIGNAL_APP_ID || '0a805f59-03b6-41cf-92d4-6f25db136459';
-  const apiKey = process.env.ONESIGNAL_REST_API_KEY;
-  if (!apiKey) {
-    console.warn('   ⚠️ [OneSignal] ONESIGNAL_REST_API_KEY غير موجود في البيئة — تم تخطي الإشعار');
-    return;
-  }
-
-  const payload = JSON.stringify({
-    app_id: appId,
-    included_segments: ['All', 'Subscribed Users'],
-    headings: { ar: title, en: title },
-    contents: { ar: message, en: message },
-    url: url || 'https://www.raqmanadz.com',
-    chrome_web_icon: 'https://www.raqmanadz.com/icon-192x192.png',
-    chrome_web_badge: 'https://www.raqmanadz.com/favicon-32x32.png',
-    priority: 10,
-  });
-
-  return new Promise((resolve) => {
-    const req = https.request(
-      {
-        hostname: 'onesignal.com',
-        path: '/api/v1/notifications',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': `Basic ${apiKey}`,
-          'Content-Length': Buffer.byteLength(payload),
-        },
-      },
-      (res) => {
-        let data = '';
-        res.on('data', (c) => (data += c));
-        res.on('end', () => {
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            console.log(`   🔔 [OneSignal] تم إرسال إشعار فوري لهواتف المشتركين!`);
-          } else {
-            console.warn(`   ⚠️ [OneSignal] تنبيه: ${data}`);
-          }
-          resolve();
-        });
-      }
-    );
-    req.on('error', (e) => {
-      console.warn(`   ⚠️ [OneSignal Error]: ${e.message}`);
-      resolve();
-    });
-    req.write(payload);
-    req.end();
-  });
+// ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026)
+async function sendOneSignalPush() {
+  return Promise.resolve();
 }
 
 // ─── المحرك الرئيسي ───────────────────────────────────────────
@@ -1111,6 +1038,8 @@ async function main() {
       pingIndexNow(articleUrl);
       console.log(`   ⚡ تم إرسال تنبيه الأرشفة الفورية (IndexNow)`);
 
+      // ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026)
+      /*
       // 🔔 إرسال إشعار Push فوري لهواتف المشتركين
       try {
         await sendOneSignalPush({
@@ -1119,6 +1048,7 @@ async function main() {
           url: articleUrl,
         });
       } catch {}
+      */
 
       history.processedTrends[itemKey] = {
         slug,

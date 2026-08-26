@@ -19,7 +19,6 @@ const alexandria = Alexandria({
   subsets: ["arabic", "latin"],
   variable: "--font-alexandria",
   display: "swap",
-  weight: ["400", "600", "700", "900"],
 })
 
 export const metadata: Metadata = {
@@ -248,7 +247,8 @@ export default function RootLayout({
             <Analytics />
             <InstallButton />
             <SiteShare />
-            <OneSignalInit />
+            {/* ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026) */}
+            {/* <OneSignalInit /> */}
           </LanguageProvider>
         </ThemeProvider>
       </body>

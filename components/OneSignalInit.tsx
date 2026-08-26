@@ -1,9 +1,11 @@
+// ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026)
 "use client";
 
 import { useEffect } from "react";
 import Script from "next/script";
 
 export function OneSignalInit() {
+  /*
   useEffect(() => {
     if (typeof window !== "undefined") {
       (window as any).OneSignalDeferred = (window as any).OneSignalDeferred || [];
@@ -48,4 +50,7 @@ export function OneSignalInit() {
       strategy="lazyOnload"
     />
   );
+  */
+
+  return null;
 }

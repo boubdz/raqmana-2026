@@ -55,7 +55,7 @@ const CONFIG = {
   HISTORY_FILE: path.join(__dirname, 'history.json'),
   MAX_ARTICLES_PER_RUN: 3,         // حد أقصى للمقالات في الجلسة الواحدة لتوفير الموارد
   MAX_NEWS_AGE_HOURS_GOV: 720,     // مواقع حكومية: 30 يوم (تنشر بشكل متقطع)
-  MAX_NEWS_AGE_HOURS_MEDIA: 48,    // مواقع إعلامية: 48 ساعة فقط (تنشر يومياً لكن بصخب كثير)
+  MAX_NEWS_AGE_HOURS_MEDIA: 168,   // مواقع إعلامية: 7 أيام (168 ساعة) لتوسيع نافذة الأخبار
   DEFAULT_PLACEHOLDER: '/images/default-placeholder.png',
 };
 
@@ -91,7 +91,9 @@ const ADMIN_KEYWORDS_WHITELIST = [
   'بطاقة الشفاء', 'خدمات إلكترونية', 'رقمنة', 'بلدية', 'منحة', 'تعويض',
   'إجراءات', 'وثائق', 'ملف', 'طلب', 'مسابقة', 'ترقية', 'دراسة ملف',
   'تسجيل إلكتروني', 'منصة رقمية', 'خدمة عمومية', 'شهادة', 'أجور',
-  'تقاعد', 'بطالة', 'إعانة', 'تأمين', 'رخصة', 'وكالة', 'سكن',
+  'تقاعد', 'بطالة', 'إعانة', 'تأمين', 'رخصة', 'وكالة', 'سكن', 'سكنات',
+  'anem', 'ANEM', 'عدل', 'aadl', 'وزارة', 'cnas', 'casnos', 'cnr',
+  'بريد الجزائر', 'سونلغاز', 'التربية', 'التعليم العالي', 'تكوين مهني',
 ];
 
 
@@ -546,57 +548,9 @@ function pingIndexNow(url) {
   req.end();
 }
 
-async function sendOneSignalPush({ title, message, url }) {
-  const appId = process.env.ONESIGNAL_APP_ID || '0a805f59-03b6-41cf-92d4-6f25db136459';
-  const apiKey = process.env.ONESIGNAL_REST_API_KEY;
-  if (!apiKey) {
-    console.warn('   ⚠️ [OneSignal] ONESIGNAL_REST_API_KEY غير موجود في البيئة — تم تخطي الإشعار');
-    return;
-  }
-
-  const payload = JSON.stringify({
-    app_id: appId,
-    included_segments: ['All', 'Subscribed Users'],
-    headings: { ar: title, en: title },
-    contents: { ar: message, en: message },
-    url: url || 'https://www.raqmanadz.com',
-    chrome_web_icon: 'https://www.raqmanadz.com/icon-192x192.png',
-    chrome_web_badge: 'https://www.raqmanadz.com/favicon-32x32.png',
-    priority: 10,
-  });
-
-  return new Promise((resolve) => {
-    const req = https.request(
-      {
-        hostname: 'onesignal.com',
-        path: '/api/v1/notifications',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': `Basic ${apiKey}`,
-          'Content-Length': Buffer.byteLength(payload),
-        },
-      },
-      (res) => {
-        let data = '';
-        res.on('data', (c) => (data += c));
-        res.on('end', () => {
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            console.log(`   🔔 [OneSignal] تم إرسال إشعار فوري لهواتف المشتركين!`);
-          } else {
-            console.warn(`   ⚠️ [OneSignal] تنبيه: ${data}`);
-          }
-          resolve();
-        });
-      }
-    );
-    req.on('error', (e) => {
-      console.warn(`   ⚠️ [OneSignal Error]: ${e.message}`);
-      resolve();
-    });
-    req.write(payload);
-    req.end();
-  });
+// ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026)
+async function sendOneSignalPush() {
+  return Promise.resolve();
 }
 
 // ─── معالجة موقع حكومي واحد ──────────────────────────────────
@@ -704,6 +658,8 @@ async function processSite(site, history, articlesCount) {
         pingIndexNow(articleUrl);
         console.log(`   ⚡ تم إرسال تنبيه الفهرسة الفورية (IndexNow)`);
 
+        // ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026)
+        /*
         // 🔔 إرسال إشعار فوري لهواتف المشتركين
         try {
           await sendOneSignalPush({
@@ -712,6 +668,7 @@ async function processSite(site, history, articlesCount) {
             url: articleUrl,
           });
         } catch {}
+        */
 
         history.processedItems[item.guid || item.link] = {
           slug,

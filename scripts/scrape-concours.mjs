@@ -12,7 +12,8 @@ import path from 'path';
 import https from 'https';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
-import { sendPushNotification } from './onesignal-notifier.mjs';
+// ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026)
+// import { sendPushNotification } from './onesignal-notifier.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -477,6 +478,8 @@ async function runSmartScraperAndIndexer() {
   // 2. Google Indexing API
   await indexUrlsWithGoogle(urlsToIndex);
 
+  // ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026)
+  /*
   // 3. OneSignal Web Push Notifications (إرسال إشعار فوري لهواتف المشتركين)
   if (newJobCompetitions.length > 0) {
     const topJob = newJobCompetitions[0];
@@ -487,6 +490,7 @@ async function runSmartScraperAndIndexer() {
     const pushUrl = `${CONFIG.BASE_URL}/categories/mosbakat-toudif`;
     await sendPushNotification({ title: pushTitle, message: pushMsg, url: pushUrl });
   }
+  */
 
   console.log('═══════════════════════════════════════════════════════════');
   console.log('🎉 اكتملت العملية بنجاح! موقعك يتصدر بأحدث إعلانات التوظيف.');

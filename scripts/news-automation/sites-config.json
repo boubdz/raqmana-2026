@@ -34,17 +34,6 @@
       "checkIntervalHours": 3
     },
     {
-      "id": "commerce",
-      "name": "وزارة التجارة وترقية الصادرات",
-      "url": "https://www.mincommerce.gov.dz",
-      "rssUrl": "https://www.mincommerce.gov.dz/feed/",
-      "portalUrl": "https://sidjilcom.cnrc.dz",
-      "logoUrl": "https://www.mincommerce.gov.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "commerce",
-      "checkIntervalHours": 3
-    },
-    {
       "id": "ennahar",
       "name": "النهار أونلاين — الإجراءات الإدارية والرقمنة",
       "url": "https://www.ennaharonline.com",
@@ -83,59 +72,16 @@
   ],
   "daily_sites_tier2": [
     {
-      "id": "justice",
-      "name": "وزارة العدل",
-      "url": "https://www.mjustice.dz",
-      "rssUrl": "https://www.mjustice.dz/ar/?format=feed",
-      "portalUrl": "https://portail.mjustice.dz",
-      "logoUrl": "https://www.mjustice.dz/images/logo.png",
+      "id": "elbilad_economy",
+      "name": "البلاد أونلاين — مال وأعمال والخدمات الإدارية",
+      "url": "https://www.elbilad.net/economy",
+      "rssUrl": "https://www.elbilad.net/feed",
+      "portalUrl": "https://www.elbilad.net",
+      "logoUrl": "https://www.elbilad.net/images/logo.png",
       "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "justice",
-      "checkIntervalHours": 24
-    },
-    {
-      "id": "habitat",
-      "name": "وزارة السكن والعمران والمدينة",
-      "url": "https://www.mhuv.gov.dz",
-      "rssUrl": "https://www.mhuv.gov.dz/feed/",
-      "portalUrl": "https://www.mhuv.gov.dz",
-      "logoUrl": "https://www.mhuv.gov.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "realEstate",
-      "checkIntervalHours": 24
-    },
-    {
-      "id": "transport",
-      "name": "وزارة النقل",
-      "url": "https://www.mintransport.gov.dz",
-      "rssUrl": "https://www.mintransport.gov.dz/feed/",
-      "portalUrl": "https://www.mintransport.gov.dz",
-      "logoUrl": "https://www.mintransport.gov.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "transport",
-      "checkIntervalHours": 24
-    },
-    {
-      "id": "sante",
-      "name": "وزارة الصحة والسكان",
-      "url": "https://www.sante.gov.dz",
-      "rssUrl": "https://www.sante.gov.dz/feed/",
-      "portalUrl": "https://www.sante.gov.dz",
-      "logoUrl": "https://www.sante.gov.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "health",
-      "checkIntervalHours": 24
-    },
-    {
-      "id": "dgfip",
-      "name": "المديرية العامة للضرائب",
-      "url": "https://www.mfdgi.gov.dz",
-      "rssUrl": "https://www.mfdgi.gov.dz/index.php/ar/?format=feed",
-      "portalUrl": "https://mfdgi.gov.dz",
-      "logoUrl": "https://www.mfdgi.gov.dz/images/logo.png",
-      "fallbackImage": "/images/default-placeholder.png",
-      "categoryId": "tax",
-      "checkIntervalHours": 24
+      "categoryId": "economy",
+      "isMediaSite": true,
+      "checkIntervalHours": 12
     }
   ],
   "algerian_news_sources": [
