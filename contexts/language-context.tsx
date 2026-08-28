@@ -22,6 +22,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.services": "دليل القطاعات",
     "nav.assistant": "المساعد الذكي",
     "nav.cvBuilder": "صانع السيرة الذاتية (CV)",
+    "nav.templates": "النماذج والاستمارات",
     "nav.documentGuide": "دليل الوثائق",
     "nav.jobs": "مسابقات التوظيف",
     "nav.sitemap": "خريطة الموقع",
@@ -33,8 +34,8 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.appointments": "المواعيد الرقمية",
 
     // Hero
-    "hero.title": "البوابة الجزائرية للخدمات الرقمية",
-    "hero.subtitle": "رقمنة الجزائر 2026 — بوابة إرشادية مستقلة تجمع روابط الخدمات الرقمية الحكومية في مكان واحد: الوثائق الإدارية، الدفع الإلكتروني، بريد الجزائر، عدل، التعليم، التشغيل، والعدالة. روابط مباشرة ومحدثة.",
+    "hero.title": "الموسوعة الجزائرية للخدمات الرقمية",
+    "hero.subtitle": "رقمنة الجزائر - 2026 الموسوعة والبوابة الإرشادية المستقلة التي تجمع روابط الخدمات الرقمية الحكومية في مكان واحد: الوثائق الإدارية، الدفع الإلكتروني، بريد الجزائر، عدل، التعليم، التشغيل، والعدالة. روابط مباشرة ومحدثة.",
     "hero.cta": "استكشف الخدمات",
     "hero.secondary": "المساعد الذكي",
 
@@ -115,9 +116,9 @@ const translations: Record<Language, Record<string, string>> = {
     "subcategory.employerServices": "فضاء أرباب العمل (CNR)",
 
     // Categories Section
-    "categories.title": "البوابة الجزائرية للخدمات الرقمية",
-    "categories.subtitle": "روابط مباشرة للخدمات الإلكترونية في الجزائر: استخراج الوثائق الإدارية، الدفع الإلكتروني، وبريد الجزائر في مكان واحد.",
-    "categories.mainDirectory": "البوابة الجزائرية للخدمات الرقمية",
+    "categories.title": "دليل القطاعات والخدمات الحكومية",
+    "categories.subtitle": "روابط مباشرة ودليل شامل للخدمات الإلكترونية في الجزائر: استخراج الوثائق الإدارية، الدفع الإلكتروني، وبريد الجزائر في مكان واحد.",
+    "categories.mainDirectory": "دليل القطاعات والخدمات الرقمية",
 
     // Quick Links
     "quickLinks.title": "الروابط السريعة",
@@ -199,6 +200,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.services": "Sectors Directory",
     "nav.assistant": "AI Assistant",
     "nav.cvBuilder": "CV Maker",
+    "nav.templates": "Templates & Forms",
     "nav.documentGuide": "Document Guide",
     "nav.jobs": "Job Competitions",
     "nav.sitemap": "Sitemap",
@@ -210,8 +212,8 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.appointments": "Digital Appointments",
 
     // Hero
-    "hero.title": "Independent Digital Services Guidance Platform - Non-Governmental",
-    "hero.subtitle": "Discover many government digital services in one place. This independent non-governmental digital services portal is a unified national platform designed to help Algerian citizens access government services quickly and safely, while raising awareness of digital services and opening the door to the digital world.",
+    "hero.title": "Algerian Encyclopedia of Digital Services",
+    "hero.subtitle": "Raqmana Algeria - 2026: The Encyclopedia and independent directory aggregating Algerian government digital services in one place: administrative documents, e-payments, Algeria Post, AADL, education, employment, and justice with direct and updated links.",
     "hero.cta": "Explore Services",
     "hero.secondary": "AI Assistant",
 
