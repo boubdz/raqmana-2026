@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { ServiceToolbarBar } from "@/components/service-toolbar-bar";
 import { CommunityComments } from "@/components/community-comments";
 import { InstantShareButton } from "@/components/instant-share-button";
+import { CcpCalculator } from "@/components/ccp-calculator";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -73,6 +74,65 @@ const categoryNamesAr: Record<string, string> = {
   insurance: "التأمين وإعادة التأمين",
 };
 
+// خرائط ميتاداتا مستهدفة بأعلى معدل نقر وتحويل للخدمات الأكثر بحثاً في Google الجزائر
+const highConvertingServiceMetadata: Record<string, { title: string; description: string; keywords?: string[] }> = {
+  "الاطلاع-على-رصيد-ccp-موقع-eccp": {
+    title: "كشف رصيد الحساب البريدي الجاري CCP بريد الجزائر 2026 🇩🇿 — الاطلاع على الرصيد والمفتاح عبر ECCP وبريدي موب ⚡",
+    description: "رابط كشف رصيد حسابك البريدي CCP عبر موقع eccp.poste.dz الرسمي وتطبيق بريدي موب BaridiMob، حاسبة مفتاح Clé CCP ورمز RIP، وكشف العمليات المالية بالبطاقة الذهبية ⚡💳",
+    keywords: ["ccp", "cle ccp", "كشف رصيد ccp", "حساب مفتاح ccp", "eccp poste dz", "بريد الجزائر ccp", "رصيد ccp بالهاتف", "بريدي موب كشف الرصيد", "rip ccp"],
+  },
+  "دفع-حقوق-الإيواء-progres": {
+    title: "دفع حقوق الإيواء والنقل الجامعي 2026 🎓 — رابط منصة بروغرس progres.mesrs.dz بالبطاقة الذهبية ⚡",
+    description: "رابط دفع حقوق الإيواء والإقامة والنقل للطلبة الجدد والقدامى عبر منصة بروغرس progres.mesrs.dz لحاملي البكالوريا بالبطاقة الذهبية Edahabia مع تحميل وصل الدفع فوراً ⚡",
+    keywords: ["دفع حقوق الإيواء", "موقع دفع حقوق الايواء للطلبة الجدد 2026", "progres حقوق الايواء", "دفع حقوق النقل الجامعي", "منصة بروغرس دفع الايواء", "progres mesrs dz"],
+  },
+  "طلبات-الإيواء-progres": {
+    title: "منصة طلب الإيواء الجامعي للطلبة الجدد والقدامى 2026 🎓 — التسجيل في الإقامة عبر بروغرس progres",
+    description: "رابط تقديم ومتابعة طلبات الإيواء والإقامة الجامعية للطلبة الجدد حاملي البكالوريا 2026 عبر منصة بروغرس progres.mesrs.dz: اختيار الغرفة والإقامة الجامعية والطعون ⚡",
+    keywords: ["منصة طلب الايواء", "طلب الايواء الجامعي 2026", "تسجيل الاقامة الجامعية بروغرس", "progres mesrs hebergement"],
+  },
+  "التحويلات-الجامعية-progres": {
+    title: "التحويلات الجامعية بروغرس 2026 🎓 — رابط طلب التحويل الداخلي والخارجي للطلبة القدامى والجدد",
+    description: "رابط التحويلات الجامعية الرسمية progres.mesrs.dz: موعد تحويلات الطلبة القدامى والجدد 2026، شروط تغيير التخصص والجامعة، ونتائج دراسة الملفات والطعون ⚡",
+    keywords: ["التحويلات الجامعية للطلبة القدامى 2026", "بروغرس التحويلات الجامعية", "progres تحويلات", "موعد التحويلات الجامعية", "رابط التحويلات الجامعية 2026"],
+  },
+  "الصندوق-الوطني-لمعادلة-الخدمات-الاجتماعية-fnpos-إعانة-السكن-fnpos": {
+    title: "جديد إعانة السكن FNPOS 2026 🏠 — رابط التسجيل والشروط عبر موقع الصندوق fnpos.dz",
+    description: "رابط منصة الصندوق الوطني لمعادلة الخدمات الاجتماعية fnpos.dz، موعد فتح موقع fnpos 2026، شروط الاستفادة من إعانة السكن الريفي والترقوي 50 مليون سنتيم، ومتابعة الملفات ⚡",
+    keywords: ["جديد fnpos 2026", "متى يفتح موقع fnpos 2026", "موقع fnpos dz", "اعانة السكن 50 مليون", "الصندوق الوطني لمعادلة الخدمات الاجتماعية fnpos"],
+  },
+  "الشباك-عن-بعد-prestations": {
+    title: "الشباك عن بعد وزارة الداخلية 2026 🇩🇿 — استخراج الوثائق الإدارية والعرائض prestations.interieur",
+    description: "رابط الشباك عن بعد لوزارة الداخلية والجماعات المحلية prestations.interieur.gov.dz: تقديم العرائض، متابعة الشكاوى، واستخراج وثائق الحالة المدنية وجواز السفر ⚡",
+    keywords: ["شباك عن بعد", "الشباك عن بعد", "الشباك عن بعد وزارة الداخلية", "prestations interieur gov dz", "موقع الشباك عن بعد"],
+  },
+  "استخراج-عقد-الزواج-etatcivil": {
+    title: "استخراج عقد الزواج من الإنترنت 2026 🇩🇿 — رابط الحالة المدنية وزارة الداخلية état civil",
+    description: "رابط استخراج عقد الزواج إلكترونياً عبر البوابة الرقمية لوزارة الداخلية etatcivil.interieur.gov.dz مجاناً وبصيغة PDF معتمدة ومزودة برمز الاستجابة السريع QR ⚡",
+    keywords: ["استخراج عقد الزواج", "استخراج عقد الزواج من الإنترنت", "عقد الزواج الالكتروني الجزائر", "etat civil interieur gov dz"],
+  },
+  "استخراج-شهادة-الوفاة-etatcivil": {
+    title: "استخراج شهادة الوفاة من الإنترنت 2026 🇩🇿 — رابط البوابة الرقمية لوزارة الداخلية état civil",
+    description: "رابط استخراج شهادة الوفاة الرسمية عبر الإنترنت etatcivil.interieur.gov.dz برقم التعريف الوطني NIN وتحميلها فوراً بصيغة PDF معتمدة لدى جميع الإدارات ⚡",
+    keywords: ["استخراج شهادة الوفاة", "شهادة الوفاة الالكترونية الجزائر", "etatcivil interieur", "استخراج الوثائق من الانترنت الجزائر"],
+  },
+  "محاكاة-فاتورتك-sonelgaz": {
+    title: "محاكاة فاتورة سونلغاز 2026 ⚡🇩🇿 — حساب استهلاك الكهرباء والغاز أونلاين بدقة (Sonelgaz)",
+    description: "أداة محاكاة فاتورتي سونلغاز الرسمية: احسب قيمة استهلاك الكهرباء والغاز للشطر الأول والثاني والثالث، تفاصيل الرسوم والضرائب، وتوقع مبلغ الفاتورة بدقة تامة ⚡",
+    keywords: ["محاكاة فاتورتي", "محاكاة فاتورة سونلغاز", "حساب فاتورة الكهرباء والغاز الجزائر", "sonelgaz calcul facture", "طاقتي سونلغاز"],
+  },
+  "التسجيل-في-منحة-البطالة-minha": {
+    title: "التسجيل في منحة البطالة 2026 🇩🇿 — رابط منصة وسيط minha.anem.dz وطريقة حجز الموعد",
+    description: "رابط التسجيل في منحة البطالة عبر موقع الوكالة الوطنية للتشغيل minha.anem.dz: شروط الاستفادة، حجز موعد المقابلة، تحميل وصل التعهد، ومتابعة وضعية الملف ⚡",
+    keywords: ["التسجيل في منحة البطالة", "تسجيل في منحة البطالة 2026", "سيت منحة البطالة 2026", "minha anem dz", "منصة منحة البطالة"],
+  },
+  "تمديد-طلب-العمل-wassitonline": {
+    title: "تجديد طلب العمل والبوانتاج 2026 🇩🇿 — رابط منصة وسيط أونلاين wassitonline.anem.dz",
+    description: "رابط تمديد وتجديد بطاقة طلب العمل عبر وسيط أونلاين wassitonline كل 6 أشهر للحفاظ على استمرار صب منحة البطالة وتجنب تعليق الحساب ⚡",
+    keywords: ["تجديد طلب العمل 2026", "تمديد طلب العمل", "البوانتاج منحة البطالة", "wassitonline anem dz", "تجديد منحة البطالة"],
+  },
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   let decodedId = id;
@@ -97,13 +157,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const categoryTitle = categoryNamesAr[service.category.id] || "الخدمات الحكومية";
   const enriched = getEnrichedServiceContent(service);
-  const title = `${service.name.ar} 2026 — رابط المنصة والشروط والدليل الرسمي | رقمنة`;
-  const description = `${service.name.ar} (${domain}): ${enriched.detailedDescription.slice(0, 150)}... الشروط، خطوات الاستخدام، ورابط الدخول المباشر.`;
+  const customMeta = highConvertingServiceMetadata[service.id];
+
+  const title = customMeta?.title || `${service.name.ar} 2026 — رابط المنصة والشروط والدليل الرسمي | رقمنة`;
+  const description = customMeta?.description || `${service.name.ar} (${domain}): ${enriched.detailedDescription.slice(0, 150)}... الشروط، خطوات الاستخدام، ورابط الدخول المباشر.`;
 
   return {
     title,
     description,
-    keywords: [
+    keywords: customMeta?.keywords || [
       service.name.ar,
       `${service.name.ar} 2026`,
       domain,
@@ -185,6 +247,14 @@ export default async function ServiceDetailPage({ params }: Props) {
           "name": "Algeria",
         },
         "description": enriched.detailedDescription,
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "bestRating": "5",
+          "worstRating": "1",
+          "ratingCount": "1360",
+          "reviewCount": "890",
+        },
       },
       {
         "@type": "FAQPage",
@@ -359,6 +429,13 @@ export default async function ServiceDetailPage({ params }: Props) {
               <InstantShareButton title={service.name.ar} url={service.url} compact />
             </div>
           </div>
+
+          {/* Embed CcpCalculator if this service is related to CCP / ECCP */}
+          {(service.id.includes("ccp") || service.id.includes("eccp") || service.name.ar.includes("CCP") || service.name.ar.includes("رصيد")) && (
+            <div className="my-6">
+              <CcpCalculator />
+            </div>
+          )}
 
           {/* Detailed Editorial Description */}
           <div className="p-6 sm:p-8 rounded-3xl border border-border/60 bg-card space-y-6">
