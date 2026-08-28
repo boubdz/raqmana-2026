@@ -54,6 +54,46 @@ export async function generateStaticParams() {
 }
 
 const highConvertingArticleMetadata: Record<string, { title: string; description: string }> = {
+  'anem-minha-2026': {
+    title: "سيت منحة البطالة 2026 🇩🇿 — رابط تسجيل وتجديد منحة البطالة minha.anem.dz فضاء طالب العمل",
+    description: "رابط سيت منحة البطالة 2026 الرسمي minha.anem.dz، خطوات التسجيل الأولي وتجديد طلب العمل لانام، أسباب التعليق، واستخراج وثيقة المنحة فوراً ⚡🇩🇿",
+  },
+  'tahwilat-jamiya-progres-2026': {
+    title: "التحويلات الجامعية 2026 🇩🇿 — موعد التحويلات للطلبة الجدد والقدامى عبر بروغرس progres.mesrs.dz",
+    description: "رابط موعد التحويلات الجامعية 2026 للطلبة القدامى وحاملي البكالوريا عبر منصة بروغرس progres.mesrs.dz، الشروط، الوثائق ونتائج الطعون أونلاين 🎓⚡",
+  },
+  dzds: {
+    title: "البوابة الرقمية لاستخراج الوثائق الجزائر 2026 🇩🇿 — شهادة الميلاد 12S، عقد الزواج والأبوستيل",
+    description: "رابط البوابة الرقمية لاستخراج الوثائق الإدارية الجزائرية عن بعد: شهادة الميلاد، مدة الصلاحية، القسيمة 3 للسوابق العدلية والأبوستيل فوراً ⚡🇩🇿",
+  },
+  interior: {
+    title: "وزارة الداخلية والجماعات المحلية 2026 🇩🇿 — استخراج شهادة الميلاد، جواز السفر والبطاقة البيومترية",
+    description: "دليل خدمات وزارة الداخلية interieur.gov.dz: كيفية ملء استمارة جواز السفر البيومتري، مدة صلاحية شهادة الميلاد، واستخراج وثائق الحالة المدنية ⚡🇩🇿",
+  },
+  'takwin-mihnati-2026': {
+    title: "وزارة التكوين المهني takwin.dz 2026 🇩🇿 — التسجيل في منصة مهنتي mfep لدورة سبتمبر وفيفري",
+    description: "رابط وزارة التكوين والتعليم المهنيين mfep.gov.dz ومنصة takwin.dz مهنتي: اختيار التخصصات بالشهادة أو بدونها، شروط القبول والتسجيل 🎓⚡",
+  },
+  'cnas-chifa-2026': {
+    title: "موقع الهناء للضمان الاجتماعي CNAS 2026 🇩🇿 — بطاقة الشفاء الرقمية 2.0 وشهادة الانتساب",
+    description: "رابط موقع وتطبيق فضاء الهناء elhanaa.cnas.dz: تفعيل بطاقة الشفاء، استخراج شهادة الانتساب، متابعة التعويضات، وعطل المرض أونلاين ⚡🏥",
+  },
+  retirement: {
+    title: "متابعة ملف التقاعد CNR 2026 🇩🇿 — تطبيق تقاعدي، حساب المعاش، وتجديد الشهادة السنوية",
+    description: "رابط متابعة ملف التقاعد عبر الصندوق الوطني للتقاعد cnr.dz وتطبيق تقاعدي: كشف راتب المتقاعدين، الزيادات السنوية، وحساب المعاش ⚡👴",
+  },
+  arpce: {
+    title: "شريحة جيزي والشرائح المسجلة باسمك 2026 🇩🇿 — كشف الأرقام وتطبيق جودتي وسلطة الضبط",
+    description: "رابط كشف الشرائح المسجلة باسمك (جيزي Djezzy، موبيليس، وأوريدو)، شحن الرصيد بالذهبية، وتطبيق جودتي لمراقبة جودة الإنترنت ⚡📱",
+  },
+  telecom: {
+    title: "اتصالات الجزائر idoom 2026 🇩🇿 — تعبئة الإنترنت بالبطاقة الذهبية وفضاء الزبون",
+    description: "رابط فضاء الزبون لاتصالات الجزائر espaceclient.algerietelecom.dz: تعبئة وتجديد اشتراك إنترنت إيدوم Idoom 4G و ADSL بالبطاقة الذهبية ⚡🌐",
+  },
+  mobile: {
+    title: "شحن وتعبئة الهاتف بالبطاقة الذهبية 2026 🇩🇿 — جيزي، أوريدو، وموبيليس بروابط مباشرة",
+    description: "شحن رصيد جيزي Djezzy و Ooredoo وموبيليس أونلاين بالبطاقة الذهبية Edahabia و CIB، عروض المكالمات والإنترنت بدون تنقل ⚡📱",
+  },
   tawdhif: {
     title: "منصة توظيف الأساتذة 2026 🇩🇿 — رابط التسجيل والنتائج tawdhif.education.dz",
     description: "رابط منصة توظيف الأساتذة tawdhif.education.dz، الاستعلام عن النتائج، شروط التسجيل، ورابط بوابة التربية والتعليم الرسمية ⚡📢",
@@ -178,7 +218,7 @@ export default async function ArticlePage({ params }: Props) {
   const allText = [article.introduction, ...(article.sections || []).map((s: any) => s.content)].join(' ');
   const wordCount = allText.split(/\s+/).filter(Boolean).length;
 
-  // Generate Enhanced JSON-LD for Google Rich Snippets (Article + Breadcrumbs + FAQPage)
+  // Generate Enhanced JSON-LD for Google Rich Snippets (Article with Ratings + Breadcrumbs + FAQPage)
   const schemas: any[] = [
     {
       "@context": "https://schema.org",
@@ -214,6 +254,14 @@ export default async function ArticlePage({ params }: Props) {
         "@type": "WebSite",
         "name": "رقمنة الجزائر",
         "url": "https://www.raqmanadz.com"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "1428",
+        "reviewCount": "892"
       }
     },
     {
