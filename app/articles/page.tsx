@@ -15,7 +15,21 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 
-const trendingSlugs = new Set(["mdn", "tawdhif", "aadl3", "chifa", "startups", "onec-concours-2026", "minha-batala-guide-2026"]);
+const trendingSlugs = new Set([
+  "mdn",
+  "tawdhif",
+  "aadl3",
+  "chifa",
+  "startups",
+  "onec-concours-2026",
+  "minha-batala-guide-2026",
+  "releve-rip-ccp-2026",
+  "carte-edahabia-guide-2026",
+  "baridimob-guide-solutions-2026",
+  "protection-civile-concours-2026",
+  "dgsn-police-concours-2026",
+  "logement-social-lpl-guide-2026"
+]);
 
 export default async function ArticlesPage() {
   const allArticles = getAllArticlesMerged();

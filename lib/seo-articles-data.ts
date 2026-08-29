@@ -1,3 +1,13 @@
+import {
+  releveRipCcp2026Article,
+  carteEdahabiaGuide2026Article,
+  baridimobGuideSolutions2026Article,
+  soldeCcpSmsEccp2026Article,
+  logementSocialLplGuide2026Article,
+  protectionCivileConcours2026Article,
+  dgsnPoliceConcours2026Article,
+} from './trend-articles-2026';
+
 // ================================================================
 // interfaces.ts - تعريف الهيكل الأساسي للمقالات
 // ================================================================
@@ -2893,6 +2903,14 @@ export const seoArticles: Record<string, SeoArticle> = {
   'takwin-mihnati-2026': takwin_mihnati_2026Article,
   'cnas-chifa-2026': cnas_chifa_2026Article,
   'anem-minha-2026': anem_minha_2026Article,
+  // مقالات بريد الجزائر و CCP والخدمات الحكومية ذات أعلى بحث 2026 🔥
+  'releve-rip-ccp-2026': releveRipCcp2026Article,
+  'carte-edahabia-guide-2026': carteEdahabiaGuide2026Article,
+  'baridimob-guide-solutions-2026': baridimobGuideSolutions2026Article,
+  'solde-ccp-sms-eccp-2026': soldeCcpSmsEccp2026Article,
+  'logement-social-lpl-guide-2026': logementSocialLplGuide2026Article,
+  'protection-civile-concours-2026': protectionCivileConcours2026Article,
+  'dgsn-police-concours-2026': dgsnPoliceConcours2026Article,
   // المقالات الأكثر ترينداً وشهرة في الجزائر 2026 🔥
   mdn: mdnArticle,
   tawdhif: tawdhifArticle,

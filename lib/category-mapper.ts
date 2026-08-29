@@ -33,6 +33,13 @@ const slugToCategoryMap: Record<string, string> = {
   'onec-concours-2026': 'education',
   'epaiement-cib-edahabia-guide': 'bills',
   'minha-batala-guide-2026': 'employment',
+  'releve-rip-ccp-2026': 'post',
+  'carte-edahabia-guide-2026': 'post',
+  'baridimob-guide-solutions-2026': 'post',
+  'solde-ccp-sms-eccp-2026': 'post',
+  'logement-social-lpl-guide-2026': 'interior',
+  'protection-civile-concours-2026': 'employment',
+  'dgsn-police-concours-2026': 'police',
 };
 
 export function getCategoryIdForSlug(slug: string): string {
