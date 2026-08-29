@@ -169,10 +169,25 @@ export function Footer() {
             <p className="text-xs font-medium tracking-tight">
               {t("footer.copyright")}
             </p>
-            <div className="flex gap-8">
-               <Link href="/privacy-policy" aria-label="Privacy Policy - سياسة الخصوصية" className="text-xs font-bold uppercase tracking-widest text-foreground/80 hover:text-primary transition-colors">Privacy Policy</Link>
-               <Link href="/terms-of-service" aria-label="Terms of Service - شروط الاستخدام" className="text-xs font-bold uppercase tracking-widest text-foreground/80 hover:text-primary transition-colors">Terms of Service</Link>
-               <Link href="/sitemap" aria-label="Sitemap - خريطة الموقع" className="text-xs font-bold uppercase tracking-widest text-foreground/80 hover:text-primary transition-colors">Sitemap</Link>
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
+               <Link href="/about" aria-label="About Us - من نحن" className="text-xs font-bold uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors">
+                 {language === 'ar' ? 'من نحن' : 'About Us'}
+               </Link>
+               <Link href="/contact" aria-label="Contact Us - اتصل بنا" className="text-xs font-bold uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors">
+                 {language === 'ar' ? 'اتصل بنا' : 'Contact Us'}
+               </Link>
+               <Link href="/privacy-policy" aria-label="Privacy Policy - سياسة الخصوصية" className="text-xs font-bold uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors">
+                 {language === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
+               </Link>
+               <Link href="/terms-of-service" aria-label="Terms of Service - شروط الاستخدام" className="text-xs font-bold uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors">
+                 {language === 'ar' ? 'شروط الاستخدام' : 'Terms of Service'}
+               </Link>
+               <Link href="/disclaimer" aria-label="Disclaimer - إخلاء المسؤولية" className="text-xs font-bold uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors">
+                 {language === 'ar' ? 'إخلاء المسؤولية' : 'Disclaimer'}
+               </Link>
+               <Link href="/sitemap" aria-label="Sitemap - خريطة الموقع" className="text-xs font-bold uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors">
+                 {language === 'ar' ? 'خريطة الموقع' : 'Sitemap'}
+               </Link>
             </div>
           </div>
         </div>
