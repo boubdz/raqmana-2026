@@ -181,6 +181,10 @@
       "slug": "auto-dlyl-aliydaa-alqanwny-wtbaaa-alktb-fy-aljzayr-2026-mt7e9nc5",
       "site": "ennahar",
       "processedAt": "2026-08-24T15:32:05.866Z"
+    },
+    "https://trends.google.com/trending/rss?geo=DZ": {
+      "slug": "trend-aldlyl-alshaml-l-fdaa-alawlyaa-waldkhwl-almdrsy-20-mtexhw7f",
+      "processedAt": "2026-08-29T22:04:46.551Z"
     }
   },
   "processedTrends": {
@@ -260,7 +264,14 @@
       "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
       "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
       "processedAt": "2026-08-23T20:29:44.354Z"
+    },
+    "الدخول المدرسي": {
+      "slug": "trend-aldlyl-alshaml-l-fdaa-alawlyaa-waldkhwl-almdrsy-20-mtexhw7f",
+      "title": "الدخول المدرسي",
+      "official": "وزارة التربية الوطنية والديوان الوطني للامتحانات (ONEC)",
+      "source": "Google Trends DZ (Live RSS)",
+      "processedAt": "2026-08-29T22:04:46.551Z"
     }
   },
-  "lastRun": "2026-08-29T17:26:14.956Z"
+  "lastRun": "2026-08-29T22:04:48.552Z"
 }
