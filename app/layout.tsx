@@ -206,10 +206,10 @@ export default function RootLayout({
             })
           }}
         />
-        <meta name="google-adsense-account" content="ca-pub-7191515702392683" />
+        <meta name="google-adsense-account" content="ca-pub-4993823133823424" />
         <Script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7191515702392683"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4993823133823424"
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />

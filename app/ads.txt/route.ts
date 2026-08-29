@@ -1,5 +1,5 @@
 export async function GET() {
-  const content = 'google.com, pub-7191515702392683, DIRECT, f08c47fec0942fa0\n';
+  const content = 'google.com, pub-4993823133823424, DIRECT, f08c47fec0942fa0\n';
 
   return new Response(content, {
     status: 200,
