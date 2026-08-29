@@ -255,14 +255,7 @@ export default async function ArticlePage({ params }: Props) {
         "name": "رقمنة الجزائر",
         "url": "https://www.raqmanadz.com"
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "bestRating": "5",
-        "worstRating": "1",
-        "ratingCount": "1428",
-        "reviewCount": "892"
-      }
+      "image": [(article as any).image || "https://www.raqmanadz.com/android-chrome-512x512.png"]
     },
     {
       "@context": "https://schema.org",

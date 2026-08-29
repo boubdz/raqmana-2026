@@ -247,14 +247,6 @@ export default async function ServiceDetailPage({ params }: Props) {
           "name": "Algeria",
         },
         "description": enriched.detailedDescription,
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "bestRating": "5",
-          "worstRating": "1",
-          "ratingCount": "1360",
-          "reviewCount": "890",
-        },
       },
       {
         "@type": "FAQPage",

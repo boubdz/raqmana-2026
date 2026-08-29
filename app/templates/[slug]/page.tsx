@@ -83,14 +83,6 @@ export default async function TemplateDetailPage({ params }: Props) {
         "name": template.governingMinistry,
         "url": template.officialSourceUrl,
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "bestRating": "5",
-        "worstRating": "1",
-        "ratingCount": "1840",
-        "reviewCount": "920",
-      },
     },
     {
       "@context": "https://schema.org",

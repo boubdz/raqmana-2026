@@ -36,16 +36,6 @@ export function CommunityComments({
   const pageKey = serviceId || categoryId || serviceTitle.replace(/[^\u0621-\u064A0-9a-zA-Z]/g, "-");
   const storageKey = `raqmana_comments_v2_${pageKey}`;
 
-  // Google supported itemReviewed type fallback
-  const resolvedItemType =
-    itemType ||
-    (serviceId?.includes("dawla-madrasiya") ||
-    serviceId?.includes("tahwilat") ||
-    serviceTitle.includes("دليل") ||
-    serviceTitle.includes("التحضيرات")
-      ? "HowTo"
-      : "SoftwareApplication");
-
   // State
   const [comments, setComments] = useState<CommentItem[]>([]);
   const [name, setName] = useState("");
@@ -195,27 +185,6 @@ export function CommunityComments({
 
   return (
     <section className="py-12 px-4 bg-muted/20 border-t border-border/50" dir="rtl">
-      {/* Schema.org Rich Snippet JSON-LD — Validated for Google Search Console */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": resolvedItemType === "HowTo" ? "HowTo" : "SoftwareApplication",
-            "name": serviceTitle,
-            "operatingSystem": "Web",
-            "applicationCategory": "GovernmentService",
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": initialAvgRating.toString(),
-              "bestRating": "5",
-              "worstRating": "1",
-              "ratingCount": totalReviews.toString(),
-            },
-          }),
-        }}
-      />
-
       <div className="container mx-auto max-w-4xl space-y-8">
         
         {/* Rating Breakdown Widget (Competitor Killer Feature) */}
