@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/hero-section";
 import { ServicesMarquee } from "@/components/services-marquee";
 import { NewsTicker } from "@/components/news-ticker";
 import { CategoriesSection } from "@/components/categories-section";
+import { SeoGuideSection } from "@/components/seo-guide-section";
 import { TrendingServicesGrid } from "@/components/trending-services-grid";
 import { Footer } from "@/components/footer";
 
@@ -160,6 +161,10 @@ export default function Home() {
         {/* Below-the-fold: server-rendered for search engines */}
         <ServicesMarquee />
         <CategoriesSection />
+        
+        {/* 📚 دليل الروابط المباشرة للخدمات الحكومية الجزائرية (SEO Content) */}
+        <SeoGuideSection />
+
         <NewsTicker />
         <SeasonalEvents />
         <SolutionsHub />

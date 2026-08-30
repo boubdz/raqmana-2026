@@ -26,8 +26,7 @@ import {
   Activity,
   Layers,
   Sparkles,
-  BookOpen,
-  Briefcase
+  BookOpen
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -167,15 +166,7 @@ export function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* 4. مسابقات التوظيف */}
-          <Link
-            href="/jobs"
-            className="px-3 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-muted-foreground hover:text-primary hover:bg-muted/50 transition-all"
-          >
-            {language === "ar" ? "مسابقات التوظيف" : "Jobs"}
-          </Link>
-
-          {/* 5. المقالات */}
+          {/* 4. المقالات */}
           <Link
             href="/articles"
             className="px-3 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-muted-foreground hover:text-primary hover:bg-muted/50 transition-all"
@@ -270,16 +261,6 @@ export function Header() {
                 <div className="flex items-center gap-2.5">
                   <Layers className="w-4 h-4 text-primary" />
                   <span>{language === "ar" ? "دليل القطاعات والخدمات" : "Sectors Directory"}</span>
-                </div>
-              </Link>
-              <Link
-                href="/jobs"
-                className="flex items-center justify-between p-3.5 rounded-2xl font-black text-foreground hover:bg-muted text-sm"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Briefcase className="w-4 h-4 text-emerald-500" />
-                  <span>{language === "ar" ? "مسابقات التوظيف" : "Job Competitions"}</span>
                 </div>
               </Link>
               <Link
