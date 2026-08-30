@@ -3,20 +3,21 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const baseUrl = 'https://www.raqmanadz.com';
 
+  const now = new Date().toISOString();
   const pages = [
-    { loc: `${baseUrl}/`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/cv-builder`, lastmod: new Date().toISOString(), changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/ccp-calculator`, lastmod: new Date().toISOString(), changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/templates`, lastmod: new Date().toISOString(), changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/jobs`, lastmod: new Date().toISOString(), changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/jobs/post`, lastmod: new Date().toISOString(), changefreq: 'weekly', priority: '0.85' },
-    { loc: `${baseUrl}/document-guide`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/document-assistant`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/articles`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'daily', priority: '0.95' },
-    { loc: `${baseUrl}/solutions`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'weekly', priority: '0.9' },
-    { loc: `${baseUrl}/status`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'hourly', priority: '0.85' },
-    { loc: `${baseUrl}/sitemap`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'weekly', priority: '0.8' },
-    { loc: `${baseUrl}/feedback`, lastmod: '2026-08-21T14:00:00+00:00', changefreq: 'monthly', priority: '0.5' },
+    { loc: `${baseUrl}/`, lastmod: now, changefreq: 'daily', priority: '1.0' },
+    { loc: `${baseUrl}/document-assistant`, lastmod: now, changefreq: 'daily', priority: '1.0' },
+    { loc: `${baseUrl}/document-guide`, lastmod: now, changefreq: 'daily', priority: '1.0' },
+    { loc: `${baseUrl}/templates`, lastmod: now, changefreq: 'daily', priority: '1.0' },
+    { loc: `${baseUrl}/cv-builder`, lastmod: now, changefreq: 'daily', priority: '1.0' },
+    { loc: `${baseUrl}/ccp-calculator`, lastmod: now, changefreq: 'daily', priority: '1.0' },
+    { loc: `${baseUrl}/jobs`, lastmod: now, changefreq: 'daily', priority: '1.0' },
+    { loc: `${baseUrl}/jobs/post`, lastmod: now, changefreq: 'weekly', priority: '0.85' },
+    { loc: `${baseUrl}/articles`, lastmod: now, changefreq: 'daily', priority: '0.95' },
+    { loc: `${baseUrl}/solutions`, lastmod: now, changefreq: 'weekly', priority: '0.9' },
+    { loc: `${baseUrl}/status`, lastmod: now, changefreq: 'hourly', priority: '0.85' },
+    { loc: `${baseUrl}/sitemap`, lastmod: now, changefreq: 'weekly', priority: '0.8' },
+    { loc: `${baseUrl}/feedback`, lastmod: now, changefreq: 'monthly', priority: '0.5' },
   ];
 
   const urlElements = pages
