@@ -7,7 +7,8 @@ import { useLanguage } from "@/contexts/language-context";
 import { 
   FileText, Search, CheckCircle2, ChevronRight, 
   ExternalLink, Info, Printer, Share2, ClipboardList,
-  Building2, Banknote, Clock, Sparkles, Copy, Check, Filter
+  Building2, Banknote, Clock, Sparkles, Copy, Check, Filter,
+  FileDown, Bot, Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -234,12 +235,39 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
                       <span className="font-bold text-sm tracking-tight line-clamp-1">
                         {doc.name[language]}
                       </span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 flex-wrap">
                         <Badge variant="secondary" className={`text-[10px] px-2 py-0.5 rounded-lg border font-bold ${
                           isSelected ? "bg-white/20 text-white border-transparent" : (catMeta?.color || "")
                         }`}>
                           {catMeta?.icon} {catMeta?.[language]}
                         </Badge>
+                        {doc.actionType === "template" && (
+                          <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-md border ${
+                            isSelected 
+                              ? "bg-white/20 text-white border-white/30" 
+                              : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                          }`}>
+                            📥 {language === 'ar' ? 'استمارة' : 'Form'}
+                          </span>
+                        )}
+                        {doc.actionType === "assistant" && (
+                          <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-md border ${
+                            isSelected 
+                              ? "bg-white/20 text-white border-white/30" 
+                              : "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20"
+                          }`}>
+                            ✍️ {language === 'ar' ? 'طلب خطي' : 'Letter'}
+                          </span>
+                        )}
+                        {doc.actionType === "portal" && (
+                          <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-md border ${
+                            isSelected 
+                              ? "bg-white/20 text-white border-white/30" 
+                              : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20"
+                          }`}>
+                            🌐 {language === 'ar' ? 'منصة' : 'Portal'}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <ChevronRight className={`h-4 w-4 shrink-0 opacity-40 ${dir === 'rtl' ? 'rotate-180' : ''}`} />
@@ -316,6 +344,73 @@ export function DocumentGuide({ hideHeader = false }: { hideHeader?: boolean }) 
                       </Button>
                     </div>
                   </div>
+
+                  {/* 🚀 Smart Action Hero Box (الاستمارة / المساعد الذكي / المنصة) */}
+                  {selectedDoc.actionType === "template" && selectedDoc.actionConfig && (
+                    <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in duration-300">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                          <span className="text-[11px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+                            {selectedDoc.actionConfig.badgeText?.[language] || (language === 'ar' ? 'استمارة وزارية رسمية متوفرة' : 'Official Form Available')}
+                          </span>
+                        </div>
+                        <p className="text-xs font-bold text-foreground">
+                          {language === 'ar' ? 'يمكنك معاينة وتعبئة وتحميل الاستمارة الرسمية المعتمدة لهذا الملف بصيغة PDF الرسمية:' : 'Download and preview the official form for this file in Official PDF:'}
+                        </p>
+                      </div>
+                      <Button asChild className="rounded-xl font-black bg-emerald-600 hover:bg-emerald-700 text-white shrink-0 shadow-md shadow-emerald-600/20 gap-2 h-11 px-5">
+                        <Link href={`/templates/${selectedDoc.actionConfig.templateSlug}`}>
+                          <FileDown className="w-4 h-4" />
+                          <span>{selectedDoc.actionConfig.buttonText?.[language] || (language === 'ar' ? 'تحميل الاستمارة الرسمية ⚡' : 'Download Form ⚡')}</span>
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
+
+                  {selectedDoc.actionType === "assistant" && selectedDoc.actionConfig && (
+                    <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in duration-300">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                          <span className="text-[11px] font-black uppercase tracking-wider text-purple-700 dark:text-purple-300">
+                            {selectedDoc.actionConfig.badgeText?.[language] || (language === 'ar' ? 'يتطلب صياغة طلب خطي رسمي' : 'Written Request Required')}
+                          </span>
+                        </div>
+                        <p className="text-xs font-bold text-foreground">
+                          {language === 'ar' ? 'المساعد الذكي جاهز لصياغة طلبك الإداري المخصص لهذا الملف بضغطة زر وبصيغة قانونية:' : 'AI Assistant is ready to draft your formal administrative letter for this file:'}
+                        </p>
+                      </div>
+                      <Button asChild className="rounded-xl font-black bg-purple-600 hover:bg-purple-700 text-white shrink-0 shadow-md shadow-purple-600/20 gap-2 h-11 px-5">
+                        <Link href={`/document-assistant?docType=${encodeURIComponent(selectedDoc.actionConfig.assistantTopic || selectedDoc.name[language])}`}>
+                          <Bot className="w-4 h-4" />
+                          <span>{selectedDoc.actionConfig.buttonText?.[language] || (language === 'ar' ? 'صياغة الطلب بالمساعد الذكي ⚡' : 'Draft Letter with AI ⚡')}</span>
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
+
+                  {selectedDoc.actionType === "portal" && selectedDoc.actionConfig && (
+                    <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in duration-300">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Globe className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          <span className="text-[11px] font-black uppercase tracking-wider text-blue-700 dark:text-blue-300">
+                            {selectedDoc.actionConfig.badgeText?.[language] || (language === 'ar' ? 'منصة حكومية رقمية معتمدة' : 'Official Portal Available')}
+                          </span>
+                        </div>
+                        <p className="text-xs font-bold text-foreground">
+                          {language === 'ar' ? 'يتم تقديم الطلب والتسجيل في هذا الملف عبر المنصة الرقمية المباشرة:' : 'Submit and register for this file via the direct official portal:'}
+                        </p>
+                      </div>
+                      <Button asChild className="rounded-xl font-black bg-blue-600 hover:bg-blue-700 text-white shrink-0 shadow-md shadow-blue-600/20 gap-2 h-11 px-5">
+                        <a href={selectedDoc.actionConfig.portalUrl || selectedDoc.officialUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-4 h-4" />
+                          <span>{selectedDoc.actionConfig.buttonText?.[language] || (language === 'ar' ? 'الانتقال للمنصة والتسجيل المباشر ↗' : 'Launch Official Portal ↗')}</span>
+                        </a>
+                      </Button>
+                    </div>
+                  )}
 
                   {/* Metadata Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">

@@ -7,6 +7,14 @@ export interface RequiredDocument {
   fees?: { ar: string; en: string };
   processingTime?: { ar: string; en: string };
   notes?: { ar: string; en: string };
+  actionType?: "template" | "assistant" | "portal";
+  actionConfig?: {
+    templateSlug?: string;
+    assistantTopic?: string;
+    portalUrl?: string;
+    badgeText?: { ar: string; en: string };
+    buttonText?: { ar: string; en: string };
+  };
   items: {
     ar: string[];
     en: string[];
@@ -34,6 +42,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف السكن الاجتماعي الإيجاري (LPL)", en: "Social Public Housing File" },
     category: "housing",
     department: { ar: "الدائرة / لجنة توزيع السكن", en: "District / Housing Committee" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب الاستفادة من سكن عمومي إيجاري اجتماعي موجه لرئيس الدائرة ولجنة السكن",
+      badgeText: { ar: "صياغة طلب للدائرة", en: "District Request" },
+      buttonText: { ar: "صياغة طلب السكن الاجتماعي بالمساعد الذكي ⚡", en: "Draft Housing Request ⚡" }
+    },
     officialUrl: "https://www.interieur.gov.dz",
     fees: { ar: "مجاني للإيداع", en: "Free submission" },
     processingTime: { ar: "حسب برامج التوزيع والتحقيقات", en: "According to distribution quotas" },
@@ -68,6 +82,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف السكن الريفي (البناء الريفي CNL)", en: "Rural Housing Grant File" },
     category: "housing",
     department: { ar: "البلدية / مديرية السكن / CNL", en: "Municipality / Housing Dept / CNL" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب الاستفادة من إعانة السكن الريفي للبناء الريفي CNL",
+      badgeText: { ar: "صياغة طلب خطي", en: "Formal Letter" },
+      buttonText: { ar: "صياغة طلب إعانة السكن الريفي بالمساعد الذكي ⚡", en: "Draft Rural Grant Request ⚡" }
+    },
     officialUrl: "https://www.cnl.gov.dz",
     fees: { ar: "إعانة الدولة غير قابلة للاسترداد (70 أو 100 مليون سنتيم)", en: "State grant" },
     items: {
@@ -98,6 +118,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف سكنات البيع بالإيجار (عدل 3 - AADL)", en: "AADL Rent-to-Own Housing File" },
     category: "housing",
     department: { ar: "الوكالة الوطنية لتحسين السكن وتطويره (عدل)", en: "AADL Agency" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://www.aadl.com.dz",
+      badgeText: { ar: "تسجيل إلكتروني رسمي", en: "Official Registration" },
+      buttonText: { ar: "الانتقال لمنصة سكنات عدل 3 الرسمية ↗", en: "Go to Official AADL Portal ↗" }
+    },
     officialUrl: "https://www.aadl.com.dz",
     items: {
       ar: [
@@ -127,6 +153,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف السكن الترقوي المدعم (LPA / LPL)", en: "Assisted Promotional Housing (LPA)" },
     category: "housing",
     department: { ar: "مديرية السكن / الدائرة / المرقي العقاري", en: "Housing Directorate / District" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب الاستفادة من سكن ترقوي مدعم LPA",
+      badgeText: { ar: "صياغة طلب خطي", en: "Formal Letter" },
+      buttonText: { ar: "صياغة طلب سكن LPA بالمساعد الذكي ⚡", en: "Draft LPA Housing Letter ⚡" }
+    },
     officialUrl: "https://www.cnl.gov.dz",
     items: {
       ar: [
@@ -154,6 +186,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف التنازل وتمليك السكنات الاجتماعية (OPGI)", en: "OPGI Social Housing Ownership Transfer" },
     category: "housing",
     department: { ar: "ديوان الترقية والتسيير العقاري (OPGI)", en: "OPGI Real Estate Agency" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب خطي للتنازل وتمليك سكن عمومي إيجاري OPGI",
+      badgeText: { ar: "طلب لمدير OPGI", en: "OPGI Request" },
+      buttonText: { ar: "صياغة طلب تمليك OPGI بالمساعد الذكي ⚡", en: "Draft OPGI Ownership Request ⚡" }
+    },
     officialUrl: "https://www.interieur.gov.dz",
     items: {
       ar: [
@@ -179,6 +217,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف رخصة البناء (Permis de Construire)", en: "Building Construction Permit File" },
     category: "housing",
     department: { ar: "مصلحة التعمير بالبلدية / مديرية التعمير (DUC)", en: "Municipal Urbanism Dept / DUC" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب رخصة البناء موجه لرئيس المجلس الشعبي البلدي ومصالح التعمير",
+      badgeText: { ar: "صياغة طلب البناء", en: "Building Permit Request" },
+      buttonText: { ar: "صياغة طلب رخصة البناء بالمساعد الذكي ⚡", en: "Draft Building Request ⚡" }
+    },
     officialUrl: "https://www.interieur.gov.dz",
     fees: { ar: "رسم رخصة البناء يحسب حسب المساحة المبنية", en: "Calculated based on built area" },
     processingTime: { ar: "شهر إلى 3 أشهر من تاريخ الإيداع", en: "1 to 3 months" },
@@ -210,6 +254,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف شهادة المطابقة للبناية (Certificat de Conformité)", en: "Building Compliance Certificate" },
     category: "housing",
     department: { ar: "مصلحة التعمير بالبلدية", en: "Municipal Urban Planning Bureau" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب استخراج شهادة المطابقة للبناية لرئيس المجلس الشعبي البلدي",
+      badgeText: { ar: "طلب لرئيس البلدية", en: "Mayor Letter" },
+      buttonText: { ar: "صياغة طلب شهادة المطابقة بالمساعد الذكي ⚡", en: "Draft Conformity Letter ⚡" }
+    },
     officialUrl: "https://www.interieur.gov.dz",
     items: {
       ar: [
@@ -233,6 +283,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف رخصة الهدم (Permis de Démolir)", en: "Demolition Permit File" },
     category: "housing",
     department: { ar: "البلدية / مديرية البناء والتعمير", en: "Municipality / Urban Planning" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب رخصة هدم بناية قديمة لرئيس المجلس الشعبي البلدي",
+      badgeText: { ar: "طلب لرئيس البلدية", en: "Mayor Letter" },
+      buttonText: { ar: "صياغة طلب رخصة الهدم بالمساعد الذكي ⚡", en: "Draft Demolition Request ⚡" }
+    },
     officialUrl: "https://www.interieur.gov.dz",
     items: {
       ar: [
@@ -256,6 +312,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف استخراج الدفتر العقاري ومسح الأراضي (Cadastre)", en: "Land Book (Livret Foncier) & Cadastre File" },
     category: "housing",
     department: { ar: "المحافظة العقارية / مديرية مسح الأراضي الولائية", en: "Land Registry / Cadastre Directorate" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://mfdgi.gov.dz",
+      badgeText: { ar: "بوابة أملاك الدولة", en: "State Property Portal" },
+      buttonText: { ar: "الاطلاع على خدمات الحفظ العقاري الرسمية ↗", en: "Open Land Registry Portal ↗" }
+    },
     officialUrl: "https://mfdgi.gov.dz",
     items: {
       ar: [
@@ -310,6 +372,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف استخراج بطاقة الفلاح (Chambre d'Agriculture)", en: "Farmer Card (Carte Fellah)" },
     category: "agriculture",
     department: { ar: "الغرفة الفلاحية الولائية (Chambre d'Agriculture)", en: "Provincial Agricultural Chamber" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://madr.gov.dz",
+      badgeText: { ar: "وزارة الفلاحة MADR", en: "MADR Ministry Portal" },
+      buttonText: { ar: "الانتقال للبوابة الرسمية لوزارة الفلاحة ↗", en: "Go to Agriculture Portal ↗" }
+    },
     officialUrl: "https://madr.gov.dz",
     fees: { ar: "حقوق الانخراط السنوي بالغرفة الفلاحية", en: "Annual subscription fees" },
     items: {
@@ -338,6 +406,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف بطاقة الموّال (مربو المواشي والأبقار)", en: "Livestock Breeder Card" },
     category: "agriculture",
     department: { ar: "المفتشية البيطرية / الغرفة الفلاحية", en: "Veterinary Inspectorate / Chamber" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://madr.gov.dz",
+      badgeText: { ar: "الغرفة الفلاحية", en: "Agriculture Chamber" },
+      buttonText: { ar: "الانتقال للبوابة الرسمية للتنمية الريفية ↗", en: "Go to Rural Development Portal ↗" }
+    },
     officialUrl: "https://madr.gov.dz",
     items: {
       ar: [
@@ -363,6 +437,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف حق الامتياز ورخصة استغلال الأراضي الفلاحية (ONTA)", en: "Agricultural Land Concession License" },
     category: "agriculture",
     department: { ar: "الديوان الوطني للأراضي الفلاحية (ONTA)", en: "National Agricultural Land Agency" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب الاستفادة من حق الامتياز للأراضي الفلاحية لديوان ONTA",
+      badgeText: { ar: "طلب لمدير ONTA", en: "ONTA Request" },
+      buttonText: { ar: "صياغة طلب الامتياز الفلاحي بالمساعد الذكي ⚡", en: "Draft ONTA Concession Letter ⚡" }
+    },
     officialUrl: "https://madr.gov.dz",
     items: {
       ar: [
@@ -388,6 +468,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف رخصة حفر بئر ارتوازي واستغلال المياه الجوفية", en: "Water Well Drilling & Extraction Permit" },
     category: "agriculture",
     department: { ar: "مديرية الموارد المائية / وكالة الحوض الهيدروغرافي (ABH)", en: "Water Resources Directorate / ABH" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://www.mree.gov.dz",
+      badgeText: { ar: "وزارة الموارد المائية", en: "Water Resources Ministry" },
+      buttonText: { ar: "الانتقال لبوابة الموارد المائية ورخص الآبار ↗", en: "Go to Water Resources Portal ↗" }
+    },
     officialUrl: "https://www.mree.gov.dz",
     items: {
       ar: [
@@ -417,6 +503,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف القيد في السجل التجاري (شخص طبيعي CNRC)", en: "Commercial Register Filing (Natural Person)" },
     category: "commerce",
     department: { ar: "المركز الوطني للسجل التجاري (CNRC)", en: "National Commercial Register (CNRC)" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://sidjilcom.cnrc.dz",
+      badgeText: { ar: "بوابة سجلكم CNRC", en: "CNRC Sidjilcom" },
+      buttonText: { ar: "القيد في السجل التجاري عبر بوابة سجلكم ↗", en: "Register on Sidjilcom Portal ↗" }
+    },
     officialUrl: "https://sidjilcom.cnrc.dz",
     fees: { ar: "حقوق القيد القانونية لدى قباضة CNRC", en: "CNRC registration fee" },
     items: {
@@ -445,6 +537,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف تأسيس شركة ذات مسؤولية محدودة (SARL / EURL)", en: "SARL / EURL Company Incorporation File" },
     category: "commerce",
     department: { ar: "الموثق / المركز الوطني للسجل التجاري / البنك", en: "Notary / CNRC / Bank" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://sidjilcom.cnrc.dz",
+      badgeText: { ar: "بوابة الشركات CNRC", en: "CNRC Companies Portal" },
+      buttonText: { ar: "الانتقال لمنصة حجز وتأسيس الشركات CNRC ↗", en: "Go to Company Incorporation Portal ↗" }
+    },
     officialUrl: "https://sidjilcom.cnrc.dz",
     items: {
       ar: [
@@ -472,6 +570,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف دعم وتمويل المشاريع المصغرة (NESDA - أناد سابقاً)", en: "NESDA Micro-Enterprise Financing File" },
     category: "commerce",
     department: { ar: "الوكالة الوطنية لدعم وتنمية المقاولاتية (NESDA)", en: "National Entrepreneurship Agency (NESDA)" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://www.nesda.dz",
+      badgeText: { ar: "تسجيل إلكتروني رسمي", en: "Official Registration" },
+      buttonText: { ar: "الانتقال لمنصة وكالة NESDA لتسجيل المشروع ↗", en: "Go to NESDA Startup Portal ↗" }
+    },
     officialUrl: "https://www.nesda.dz",
     fees: { ar: "قروض ميسرة بدون فوائد ودعم عتاد الدولة", en: "Interest-free loans & equipment support" },
     items: {
@@ -500,6 +604,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف استخراج رقم التعريف الجبائي والإحصائي (NIF & NIS)", en: "Tax Identification Number (NIF / NIS) File" },
     category: "commerce",
     department: { ar: "مفتشية الضرائب / الديوان الوطني للإحصائيات (ONS)", en: "Tax Inspectorate / ONS" },
+    actionType: "template",
+    actionConfig: {
+      templateSlug: "declaration-g8-impots",
+      badgeText: { ar: "استمارة G8 الرسمية متوفرة", en: "Official G8 Form Available" },
+      buttonText: { ar: "تحميل استمارة التصريح بالوجود (نموذج G8 الرسمي DGI) ⚡", en: "Download Official G8 Form ⚡" }
+    },
     officialUrl: "https://mfdgi.gov.dz",
     items: {
       ar: [
@@ -525,6 +635,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف شهادة الوجود الجبائي (Certificat d'Existence)", en: "Tax Existence Certificate File" },
     category: "commerce",
     department: { ar: "مفتشية الضرائب التابع لها مقر النشاط", en: "Competent Tax Inspectorate" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب استخراج شهادة الوجود الجبائي لمفتش الضرائب الرئيسي",
+      badgeText: { ar: "طلب لمفتش الضرائب", en: "Tax Request" },
+      buttonText: { ar: "صياغة طلب شهادة الوجود بالمساعد الذكي ⚡", en: "Draft Tax Existence Letter ⚡" }
+    },
     officialUrl: "https://mfdgi.gov.dz",
     items: {
       ar: [
@@ -685,6 +801,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف نقل ملكية واستخراج البطاقة الرمادية (Carte Grise)", en: "Vehicle Registration Card Transfer" },
     category: "transport",
     department: { ar: "مصلحة حركة السيارات بالدائرة أو البلدية", en: "Automobile Movement Department" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "تصريح بالتنازل وبيع مركبة لنقل ملكية البطاقة الرمادية بالبلدية",
+      badgeText: { ar: "صياغة تصريح البيع", en: "Draft Transfer Notice" },
+      buttonText: { ar: "صياغة تصريح بيع وتنازل مركبة بالمساعد الذكي ⚡", en: "Draft Vehicle Transfer Notice ⚡" }
+    },
     officialUrl: "https://www.interieur.gov.dz",
     items: {
       ar: [
@@ -769,6 +891,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف رخصة تركيب كاميرات المراقبة للشركات والمحلات", en: "CCTV Surveillance Cameras Installation Permit" },
     category: "permits",
     department: { ar: "مديرية التقنين والشؤون العامة بالولاية (DRAG)", en: "Provincial Regulations Dept (DRAG)" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب ترخيص أمني لتركيب كاميرات المراقبة للولاية",
+      badgeText: { ar: "طلب للولاية / الدائرة", en: "Province Security Request" },
+      buttonText: { ar: "صياغة طلب كاميرات المراقبة بالمساعد الذكي ⚡", en: "Draft CCTV Request ⚡" }
+    },
     officialUrl: "https://www.interieur.gov.dz",
     notes: { ar: "يمنع توجيه الكاميرات نحو الشارع العام أو الفضاءات الخاصة بالجيران.", en: "Cameras must not cover public street or neighbor private areas." },
     items: {
@@ -797,6 +925,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف رخصة فتح واستغلال مقهى أو مطعم (محل مصنف)", en: "Café & Restaurant Exploitation Permit" },
     category: "permits",
     department: { ar: "البلدية / مديرية التجارة / الحماية المدنية", en: "Municipality / Commerce / Civil Protection" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب رخصة فتح واستغلال محل مصنف تجاري لرئيس المجلس الشعبي البلدي",
+      badgeText: { ar: "طلب لرئيس البلدية", en: "Mayor License Request" },
+      buttonText: { ar: "صياغة طلب رخصة المحل بالمساعد الذكي ⚡", en: "Draft Business Permit Request ⚡" }
+    },
     officialUrl: "https://www.commerce.gov.dz",
     items: {
       ar: [
@@ -851,6 +985,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف تأسيس وتجديد الجمعيات (قانون الجمعيات 12-06)", en: "Association Establishment & Renewal File" },
     category: "permits",
     department: { ar: "مديرية التقنين بالولاية (أو الأمانة العامة بالبلدية)", en: "Province DRAG / Municipality" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب تسجيل واعتماد جمعية محلية طبقا لقانون الجمعيات 12-06",
+      badgeText: { ar: "طلب تسجيل جمعية", en: "Association Registry Letter" },
+      buttonText: { ar: "صياغة طلب تسجيل الجمعية بالمساعد الذكي ⚡", en: "Draft Association Letter ⚡" }
+    },
     officialUrl: "https://www.interieur.gov.dz",
     items: {
       ar: [
@@ -880,6 +1020,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف استخراج وتجديد بطاقة الشفاء (CNAS / CASNOS)", en: "Chifa Electronic Healthcare Card File" },
     category: "social",
     department: { ar: "صندوق التأمينات الاجتماعية (CNAS للأجراء / CASNOS لغير الأجراء)", en: "CNAS / CASNOS Social Security" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://elhanaa.cnas.dz",
+      badgeText: { ar: "فضاء الهناء CNAS", en: "CNAS El-Hanaa" },
+      buttonText: { ar: "طلب ومتابعة بطاقة الشفاء عبر فضاء الهناء ↗", en: "Track Chifa on El-Hanaa ↗" }
+    },
     officialUrl: "https://elhanaa.cnas.dz",
     fees: { ar: "مجانية للمؤمن لهم اجتماعياً وذوي الحقوق", en: "Free for insured citizens" },
     items: {
@@ -936,6 +1082,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف الإحالة على التقاعد وتجديد بطاقة المتقاعد (CNR)", en: "Retirement Pension & Pensioner Card (CNR)" },
     category: "social",
     department: { ar: "الصندوق الوطني للتقاعد (CNR)", en: "National Retirement Fund (CNR)" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://www.cnr.dz",
+      badgeText: { ar: "بوابة صندوق التقاعد CNR", en: "CNR Pension Portal" },
+      buttonText: { ar: "الانتقال لبوابة الصندوق الوطني للتقاعد CNR ↗", en: "Go to CNR Retirement Portal ↗" }
+    },
     officialUrl: "https://www.cnr.dz",
     items: {
       ar: [
@@ -963,6 +1115,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف منحة البطالة وتجديد التسجيل (ANEM)", en: "Unemployment Grant (Minha ANEM) File" },
     category: "social",
     department: { ar: "الوكالة الوطنية للتشغيل (ANEM)", en: "National Employment Agency (ANEM)" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://minha.anem.dz",
+      badgeText: { ar: "بوابة منحة ANEM", en: "ANEM Minha Portal" },
+      buttonText: { ar: "حجز موعد ومتابعة منحة البطالة أونلاين ↗", en: "Book ANEM Minha Appointment ↗" }
+    },
     officialUrl: "https://minha.anem.dz",
     fees: { ar: "منحة شهرية 15,000 دج مجانية", en: "15,000 DZD monthly grant" },
     items: {
@@ -995,6 +1153,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف الإعفاء من الخدمة الوطنية (الكفالة العائلية / السند الوحيد)", en: "Military Service Family Support Exemption" },
     category: "interior",
     department: { ar: "مركز الخدمة الوطنية بالناحية العسكرية / الدائرة", en: "National Service Center / Military Region" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب إعفاء من الخدمة الوطنية لسبب الكفالة العائلية والسند الوحيد للعائلة",
+      badgeText: { ar: "طلب لوزارة الدفاع", en: "Defense Ministry Letter" },
+      buttonText: { ar: "صياغة طلب الكفالة العائلية بالمساعد الذكي ⚡", en: "Draft Military Support Exemption ⚡" }
+    },
     officialUrl: "https://www.mdn.dz",
     notes: { ar: "يمنح للشاب الذي يثبت أنه المتكفل المادي الوحيد بالعائلة لعجز أو وفاة الوالد.", en: "Granted to sole family breadwinner due to father disability/death." },
     items: {
@@ -1048,6 +1212,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف معادلة الشهادات الجامعية الأجنبية بالجزائر", en: "Foreign University Degree Equivalence File" },
     category: "interior",
     department: { ar: "وزارة التعليم العالي والبحث العلمي (MESRS) / مديرية المعادلات", en: "Ministry of Higher Education (MESRS)" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://progres.mesrs.dz/web",
+      badgeText: { ar: "منصة بروغرس MESRS", en: "Progres Portal" },
+      buttonText: { ar: "الانتقال لمنصة معادلة الشهادات بروغرس ↗", en: "Go to MESRS Equivalence Portal ↗" }
+    },
     officialUrl: "https://www.mesrs.dz",
     fees: { ar: "معالجة إلكترونية مجانية عبر بوابة الوزارة", en: "Free online processing" },
     items: {
@@ -1076,6 +1246,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف استخراج وتجديد جواز السفر البيومتري", en: "Biometric Passport Issuance & Renewal" },
     category: "interior",
     department: { ar: "الدائرة / المقاطعة الإدارية / القنصلية بالخارج", en: "District / Administrative District / Consulate" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://passeport.interieur.gov.dz",
+      badgeText: { ar: "بوابة وزارة الداخلية", en: "Interior Ministry Portal" },
+      buttonText: { ar: "حجز موعد ومتابعة جواز السفر عبر موقع الداخلية ↗", en: "Track Passport on Interior Portal ↗" }
+    },
     officialUrl: "https://passeport.interieur.gov.dz",
     fees: { ar: "طابع جبائي بقيمة 6,000 دج (أو 24,000 دج لـ 48 صفحة)", en: "6,000 DZD tax stamp" },
     items: {
@@ -1108,6 +1284,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف بطاقة التعريف الوطنية البيومترية", en: "Biometric National Identity Card" },
     category: "interior",
     department: { ar: "البلدية / الدائرة / عبر الإنترنت لمن يملك جواز سفر", en: "Municipality / District / Online" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://interieur.gov.dz",
+      badgeText: { ar: "طلب رقمي مباشر", en: "Direct Digital Request" },
+      buttonText: { ar: "طلب بطاقة التعريف البيومترية أونلاين ↗", en: "Request Biometric ID Online ↗" }
+    },
     officialUrl: "https://passeport.interieur.gov.dz",
     fees: { ar: "مجانية (طابع جبائي في حال الضياع أو الإتلاف)", en: "Free" },
     items: {
@@ -1169,6 +1351,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "ملف المساعدة القضائية (Assistance Judiciaire للمحاكم)", en: "Free Legal Aid Application (Courts)" },
     category: "justice",
     department: { ar: "مكتب المساعدة القضائية لدى وكيل الجمهورية / المحكمة", en: "Legal Aid Bureau / Prosecutor Office" },
+    actionType: "assistant",
+    actionConfig: {
+      assistantTopic: "طلب الاستفادة من المساعدة القضائية وتعيين محامٍ مجاناً من الدولة بالمحكمة",
+      badgeText: { ar: "طلب لرئيس مكتب المساعدة", en: "Legal Aid Request" },
+      buttonText: { ar: "صياغة طلب المساعدة القضائية بالمساعد الذكي ⚡", en: "Draft Legal Aid Request ⚡" }
+    },
     officialUrl: "https://portail.mjustice.dz",
     fees: { ar: "تكفل الدولة بأتعاب المحامي والمصاريف القضائية مجاناً", en: "Free state-sponsored legal representation" },
     notes: { ar: "تمنح للمعوزين وذوي الدخل المحدود الذين لا تسمح مواردهم بتحمل تكاليف التقاضي.", en: "Granted to low-income citizens unable to afford court fees." },
@@ -1198,6 +1386,12 @@ export const documentGuideData: RequiredDocument[] = [
     name: { ar: "صحيفة السوابق القضائية وشهادة الجنسية (القضاء)", en: "Criminal Record Extract & Nationality Certificate" },
     category: "justice",
     department: { ar: "المحكمة / البوابة الإلكترونية لوزارة العدل", en: "Court / Ministry of Justice Portal" },
+    actionType: "portal",
+    actionConfig: {
+      portalUrl: "https://e-casier.mjustice.dz",
+      badgeText: { ar: "بوابة وزارة العدل", en: "Justice Ministry Portal" },
+      buttonText: { ar: "استخراج صحيفة السوابق القضائية إلكترونياً ↗", en: "Get e-Casier Online ↗" }
+    },
     officialUrl: "https://portail.mjustice.dz",
     fees: { ar: "مجانية عبر البوابة الرقمية الموقعة إلكترونياً", en: "Free online digitally signed" },
     items: {

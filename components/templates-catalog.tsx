@@ -11,7 +11,6 @@ import {
   Sparkles,
   SlidersHorizontal,
   ExternalLink,
-  ShieldCheck,
   Scale,
   Landmark
 } from "lucide-react";
@@ -57,96 +56,6 @@ export function TemplatesCatalog({ templates }: Props) {
     }
     return list;
   }, [filteredTemplates, sortBy]);
-
-  // تنزيل سريع لملف Word مباشرة من البطاقة
-  const handleQuickWordDownload = (template: OfficialTemplate, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const republic = template.documentContent.header.republic;
-    const ministry = template.documentContent.header.ministry;
-    const direction = template.documentContent.header.direction || "";
-    const title = template.documentContent.docTitle;
-
-    let bodyHtml = "";
-    template.documentContent.sections.forEach((sec) => {
-      bodyHtml += `<div style="margin-top: 18px; margin-bottom: 12px;">
-        <h3 style="font-size: 13pt; color: #0f172a; border-bottom: 1.5pt solid #475569; padding-bottom: 4px; font-weight: bold; background-color: #f1f5f9; padding: 4pt 8pt;">${sec.title}</h3>`;
-
-      if (sec.type === "form-grid" && sec.fields) {
-        bodyHtml += `<table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 8px;" dir="rtl">`;
-        for (let i = 0; i < sec.fields.length; i += 2) {
-          const f1 = sec.fields[i];
-          const f2 = sec.fields[i + 1];
-          bodyHtml += `<tr>
-            <td style="border: 1pt solid #475569; padding: 6pt 8pt; width: 25%; font-weight: bold; background-color: #f8fafc; font-size: 11pt;">${f1.label}:</td>
-            <td style="border: 1pt solid #475569; padding: 6pt 8pt; width: ${f2 ? '25%' : '75%'}; font-size: 11pt; color: #334155;">............................................</td>
-            ${f2 ? `
-            <td style="border: 1pt solid #475569; padding: 6pt 8pt; width: 25%; font-weight: bold; background-color: #f8fafc; font-size: 11pt;">${f2.label}:</td>
-            <td style="border: 1pt solid #475569; padding: 6pt 8pt; width: 25%; font-size: 11pt; color: #334155;">............................................</td>
-            ` : ''}
-          </tr>`;
-        }
-        bodyHtml += `</table>`;
-      } else if (sec.bodyText) {
-        const formattedText = sec.bodyText.replace(/\n/g, "<br/>");
-        bodyHtml += `<div style="font-size: 11.5pt; line-height: 1.8; text-align: justify; margin: 10px 0; color: #0f172a; background-color: #ffffff; padding: 10pt; border: 1pt solid #94a3b8;">
-          ${formattedText}
-        </div>`;
-      }
-      bodyHtml += `</div>`;
-    });
-
-    const footer = template.documentContent.footerNotice.replace(/\n/g, "<br/>");
-
-    const htmlContent = `
-      <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-      <head>
-        <meta charset='utf-8'>
-        <title>${template.title}</title>
-        <style>
-          @page {
-            size: A4;
-            margin: 20mm 15mm 20mm 15mm;
-          }
-          body {
-            font-family: 'Traditional Arabic', 'Amiri', 'Arial', sans-serif;
-            direction: rtl;
-            text-align: right;
-            line-height: 1.6;
-            color: #000;
-          }
-        </style>
-      </head>
-      <body>
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h4 style="font-size: 13pt; margin: 0; font-weight: bold;">${republic}</h4>
-          <h5 style="font-size: 11pt; margin: 4px 0; color: #334155;">${ministry.replace(/\n/g, "<br/>")}</h5>
-          ${direction ? `<p style="font-size: 10pt; margin: 2px 0; color: #64748b;">${direction.replace(/\n/g, "<br/>")}</p>` : ""}
-          <div style="margin: 15px auto; padding: 8px 18px; border: 2pt solid #0f172a; display: inline-block; background-color: #f1f5f9;">
-            <h2 style="font-size: 15pt; margin: 0; font-weight: bold; color: #0f172a;">${title}</h2>
-          </div>
-        </div>
-        ${bodyHtml}
-        <div style="margin-top: 30px; padding-top: 15px; font-size: 11pt; line-height: 1.8; border-top: 1pt solid #94a3b8;">
-          ${footer}
-        </div>
-      </body>
-      </html>
-    `;
-
-    const blob = new Blob(["\ufeff" + htmlContent], {
-      type: "application/msword;charset=utf-8",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${template.slug}-officiel.doc`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <div className="space-y-8" dir="rtl">
@@ -303,26 +212,40 @@ export function TemplatesCatalog({ templates }: Props) {
 
               {/* Action Buttons */}
               <div className="mt-6 pt-4 border-t border-border/60 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <a
-                    href={`/downloads/${tmpl.slug}.doc`}
-                    download={`${tmpl.slug}-officiel.doc`}
-                    className="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:bg-blue-600 hover:text-white transition-colors cursor-pointer"
-                    title="تحميل الملف الرسمي بصيغة Word (.doc)"
-                  >
-                    <FileDown className="w-3.5 h-3.5" />
-                    <span>تحميل Word الرسمي</span>
-                  </a>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {tmpl.officialPdfUrl ? (
+                    <a
+                      href={tmpl.officialPdfUrl}
+                      download
+                      className="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"
+                      title="تحميل الملف الحكومي الأصلي بصيغة PDF"
+                    >
+                      <FileDown className="w-3.5 h-3.5" />
+                      <span>تحميل PDF الأصلي</span>
+                    </a>
+                  ) : null}
+
+                  {tmpl.officialWordUrl ? (
+                    <a
+                      href={tmpl.officialWordUrl}
+                      download
+                      className="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 hover:bg-blue-600 hover:text-white transition-colors cursor-pointer"
+                      title="تحميل الملف الرسمي بصيغة Word (.doc)"
+                    >
+                      <FileDown className="w-3.5 h-3.5" />
+                      <span>تحميل Word الرسمي</span>
+                    </a>
+                  ) : null}
 
                   <a
                     href={tmpl.officialSourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-600 hover:text-white transition-colors"
-                    title="تحميل من البوابة الحكومية الرسمية للأم"
+                    className="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-foreground border border-border transition-colors"
+                    title="زيارة البوابة الحكومية الرسمية"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    <span>المصدر الحكومي الأم</span>
+                    <span>الموقع الرسمي</span>
                   </a>
                 </div>
 

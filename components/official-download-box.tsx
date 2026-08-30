@@ -121,27 +121,29 @@ export function OfficialDownloadBox({ template }: Props) {
             </a>
           ) : null}
 
-          {/* Direct Word File Download */}
-          <a
-            href={template.officialWordUrl || `/downloads/${template.slug}.doc`}
-            download={`${template.slug}-officiel.doc`}
-            className="p-5 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-98 text-white shadow-lg shadow-blue-500/25 transition-all flex items-center justify-between group cursor-pointer"
-          >
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                <FileDown className="w-6 h-6 text-white" />
+          {/* Direct Word File Download - Only if officially available as DOC */}
+          {template.officialWordUrl ? (
+            <a
+              href={template.officialWordUrl}
+              download
+              className="p-5 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-98 text-white shadow-lg shadow-blue-500/25 transition-all flex items-center justify-between group cursor-pointer"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <FileDown className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-blue-100 block">
+                    النموذج الرسمي المعتمد
+                  </span>
+                  <span className="text-sm sm:text-base font-black">
+                    تحميل بصيغة Word (.doc)
+                  </span>
+                </div>
               </div>
-              <div className="text-right">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-blue-100 block">
-                  ملف قابل للتعديل
-                </span>
-                <span className="text-sm sm:text-base font-black">
-                  تحميل بصيغة Word (.doc)
-                </span>
-              </div>
-            </div>
-            <Download className="w-5 h-5 opacity-70 group-hover:opacity-100 group-hover:translate-y-0.5 transition-all" />
-          </a>
+              <Download className="w-5 h-5 opacity-70 group-hover:opacity-100 group-hover:translate-y-0.5 transition-all" />
+            </a>
+          ) : null}
 
           {/* Official Government Mother Portal Download Link */}
           <a
