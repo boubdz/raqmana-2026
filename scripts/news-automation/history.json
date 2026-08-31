@@ -185,6 +185,10 @@
     "https://trends.google.com/trending/rss?geo=DZ": {
       "slug": "trend-aldlyl-alshaml-l-fdaa-alawlyaa-waldkhwl-almdrsy-20-mtexhw7f",
       "processedAt": "2026-08-29T22:04:46.551Z"
+    },
+    "https://www.aps.dz/algerie/actualite-nationale/mthhgl28-السيد-سعيود-يترأس-اجتماعا-تنسيقيا-مع-الولاة": {
+      "slug": "trend-aldlyl-alshaml-ltlb-wtjdyd-jwaz-alsfr-albywmtry-al-mthvdu1f",
+      "processedAt": "2026-08-31T23:28:56.431Z"
     }
   },
   "processedTrends": {
@@ -271,7 +275,14 @@
       "official": "وزارة التربية الوطنية والديوان الوطني للامتحانات (ONEC)",
       "source": "Google Trends DZ (Live RSS)",
       "processedAt": "2026-08-29T22:04:46.551Z"
+    },
+    "السيد سعيود يترأس اجتماعا تنسيقيا مع الولاةالاثنين 31 أوت 2026 18:14عرض المزيد": {
+      "slug": "trend-aldlyl-alshaml-ltlb-wtjdyd-jwaz-alsfr-albywmtry-al-mthvdu1f",
+      "title": "السيد سعيود يترأس اجتماعا تنسيقيا مع الولاةالاثنين 31 أوت 2026 18:14عرض المزيد",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
+      "processedAt": "2026-08-31T23:28:56.431Z"
     }
   },
-  "lastRun": "2026-08-31T15:34:16.346Z"
+  "lastRun": "2026-08-31T23:28:58.433Z"
 }
