@@ -17,7 +17,6 @@ on:
           - 'official'
           - 'trends'
           - 'daily_tier2'
-          - 'jobs'
           - 'all'
 
 # منع تعارض التشغيل المتزامن
@@ -165,41 +164,3 @@ jobs:
           git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
           git diff --staged --quiet || git commit -m "🌙 auto: Tier2 daily articles $(date +'%Y-%m-%d')"
           git push || echo "لا توجد تغييرات لرفعها"
-
-  # ════════════════════════════════════════════════════════════
-  # JOB 4 — رادار مسابقات التوظيف والفهرسة الفورية
-  # ════════════════════════════════════════════════════════════
-  jobs-radar:
-    name: '💼 رادار مسابقات التوظيف والأرشفة الفورية'
-    runs-on: ubuntu-latest
-
-    if: |
-      github.event_name == 'schedule' ||
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job_type == 'jobs' || github.event.inputs.job_type == 'all'))
-
-    steps:
-      - name: '📥 Checkout المستودع'
-        uses: actions/checkout@v4
-
-      - name: '🟢 إعداد Node.js 20'
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: '⚡ تشغيل رادار مسابقات التوظيف والأرشفة الفورية'
-        env:
-          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-          NODE_ENV: production
-        run: node scripts/scrape-concours.mjs
-
-      - name: '💾 حفظ وتحديث مسابقات التوظيف في Git'
-        run: |
-          git config user.name "Raqmana Jobs Bot"
-          git config user.email "bot@raqmanadz.com"
-          git add lib/official-concours-data.json || true
-          git diff --staged --quiet || git commit -m "💼 auto: New job competitions & instant indexing $(date +'%Y-%m-%d %H:%M')"
-          git push || echo "لا توجد مسابقات جديدة لرفعها"
-
-
-

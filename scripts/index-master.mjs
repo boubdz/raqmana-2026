@@ -138,40 +138,17 @@ function extractArticles() {
   return articles;
 }
 
-function extractJobs() {
-  const jobs = [];
-  const officialPath = path.join(ROOT_DIR, 'lib', 'official-concours-data.json');
-  const privatePath = path.join(ROOT_DIR, 'lib', 'private-jobs-data.json');
 
-  if (fs.existsSync(officialPath)) {
-    try {
-      const data = JSON.parse(fs.readFileSync(officialPath, 'utf8'));
-      data.forEach((j) => { if (j.slug && !jobs.includes(j.slug)) jobs.push(j.slug); });
-    } catch {}
-  }
-
-  if (fs.existsSync(privatePath)) {
-    try {
-      const data = JSON.parse(fs.readFileSync(privatePath, 'utf8'));
-      data.forEach((j) => { if (j.slug && !jobs.includes(j.slug)) jobs.push(j.slug); });
-    } catch {}
-  }
-
-  return jobs;
-}
 
 function getAllUrls() {
   const { services, categories } = extractServices();
   const articles = extractArticles();
-  const jobs = extractJobs();
 
   const staticPages = [
     '',
     '/ar',
     '/en',
     '/articles',
-    '/jobs',
-    '/jobs/post',
     '/cv-builder',
     '/solutions',
     '/document-assistant',
@@ -201,7 +178,6 @@ function getAllUrls() {
   staticPages.forEach((p) => all.push(`${CONFIG.BASE_URL}${p}`));
   categories.forEach((c) => all.push(`${CONFIG.BASE_URL}/categories/${c}`));
   articles.forEach((a) => all.push(`${CONFIG.BASE_URL}/articles/${a}`));
-  jobs.forEach((j) => all.push(`${CONFIG.BASE_URL}/jobs/${j}`));
   solutions.forEach((s) => all.push(`${CONFIG.BASE_URL}/solutions/${s}`));
   services.forEach((s) => all.push(`${CONFIG.BASE_URL}/services/${s.id}`));
 
@@ -211,7 +187,6 @@ function getAllUrls() {
       services: services.length,
       categories: categories.length,
       articles: articles.length,
-      jobs: jobs.length,
       solutions: solutions.length,
       staticPages: staticPages.length
     }

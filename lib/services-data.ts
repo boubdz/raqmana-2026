@@ -798,39 +798,51 @@ export const serviceCategories: ServiceCategory[] = [
     icon: 'ClipboardList',
     color: 'from-amber-500 to-orange-600',
     officialSite: 'http://www.concours-fonction-publique.gov.dz/',
-    descriptionAr: 'بوابة مسابقات التوظيف في الجزائر 2026: إعلانات الوظيف العمومي، مسابقات التربية والتعليم، سوناطراك، الشبه طبي، والقطاع الخاص. شروط التسجيل، استمارات الترشح، وآخر المستجدات.',
+    descriptionAr: 'دليلك الشامل لمسابقات التوظيف الرسمية في الجزائر 2026: الوظيف العمومي، وزارة التربية، سوناطراك، الشبه طبي، البنوك، والقطاع الخاص. ابحث عن المسابقات حسب ولايتك وتخصصك، وجهّز ملفك الإداري بأدوات رقمنة الذكية.',
     usageGuides: [
       {
         title: 'خطوات التقدم لمسابقة الوظيف العمومي 2026',
         steps: [
-          'الدخول إلى البوابة الرسمية (concours-fonction-publique.gov.dz).',
-          'البحث عن الإعلان حسب الولاية أو القطاع أو مستوى التعليم.',
-          'تحميل استمارة المعلومات للمشاركة في المسابقة.',
-          'تجهيز الملف: استمارة مملوءة، بطاقة التعريف، الشهادة، كشف النقاط، شهادة الإقامة، الوضعية تجاه الخدمة الوطنية.',
-          'تقديم الملف يدوياً أو بريدياً في الجهة المعنية قبل الموعد النهائي.'
+          'الدخول إلى البوابة الرسمية (concours-fonction-publique.gov.dz) والبحث عن الإعلان حسب الولاية أو القطاع أو المستوى التعليمي.',
+          'قراءة شروط الترشح بدقة والتأكد من مطابقة شهادتك وتخصصك للمطلوب في الإعلان.',
+          'تحميل استمارة المعلومات الرسمية (Fiche de renseignements) وملئها بخط واضح أو طباعتها.',
+          'تجهيز كامل الملف: الاستمارة، بطاقة التعريف البيومترية، الشهادة مع كشف النقاط، شهادة الإقامة، الوضعية تجاه الخدمة الوطنية للذكور.',
+          'إيداع الملف يدوياً أو بريدياً في مقر الجهة المعلنة قبل انتهاء الأجل المحدد.',
         ]
       },
       {
-        title: 'دليل تحضير طلب خطي للمسابقة',
+        title: 'كيفية تحضير طلب خطي وملف ترشح احترافي',
         steps: [
-          'استخدام صانع السيرة الذاتية في رقمنة لإنشاء CV احترافي.',
-          'استخدام المساعد الإداري الذكي لصياغة طلب خطي رسمي.',
-          'طباعة الطلب الخطي وتوقيعه يدوياً.',
-          'إرفاق الطلب بباقي الوثائق المطلوبة في الإعلان.',
-          'الإيداع قبل التاريخ المحدد في مقر الجهة المعلِنة.'
+          'استخدام مساعد رقمنة الإداري الذكي لكتابة طلب خطي رسمي ومطابق للإدارة الجزائرية.',
+          'استخدام صانع السيرة الذاتية (CV Maker) لإنشاء CV احترافي جاهز للطباعة.',
+          'طباعة الطلب الخطي والسيرة الذاتية وتوقيعهما يدوياً.',
+          'ترتيب الوثائق بالترتيب المطلوب في الإعلان الرسمي.',
+          'إيداع الملف قبل الموعد النهائي مع الاحتفاظ بنسخة منه.',
+        ]
+      },
+      {
+        title: 'مسابقات سوناطراك والشركات العمومية 2026',
+        steps: [
+          'متابعة الموقع الرسمي لسوناطراك (sonatrach.com/carrieres) لآخر فرص العمل.',
+          'التسجيل المسبق في منصة وسيط أونلاين (wassitonline.anem.dz) لعروض ANEM.',
+          'الاطلاع على إعلانات بنك الجزائر والبنوك العمومية عبر مواقعها الرسمية.',
+          'متابعة صفحات الوزارات على الموقع الرسمي (premier-ministre.gov.dz) لآخر الإعلانات.',
         ]
       }
     ],
     services: [
-      { name: { ar: '🏆 مستكشف مسابقات التوظيف (264 إعلان)', en: 'Job Competitions Explorer' }, url: '/jobs', isTrending: true },
-      { name: { ar: 'البوابة الرسمية للوظيف العمومي', en: 'Official Civil Service Portal' }, url: 'http://www.concours-fonction-publique.gov.dz/' },
+      { name: { ar: 'البوابة الرسمية للوظيف العمومي', en: 'Official Civil Service Portal' }, url: 'http://www.concours-fonction-publique.gov.dz/', isTrending: true },
+      { name: { ar: 'منصة وسيط ANEM - التسجيل في عروض العمل', en: 'ANEM Wassit Online Platform' }, url: 'https://wassitonline.anem.dz/postulation/LandingPage', isTrending: true },
       { name: { ar: 'مسابقات وزارة التربية الوطنية', en: 'Education Ministry Competitions' }, url: 'https://www.education.gov.dz' },
-      { name: { ar: 'مسابقات سوناطراك والطاقة', en: 'Sonatrach & Energy Competitions' }, url: 'https://www.sonatrach.com/fr/carrieres.html' },
-      { name: { ar: 'مسابقات الشبه طبي والصحة', en: 'Paramedical & Health Competitions' }, url: 'https://www.sante.gov.dz' },
-      { name: { ar: 'إعلانات القطاع الخاص - ANEM', en: 'Private Sector Job Ads' }, url: 'https://wassitonline.anem.dz/postulation/LandingPage' },
-      { name: { ar: '📄 صانع السيرة الذاتية (CV)', en: 'CV Builder' }, url: '/cv-builder', isTrending: true },
-      { name: { ar: '✍️ كتابة طلب خطي بالذكاء الاصطناعي', en: 'AI Cover Letter Writer' }, url: '/document-assistant' },
-      { name: { ar: 'استمارة معلومات للمشاركة في المسابقة', en: 'Competition Entry Form' }, url: '/document-assistant' },
+      { name: { ar: 'توظيف سوناطراك والطاقة', en: 'Sonatrach Careers' }, url: 'https://www.sonatrach.com/fr/carrieres.html' },
+      { name: { ar: 'مسابقات الشبه طبي والصحة', en: 'Health & Paramedical Competitions' }, url: 'https://www.sante.gov.dz' },
+      { name: { ar: 'مسابقات التعليم العالي والجامعات', en: 'Higher Education Competitions' }, url: 'https://www.mesrs.dz' },
+      { name: { ar: 'مسابقات البريد والاتصالات (Algérie Poste)', en: 'Algérie Poste Competitions' }, url: 'https://www.poste.dz' },
+      { name: { ar: 'مسابقات القطاع الخاص والشركات', en: 'Private Sector Jobs' }, url: 'https://www.emploitic.com' },
+      { name: { ar: '📄 صانع السيرة الذاتية الاحترافية (CV)', en: 'Professional CV Builder' }, url: '/cv-builder', isTrending: true },
+      { name: { ar: '✍️ كتابة طلب خطي بالذكاء الاصطناعي', en: 'AI Administrative Letter Writer' }, url: '/document-assistant' },
+      { name: { ar: '📋 توليد استمارة المشاركة في المسابقة PDF', en: 'Generate Competition Entry Form PDF' }, url: '/document-assistant' },
+      { name: { ar: '📚 دليل الوثائق الإدارية المطلوبة', en: 'Required Administrative Documents Guide' }, url: '/document-guide' },
     ],
   },
   // 21. خدمات وزارة التجارة

@@ -11,8 +11,6 @@ export async function GET() {
     { loc: `${baseUrl}/templates`, lastmod: now, changefreq: 'daily', priority: '1.0' },
     { loc: `${baseUrl}/cv-builder`, lastmod: now, changefreq: 'daily', priority: '1.0' },
     { loc: `${baseUrl}/ccp-calculator`, lastmod: now, changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/jobs`, lastmod: now, changefreq: 'daily', priority: '1.0' },
-    { loc: `${baseUrl}/jobs/post`, lastmod: now, changefreq: 'weekly', priority: '0.85' },
     { loc: `${baseUrl}/articles`, lastmod: now, changefreq: 'daily', priority: '0.95' },
     { loc: `${baseUrl}/solutions`, lastmod: now, changefreq: 'weekly', priority: '0.9' },
     { loc: `${baseUrl}/status`, lastmod: now, changefreq: 'hourly', priority: '0.85' },

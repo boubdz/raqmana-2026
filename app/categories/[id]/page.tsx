@@ -8,9 +8,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ServiceCard } from "@/components/service-card";
 import { ParticlesBackground } from "@/components/particles-background";
-import { JobsLatestWidget } from "@/components/jobs-latest-widget";
-import { JobsExplorer } from "@/components/jobs-explorer";
-import { jobCompetitionsData } from "@/lib/jobs-data";
+
 import { Button } from "@/components/ui/button";
 import {
   ChevronLeft,
@@ -358,8 +356,6 @@ export default async function CategoryPage({ params }: Props) {
 
   const IconComponent = iconMap[category.icon] || Info;
   const isAgriculture = id === "agriculture";
-  const isEmployment = id === "employment" || id === "concours" || id === "mosbakat-toudif";
-  const isJobsCategory = id === "mosbakat-toudif" || id === "concours";
   const categoryName = categoryNamesAr[id] || id;
 
   const faqSchema = category.usageGuides ? {
@@ -495,12 +491,7 @@ export default async function CategoryPage({ params }: Props) {
           </div>
         </div>
 
-        {/* If Mosbakat Toudif, render the full Jobs Explorer Hub */}
-        {isJobsCategory && (
-          <div className="container mx-auto px-6 mb-16">
-            <JobsExplorer initialJobs={jobCompetitionsData} />
-          </div>
-        )}
+
 
         {/* Content Section */}
         <div className="container mx-auto px-6 mt-12">
@@ -749,10 +740,7 @@ export default async function CategoryPage({ params }: Props) {
                   </div>
                 )}
 
-                {/* Jobs Widget for Employment category */}
-                {isEmployment && (
-                  <JobsLatestWidget />
-                )}
+
               </div>
             </div>
           </div>

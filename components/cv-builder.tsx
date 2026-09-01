@@ -35,7 +35,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { algerianWilayas } from "@/lib/jobs-data";
+
+const algerianWilayas = [
+  "01 أدرار", "02 الشلف", "03 الأغواط", "04 أم البواقي", "05 باتنة",
+  "06 بجاية", "07 بسكرة", "08 بشار", "09 البليدة", "10 البويرة",
+  "11 تمنراست", "12 تبسة", "13 تلمسان", "14 تيارت", "15 تيزي وزو",
+  "16 الجزائر", "17 الجلفة", "18 جيجل", "19 سطيف", "20 سعيدة",
+  "21 سكيكدة", "22 سيدي بلعباس", "23 عنابة", "24 قالمة", "25 قسنطينة",
+  "26 المدية", "27 مستغانم", "28 المسيلة", "29 معسكر", "30 ورقلة",
+  "31 وهران", "32 البيض", "33 إليزي", "34 برج بوعريريج", "35 بومرداس",
+  "36 الطارف", "37 تندوف", "38 تيسمسيلت", "39 الوادي", "40 خنشلة",
+  "41 سوق أهراس", "42 تيبازة", "43 ميلة", "44 عين الدفلى", "45 النعامة",
+  "46 عين تموشنت", "47 غرداية", "48 غليزان", "49 تيميمون", "50 برج باجي مختار",
+  "51 أولاد جلال", "52 بني عباس", "53 عين صالح", "54 عين قزام", "55 توقرت",
+  "56 جانت", "57 المغير", "58 المنيعة",
+];
 
 export interface CVEducation {
   id: string;
@@ -443,14 +457,6 @@ export function CVBuilder() {
       <div className="bg-card/95 border border-border/80 px-4 sm:px-6 py-4 shadow-sm rounded-3xl max-w-7xl mx-auto mb-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Link
-              href="/jobs"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ChevronRight className={`w-4 h-4 ${isRtl ? "" : "rotate-180"}`} />
-              <span>{isRtl ? "العودة للمسابقات" : "Retour aux concours"}</span>
-            </Link>
-            <span className="text-border/80">|</span>
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               <h1 className="text-sm font-black text-foreground">
@@ -516,14 +522,7 @@ export function CVBuilder() {
         </div>
       </div>
 
-      {/* Target Job Info Banner (if navigated from /jobs/[slug]) */}
-      {targetJobParam && (
-        <div className="bg-primary/10 border-b border-primary/20 px-4 py-2.5 text-center text-xs font-bold text-primary">
-          <span>{isRtl ? "🎯 تم تهيئة السيرة الذاتية خصيصاً لمسابقة:" : "🎯 CV pré-rempli pour le poste de:"} </span>
-          <strong>{targetJobParam}</strong>
-          {targetOrgParam && <span> ({targetOrgParam})</span>}
-        </div>
-      )}
+
 
       {/* ─── Main Workspace: Split View ───────────────────────────── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-8 pt-6">
