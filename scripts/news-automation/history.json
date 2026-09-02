@@ -282,7 +282,15 @@
       "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
       "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
       "processedAt": "2026-08-31T23:28:56.431Z"
+    },
+    "رئيس الجمهورية يعين فريد كورتل وزيرا للصناعة وفوزية نعامة وزيرة منتدبة مكلفة بالجماعات المحليةالأربعاء 02 سبتمبر 2026": {
+      "error": "Gemini (gemini-flash-latest): {\"code\":503,\"message\":\"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\"status\":\"UNAVAILABLE\"}",
+      "skippedAt": "2026-09-02T17:29:59.137Z"
+    },
+    "السيد حطاب يتسلم مهامه على رأس وزارة العمل والتشغيل والضمان الاجتماعيالأربعاء 02 سبتمبر 2026": {
+      "error": "Gemini (gemini-flash-latest): {\"code\":503,\"message\":\"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\"status\":\"UNAVAILABLE\"}",
+      "skippedAt": "2026-09-02T17:31:03.252Z"
     }
   },
-  "lastRun": "2026-09-02T12:20:01.633Z"
+  "lastRun": "2026-09-02T17:31:03.254Z"
 }
