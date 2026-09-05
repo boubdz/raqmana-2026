@@ -193,6 +193,10 @@
     "https://www.aps.dz/algerie/actualite-nationale/mtnbnd72-اجتماع-للمجلس-التنفيذي-لمتابعة-التحضيرات-الخاصة-بالدخول-المدرسي": {
       "slug": "trend-aldlyl-alshaml-l-mnsa-fdaa-alawlyaa-awlyaa-wthdyra-mtnhrog1",
       "processedAt": "2026-09-04T21:54:24.783Z"
+    },
+    "https://www.aps.dz/algerie/actualite-nationale/mto9baov-المديرية-العامة-للأرشيف-الوطني-تنظم-ندوات-جهوية-حول-إدارة-أرشيف-الجماعات-المحلية-في-ظل-التحول-الرقمي": {
+      "slug": "trend-aldlyl-alshaml-lidara-wtlb-alwthayq-alarshyfya-wal-mtoashhu",
+      "processedAt": "2026-09-05T11:26:51.298Z"
     }
   },
   "processedTrends": {
@@ -301,7 +305,14 @@
       "official": "وزارة التربية الوطنية والديوان الوطني للامتحانات (ONEC)",
       "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
       "processedAt": "2026-09-04T21:54:24.783Z"
+    },
+    "المديرية العامة للأرشيف الوطني تنظم ندوات جهوية حول إدارة أرشيف الجماعات المحلية في ظل التحول الرقميالسبت 05 سبتمبر 2026 11:48عرض المزيد": {
+      "slug": "trend-aldlyl-alshaml-lidara-wtlb-alwthayq-alarshyfya-wal-mtoashhu",
+      "title": "المديرية العامة للأرشيف الوطني تنظم ندوات جهوية حول إدارة أرشيف الجماعات المحلية في ظل التحول الرقميالسبت 05 سبتمبر 2026 11:48عرض المزيد",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
+      "processedAt": "2026-09-05T11:26:51.298Z"
     }
   },
-  "lastRun": "2026-09-04T21:54:26.786Z"
+  "lastRun": "2026-09-05T11:26:53.300Z"
 }
