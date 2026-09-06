@@ -216,6 +216,14 @@
       "slug": "auto-dlyl-sb-mnha-almrdwdya-llthlathy-althalth-2026-wal-mtq15gfl",
       "site": "education",
       "processedAt": "2026-09-06T16:32:32.629Z"
+    },
+    "https://www.aps.dz/algerie/actualite-nationale/mtq4x98t-بتكليف-من-رئيس-الجمهورية-السيد-عطاف-يحل-بالقاهرة-للمشاركة-في-أشغال-الدورة-العادية-ال166-لمجلس-جامعة-الدول-العربية": {
+      "slug": "trend-aldlyl-alshaml-lbwaba-altalb-aljamay-webetu-abr-nd-mtqcfomm",
+      "processedAt": "2026-09-06T21:48:25.600Z"
+    },
+    "https://www.aps.dz/algerie/actualite-nationale/mtpvnj4q-ضرورة-إنجاز-خارطة-وطنية-لأرشيف-الجماعات-المحلية": {
+      "slug": "trend-aldlyl-alshaml-llastfada-mn-alkharta-alwtnya-alrqm-mtqcgd6p",
+      "processedAt": "2026-09-06T21:48:57.413Z"
     }
   },
   "processedTrends": {
@@ -338,7 +346,21 @@
       "official": "وزارة التعليم العالي والبحث العلمي (MESRS)",
       "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
       "processedAt": "2026-09-06T11:47:53.859Z"
+    },
+    "بتكليف من رئيس الجمهورية, السيد عطاف يحل بالقاهرة للمشاركة في أشغال الدورة العادية ال166 لمجلس جامعة الدول العربيةالأحد 06 سبتمبر 2026": {
+      "slug": "trend-aldlyl-alshaml-lbwaba-altalb-aljamay-webetu-abr-nd-mtqcfomm",
+      "title": "بتكليف من رئيس الجمهورية, السيد عطاف يحل بالقاهرة للمشاركة في أشغال الدورة العادية ال166 لمجلس جامعة الدول العربيةالأحد 06 سبتمبر 2026",
+      "official": "وزارة التعليم العالي والبحث العلمي (MESRS)",
+      "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
+      "processedAt": "2026-09-06T21:48:25.599Z"
+    },
+    "ضرورة إنجاز خارطة وطنية لأرشيف الجماعات المحليةالأحد 06 سبتمبر 2026": {
+      "slug": "trend-aldlyl-alshaml-llastfada-mn-alkharta-alwtnya-alrqm-mtqcgd6p",
+      "title": "ضرورة إنجاز خارطة وطنية لأرشيف الجماعات المحليةالأحد 06 سبتمبر 2026",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
+      "processedAt": "2026-09-06T21:48:57.413Z"
     }
   },
-  "lastRun": "2026-09-06T16:32:34.631Z"
+  "lastRun": "2026-09-06T21:48:59.415Z"
 }
