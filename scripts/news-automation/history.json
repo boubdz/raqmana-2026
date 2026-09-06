@@ -197,6 +197,10 @@
     "https://www.aps.dz/algerie/actualite-nationale/mto9baov-المديرية-العامة-للأرشيف-الوطني-تنظم-ندوات-جهوية-حول-إدارة-أرشيف-الجماعات-المحلية-في-ظل-التحول-الرقمي": {
       "slug": "trend-aldlyl-alshaml-lidara-wtlb-alwthayq-alarshyfya-wal-mtoashhu",
       "processedAt": "2026-09-05T11:26:51.298Z"
+    },
+    "https://www.aps.dz/algerie/actualite-nationale/mtpn17az-انطلاق-التسجيلات-الأولية-للدورة-الثانية-للمسابقة-الوطنية-لتوظيف-الطلبة-القضاة-اليوم-الأحد": {
+      "slug": "trend-aldlyl-alshaml-l-almsabqa-alwtnya-ltwdhyf-altlba-a-mtpqzecy",
+      "processedAt": "2026-09-06T11:47:53.859Z"
     }
   },
   "processedTrends": {
@@ -312,7 +316,14 @@
       "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
       "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
       "processedAt": "2026-09-05T11:26:51.298Z"
+    },
+    "انطلاق التسجيلات الأولية للدورة الثانية للمسابقة الوطنية لتوظيف الطلبة القضاة اليوم الأحد الأحد 06 سبتمبر 2026 11:26عرض المزيد": {
+      "slug": "trend-aldlyl-alshaml-l-almsabqa-alwtnya-ltwdhyf-altlba-a-mtpqzecy",
+      "title": "انطلاق التسجيلات الأولية للدورة الثانية للمسابقة الوطنية لتوظيف الطلبة القضاة اليوم الأحد الأحد 06 سبتمبر 2026 11:26عرض المزيد",
+      "official": "وزارة التعليم العالي والبحث العلمي (MESRS)",
+      "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
+      "processedAt": "2026-09-06T11:47:53.859Z"
     }
   },
-  "lastRun": "2026-09-05T21:45:16.348Z"
+  "lastRun": "2026-09-06T11:47:55.861Z"
 }
