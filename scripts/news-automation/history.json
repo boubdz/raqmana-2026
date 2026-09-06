@@ -201,6 +201,21 @@
     "https://www.aps.dz/algerie/actualite-nationale/mtpn17az-انطلاق-التسجيلات-الأولية-للدورة-الثانية-للمسابقة-الوطنية-لتوظيف-الطلبة-القضاة-اليوم-الأحد": {
       "slug": "trend-aldlyl-alshaml-l-almsabqa-alwtnya-ltwdhyf-altlba-a-mtpqzecy",
       "processedAt": "2026-09-06T11:47:53.859Z"
+    },
+    "https://www.education.gov.dz/?p=4376": {
+      "slug": "auto-dlyl-aldkhwl-almdrsy-2026-ajraaat-mnsa-fdaa-alawly-mtq14552",
+      "site": "education",
+      "processedAt": "2026-09-06T16:31:31.354Z"
+    },
+    "https://www.education.gov.dz/?p=4359": {
+      "slug": "auto-dlyl-ntayj-hrka-alnql-kharj-alwlaya-lqtaa-altrbya--mtq14ure",
+      "site": "education",
+      "processedAt": "2026-09-06T16:32:04.542Z"
+    },
+    "https://www.education.gov.dz/?p=4370": {
+      "slug": "auto-dlyl-sb-mnha-almrdwdya-llthlathy-althalth-2026-wal-mtq15gfl",
+      "site": "education",
+      "processedAt": "2026-09-06T16:32:32.629Z"
     }
   },
   "processedTrends": {
@@ -325,5 +340,5 @@
       "processedAt": "2026-09-06T11:47:53.859Z"
     }
   },
-  "lastRun": "2026-09-06T11:47:55.861Z"
+  "lastRun": "2026-09-06T16:32:34.631Z"
 }
