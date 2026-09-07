@@ -18,10 +18,29 @@ export function NewsTicker() {
   useEffect(() => {
     async function fetchNews() {
       try {
+        if (typeof window !== 'undefined') {
+          const cached = sessionStorage.getItem('raqmana_news_cache');
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                setNews(parsed);
+                setLoading(false);
+                return;
+              }
+            } catch {}
+          }
+        }
+
         const res = await fetch('/api/rss');
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
           setNews(data);
+          if (typeof window !== 'undefined') {
+            try {
+              sessionStorage.setItem('raqmana_news_cache', JSON.stringify(data));
+            } catch {}
+          }
         }
       } catch (error) {
         console.error("Failed to fetch news:", error);

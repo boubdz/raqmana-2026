@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { serviceCategories, ServiceLink } from "@/lib/services-data";
 
-export const revalidate = 1800; // Cache for 30 minutes (Fast & Edge-friendly)
+export const revalidate = 86400; // Cache for 24 hours on Edge CDN
 
 // كلمات الاستبعاد: الرياضة، الترفيه، السياسة الدولية
 const EXCLUDE_KEYWORDS = [
@@ -168,17 +168,31 @@ export async function GET() {
       }
     });
 
-    return NextResponse.json({
-      success: true,
-      googleKeywords: trendingKeywords.slice(0, 10),
-      cardScores,
-      matchedCount: matchedServices.length,
-      matchedServices: matchedServices.slice(0, 6),
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        googleKeywords: trendingKeywords.slice(0, 10),
+        cardScores,
+        matchedCount: matchedServices.length,
+        matchedServices: matchedServices.slice(0, 6),
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=86400',
+        },
+      }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200',
+        },
+      }
+    );
   }
 }

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const revalidate = 3600; // Cache on Edge CDN for 1 hour
+
 export async function GET() {
   try {
     // Using Ennahar as a more reliable source for Algerian news
@@ -50,10 +52,18 @@ export async function GET() {
       console.log("No items found in RSS XML:", xmlText.substring(0, 500));
     }
 
-    return NextResponse.json(items);
+    return NextResponse.json(items, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      },
+    });
   } catch (error) {
     console.error("RSS Fetch Error:", error);
     // Fallback to empty array instead of error to prevent UI crash
-    return NextResponse.json([]);
+    return NextResponse.json([], {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      },
+    });
   }
 }

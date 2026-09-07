@@ -109,6 +109,13 @@ const nextConfig = {
       { source: '/jobs', destination: '/categories/mosbakat-toudif', permanent: true },
       { source: '/jobs/:path+', destination: '/categories/mosbakat-toudif', permanent: true },
       { source: '/categories/concours', destination: '/categories/mosbakat-toudif', permanent: true },
+      // Residual legacy service URLs -> appropriate targets
+      { source: '/services/إعلانات-القطاع-الخاص-anem-wassitonline', destination: '/categories/mosbakat-toudif', permanent: true },
+      { source: '/services/استمارة-معلومات-للمشاركة-في-المسابقة', destination: '/document-assistant', permanent: true },
+      { source: '/services/صانع-السيرة-الذاتية-cv', destination: '/cv-builder', permanent: true },
+      { source: '/services/مسابقات-سوناطراك-والطاقة-sonatrach', destination: '/categories/mosbakat-toudif', permanent: true },
+      { source: '/services/مستكشف-مسابقات-التوظيف-264-إعلان', destination: '/categories/mosbakat-toudif', permanent: true },
+      { source: '/sitemap', destination: '/sitemap.xml', permanent: true },
     ];
   },
 

@@ -12,7 +12,8 @@ export const metadata: Metadata = {
   description: "شروحات مفصلة وأدلة عملية لكل المنصات الرقمية الحكومية: التسجيل، الوثائق، خطوات التسجيل وحلول المشاكل الإدارية في الجزائر 2026.",
 };
 
-export const revalidate = 3600;
+// تمديد الكاش إلى 24 ساعة لحماية باقة Vercel من إعادة البناء المتكررة (ISR)
+export const revalidate = 86400;
 
 
 const trendingSlugs = new Set([

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -109,42 +109,62 @@ export function TrendingServicesGrid() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    function applyTrendsData(data: any) {
+      const keywords: string[] = data.googleKeywords || [];
+      if (keywords.length > 0) {
+        setGoogleKeywords(keywords);
+        setIsLiveFromGoogle(true);
+      }
+
+      if (data.cardScores) {
+        const scores: Record<string, number> = data.cardScores;
+        const reordered = [...fallbackTrendingList].sort((a, b) => {
+          const scoreA = scores[a.id] || 0;
+          const scoreB = scores[b.id] || 0;
+          return scoreB - scoreA;
+        });
+
+        if (keywords.length > 0 && reordered.length > 0) {
+          reordered[0] = {
+            ...reordered[0],
+            badgeText: "🔴 الأول في ترند جوجل الآن",
+            badgeVariant: "live",
+            colorClass: reordered[0].colorClass.includes("ring-1")
+              ? reordered[0].colorClass
+              : reordered[0].colorClass + " ring-1 ring-rose-500/40",
+          };
+        }
+
+        setItems(reordered);
+      }
+      setLastUpdated(new Date().toLocaleTimeString("ar-DZ", { hour: "2-digit", minute: "2-digit" }));
+    }
+
     async function fetchGoogleTrends() {
       try {
+        if (typeof window !== 'undefined') {
+          const cached = sessionStorage.getItem('raqmana_trends_cache');
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              if (parsed?.success) {
+                applyTrendsData(parsed);
+                setIsLoading(false);
+                return;
+              }
+            } catch {}
+          }
+        }
+
         const res = await fetch("/api/google-trends");
         const data = await res.json();
         if (data.success) {
-          const keywords: string[] = data.googleKeywords || [];
-          if (keywords.length > 0) {
-            setGoogleKeywords(keywords);
-            setIsLiveFromGoogle(true);
+          applyTrendsData(data);
+          if (typeof window !== 'undefined') {
+            try {
+              sessionStorage.setItem('raqmana_trends_cache', JSON.stringify(data));
+            } catch {}
           }
-
-          if (data.cardScores) {
-            const scores: Record<string, number> = data.cardScores;
-            // Sort cards by score, then inject dynamic badge for the top card
-            const reordered = [...fallbackTrendingList].sort((a, b) => {
-              const scoreA = scores[a.id] || 0;
-              const scoreB = scores[b.id] || 0;
-              return scoreB - scoreA;
-            });
-
-            // Dynamically update badge for the top card if driven by live trends
-            if (keywords.length > 0 && reordered.length > 0) {
-              reordered[0] = {
-                ...reordered[0],
-                badgeText: "🔴 الأول في ترند جوجل الآن",
-                badgeVariant: "live",
-                colorClass: reordered[0].colorClass.includes("ring-1")
-                  ? reordered[0].colorClass
-                  : reordered[0].colorClass + " ring-1 ring-rose-500/40",
-              };
-            }
-
-            setItems(reordered);
-          }
-          // Set last updated time
-          setLastUpdated(new Date().toLocaleTimeString("ar-DZ", { hour: "2-digit", minute: "2-digit" }));
         }
       } catch (err) {
         console.log("Google trends fetch fallback to static items");

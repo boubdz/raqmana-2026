@@ -16,8 +16,8 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-// إعادة التحقق كل ساعة — أفضل من force-dynamic لأداء SEO
-export const revalidate = 3600;
+// إعادة التحقق كل 24 ساعة — توفير هائل لاستهلاك المعالج وكتابات ISR على Vercel
+export const revalidate = 86400;
 
 function findArticleAndSlug(articles: Record<string, any>, rawSlug: string) {
   if (!rawSlug) return { article: null, realSlug: "" };

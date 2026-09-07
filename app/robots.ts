@@ -6,14 +6,39 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        // السماح لجميع محركات البحث بالزحف الكامل للصفحات واستثناء الملفات البرمجية الداخلية
-        userAgent: '*',
+        // 1. روبوتات محركات البحث المعتمدة ومراجعي Google AdSense (سماح كامل)
+        userAgent: [
+          'Googlebot',
+          'Mediapartners-Google',
+          'AdsBot-Google',
+          'Bingbot',
+          'msnbot',
+        ],
         allow: ['/'],
         disallow: ['/api/', '/private/', '/_next/static/media/', '/OneSignalSDKWorker.js', '/OneSignalSDKUpdaterWorker.js'],
       },
       {
-        // ضمان وصول Googlebot لكل الصفحات واستثناء مسارات الصور المزدوجة
-        userAgent: 'Googlebot',
+        // 2. حظر روبوتات جمع البيانات الشرهة والذكاء الاصطناعي لحماية باقة Vercel
+        userAgent: [
+          'Bytespider',
+          'PetalBot',
+          'GPTBot',
+          'ChatGPT-User',
+          'ClaudeBot',
+          'anthropic-ai',
+          'AhrefsBot',
+          'SemrushBot',
+          'MJ12bot',
+          'CCBot',
+          'DotBot',
+          'SeekportBot',
+          'DataForSeoBot',
+        ],
+        disallow: ['/'],
+      },
+      {
+        // 3. القاعدة العامة لبقية محركات البحث
+        userAgent: '*',
         allow: ['/'],
         disallow: ['/api/', '/private/', '/_next/static/media/', '/OneSignalSDKWorker.js', '/OneSignalSDKUpdaterWorker.js'],
       },
