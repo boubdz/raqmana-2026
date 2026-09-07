@@ -7,7 +7,7 @@ import { ServiceToolbarBar } from "@/components/service-toolbar-bar";
 import { CommunityComments } from "@/components/community-comments";
 import { InstantShareButton } from "@/components/instant-share-button";
 import { CcpCalculator } from "@/components/ccp-calculator";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
 import {
@@ -201,7 +201,16 @@ export default async function ServiceDetailPage({ params }: Props) {
   const service = getDetailedServiceById(decodedId) || getDetailedServiceById(id);
 
   if (!service) {
-    notFound();
+    if (decodedId.includes("سيرة") || decodedId.toLowerCase().includes("cv")) {
+      permanentRedirect('/cv-builder');
+    }
+    if (decodedId.includes("مسابق") || decodedId.includes("توظيف") || decodedId.includes("سوناطراك") || decodedId.includes("anem") || decodedId.includes("wassit")) {
+      permanentRedirect('/categories/mosbakat-toudif');
+    }
+    if (decodedId.includes("استمارة") || decodedId.includes("طلب")) {
+      permanentRedirect('/document-assistant');
+    }
+    permanentRedirect('/categories');
   }
 
   let domain = "";
