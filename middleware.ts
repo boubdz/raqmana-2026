@@ -57,6 +57,27 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  // 5. Redirect legacy auto-generated or deleted articles
+  if (decodedPath.startsWith('/articles/auto-') || decodedPath.includes('mt1ysvnw')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/articles';
+    return NextResponse.redirect(url, { status: 308 });
+  }
+
+  // 6. Handle Apple App Site Association directly with 200 OK
+  if (pathname === '/apple-app-site-association' || pathname === '/.well-known/apple-app-site-association') {
+    return new NextResponse(
+      JSON.stringify({ applinks: { apps: [], details: [] }, webcredentials: { apps: [] } }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+        },
+      }
+    );
+  }
+
   return NextResponse.next();
 }
 

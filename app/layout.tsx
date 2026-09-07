@@ -206,6 +206,14 @@ export default function RootLayout({
             })
           }}
         />
+        {/* Google AdSense Official Verification & Ad Loader */}
+        <meta name="google-adsense-account" content="ca-pub-4993823133823424" />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4993823133823424"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </head>
       <body className={`${inter.variable} ${alexandria.variable} font-alexandria antialiased`}>
         <ThemeProvider>

@@ -3,7 +3,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
 import { ChevronLeft, ArrowLeft, ArrowUpRight, CheckCircle2 } from "lucide-react";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArticleShare } from "@/components/article-share";
 import { Metadata } from "next";
 import { CommunityComments } from "@/components/community-comments";
@@ -202,6 +202,9 @@ export default async function ArticlePage({ params }: Props) {
   const { article, realSlug } = findArticleAndSlug(articles, slug);
 
   if (!article) {
+    if (slug.startsWith('auto-') || slug.startsWith('trend-') || slug.includes('mt1ysvnw')) {
+      permanentRedirect('/articles');
+    }
     notFound();
   }
 
