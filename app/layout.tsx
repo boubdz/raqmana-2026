@@ -120,6 +120,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  other: {
+    monetag: 'f1a63739fe55774ad7dd49b69eefe71b',
+  },
 }
 
 export const viewport: Viewport = {
@@ -150,6 +153,8 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="theme-color" content="#ffffff" />
+        {/* Monetag Verification */}
+        <meta name="monetag" content="f1a63739fe55774ad7dd49b69eefe71b" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
