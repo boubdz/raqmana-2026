@@ -255,7 +255,7 @@ export function DocumentAssistant() {
 
   const handleGenerate = async () => {
     if (!isEmailUnlocked) {
-      setError("يرجى تأكيد بريدك الإلكتروني أولاً للاستفادة من المساعد مجاناً.");
+      setError("يرجى مشاركة الخدمة عبر فيسبوك أو النقر على المتابعة للاستفادة من المساعد مجاناً.");
       return;
     }
     if (!description.trim()) {
