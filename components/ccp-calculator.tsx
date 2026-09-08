@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Calculator, Copy, Check, Smartphone, ExternalLink, RefreshCw } from "lucide-react";
+import { Calculator, Copy, Check, Smartphone, ExternalLink, RefreshCw, Share2 } from "lucide-react";
 
 export function CcpCalculator() {
   const [ccpInput, setCcpInput] = useState("");
@@ -183,6 +183,32 @@ export function CcpCalculator() {
             <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-emerald-500 transition-colors" />
           </a>
         </div>
+      </div>
+
+      {/* ─── Viral Facebook Share Card ─── */}
+      <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#1877F2]/10 via-[#1877F2]/5 to-emerald-500/10 border border-[#1877F2]/20 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="text-right space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1877F2]/15 text-[#1877F2] text-[11px] font-black">
+            <span>خدمة مجانية 100% 🇩🇿</span>
+          </div>
+          <h4 className="text-sm sm:text-base font-black text-foreground">
+            هذه الخدمة مجانية.. شاركها مع أصدقائك ولا تحتكر المعلومة!
+          </h4>
+          <p className="text-xs text-muted-foreground">
+            الدال على الخير كفاعله.. ساعد زملائك والمتقاعدين والعمال في معرفة مفتاحهم والـ RIP بسهولة وبدون أخطاء.
+          </p>
+        </div>
+
+        <button
+          onClick={() => {
+            const shareUrl = encodeURIComponent("https://www.raqmanadz.com/ccp-calculator");
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, "_blank", "width=600,height=500");
+          }}
+          className="w-full sm:w-auto shrink-0 px-5 py-3 rounded-xl bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-black text-xs sm:text-sm shadow-md transition-all hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <Share2 className="w-4 h-4" />
+          <span>مشاركة الحاسبة على فيسبوك 📢</span>
+        </button>
       </div>
     </div>
   );

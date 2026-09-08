@@ -30,6 +30,7 @@ import {
   Lock,
   Zap,
   X,
+  Share2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -221,58 +222,52 @@ export function CVBuilder() {
   const [showGateModal, setShowGateModal] = useState(false);
   const [pendingAction, setPendingAction] = useState<"print" | "ai" | null>(null);
 
-  // Check saved email on mount (shared key with document-assistant)
+  // Check saved share on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("raqmana_user_email");
-      if (saved && saved.includes("@")) {
-        setUserEmail(saved);
+      const saved = localStorage.getItem("raqmana_user_email") || localStorage.getItem("raqmana_shared_facebook");
+      if (saved) {
         setIsEmailUnlocked(true);
       }
     } catch {}
   }, []);
 
-  const handleUnlockWithEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const clean = emailInput.trim().toLowerCase();
-    if (!clean || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean)) {
-      setEmailError("يرجى إدخال بريد Gmail صحيح (مثال: yourname@gmail.com)");
-      return;
-    }
-    setEmailError("");
-    setEmailSubmitting(true);
+  const handleShareFacebook = () => {
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: clean }),
-      });
-      const resJson = await res.json();
-      if (!res.ok || resJson.error) {
-        setEmailError(resJson.error || "بريد غير صالح، يرجى إدخال Gmail حقيقي ونشط.");
-        setEmailSubmitting(false);
-        return;
-      }
-      localStorage.setItem("raqmana_user_email", clean);
-      setUserEmail(clean);
+      localStorage.setItem("raqmana_shared_facebook", "true");
       setIsEmailUnlocked(true);
       setShowGateModal(false);
+      const shareUrl = encodeURIComponent("https://www.raqmanadz.com/cv-builder");
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, "_blank", "width=600,height=500");
+    } catch {}
 
-      if (pendingAction === "print") {
-        setPendingAction(null);
-        setTimeout(() => {
-          window.print();
-        }, 300);
-      } else if (pendingAction === "ai") {
-        setPendingAction(null);
-        setTimeout(() => {
-          executeAiSummary();
-        }, 200);
-      }
-    } catch {
-      setEmailError("خطأ في الاتصال بالخادم، حاول مجدداً.");
-    } finally {
-      setEmailSubmitting(false);
+    if (pendingAction === "print") {
+      setPendingAction(null);
+      setTimeout(() => {
+        window.print();
+      }, 500);
+    } else if (pendingAction === "ai") {
+      setPendingAction(null);
+      setTimeout(() => {
+        executeAiSummary();
+      }, 300);
+    }
+  };
+
+  const handleAlreadyShared = () => {
+    localStorage.setItem("raqmana_shared_facebook", "true");
+    setIsEmailUnlocked(true);
+    setShowGateModal(false);
+    if (pendingAction === "print") {
+      setPendingAction(null);
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    } else if (pendingAction === "ai") {
+      setPendingAction(null);
+      setTimeout(() => {
+        executeAiSummary();
+      }, 200);
     }
   };
 
@@ -1485,55 +1480,47 @@ export function CVBuilder() {
             </button>
 
             <div className="relative z-10 text-center space-y-5 pt-2">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 border border-white/20 shadow-inner mx-auto text-primary">
-                <Mail className="h-7 w-7" />
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1877F2]/20 border border-[#1877F2]/40 shadow-inner mx-auto text-[#1877F2]">
+                <Share2 className="h-8 w-8" />
               </div>
 
               <div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold mb-2">
+                  <span>خدمة مجانية 100% 🇩🇿</span>
+                </div>
                 <h3 className="text-2xl font-black tracking-tight mb-2">
-                  عذراً، أنت لست مشتركاً بعد! 🇩🇿
+                  هذه الخدمة مجانية.. شاركها مع أصدقائك ولا تحتكر المعلومة!
                 </h3>
-                <p className="text-white/75 text-xs md:text-sm leading-relaxed max-w-md mx-auto">
-                  يرجى إدخال بريدك الإلكتروني (Gmail) لفتح تحميل وتصدير سيرتك الذاتية بصيغة PDF فوراً وتفعيل أدوات الذكاء الاصطناعي مجاناً 100%.
+                <p className="text-white/80 text-xs md:text-sm leading-relaxed max-w-md mx-auto">
+                  صانع السيرة الذاتية متاح مجاناً لكل شباب الجزائر. شارك الرابط على فيسبوك لتفعيل ميزات الذكاء الاصطناعي وتنزيل سيرتك الذاتية PDF فوراً.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 gap-1.5 text-right bg-white/5 border border-white/10 p-3.5 rounded-2xl">
+              <div className="grid grid-cols-1 gap-2 text-right bg-white/5 border border-white/10 p-4 rounded-2xl">
                 {[
-                  "✅ تصدير وطباعة PDF غير محدودة بجودة طباعة فائقة",
-                  "✅ نماذج احترافية مخصصة لمسابقات التوظيف الجزائرية",
-                  "✅ صياغة نبذة مهنية ذكية بالذكاء الاصطناعي بنقرة واحدة",
+                  "✅ تصدير وطباعة PDF غير محدودة وبأعلى جودة",
+                  "✅ نماذج معتمدة ومطابقة لمسابقات التوظيف الجزائرية",
+                  "✅ الدال على الخير كفاعله.. ساعد غيرك في إيجاد وظيفة",
                 ].map((f) => (
                   <p key={f} className="text-white/90 text-xs font-medium">{f}</p>
                 ))}
               </div>
 
-              <form onSubmit={handleUnlockWithEmail} className="flex flex-col sm:flex-row gap-2.5 pt-1">
-                <Input
-                  type="email"
-                  placeholder="name@gmail.com"
-                  value={emailInput}
-                  onChange={(e) => setEmailInput(e.target.value)}
-                  required
-                  className="h-13 rounded-2xl bg-white/10 border-white/20 text-white placeholder:text-white/40 px-4 text-sm focus-visible:ring-primary"
-                  dir="ltr"
-                />
+              <div className="space-y-3 pt-2">
                 <Button
-                  type="submit"
-                  disabled={emailSubmitting}
-                  className="h-13 px-6 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm shadow-xl shrink-0 transition-transform hover:scale-105"
+                  onClick={handleShareFacebook}
+                  className="w-full h-14 rounded-2xl bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-black text-base shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-3 cursor-pointer"
                 >
-                  {emailSubmitting ? "جاري التفعيل..." : "تأكيد والبدء ⚡"}
+                  <Share2 className="h-5 w-5" />
+                  <span>مشاركة على فيسبوك وتنزيل السيرة الذاتية فوراً ⚡</span>
                 </Button>
-              </form>
 
-              {emailError && (
-                <p className="text-red-400 text-xs font-bold">{emailError}</p>
-              )}
-
-              <div className="flex items-center justify-center gap-2 text-[11px] text-white/50 pt-1">
-                <Lock className="h-3.5 w-3.5" />
-                <span>خدمة مجانية 100% — لا نشارك بريدك مع أي طرف ثالث</span>
+                <button
+                  onClick={handleAlreadyShared}
+                  className="text-white/60 hover:text-white text-xs underline cursor-pointer py-1 transition-colors"
+                >
+                  لقد شاركتها بالفعل أو المتابعة المباشرة
+                </button>
               </div>
             </div>
           </div>
