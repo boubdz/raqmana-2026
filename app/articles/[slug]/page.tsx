@@ -54,6 +54,10 @@ export async function generateStaticParams() {
 }
 
 const highConvertingArticleMetadata: Record<string, { title: string; description: string }> = {
+  'algerie-banque-carte-visa-devise-2026': {
+    title: "فتح حساب بالعملة الصعبة وبطاقة فيزا في الجزائر 2026 🇩🇿 — دليل البنوك والشراء من الإنترنت",
+    description: "كيفية فتح حساب بنكي باليورو في الجزائر (BNA, BADR, البركة)، استخراج بطاقة فيزا كارد للشراء من الإنترنت وتفعيل بايبال، وأفضل البدائل الرقمية 💳⚡",
+  },
   'anem-minha-2026': {
     title: "سيت منحة البطالة 2026 🇩🇿 — رابط تسجيل وتجديد منحة البطالة minha.anem.dz فضاء طالب العمل",
     description: "رابط سيت منحة البطالة 2026 الرسمي minha.anem.dz، خطوات التسجيل الأولي وتجديد طلب العمل لانام، أسباب التعليق، واستخراج وثيقة المنحة فوراً ⚡🇩🇿",

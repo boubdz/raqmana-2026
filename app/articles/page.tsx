@@ -22,6 +22,7 @@ const trendingSlugs = new Set([
   "aadl3",
   "chifa",
   "startups",
+  "algerie-banque-carte-visa-devise-2026",
   "onec-concours-2026",
   "minha-batala-guide-2026",
   "releve-rip-ccp-2026",
