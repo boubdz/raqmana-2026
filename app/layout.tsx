@@ -225,21 +225,25 @@ export default function RootLayout({
           <LanguageProvider>
             {children}
 
-            {/* PWA Service Worker Registration */}
-            <Script id="register-sw" strategy="afterInteractive">
+            {/* Force unregister rogue service workers and clear caches */}
+            <Script id="clean-sw" strategy="beforeInteractive">
               {`
-                if ('serviceWorker' in navigator) {
-                  window.addEventListener('load', function() {
-                    navigator.serviceWorker.getRegistrations().then(function(regs) {
-                      for (let r of regs) { r.update(); }
-                    });
-                    navigator.serviceWorker.register('/sw.js').then(
-                      function(registration) {
-                        registration.update();
-                        console.log('Service Worker updated to v2');
+                if (typeof window !== 'undefined') {
+                  if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                      for (var i = 0; i < registrations.length; i++) {
+                        registrations[i].unregister();
+                        console.log('Unregistered SW');
                       }
-                    );
-                  });
+                    });
+                  }
+                  if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                      for (var i = 0; i < names.length; i++) {
+                        caches.delete(names[i]);
+                      }
+                    });
+                  }
                 }
               `}
             </Script>
