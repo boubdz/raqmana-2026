@@ -271,9 +271,10 @@ export default function RootLayout({
             {/* Monetag Official Clean In-Page Push (Banner Zone) */}
             <Script
               id="monetag-in-page-push"
-              src="https://nap5k.com/tag.min.js"
-              data-zone="11755321"
-              strategy="lazyOnload"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `(function(s){s.dataset.zone='11755321',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));`
+              }}
             />
           </LanguageProvider>
         </ThemeProvider>
