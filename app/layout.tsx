@@ -230,12 +230,13 @@ export default function RootLayout({
               {`
                 if ('serviceWorker' in navigator) {
                   window.addEventListener('load', function() {
+                    navigator.serviceWorker.getRegistrations().then(function(regs) {
+                      for (let r of regs) { r.update(); }
+                    });
                     navigator.serviceWorker.register('/sw.js').then(
                       function(registration) {
-                        console.log('Service Worker registration successful with scope: ', registration.scope);
-                      },
-                      function(err) {
-                        console.log('Service Worker registration failed: ', err);
+                        registration.update();
+                        console.log('Service Worker updated to v2');
                       }
                     );
                   });
