@@ -1,12 +1,4 @@
-// Monetag Push & MultiTag Service Worker
-self.options = {
-    "domain": "3nbf4.com",
-    "zoneId": 11755038
-};
-self.lary = "";
-importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw');
-
-const CACHE_NAME = 'raqmana-v1';
+const CACHE_NAME = 'raqmana-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -25,7 +17,13 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(clients.claim());
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+      );
+    }).then(() => clients.claim())
+  );
 });
 
 self.addEventListener('fetch', (event) => {

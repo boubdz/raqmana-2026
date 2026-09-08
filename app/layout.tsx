@@ -219,13 +219,6 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
-
-        {/* Monetag Official MultiTag (Zones) — lazyOnload so it never blocks page styles or images */}
-        <Script
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="277880"
-          strategy="lazyOnload"
-        />
       </head>
       <body className={`${inter.variable} ${alexandria.variable} font-alexandria antialiased`}>
         <ThemeProvider>
