@@ -267,6 +267,14 @@ export default function RootLayout({
             <SiteShare />
             {/* ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026) */}
             {/* <OneSignalInit /> */}
+
+            {/* Monetag Official Clean In-Page Push (Banner Zone) */}
+            <Script
+              id="monetag-in-page-push"
+              src="https://nap5k.com/tag.min.js"
+              data-zone="11755321"
+              strategy="lazyOnload"
+            />
           </LanguageProvider>
         </ThemeProvider>
       </body>
