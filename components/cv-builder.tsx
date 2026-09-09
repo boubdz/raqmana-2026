@@ -221,6 +221,8 @@ export function CVBuilder() {
   const [emailError, setEmailError] = useState("");
   const [showGateModal, setShowGateModal] = useState(false);
   const [pendingAction, setPendingAction] = useState<"print" | "ai" | null>(null);
+  const [isVerifyingShare, setIsVerifyingShare] = useState(false);
+  const [shareCountdown, setShareCountdown] = useState(3);
 
   // Check saved share on mount
   useEffect(() => {
@@ -234,41 +236,39 @@ export function CVBuilder() {
 
   const handleShareFacebook = () => {
     try {
-      localStorage.setItem("raqmana_shared_facebook", "true");
-      setIsEmailUnlocked(true);
-      setShowGateModal(false);
       const shareUrl = encodeURIComponent("https://www.raqmanadz.com/cv-builder");
       window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, "_blank", "width=600,height=500");
     } catch {}
 
-    if (pendingAction === "print") {
-      setPendingAction(null);
-      setTimeout(() => {
-        window.print();
-      }, 500);
-    } else if (pendingAction === "ai") {
-      setPendingAction(null);
-      setTimeout(() => {
-        executeAiSummary();
-      }, 300);
-    }
-  };
+    setIsVerifyingShare(true);
+    setShareCountdown(3);
 
-  const handleAlreadyShared = () => {
-    localStorage.setItem("raqmana_shared_facebook", "true");
-    setIsEmailUnlocked(true);
-    setShowGateModal(false);
-    if (pendingAction === "print") {
-      setPendingAction(null);
-      setTimeout(() => {
-        window.print();
-      }, 300);
-    } else if (pendingAction === "ai") {
-      setPendingAction(null);
-      setTimeout(() => {
-        executeAiSummary();
-      }, 200);
-    }
+    let current = 3;
+    const timer = setInterval(() => {
+      current -= 1;
+      setShareCountdown(current);
+      if (current <= 0) {
+        clearInterval(timer);
+        setIsVerifyingShare(false);
+        try {
+          localStorage.setItem("raqmana_shared_facebook", "true");
+        } catch {}
+        setIsEmailUnlocked(true);
+        setShowGateModal(false);
+
+        if (pendingAction === "print") {
+          setPendingAction(null);
+          setTimeout(() => {
+            window.print();
+          }, 500);
+        } else if (pendingAction === "ai") {
+          setPendingAction(null);
+          setTimeout(() => {
+            executeAiSummary();
+          }, 300);
+        }
+      }
+    }, 1000);
   };
 
   // URL Query Parameters pre-population
@@ -1507,20 +1507,20 @@ export function CVBuilder() {
               </div>
 
               <div className="space-y-3 pt-2">
-                <Button
-                  onClick={handleShareFacebook}
-                  className="w-full h-14 rounded-2xl bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-black text-base shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-3 cursor-pointer"
-                >
-                  <Share2 className="h-5 w-5" />
-                  <span>مشاركة على فيسبوك وتنزيل السيرة الذاتية فوراً ⚡</span>
-                </Button>
-
-                <button
-                  onClick={handleAlreadyShared}
-                  className="text-white/60 hover:text-white text-xs underline cursor-pointer py-1 transition-colors"
-                >
-                  لقد شاركتها بالفعل أو المتابعة المباشرة
-                </button>
+                {isVerifyingShare ? (
+                  <div className="w-full h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-white font-black text-sm md:text-base flex items-center justify-center gap-3 animate-pulse">
+                    <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>جاري التحقق من النشر وتجهيز السيرة الذاتية PDF... ({shareCountdown})</span>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={handleShareFacebook}
+                    className="w-full h-14 rounded-2xl bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-black text-base shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-3 cursor-pointer"
+                  >
+                    <Share2 className="h-5 w-5" />
+                    <span>مشاركة على فيسبوك وتنزيل السيرة الذاتية فوراً ⚡</span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
