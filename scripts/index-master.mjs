@@ -153,6 +153,7 @@ function getAllUrls() {
     '/ccp-calculator',
     '/salary-calculator',
     '/aadl-calculator',
+    '/rappel-calculator',
     '/templates',
     '/solutions',
     '/document-assistant',
