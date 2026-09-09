@@ -228,6 +228,10 @@
     "https://www.aps.dz/algerie/actualite-nationale/mtq498sp-اقتراح-إنشاء-مؤسسة-عمومية-تعنى-بتسيير-أرشيف-الجماعات-المحلية": {
       "slug": "trend-aldlyl-alshaml-lndham-rqmna-warshfa-wthayq-aljmaaa-mtram5f5",
       "processedAt": "2026-09-07T13:45:14.243Z"
+    },
+    "https://www.aps.dz/algerie/actualite-nationale/mtu8rqhn-السيد-سعيود-يشرف-على-تنصيب-السيدة-نعامة-وزيرة-منتدبة-مكلفة-بالجماعات-المحلية": {
+      "slug": "trend-aldlyl-alshaml-ltlb-wtjdyd-jwaz-alsfr-albywmtry-ab-mtudbalu",
+      "processedAt": "2026-09-09T17:24:05.124Z"
     }
   },
   "processedTrends": {
@@ -371,7 +375,14 @@
       "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
       "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
       "processedAt": "2026-09-07T13:45:14.243Z"
+    },
+    "السيد سعيود يشرف على تنصيب السيدة نعامة وزيرة منتدبة مكلفة بالجماعات المحليةالأربعاء 09 سبتمبر 2026": {
+      "slug": "trend-aldlyl-alshaml-ltlb-wtjdyd-jwaz-alsfr-albywmtry-ab-mtudbalu",
+      "title": "السيد سعيود يشرف على تنصيب السيدة نعامة وزيرة منتدبة مكلفة بالجماعات المحليةالأربعاء 09 سبتمبر 2026",
+      "official": "وزارة الداخلية والجماعات المحلية والتهيئة العمرانية",
+      "source": "وكالة الأنباء الجزائرية الرسمية (APS)",
+      "processedAt": "2026-09-09T17:24:05.124Z"
     }
   },
-  "lastRun": "2026-09-09T12:31:31.511Z"
+  "lastRun": "2026-09-09T17:24:07.127Z"
 }
