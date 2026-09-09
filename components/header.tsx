@@ -27,7 +27,8 @@ import {
   Layers,
   Sparkles,
   BookOpen,
-  Wallet
+  Wallet,
+  Building2
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -161,6 +162,15 @@ export function Header() {
                   <div className="flex flex-col">
                     <span>{language === "ar" ? "حاسبة أجور الوظيف العمومي" : "Salary Calculator"}</span>
                     <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "حساب الراتب الصافي والمردودية" : "Net Salary & Bonuses 2026"}</span>
+                  </div>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/aadl-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
+                  <Building2 className="w-4 h-4 text-emerald-600" />
+                  <div className="flex flex-col">
+                    <span>{language === "ar" ? "محاكي أقساط عدل 3 (AADL)" : "AADL 3 Calculator"}</span>
+                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "الأشطر الخمسة والقسط الشهري" : "Installments & 5 Tranches"}</span>
                   </div>
                 </Link>
               </DropdownMenuItem>
@@ -344,6 +354,15 @@ export function Header() {
                 >
                   <Wallet className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                   <span>{language === "ar" ? "حاسبة أجور الوظيف العمومي" : "Salary Calculator"}</span>
+                </Link>
+
+                <Link
+                  href="/aadl-calculator"
+                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Building2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <span>{language === "ar" ? "محاكي أقساط عدل 3 (AADL)" : "AADL 3 Calculator"}</span>
                 </Link>
 
                 <Link

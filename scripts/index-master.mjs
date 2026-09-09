@@ -152,6 +152,7 @@ function getAllUrls() {
     '/cv-builder',
     '/ccp-calculator',
     '/salary-calculator',
+    '/aadl-calculator',
     '/templates',
     '/solutions',
     '/document-assistant',
