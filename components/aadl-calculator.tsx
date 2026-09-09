@@ -1,29 +1,26 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Building2,
   Home,
   CheckCircle2,
   AlertTriangle,
-  XCircle,
   Calendar,
   Share2,
-  Download,
   Coins,
   ShieldCheck,
-  HelpCircle,
-  Sparkles,
-  Info,
   ChevronDown,
   Printer,
   Calculator,
-  UserCheck,
   TrendingUp,
+  Lock,
+  Unlock,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 import {
   AADL_HOUSING_OPTIONS,
-  AADL_TRANCHES,
   calculateAADLSimulation,
   formatDZD,
   formatCentimesMillions,
@@ -39,9 +36,21 @@ export function AADLCalculator() {
   const [customPrice, setCustomPrice] = useState<number | undefined>(undefined);
   const [isCustomPriceOpen, setIsCustomPriceOpen] = useState<boolean>(false);
 
-  // حالة المشاركة الفيروسية
-  const [shareTimer, setShareTimer] = useState<number>(0);
+  // ── القفل الفيروسي والمشاركة الإلزامية ──────────────────────────
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
+  const [isVerifying, setIsVerifying] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number>(3);
   const [isCopied, setIsCopied] = useState<boolean>(false);
+
+  // التحقق من فتح القفل سابقاً من الذاكرة المحلية
+  useEffect(() => {
+    try {
+      const unlocked = localStorage.getItem("raqmana_aadl_unlocked");
+      if (unlocked === "true") {
+        setIsUnlocked(true);
+      }
+    } catch {}
+  }, []);
 
   const simulation = useMemo(() => {
     return calculateAADLSimulation({
@@ -63,24 +72,35 @@ export function AADLCalculator() {
     isCustomPriceOpen,
   ]);
 
-  const handleFacebookShare = () => {
+  // دالة المشاركة الإجبارية لفتح الخدمة
+  const handleShareToUnlock = () => {
     const shareUrl = encodeURIComponent("https://www.raqmanadz.com/aadl-calculator");
     const shareQuote = encodeURIComponent(
-      `جربت محاكي أقساط ودفعات عدل 3 (AADL 3) في الجزائر 🇩🇿 لسكن ${simulation.housingType.name}. الدفعة الأولى المقدرة هي ${formatCentimesMillions(
+      `جربت محاكي أقساط ودفعات سكنات عدل 3 (AADL 3) في الجزائر 🇩🇿 لسكن ${simulation.housingType.name}. الدفعة الأولى المقدرة هي ${formatCentimesMillions(
         simulation.tranches[0].amountDZD
       )} والقسط الشهري ${formatDZD(simulation.totalMonthlyPaymentDZD)} دج! جرب رتبتك وسنك مجاناً:`
     );
+
+    // فتح نافذة المشاركة على فيسبوك
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${shareQuote}`,
       "_blank",
       "width=600,height=500"
     );
 
-    setShareTimer(3);
-    const interval = setInterval(() => {
-      setShareTimer((prev) => {
+    // بدء عداد التحقق الذكي (3 ثوانٍ)
+    setIsVerifying(true);
+    setCountdown(3);
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
         if (prev <= 1) {
-          clearInterval(interval);
+          clearInterval(timer);
+          setIsVerifying(false);
+          setIsUnlocked(true);
+          try {
+            localStorage.setItem("raqmana_aadl_unlocked", "true");
+          } catch {}
           return 0;
         }
         return prev - 1;
@@ -108,6 +128,36 @@ export function AADLCalculator() {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-8" dir="rtl">
+      {/* شريط حالة الخدمة والقفل الفيروسي */}
+      <div className="w-full">
+        {isUnlocked ? (
+          <div className="flex items-center justify-between px-5 py-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-bold text-emerald-700 dark:text-emerald-400 animate-in fade-in">
+            <div className="flex items-center gap-2">
+              <Unlock className="w-4 h-4 text-emerald-600" />
+              <span>المحاكي مُفعّل بالكامل — شكراً لدعمك ومشاركتك الخدمة مع زملائك المكتتبين!</span>
+            </div>
+            <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-[10px] font-black uppercase">
+              مفتوح دائمًا
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between px-5 py-3 rounded-2xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-transparent border border-blue-500/30 text-xs">
+            <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200 font-semibold">
+              <Lock className="w-4 h-4 text-[#1877F2] shrink-0" />
+              <span>
+                هذه الخدمة مجانية 100% — يُشترط مشاركتها على فيسبوك لفتح مبالغ الأشطر الخمسة والقسط الشهري.
+              </span>
+            </div>
+            <button
+              onClick={handleShareToUnlock}
+              className="px-3.5 py-1.5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-xs transition-all shrink-0 shadow-sm"
+            >
+              فتح المحاكي ⚡
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* رأس المحاكي */}
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-semibold">
@@ -362,138 +412,189 @@ export function AADLCalculator() {
             </div>
           </div>
 
-          {/* البطاقة الرئيسية: الأقساط والدفعة الأولى */}
-          <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white rounded-3xl p-6 sm:p-7 shadow-xl space-y-6 relative overflow-hidden border border-emerald-500/20">
-            <div className="absolute top-0 left-0 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          {/* التحقق من القفل: إذا لم يشارك، تظهر بطاقة القفل الإلزامية */}
+          {!isUnlocked ? (
+            <div className="relative rounded-3xl p-7 sm:p-8 text-center bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 text-white border-2 border-primary/40 shadow-2xl space-y-5 overflow-hidden">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-[#1877F2]/20 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
-              <div>
-                <span className="text-xs text-emerald-400 font-semibold tracking-wide uppercase">
-                  القسط الشهري المتوقع
-                </span>
-                <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white">
-                    {formatDZD(simulation.totalMonthlyPaymentDZD)}
-                  </span>
-                  <span className="text-sm font-semibold text-emerald-400">دج / شهرياً</span>
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1877F2]/20 border border-[#1877F2]/40 shadow-inner mx-auto text-[#1877F2]">
+                <Lock className="h-8 w-8" />
+              </div>
+
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
+                  <span>خدمة مجانية 100% 🇩🇿</span>
                 </div>
-                <span className="text-xs text-slate-300 block mt-0.5 font-mono">
-                  (~{(simulation.totalMonthlyPaymentDZD / 10000).toFixed(1)} مليون سنتيم)
-                </span>
+                <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white">
+                  هذه الخدمة مجانية.. شاركها مع غيرك ولا تبخل بالمعلومة!
+                </h3>
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                  نحن لم نبخل بتقديم محاكي سكنات عدل 3 مجاناً وبدون أي مقابل.. والمشاركة لا تكلفك أي شيء! شارك الرابط على فيسبوك لدعم استمرار الخدمة وإفادة زملائك المكتتبين، وسيتم فتح نتائج المحاكاة وجدول الأشطر فوراً ⚡
+                </p>
               </div>
 
-              <div className="text-left bg-white/5 border border-white/10 p-3 rounded-2xl">
-                <span className="text-xs text-slate-300 block">سعر الشقة الإجمالي</span>
-                <span className="font-extrabold text-sm sm:text-base text-emerald-300 font-mono">
-                  {formatCentimesMillions(simulation.totalPriceDZD)}
-                </span>
+              <div className="grid grid-cols-1 gap-2 text-right bg-white/5 border border-white/10 p-4 rounded-2xl">
+                {[
+                  "✅ كشف مبالغ الأشطر الخمسة الرسمية للمساهمة الأولية (38%)",
+                  "✅ حساب القسط الشهري المقتطع من الراتب بدقة 2026",
+                  "✅ فحص الأمان المالي ونسبة الاقتطاع وطباعة تقرير المحاكاة",
+                ].map((f) => (
+                  <p key={f} className="text-white/90 text-xs font-medium">
+                    {f}
+                  </p>
+                ))}
+              </div>
+
+              <div className="pt-2">
+                {isVerifying ? (
+                  <div className="w-full h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-white font-black text-sm sm:text-base flex items-center justify-center gap-3 animate-pulse">
+                    <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>جاري التحقق من النشر وفتح المحاكي فوراً... ({countdown})</span>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleShareToUnlock}
+                    className="w-full h-14 rounded-2xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-black text-base shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer"
+                  >
+                    <Share2 className="h-5 w-5" />
+                    <span>مشاركة على فيسبوك لفتح المحاكي فوراً ⚡</span>
+                  </button>
+                )}
               </div>
             </div>
+          ) : (
+            /* البطاقة الرئيسية بعد فتح القفل */
+            <div className="space-y-6 animate-in fade-in duration-300">
+              <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white rounded-3xl p-6 sm:p-7 shadow-xl space-y-6 relative overflow-hidden border border-emerald-500/20">
+                <div className="absolute top-0 left-0 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            {/* مؤشر الاقتطاع من الراتب */}
-            <div className="space-y-2 relative z-10">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-300 flex items-center gap-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>نسبة الاقتطاع من الدخل الشهري:</span>
-                </span>
-                <span
-                  className={`font-mono font-bold px-2 py-0.5 rounded-md ${
-                    simulation.debtStatus === "safe"
-                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                      : simulation.debtStatus === "moderate"
-                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                      : "bg-rose-500/20 text-rose-300 border border-rose-500/30"
-                  }`}
+                <div className="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
+                  <div>
+                    <span className="text-xs text-emerald-400 font-semibold tracking-wide uppercase">
+                      القسط الشهري المتوقع
+                    </span>
+                    <div className="flex items-baseline gap-2 mt-1">
+                      <span className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white">
+                        {formatDZD(simulation.totalMonthlyPaymentDZD)}
+                      </span>
+                      <span className="text-sm font-semibold text-emerald-400">دج / شهرياً</span>
+                    </div>
+                    <span className="text-xs text-slate-300 block mt-0.5 font-mono">
+                      (~{(simulation.totalMonthlyPaymentDZD / 10000).toFixed(1)} مليون سنتيم)
+                    </span>
+                  </div>
+
+                  <div className="text-left bg-white/5 border border-white/10 p-3 rounded-2xl">
+                    <span className="text-xs text-slate-300 block">سعر الشقة الإجمالي</span>
+                    <span className="font-extrabold text-sm sm:text-base text-emerald-300 font-mono">
+                      {formatCentimesMillions(simulation.totalPriceDZD)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* مؤشر الاقتطاع من الراتب */}
+                <div className="space-y-2 relative z-10">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-300 flex items-center gap-1.5">
+                      <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>نسبة الاقتطاع من الدخل الشهري:</span>
+                    </span>
+                    <span
+                      className={`font-mono font-bold px-2 py-0.5 rounded-md ${
+                        simulation.debtStatus === "safe"
+                          ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                          : simulation.debtStatus === "moderate"
+                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                          : "bg-rose-500/20 text-rose-300 border border-rose-500/30"
+                      }`}
+                    >
+                      {simulation.debtRatioPercent}%{" "}
+                      {simulation.debtStatus === "safe"
+                        ? "(اقتطاع مريح وآمن)"
+                        : simulation.debtStatus === "moderate"
+                        ? "(اقتطاع متوسط)"
+                        : "(اقتطاع مرتفع)"}
+                    </span>
+                  </div>
+                  <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        simulation.debtStatus === "safe"
+                          ? "bg-emerald-400"
+                          : simulation.debtStatus === "moderate"
+                          ? "bg-amber-400"
+                          : "bg-rose-400"
+                      }`}
+                      style={{ width: `${Math.min(100, simulation.debtRatioPercent)}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* تفصيل الشطر الأول ومجموع الدفعات */}
+                <div className="grid grid-cols-2 gap-3 pt-2 relative z-10">
+                  <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
+                    <span className="text-xs text-emerald-300 block font-medium">
+                      ⭐ الشطر الأول (10%):
+                    </span>
+                    <span className="font-extrabold text-base sm:text-lg text-white font-mono block mt-1">
+                      {formatDZD(simulation.tranches[0].amountDZD)} دج
+                    </span>
+                    <span className="text-xs text-emerald-400 font-mono">
+                      ({formatCentimesMillions(simulation.tranches[0].amountDZD)})
+                    </span>
+                  </div>
+
+                  <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                    <span className="text-xs text-slate-300 block font-medium">
+                      مجموع المساهمة الأولية (38%):
+                    </span>
+                    <span className="font-extrabold text-base sm:text-lg text-white font-mono block mt-1">
+                      {formatDZD(simulation.totalInitialContributionDZD)} دج
+                    </span>
+                    <span className="text-xs text-slate-300 font-mono">
+                      ({formatCentimesMillions(simulation.totalInitialContributionDZD)})
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* أزرار المشاركة والطباعة بعد الفتح */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={handleShareToUnlock}
+                  className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
                 >
-                  {simulation.debtRatioPercent}%{" "}
-                  {simulation.debtStatus === "safe"
-                    ? "(اقتطاع مريح وآمن)"
-                    : simulation.debtStatus === "moderate"
-                    ? "(اقتطاع متوسط)"
-                    : "(اقتطاع مرتفع)"}
-                </span>
-              </div>
-              <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${
-                    simulation.debtStatus === "safe"
-                      ? "bg-emerald-400"
-                      : simulation.debtStatus === "moderate"
-                      ? "bg-amber-400"
-                      : "bg-rose-400"
-                  }`}
-                  style={{ width: `${Math.min(100, simulation.debtRatioPercent)}%` }}
-                />
-              </div>
-            </div>
+                  <Share2 className="w-4 h-4" />
+                  <span>مشاركة النتيجة مجدداً مع الأصدقاء</span>
+                </button>
 
-            {/* تفصيل الشطر الأول ومجموع الدفعات */}
-            <div className="grid grid-cols-2 gap-3 pt-2 relative z-10">
-              <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
-                <span className="text-xs text-emerald-300 block font-medium">
-                  ⭐ الشطر الأول (10%):
-                </span>
-                <span className="font-extrabold text-base sm:text-lg text-white font-mono block mt-1">
-                  {formatDZD(simulation.tranches[0].amountDZD)} دج
-                </span>
-                <span className="text-xs text-emerald-400 font-mono">
-                  ({formatCentimesMillions(simulation.tranches[0].amountDZD)})
-                </span>
-              </div>
+                <button
+                  type="button"
+                  onClick={handleCopySummary}
+                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-sm transition-all"
+                >
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>{isCopied ? "تم النسخ بنجاح!" : "نسخ الملخص"}</span>
+                </button>
 
-              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                <span className="text-xs text-slate-300 block font-medium">
-                  مجموع المساهمة الأولية (38%):
-                </span>
-                <span className="font-extrabold text-base sm:text-lg text-white font-mono block mt-1">
-                  {formatDZD(simulation.totalInitialContributionDZD)} دج
-                </span>
-                <span className="text-xs text-slate-300 font-mono">
-                  ({formatCentimesMillions(simulation.totalInitialContributionDZD)})
-                </span>
+                <button
+                  type="button"
+                  onClick={handlePrint}
+                  className="p-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-all hidden sm:flex items-center justify-center"
+                  title="طباعة تقرير المحاكاة"
+                >
+                  <Printer className="w-4 h-4" />
+                </button>
               </div>
             </div>
-          </div>
-
-          {/* أزرار المشاركة الفيروسية والطباعة */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              type="button"
-              onClick={handleFacebookShare}
-              className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
-            >
-              <Share2 className="w-4 h-4" />
-              <span>
-                {shareTimer > 0
-                  ? `⏳ جاري النشر والتحقق... (${shareTimer})`
-                  : "مشاركة نتيجة المحاكاة على فيسبوك"}
-              </span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handleCopySummary}
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-sm transition-all"
-            >
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span>{isCopied ? "تم النسخ بنجاح!" : "نسخ الملخص"}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handlePrint}
-              className="p-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-all hidden sm:flex items-center justify-center"
-              title="طباعة تقرير المحاكاة"
-            >
-              <Printer className="w-4 h-4" />
-            </button>
-          </div>
+          )}
         </div>
       </div>
 
       {/* تفكيك جدول الأشطر الخمسة الرسمية (Tranches Timeline) */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 dark:border-slate-800">
           <div>
             <h3 className="font-extrabold text-lg text-slate-900 dark:text-white flex items-center gap-2">
@@ -509,43 +610,68 @@ export function AADLCalculator() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {simulation.tranches.map((tranche) => (
-            <div
-              key={tranche.step}
-              className={`p-4 rounded-2xl border transition-all flex flex-col justify-between gap-3 ${
-                tranche.step === 1
-                  ? "bg-emerald-50/70 dark:bg-emerald-950/20 border-emerald-400/50 shadow-sm ring-1 ring-emerald-500/20"
-                  : "bg-slate-50/70 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800"
-              }`}
-            >
-              <div className="space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                    الشطر {tranche.step}
-                  </span>
-                  <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
-                    {tranche.percent}%
-                  </span>
-                </div>
-                <h4 className="font-bold text-sm text-slate-900 dark:text-white pt-1">
-                  {tranche.stage}
-                </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">
-                  {tranche.description}
-                </p>
+        {/* عرض الأشطر الخمسة مع قفل ضبابي إذا لم يتم النشر */}
+        <div className="relative">
+          {!isUnlocked && (
+            <div className="absolute inset-0 z-20 backdrop-blur-sm bg-white/70 dark:bg-slate-900/70 rounded-2xl flex flex-col items-center justify-center p-6 text-center space-y-3">
+              <div className="h-12 w-12 rounded-full bg-[#1877F2]/10 border border-[#1877F2]/30 flex items-center justify-center text-[#1877F2]">
+                <Lock className="w-6 h-6" />
               </div>
-
-              <div className="pt-2 border-t border-slate-200/70 dark:border-slate-700/60">
-                <div className="font-mono font-black text-base text-slate-900 dark:text-white">
-                  {formatDZD(tranche.amountDZD)} دج
-                </div>
-                <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                  {formatCentimesMillions(tranche.amountDZD)}
-                </div>
-              </div>
+              <h4 className="font-black text-base text-slate-900 dark:text-white">
+                جدول الأشطر الخمسة ومواعيد الدفع مقفلة
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-300 max-w-sm">
+                شارك المحاكي على فيسبوك لعرض تفاصيل المبالغ ومواعيد دفع الأشطر من الشطر 1 إلى 5
+              </p>
+              <button
+                type="button"
+                onClick={handleShareToUnlock}
+                className="px-5 py-2.5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
+              >
+                <Share2 className="w-4 h-4" />
+                <span>مشاركة لفتح الجدول فوراً ⚡</span>
+              </button>
             </div>
-          ))}
+          )}
+
+          <div className={`grid grid-cols-1 md:grid-cols-5 gap-4 ${!isUnlocked ? "filter blur-[3px] select-none" : ""}`}>
+            {simulation.tranches.map((tranche) => (
+              <div
+                key={tranche.step}
+                className={`p-4 rounded-2xl border transition-all flex flex-col justify-between gap-3 ${
+                  tranche.step === 1
+                    ? "bg-emerald-50/70 dark:bg-emerald-950/20 border-emerald-400/50 shadow-sm ring-1 ring-emerald-500/20"
+                    : "bg-slate-50/70 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800"
+                }`}
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                      الشطر {tranche.step}
+                    </span>
+                    <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
+                      {tranche.percent}%
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-sm text-slate-900 dark:text-white pt-1">
+                    {tranche.stage}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-normal">
+                    {tranche.description}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-slate-200/70 dark:border-slate-700/60">
+                  <div className="font-mono font-black text-base text-slate-900 dark:text-white">
+                    {formatDZD(tranche.amountDZD)} دج
+                  </div>
+                  <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                    {formatCentimesMillions(tranche.amountDZD)}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* المتبقي والأقساط الشهرية (62%) */}
