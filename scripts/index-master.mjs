@@ -154,6 +154,7 @@ function getAllUrls() {
     '/salary-calculator',
     '/aadl-calculator',
     '/rappel-calculator',
+    '/sonelgaz-calculator',
     '/templates',
     '/solutions',
     '/document-assistant',
