@@ -30,7 +30,8 @@ import {
   Wallet,
   Building2,
   Coins,
-  Zap
+  Zap,
+  Baby
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -191,6 +192,15 @@ export function Header() {
                   <div className="flex flex-col">
                     <span>{language === "ar" ? "حاسبة فاتورة سونلغاز" : "Sonelgaz Calculator"}</span>
                     <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "تقدير استهلاك الكهرباء والغاز" : "Electricity & Gas Bill 2026"}</span>
+                  </div>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/cnas-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
+                  <Baby className="w-4 h-4 text-pink-500" />
+                  <div className="flex flex-col">
+                    <span>{language === "ar" ? "حاسبة عطلة الأمومة (كناس)" : "CNAS Maternity & Leave"}</span>
+                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "التعويض اليومي 100% وتاريخ العودة" : "Maternity & Sick Leave 100%"}</span>
                   </div>
                 </Link>
               </DropdownMenuItem>
@@ -401,6 +411,15 @@ export function Header() {
                 >
                   <Zap className="w-4 h-4 text-amber-500 flex-shrink-0" />
                   <span>{language === "ar" ? "حاسبة فاتورة سونلغاز" : "Sonelgaz Calculator"}</span>
+                </Link>
+
+                <Link
+                  href="/cnas-calculator"
+                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Baby className="w-4 h-4 text-pink-500 flex-shrink-0" />
+                  <span>{language === "ar" ? "حاسبة عطلة الأمومة والتعويضات (CNAS)" : "CNAS Maternity & Leave"}</span>
                 </Link>
 
                 <Link

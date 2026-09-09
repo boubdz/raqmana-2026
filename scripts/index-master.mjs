@@ -155,6 +155,7 @@ function getAllUrls() {
     '/aadl-calculator',
     '/rappel-calculator',
     '/sonelgaz-calculator',
+    '/cnas-calculator',
     '/templates',
     '/solutions',
     '/document-assistant',
