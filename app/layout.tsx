@@ -268,13 +268,13 @@ export default function RootLayout({
             {/* ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026) */}
             {/* <OneSignalInit /> */}
 
-            {/* Monetag Official Clean In-Page Push (Banner Zone) */}
+            {/* Monetag Official MultiTag (Superior Tag: OnClick Popunder, Vignette, In-Page Push) */}
             <Script
-              id="monetag-in-page-push"
+              id="monetag-multitag"
               strategy="afterInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `(function(s){s.dataset.zone='11755321',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));`
-              }}
+              src="https://quge5.com/88/tag.min.js"
+              data-zone="277880"
+              data-cfasync="false"
             />
           </LanguageProvider>
         </ThemeProvider>
