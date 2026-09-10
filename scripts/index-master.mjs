@@ -118,6 +118,13 @@ function extractArticles() {
   const seoDataPath = path.join(ROOT_DIR, 'lib', 'seo-articles-data.ts');
   if (fs.existsSync(seoDataPath)) {
     const content = fs.readFileSync(seoDataPath, 'utf8');
+    const mapMatch = content.match(/export const seoArticles:[^{]*\{([\s\S]*?)\};/);
+    if (mapMatch) {
+      const keyMatches = mapMatch[1].matchAll(/['"]([a-zA-Z0-9_-]+)['"]\s*:/g);
+      for (const km of keyMatches) {
+        if (!articles.includes(km[1])) articles.push(km[1]);
+      }
+    }
     const slugMatches = content.matchAll(/["']([a-zA-Z0-9_-]+)["']:\s*\{[\s\S]*?title:\s*["']/g);
     for (const m of slugMatches) {
       if (!articles.includes(m[1])) articles.push(m[1]);
