@@ -147,6 +147,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -207,48 +208,22 @@ export default function RootLayout({
             })
           }}
         />
-        {/* Google AdSense Official Verification & Ad Loader — lazyOnload prevents blocking hydration & TBT */}
+        {/* Google AdSense verification meta — must stay in <head> */}
         <meta name="google-adsense-account" content="ca-pub-4993823133823424" />
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4993823133823424"
-          crossOrigin="anonymous"
-          strategy="lazyOnload"
-        />
       </head>
       <body className={`${inter.variable} ${alexandria.variable} font-alexandria antialiased`}>
         <ThemeProvider>
           <LanguageProvider>
             {children}
 
-            {/* Clean up old rogue service workers and caches after page is idle */}
-            <Script id="clean-sw" strategy="lazyOnload">
-              {`
-                if (typeof window !== 'undefined') {
-                  var runCleanup = function() {
-                    if ('serviceWorker' in navigator) {
-                      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                        for (var i = 0; i < registrations.length; i++) {
-                          registrations[i].unregister();
-                        }
-                      });
-                    }
-                    if ('caches' in window) {
-                      caches.keys().then(function(names) {
-                        for (var i = 0; i < names.length; i++) {
-                          caches.delete(names[i]);
-                        }
-                      });
-                    }
-                  };
-                  if ('requestIdleCallback' in window) {
-                    requestIdleCallback(runCleanup);
-                  } else {
-                    setTimeout(runCleanup, 2500);
-                  }
-                }
-              `}
-            </Script>
+            {/* Google AdSense Ad Loader — MUST be in <body>, lazyOnload only works outside <head> in Next.js App Router */}
+            <Script
+              id="google-adsense"
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4993823133823424"
+              crossOrigin="anonymous"
+              strategy="lazyOnload"
+            />
 
             {/* Google Analytics — lazyOnload + async */}
             <Script
