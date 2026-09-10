@@ -1,139 +1,265 @@
-// app/feedback/page.tsx
+"use client";
+
+import { useState } from "react";
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { Home, MessageSquare, ChevronLeft, Send, Sparkles, Star } from 'lucide-react';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'شاركنا رأيك وملاحظاتك | بوابة رقمنة الجزائر 2026',
-  description: 'ملاحظاتك وتقييماتك تساعدنا في تطوير بوابة رقمنة للخدمات الرقمية الجزائرية. شاركنا تجربتك، اقتح إضافات، أو أبلغ عن مشاكل تقنية.',
-  keywords: [
-    'تقييم رقمنة', 'ملاحظات المستخدمين', 'تطوير الخدمات الرقمية الجزائر',
-    'اقتراحات رقمنة', 'الإبلاغ عن مشكلة', 'بوابة رقمنة',
-    'خدمات رقمية الجزائر', 'تحسين المنصة'
-  ],
-  alternates: {
-    canonical: 'https://www.raqmanadz.com/feedback',
-  },
-  openGraph: {
-    title: 'اقتراح خدمة رقمية | رقمنة الجزائر 2026',
-    description: 'شاركنا اقتراحاتك للخدمات الرقمية والمنصات الحكومية التّي ترغب في إضافتها إلى دليل رقمنة.',
-    url: 'https://www.raqmanadz.com/feedback',
-    type: 'website',
-    locale: 'ar_DZ',
-    siteName: 'رقمنة - Raqmana',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'شاركنا رأيك | رقمنة الجزائر',
-    description: 'ملاحظاتك تساعدنا في تحسين بوابة الخدمات الرقمية الجزائرية.',
-  },
-  robots: { index: true, follow: true },
-};
+import { Home, MessageSquare, ChevronLeft, Send, Sparkles, Star, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 export default function FeedbackPage() {
-  const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdpS9w2S8MvW9fP7Y7X0A_Z0_X9_M_Z_X9/viewform"; // رابط افتراضي أو خاص بك
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    category: 'اقتراح تحسين',
+    message: '',
+    rating: 5,
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      setErrorMsg('يرجى ملء جميع الحقول المطلوبة.');
+      setStatus('error');
+      return;
+    }
+
+    setStatus('loading');
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: `[تقييم المنصة - ${formData.category}] تقييم: ${formData.rating} نجوم`,
+          message: formData.message,
+        }),
+      });
+
+      if (res.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', category: 'اقتراح تحسين', message: '', rating: 5 });
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setStatus('error');
+        setErrorMsg(data.error || 'حدث خطأ أثناء إرسال الملاحظة، يرجى المحاولة لاحقاً');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMsg('تعذر الاتصال بالخادم، يرجى التحقق من اتصال الإنترنت.');
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background" dir="rtl">
+    <div className="min-h-screen bg-background text-foreground" dir="rtl">
       <Header />
       
-      <main className="pb-20">
+      <main className="pb-24">
         {/* Page Hero */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-rose-900 via-pink-900 to-slate-900 pt-32 pb-16 text-white">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-rose-500 blur-3xl"></div>
-            <div className="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-pink-500 blur-3xl"></div>
-          </div>
+        <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 pt-32 pb-20 text-white">
+          <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:24px_24px] opacity-15" />
           
           <div className="container relative mx-auto px-4 text-center">
-            <nav className="mb-8 flex items-center justify-center gap-2 text-sm font-medium text-white/80">
+            <nav className="mb-8 flex items-center justify-center gap-2 text-sm font-medium text-slate-300">
               <Link href="/" className="hover:text-white transition-colors">الرئيسية</Link>
-              <ChevronLeft className="h-4 w-4" />
-              <span className="text-white">التقييم والملاحظات</span>
+              <ChevronLeft className="h-4 w-4 text-slate-400" />
+              <span className="text-white font-bold">التقييم والملاحظات</span>
             </nav>
             
             <div className="max-w-3xl mx-auto">
-              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-md shadow-xl border border-white/30">
-                <MessageSquare className="h-8 w-8 text-white" />
+              <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/20 backdrop-blur-md shadow-xl border border-primary/30 text-primary">
+                <MessageSquare className="h-8 w-8 text-cyan-400" />
               </div>
-              <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl text-balance">ملاحظاتك ترسم مستقبلنا</h1>
-              <p className="text-xl text-white/90 leading-relaxed">
-                رأيك هو المحرك الأساسي لتطوير بوابة "رقمنة". شاركنا تجربتك، اقتراحاتك، أو حتى الإبلاغ عن مشاكل تقنية لنقوم بحلها فوراً.
+              <h1 className="mb-4 text-3xl sm:text-5xl font-black tracking-tight text-balance">
+                ملاحظاتك وآراؤك تهمنا
+              </h1>
+              <p className="text-lg sm:text-xl text-slate-200 leading-relaxed font-medium">
+                رأيك هو المحرك الأساسي لتطوير بوابة رقمنة. شاركنا تجربتك، اقترح خدمات جديدة، أو أبلغنا عن أي رابط يحتاج للتحديث.
               </p>
             </div>
           </div>
         </div>
 
         {/* Feedback Form Container */}
-        <div className="container mx-auto px-4 -mt-10 relative z-10 max-w-4xl">
-          <div className="rounded-3xl border border-border/50 bg-card/80 p-1 shadow-2xl backdrop-blur-md overflow-hidden">
-            <div className="bg-muted/50 p-6 flex items-center justify-between border-b border-border/50">
-              <div className="flex items-center gap-3 text-primary font-bold">
-                <Star className="h-5 w-5 fill-primary" />
-                نموذج الملاحظات الرسمي
-              </div>
-              <div className="flex gap-2">
-                <div className="h-3 w-3 rounded-full bg-rose-500/50"></div>
-                <div className="h-3 w-3 rounded-full bg-amber-500/50"></div>
-                <div className="h-3 w-3 rounded-full bg-emerald-500/50"></div>
-              </div>
-            </div>
+        <div className="container mx-auto px-4 -mt-10 relative z-10 max-w-3xl">
+          <div className="rounded-3xl border border-border/80 bg-card p-6 md:p-12 shadow-xl">
             
-            <div className="relative min-h-[300px] bg-white flex flex-col items-center justify-center p-10 text-center">
-              <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
-                <MessageSquare className="h-10 w-10 text-primary" />
+            {status === 'success' ? (
+              <div className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-4 animate-in fade-in duration-300">
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-white shadow-lg">
+                  <CheckCircle2 className="h-8 w-8" />
+                </div>
+                <h2 className="text-2xl font-black text-emerald-700 dark:text-emerald-400">شكراً جزيلاً لتقييمك وملاحظاتك!</h2>
+                <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
+                  تم استلام رسالتك بنجاح، وسيقوم الفريق التقني والتحريري بمراجعة ملاحظاتك لأخذها بعين الاعتبار في التحديث القادم.
+                </p>
+                <div className="pt-4">
+                  <button
+                    onClick={() => setStatus('idle')}
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-card border border-border text-xs font-bold text-foreground hover:bg-muted transition-colors"
+                  >
+                    إرسال ملاحظة أخرى
+                  </button>
+                </div>
               </div>
-              <h2 className="mb-4 text-2xl font-bold">نحن نستمع إليك!</h2>
-              <p className="mb-6 text-muted-foreground max-w-lg">
-                نواجه حالياً عطلاً مؤقتاً في نموذج المراسلة. ولكن يسعدنا جداً استقبال ملاحظاتك، اقتراحاتك، أو الإبلاغ عن أي أخطاء مباشرة عبر البريد الإلكتروني:
-              </p>
-              <a 
-                href="mailto:newera28026@gmail.com?subject=ملاحظات حول بوابة رقمنة 2026" 
-                className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-              >
-                <Send className="mr-2 h-4 w-4 ml-2" />
-                إرسال رسالة عبر البريد الإلكتروني
-              </a>
-              <div className="mt-4 text-sm font-medium text-primary bg-primary/5 px-4 py-2 rounded-full border border-primary/10">
-                newera28026@gmail.com
-              </div>
-            </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <h2 className="text-2xl font-black text-foreground mb-1">نموذج تقييم المنصة</h2>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    نقرأ جميع الرسائل الواردة بعناية فائقة. يمكنك أيضاً مراسلتنا مباشرة عبر <a href="mailto:contact@raqmanadz.com" className="text-primary font-bold hover:underline">contact@raqmanadz.com</a>
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-foreground uppercase tracking-wider block">
+                      الاسم الكامل <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="مثال: يوسف أو مريم"
+                      className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-foreground uppercase tracking-wider block">
+                      البريد الإلكتروني <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="name@example.com"
+                      className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all dir-ltr text-right"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-foreground uppercase tracking-wider block">
+                      نوع الملاحظة
+                    </label>
+                    <select
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    >
+                      <option value="اقتراح تحسين">اقتراح تحسين أو إضافة ميزة</option>
+                      <option value="اقتراح خدمة جديدة">اقتراح خدمة رقمية جديدة لإضافتها</option>
+                      <option value="تصحيح رابط أو معلومة">تصحيح رابط رسمي أو معلومة</option>
+                      <option value="مشكلة تقنية">الإبلاغ عن مشكلة تقنية في الموقع</option>
+                      <option value="شكر وتقدير">شكر وتقدير</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-foreground uppercase tracking-wider block">
+                      تقييمك للمنصة
+                    </label>
+                    <div className="flex items-center gap-2 pt-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, rating: star })}
+                          className="p-1 text-amber-400 hover:scale-125 transition-transform"
+                        >
+                          <Star
+                            className={`h-6 w-6 ${
+                              star <= formData.rating ? 'fill-amber-400' : 'text-slate-300 dark:text-slate-700'
+                            }`}
+                          />
+                        </button>
+                      ))}
+                      <span className="text-xs font-bold text-muted-foreground mr-2">
+                        {formData.rating} من 5 نجوم
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-foreground uppercase tracking-wider block">
+                    نص الملاحظة أو الاقتراح <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="اكتب ملاحظاتك، اقتراحاتك، أو الخدمة التي ترغب في توفير دليل لها بالتفصيل..."
+                    className="w-full rounded-2xl border border-border/80 bg-background px-4 py-3.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-y"
+                  />
+                </div>
+
+                {status === 'error' && (
+                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs font-bold">
+                    {errorMsg}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-8 py-4 text-base font-bold text-primary-foreground shadow-lg hover:opacity-95 transition-all hover:scale-[1.01] disabled:opacity-50"
+                >
+                  {status === 'loading' ? (
+                    <span>جاري الإرسال...</span>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" />
+                      <span>إرسال التقييم الآن</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+
           </div>
-          
+
           <div className="mt-12 grid gap-6 md:grid-cols-2">
-            <div className="group rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-primary/30">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:scale-110 transition-transform">
-                <Send className="h-6 w-6" />
+            <div className="p-6 rounded-3xl border border-border/60 bg-card shadow-sm space-y-3">
+              <div className="h-10 w-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold">
+                <Sparkles className="h-5 w-5" />
               </div>
-              <h3 className="mb-2 text-xl font-bold">لماذا نشجعك على التقييم؟</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                بوابة رقمنة هي مشروع مستقل، ودعمك من خلال الملاحظات يساهم في جعل الخدمات الرقمية الجزائرية في متناول الجميع بطريقة أسهل وأسرع.
+              <h3 className="text-lg font-bold text-foreground">تطوير مستمر بالتعاون معكم</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                منصة رقمنة هي مشروع مستقل، واقتراحاتكم اليومية هي التي ساهمت في إضافة حاسبات سكنات عدل 3، سونلغاز، والرواتب الجديدة.
               </p>
             </div>
-            
-            <div className="group rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-accent/30">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent group-hover:scale-110 transition-transform">
-                <Sparkles className="h-6 w-6" />
+
+            <div className="p-6 rounded-3xl border border-border/60 bg-card shadow-sm space-y-3">
+              <div className="h-10 w-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                <ShieldCheck className="h-5 w-5" />
               </div>
-              <h3 className="mb-2 text-xl font-bold">ماذا يحدث لملاحظاتك؟</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                يتم مراجعة كل رسالة تصلنا بعناية من قبل فريق التطوير، ويتم جدولة الاقتراحات الأكثر طلباً ليتم تنفيذها في التحديثات القادمة.
+              <h3 className="text-lg font-bold text-foreground">سرية تامة وأمان</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                بريدك الإلكتروني وبياناتك محمية بالكامل ولن يتم استخدامها إلا للرد على استفسارك ومتابعة اقتراحك.
               </p>
             </div>
           </div>
-          
-          <div className="mt-16 flex justify-center">
+
+          <div className="mt-12 flex justify-center">
             <Link 
               href="/" 
-              className="group flex items-center gap-3 rounded-full border border-border bg-card px-8 py-4 text-lg font-bold shadow-sm transition-all hover:bg-accent hover:shadow-md"
+              className="group inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-6 py-3 text-sm font-bold shadow-sm transition-all hover:bg-muted"
             >
-              <Home className="h-5 w-5" />
-              العودة إلى الرئيسية
+              <Home className="h-4 w-4" />
+              <span>العودة إلى الصفحة الرئيسية</span>
             </Link>
           </div>
+
         </div>
       </main>
 
