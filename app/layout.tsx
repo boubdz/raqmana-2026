@@ -155,6 +155,8 @@ export default function RootLayout({
         <meta name="theme-color" content="#ffffff" />
         {/* Monetag Verification */}
         <meta name="monetag" content="f1a63739fe55774ad7dd49b69eefe71b" />
+        {/* Monetag Official MultiTag (Superior Tag) */}
+        <script src="https://quge5.com/88/tag.min.js" data-zone="277880" async data-cfasync="false" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -267,15 +269,6 @@ export default function RootLayout({
             <SiteShare />
             {/* ⛔ CACHED - Disabled until ranking & clicks recover (26/08/2026) */}
             {/* <OneSignalInit /> */}
-
-            {/* Monetag Official MultiTag (Superior Tag: OnClick Popunder, Vignette, In-Page Push) */}
-            <Script
-              id="monetag-multitag"
-              strategy="afterInteractive"
-              src="https://quge5.com/88/tag.min.js"
-              data-zone="277880"
-              data-cfasync="false"
-            />
           </LanguageProvider>
         </ThemeProvider>
       </body>
