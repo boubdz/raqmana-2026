@@ -7,6 +7,12 @@ import {
   protectionCivileConcours2026Article,
   dgsnPoliceConcours2026Article,
 } from './trend-articles-2026';
+import {
+  aadl3CalculatorGuide2026Article,
+  rappelCalculatorGuide2026Article,
+  sonelgazCalculatorGuide2026Article,
+  cnasMaterniteGuide2026Article,
+} from './tools-guide-articles-2026';
 
 // ================================================================
 // interfaces.ts - تعريف الهيكل الأساسي للمقالات
@@ -2896,6 +2902,12 @@ const awlya_ibtidai_2026Article: SeoArticle = {
 };
 
 export const seoArticles: Record<string, SeoArticle> = {
+  // أدلة ومقالات الأدوات والحاسبات الرقمية الأكثر طلباً 2026 🇩🇿🔥
+  'aadl3-calculator-guide-2026': aadl3CalculatorGuide2026Article,
+  'rappel-calculator-guide-2026': rappelCalculatorGuide2026Article,
+  'sonelgaz-calculator-guide-2026': sonelgazCalculatorGuide2026Article,
+  'cnas-maternite-guide-2026': cnasMaterniteGuide2026Article,
+
   'awlya-ibtidai-2026': awlya_ibtidai_2026Article,
   'dawla-madrasiya-2026-2027': dawla_madrasiya_2026_2027Article,
   'aadl3-2026': aadl3_2026Article,

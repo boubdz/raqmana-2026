@@ -245,6 +245,21 @@ export default function AADLCalculatorPage() {
             </div>
           </div>
 
+          {/* رابط الدليل الشامل والمفصل */}
+          <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-emerald-900 dark:text-emerald-200">
+              <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>لقراءة الشرح القانوني والتفصيلي الشامل حول الأشطر وشروط الكفيل:</span>
+            </div>
+            <Link
+              href="/articles/aadl3-calculator-guide-2026"
+              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs transition-colors flex items-center gap-1.5 shrink-0"
+            >
+              <span>دليل سكنات عدل 3 الكامل 2026</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
           {/* روابط سريعة للأدوات الأخرى */}
           <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs text-slate-500">

@@ -17,6 +17,10 @@ export const revalidate = 86400;
 
 
 const trendingSlugs = new Set([
+  "aadl3-calculator-guide-2026",
+  "rappel-calculator-guide-2026",
+  "sonelgaz-calculator-guide-2026",
+  "cnas-maternite-guide-2026",
   "mdn",
   "tawdhif",
   "aadl3",

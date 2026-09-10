@@ -217,6 +217,21 @@ export default function RappelCalculatorPage() {
             </div>
           </div>
 
+          {/* رابط الدليل الشامل والمفصل */}
+          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-200">
+              <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+              <span>لقراءة الشرح القانوني والتفصيلي الشامل حول فارق المردودية وأسباب التأخر:</span>
+            </div>
+            <Link
+              href="/articles/rappel-calculator-guide-2026"
+              className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs transition-colors flex items-center gap-1.5 shrink-0"
+            >
+              <span>دليل حساب الرّابيل الكامل 2026</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
           {/* روابط سريعة للأدوات الأخرى */}
           <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs text-slate-500">

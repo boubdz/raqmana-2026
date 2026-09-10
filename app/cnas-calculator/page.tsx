@@ -217,6 +217,21 @@ export default function CnasCalculatorPage() {
             </div>
           </div>
 
+          {/* رابط الدليل الشامل والمفصل */}
+          <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-rose-900 dark:text-rose-200">
+              <Sparkles className="w-4 h-4 text-rose-600 shrink-0" />
+              <span>لقراءة الشرح القانوني والتفصيلي الشامل حول أحكام القانون 83-11 والإعفاء الضريبي:</span>
+            </div>
+            <Link
+              href="/articles/cnas-maternite-guide-2026"
+              className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs transition-colors flex items-center gap-1.5 shrink-0"
+            >
+              <span>دليل عطلة الأمومة الكامل 2026</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
           {/* روابط سريعة للأدوات الأخرى */}
           <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs text-slate-500">
