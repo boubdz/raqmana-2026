@@ -13,6 +13,10 @@ import {
   sonelgazCalculatorGuide2026Article,
   cnasMaterniteGuide2026Article,
 } from './tools-guide-articles-2026';
+import {
+  guideCcrDouaneAlgerie2026Article,
+  apostilleAlgerieGuideConsulatFrance2026Article,
+} from './diaspora-guide-articles-2026';
 
 // ================================================================
 // interfaces.ts - تعريف الهيكل الأساسي للمقالات
@@ -1846,8 +1850,24 @@ const foreignAffairsArticle: SeoArticle = {
       content:
         "س: ما هو الأبوستيل ومتى دخل حيز التنفيذ في الجزائر؟ ج: هو شهادة إلكترونية تثبت صحة التوقيع على الوثائق الرسمية، دخلت حيز التنفيذ في 9 يوليو 2026. س: هل يلغي الأبوستيل التصديق القنصلي بالكامل؟ ج: نعم، بالنسبة للدول الأعضاء في اتفاقية لاهاي. س: كيف أحصل على ملصق الأبوستيل؟ ج: عبر شرائه من مديرية الضرائب أو مؤسسة بريد الجزائر. س: كيف يمكنني حجز موعد لتجديد جواز السفر؟ ج: عبر المنصة الرقمية للوزارة. س: ما هي مدة معالجة طلب الأبوستيل إلكترونياً؟ ج: تختلف حسب الوثيقة، لكن الرقمنة ساهمت في تسريع الآجال بشكل كبير مقارنة بالإجراءات السابقة.",
     },
+    {
+      heading: "8. شهادة تغيير الإقامة (CCR Douane) وجمركة سيارات المغتربين 2026",
+      content:
+        "تعد شهادة تغيير الإقامة (Certificat de Changement de Résidence - CCR) الامتياز الجمركي الأهم لأفراد الجالية الجزائرية المقيمة بالخارج (فرنسا، كندا، بلجيكا، وأوروبا). يتيح هذا النظام للمغترب العائد نهائياً إدخال أثاثه المنزلي ومركبته السياحية معفاة تماماً من الرسوم الجمركية والضرائب وفق المادة 202 من قانون الجمارك. يشترط القانون: إقامة فعلية مستمرة لا تقل عن 3 سنوات مسجلاً بالقنصلية، عدم الاستفادة المسبقة طيلة الحياة، وسعة محرك لا تتجاوز 2000cc للبنزين أو 2500cc للديزل، وسقف قيمة إجمالية بـ 10 ملايين دج للعمال و8 ملايين دج للطلبة. يمكنك الآن التحقق من أهليتك وحساب الرسوم وملفك القنصلي فوراً عبر [محاكي شهادة CCR وجمركة السيارات](/ccr-calculator).",
+    },
+    {
+      heading: "9. Démarches consulaires en France (Paris, Lyon, Marseille) & Passeport 12S",
+      content:
+        "Pour la communauté algérienne établie en France (circonscriptions consulaires de Paris, Lyon, Marseille, Nanterre, Lille, etc.), les démarches d'immatriculation consulaire, de renouvellement du passeport biométrique et de délivrance de l'acte de naissance 12S se font désormais via les plateformes numériques du Ministère de l'Intérieur et des Affaires Étrangères. L'obtention de l'attestation de radiation et du certificat CCR requiert la présentation de la carte consulaire valide et d'un inventaire chiffré des effets mobiliers certifié en deux exemplaires.",
+    },
   ],
   registrationRequiredSites: [
+    {
+      name: "محاكي شهادة CCR وجمركة سيارات المغتربين (منصة رقمنة)",
+      url: "https://www.raqmanadz.com/ccr-calculator",
+      requirements:
+        "أداة رقمية وتطبيق محاكاة مجاني لاحتساب سعة المحرك المسموحة وسقف الإعفاء الجمركي وقائمة الوثائق القنصلية باللغتين العربية والفرنسية.",
+    },
     {
       name: "المنصة الوطنية لخدمة الأبوستيل (أحدث وأهم منصة)",
       url: "https://www.apostille.gov.dz",
@@ -2907,6 +2927,10 @@ export const seoArticles: Record<string, SeoArticle> = {
   'rappel-calculator-guide-2026': rappelCalculatorGuide2026Article,
   'sonelgaz-calculator-guide-2026': sonelgazCalculatorGuide2026Article,
   'cnas-maternite-guide-2026': cnasMaterniteGuide2026Article,
+
+  // مقالات وأدلة فضاء الجالية الجزائرية بالخارج (بالفرنسية) 2026 🌍🇫🇷
+  'guide-ccr-douane-algerie-2026': guideCcrDouaneAlgerie2026Article,
+  'apostille-algerie-guide-consulat-france-2026': apostilleAlgerieGuideConsulatFrance2026Article,
 
   'awlya-ibtidai-2026': awlya_ibtidai_2026Article,
   'dawla-madrasiya-2026-2027': dawla_madrasiya_2026_2027Article,

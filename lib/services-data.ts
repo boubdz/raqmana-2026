@@ -631,7 +631,7 @@ export const serviceCategories: ServiceCategory[] = [
       },
     ],
   },
-  // 15. وزارة الشؤون الخارجية
+  // 15. وزارة الشؤون الخارجية والجالية بالخارج
   {
     id: "foreignAffairs",
     nameKey: "category.foreignAffairs",
@@ -639,25 +639,36 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-blue-600 to-indigo-700",
     officialSite: "https://www.mfa.gov.dz/ar",
     phone: "+213 21 50 45 45",
-    descriptionAr: "خدمات وزارة الشؤون الخارجية: طلب تصديق الوثائق (Apostille) الموجهة للخارج، وتتبع وضعية الجالية الجزائرية.",
+    descriptionAr: "خدمات وزارة الشؤون الخارجية والجالية الوطنية بالخارج: فضاء المغتربين، محاكي شهادة CCR وجمركة السيارات، منصة الأبوستيل (Apostille)، استخراج 12S، ومواعيد القنصليات الجزائرية.",
     usageGuides: [
+      {
+        title: "شروط وملف شهادة تغيير الإقامة (CCR) للجالية",
+        steps: [
+          "إثبات 3 سنوات إقامة فعلية بالخارج مسجلاً بالقنصلية (Immatriculation).",
+          "إعداد البطاقة الرمادية للسيارة باسم المعني حصرياً بسعة أقل من 2000cc بنزين أو 2500cc ديزل.",
+          "إعداد قائمة جرد مفصلة ومقدرة للأثاث والأمتعة المنزلية في نسختين.",
+          "حجز موعد لدى القنصلية العامة للجزائر بالخارج واستخراج شهادة الـ CCR الأصلية.",
+          "شحن السيارة والأمتعة في أجل أقصاه 6 أشهر نحو ميناء أو مطار الوصول بالجزائر."
+        ]
+      },
       {
         title: "كيفية طلب تصديق الوثائق (Apostille)",
         steps: [
-          "الولوج لموقع (apostille.mae.gov.dz).",
-          "ملء استمارة طلب التصديق بالمعلومات المطلوبة.",
-          "تحديد نوع الوثيقة المراد تصديقها والجهة المصدرة.",
-          "اختيار موعد لإيداع الوثائق الأصلية.",
-          "التوجه للمصالح القنصلية أو الوزارة في الموعد المحدد."
+          "الولوج للمنصة الوطنية للأبوستيل (apostille.gov.dz).",
+          "ملء استمارة طلب التصديق بالمعلومات المطلوبة ورفع الوثيقة.",
+          "تحديد نوع الوثيقة والجهة المصدرة ودولة الاستخدام.",
+          "إدخال رقم القسيمة الضريبية (Vignette) المشتراة من الضرائب أو البريد.",
+          "تحميل شهادة الأبوستيل الإلكترونية المصادق عليها برمز QR."
         ]
       }
     ],
     services: [
+      { name: { ar: "محاكي شهادة CCR وجمركة سيارات المغتربين", en: "CCR Vehicle Customs Simulator (Diaspora)" }, url: "https://www.raqmanadz.com/ccr-calculator" },
+      { name: { ar: "بوابة الأبوستيل الوطنية للتصديق الإلكتروني", en: "National E-Apostille Legalization Portal" }, url: "https://www.apostille.gov.dz" },
+      { name: { ar: "حجز مواعيد القنصليات وجواز السفر البيومتري", en: "Consulate Appointments & Biometric Passport" }, url: "https://prestations.interieur.gov.dz/ministere/" },
+      { name: { ar: "سكنات الترقوي العمومي LPP للجالية (بالعملة الصعبة)", en: "Diaspora LPP Housing Portal (Foreign Currency)" }, url: "https://www.enpi.dz" },
       { name: { ar: "بوابة التصديق الإلكتروني (الغرفة الوطنية للموثقين)", en: "Notary E-Apostille Portal" }, url: "https://apostille.hcn.dz/" },
-      { name: { ar: "ترحيل الوثائق للتصديق", en: "Document Apostille" }, url: "https://aptracking.poste.dz//" },
-      { name: { ar: "كاتب الدولة للجالية بالخارج", en: "Diaspora Secretary" }, url: "https://www.mfa.gov.dz/ar/contact" },
-      { name: { ar: "الممثليات الدبلوماسية الجزائرية", en: "Algerian Embassies" }, url: "https://www.mfa.gov.dz/ar/foreign-diplomatic-and-consular-representations-in-algeria" },
-      { name: { ar: "الممثليات الأجنبية بالجزائر", en: "Foreign Embassies in Algeria" }, url: "https://www.mfa.gov.dz/ar/foreign-diplomatic-and-consular-representations-in-algeria" },
+      { name: { ar: "كاتب الدولة للجالية بالخارج والممثليات القنصلية", en: "Diaspora Affairs & Algerian Embassies" }, url: "https://www.mfa.gov.dz/ar/contact" },
     ],
   },
   // 16. خدمات الضمان الاجتماعي

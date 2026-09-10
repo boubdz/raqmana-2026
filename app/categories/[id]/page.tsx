@@ -149,7 +149,7 @@ const trendingKeywordsMap: Record<string, string[]> = {
   justice: ["السوابق القضائية", "صحيفة السوابق", "شهادة الجنسية الجزائرية", "العدالة الجزائر", "Casier Judiciaire", "AdalaTic"],
   publicContracts: ["الصفقات العمومية", "بوابة الصفقات", "ضمان الصفقات", "BAOSEM", "قانون الصفقات العمومية"],
   realEstate: ["منصة أملاك", "الرقمنة العقارية", "استخراج الدفتر العقاري الإلكتروني", "المحافظة العقارية", "مسح الأراضي", "الوكالة الوطنية لمسح الأراضي"],
-  foreignAffairs: ["تصديق الوثائق", "Apostille", "وزارة الشؤون الخارجية", "القنصلية الجزائرية", "جالية الجزائر بالخارج"],
+  foreignAffairs: ["تصديق الوثائق", "Apostille", "وزارة الشؤون الخارجية", "القنصلية الجزائرية", "جالية الجزائر بالخارج", "CCR douane algerie", "certificat changement de residence", "simulateur ccr", "dossier ccr consulat", "apostille algerie en ligne", "passeport biometrique consulat", "logement lpp diaspora"],
   socialSecurity: ["cnas.dz", "الصندوق الوطني للتأمينات الاجتماعية", "فضاء الهناء", "بطاقة الشفاء", "التصريح بالأجور", "CNR", "CASNOS"],
   health: ["الموعد الطبي الإلكتروني", "وزارة الصحة", "تلقيح الأطفال", "أطباء الجزائر", "بنك الدم الجزائري", "الشفاء الرقمي"],
   vehicles: ["فحص المركبات", "مركبتي", "تصاريح الاستيراد", "وزارة الطاقة والمناجم", "البطاقة الرمادية"],
@@ -267,6 +267,10 @@ const highConvertingCategoryTitles: Record<string, { title: string; description:
   police: {
     title: "تسجيلات الجيش الوطني الشعبي MDN 2026 🇩🇿 — الرابط المباشر للتجنيد",
     description: "موقع التسجيل الأولي للضباط وضباط الصف المتعاقدين بكافة القوات preinscription.mdn.dz — الشروط والملف المطلوبة 🛡️⚡",
+  },
+  foreignAffairs: {
+    title: "الشؤون الخارجية وفضاء الجالية 2026 🇩🇿 — محاكي CCR، الأبوستيل ومواعيد القنصليات",
+    description: "بوابة الجالية والمغتربين: محاكي جمركة سيارات CCR، منصة الأبوستيل apostille.gov.dz، مواعيد القنصليات واستخراج 12S، وسكنات LPP بالعملة الصعبة 🌍⚡",
   },
 };
 

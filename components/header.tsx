@@ -31,7 +31,8 @@ import {
   Building2,
   Coins,
   Zap,
-  Baby
+  Baby,
+  Car
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -201,6 +202,15 @@ export function Header() {
                   <div className="flex flex-col">
                     <span>{language === "ar" ? "حاسبة عطلة الأمومة (كناس)" : "CNAS Maternity & Leave"}</span>
                     <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "التعويض اليومي 100% وتاريخ العودة" : "Maternity & Sick Leave 100%"}</span>
+                  </div>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/ccr-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
+                  <Car className="w-4 h-4 text-blue-500" />
+                  <div className="flex flex-col">
+                    <span>{language === "ar" ? "محاكي جمركة CCR (الجالية)" : "CCR Customs Simulator"}</span>
+                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "إعفاء سيارات المغتربين والملف" : "Diaspora Car Customs 2026"}</span>
                   </div>
                 </Link>
               </DropdownMenuItem>
@@ -420,6 +430,15 @@ export function Header() {
                 >
                   <Baby className="w-4 h-4 text-pink-500 flex-shrink-0" />
                   <span>{language === "ar" ? "حاسبة عطلة الأمومة والتعويضات (CNAS)" : "CNAS Maternity & Leave"}</span>
+                </Link>
+
+                <Link
+                  href="/ccr-calculator"
+                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Car className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                  <span>{language === "ar" ? "محاكي جمركة CCR (الجالية بالخارج)" : "CCR Customs Simulator (Diaspora)"}</span>
                 </Link>
 
                 <Link

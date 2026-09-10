@@ -163,6 +163,7 @@ function getAllUrls() {
     '/rappel-calculator',
     '/sonelgaz-calculator',
     '/cnas-calculator',
+    '/ccr-calculator',
     '/templates',
     '/solutions',
     '/document-assistant',

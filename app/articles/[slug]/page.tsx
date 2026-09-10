@@ -70,6 +70,14 @@ const highConvertingArticleMetadata: Record<string, { title: string; description
     title: "عطلة الأمومة والتعويضات اليومية CNAS 2026 🇩🇿 — تعويض 98 يوماً والإعفاء الضريبي IRG",
     description: "دليل عطلة الأمومة للمرأة العاملة في الجزائر 2026: أحكام القانون 83-11، حساب الأجر اليومي 100%، الإعفاء من ضريبة IRG المادة 68، وملف كناس 🤰⚡",
   },
+  'guide-ccr-douane-algerie-2026': {
+    title: "Guide Complet CCR Douane Algérie 2026 🇩🇿 — Dédouanement Véhicule, Conditions et Simulateur",
+    description: "Tout savoir sur le CCR en Algérie (Art. 202) : conditions de 3 ans, cylindrée max 2000cc/2500cc, plafond 10 millions DZD, dossier consulaire et simulateur d'exonération 🚗⚡",
+  },
+  'apostille-algerie-guide-consulat-france-2026': {
+    title: "Apostille Algérie en Ligne 2026 🇩🇿 — Guide Démarches, Acte 12S et Mairies de France",
+    description: "Guide officiel de l'Apostille en Algérie (apostille.gov.dz) : légalisation des actes d'état civil pour les mairies françaises, acte 12S et démarches consulaires 🌍⚡",
+  },
   'algerie-banque-carte-visa-devise-2026': {
     title: "فتح حساب بالعملة الصعبة وبطاقة فيزا في الجزائر 2026 🇩🇿 — دليل البنوك والشراء من الإنترنت",
     description: "كيفية فتح حساب بنكي باليورو في الجزائر (BNA, BADR, البركة)، استخراج بطاقة فيزا كارد للشراء من الإنترنت وتفعيل بايبال، وأفضل البدائل الرقمية 💳⚡",
