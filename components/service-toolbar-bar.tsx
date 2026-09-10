@@ -22,48 +22,20 @@ export function ServiceToolbarBar({
   initialRating = 4.5,
   compact = false,
 }: ServiceToolbarBarProps) {
-  // Generate consistent seed view count if not provided
-  const seedViews = initialViews || (() => {
-    let hash = 0;
-    for (let i = 0; i < serviceId.length; i++) {
-      hash = serviceId.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return Math.abs(hash % 450000) + 1250;
-  })();
-
-  const storageKeyViews = `raqmana_views_${serviceId}`;
   const storageKeyRating = `raqmana_rating_${serviceId}`;
 
-  const [views, setViews] = useState<number>(seedViews);
   const [userRating, setUserRating] = useState<number | null>(null);
-  const [avgRating, setAvgRating] = useState<number>(initialRating);
-  const [ratingCount, setRatingCount] = useState<number>(128);
   const [showRatingPopover, setShowRatingPopover] = useState<boolean>(false);
   const [reported, setReported] = useState<boolean>(false);
   const [showReportToast, setShowReportToast] = useState<boolean>(false);
 
   useEffect(() => {
-    // Load persisted views
-    const savedViews = localStorage.getItem(storageKeyViews);
-    if (savedViews) {
-      setViews(parseInt(savedViews, 10));
-    }
-
     // Load persisted rating
     const savedRating = localStorage.getItem(storageKeyRating);
     if (savedRating) {
       setUserRating(parseFloat(savedRating));
     }
-  }, [storageKeyViews, storageKeyRating]);
-
-  // Handle View Click / Increment
-  const handleViewClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const newViews = views + 1;
-    setViews(newViews);
-    localStorage.setItem(storageKeyViews, newViews.toString());
-  };
+  }, [storageKeyRating]);
 
   // Handle Rate
   const handleRate = (stars: number, e: React.MouseEvent) => {
@@ -71,9 +43,6 @@ export function ServiceToolbarBar({
     e.stopPropagation();
     setUserRating(stars);
     localStorage.setItem(storageKeyRating, stars.toString());
-    const newAvg = parseFloat(((avgRating * ratingCount + stars) / (ratingCount + 1)).toFixed(1));
-    setAvgRating(newAvg);
-    setRatingCount((prev) => prev + 1);
     setShowRatingPopover(false);
   };
 
@@ -96,18 +65,11 @@ export function ServiceToolbarBar({
     }
   };
 
-  // Format large numbers
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-    return num.toLocaleString("ar-DZ");
-  };
-
   return (
     <div className="relative w-full" dir="rtl">
       {/* Main Bar */}
       <div className="flex items-center justify-between gap-2 p-2 rounded-2xl bg-emerald-500/5 dark:bg-emerald-950/20 border border-emerald-500/20 text-xs select-none">
-        {/* Left Side: Buttons (↗ External Link + ⚠️ Report) */}
+        {/* Left Side: Buttons (↗ External Direct Link + ⚠️ Report) */}
         <div className="flex items-center gap-1.5">
           {/* Green External Link Button ↗ */}
           <button
@@ -115,13 +77,10 @@ export function ServiceToolbarBar({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              const newViews = views + 1;
-              setViews(newViews);
-              localStorage.setItem(storageKeyViews, newViews.toString());
               window.open(url, "_blank", "noopener,noreferrer");
             }}
-            title="زيارة المنصة الرسمية"
-            aria-label={`زيارة المنصة الرسمية لـ ${serviceTitle}`}
+            title="زيارة الرابط المباشر للخدمة"
+            aria-label={`زيارة الرابط المباشر لـ ${serviceTitle}`}
             className="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-black shadow-sm transition-all hover:scale-105 active:scale-95"
           >
             <ArrowUpRight className="w-4 h-4" />
@@ -131,8 +90,8 @@ export function ServiceToolbarBar({
           <button
             type="button"
             onClick={handleReport}
-            title="الإبلاغ عن عطل أو رابط لا يعمل"
-            aria-label="الإبلاغ عن عطل أو رابط لا يعمل"
+            title="الإبلاغ عن رابط لا يعمل أو تحديث معلومات"
+            aria-label="الإبلاغ عن رابط لا يعمل أو تحديث معلومات"
             className={`flex items-center justify-center w-8 h-8 rounded-xl border transition-all ${
               reported
                 ? "bg-amber-500/20 border-amber-500 text-amber-600 dark:text-amber-400"
@@ -143,33 +102,21 @@ export function ServiceToolbarBar({
           </button>
         </div>
 
-        {/* Right Side: Metrics (Comments 💬 | Views 👁️ | Rating ★) */}
+        {/* Right Side: Genuine Interaction (Feedback 💬 | Rating ★) */}
         <div className="flex items-center gap-3 text-emerald-800 dark:text-emerald-200 font-bold text-[11px]">
-          {/* Comments Counter */}
+          {/* Comments Link */}
           <button
             type="button"
             onClick={handleCommentClick}
             className="flex items-center gap-1 hover:text-primary transition-colors"
-            title="عدد استفسارات المواطنين"
-            aria-label={`عرض ${initialCommentsCount} استفسارات للمواطنين`}
+            title="مساحة استفسارات وتجارب المواطنين"
+            aria-label="الانتقال إلى استفسارات المواطنين"
           >
-            <span>{initialCommentsCount}</span>
+            <span className="hidden sm:inline">استفسارات</span>
             <MessageSquare className="w-3.5 h-3.5 opacity-80" />
           </button>
 
-          {/* Views Counter */}
-          <div
-            onClick={handleViewClick}
-            className="flex items-center gap-1 cursor-pointer hover:text-primary transition-colors"
-            title="عدد المشاهدات والزيارات"
-            role="status"
-            aria-label={`عدد المشاهدات: ${formatNumber(views)}`}
-          >
-            <span>{formatNumber(views)}</span>
-            <Eye className="w-3.5 h-3.5 opacity-80" />
-          </div>
-
-          {/* Rating Stars */}
+          {/* Interactive Rating Button */}
           <div className="relative">
             <button
               type="button"
@@ -179,11 +126,11 @@ export function ServiceToolbarBar({
                 setShowRatingPopover(!showRatingPopover);
               }}
               className="flex items-center gap-1 hover:scale-105 transition-transform text-amber-600 dark:text-amber-400 font-extrabold"
-              title="تقييم المنصة (اضغط للتقييم)"
-              aria-label={`تقييم المنصة الحالي ${avgRating} نجوم، اضغط للتقييم`}
+              title="تقييم مدى وضوح وفائدة هذا الدليل"
+              aria-label="تقييم مدى وضوح وفائدة هذا الدليل"
             >
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span>{avgRating}</span>
+              <span>{userRating ? `${userRating}/5` : "تقييم الدليل"}</span>
             </button>
 
             {/* Rating Popover */}

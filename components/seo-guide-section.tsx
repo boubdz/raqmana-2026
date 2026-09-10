@@ -67,12 +67,12 @@ export function SeoGuideSection() {
               >
                 المؤسسة الوطنية للترقية العقارية ENPI LPP
               </Link>
-              . ولدعم خدمات الدفع والتحويلات المالية اليومية، يمكنك استخدام{" "}
+              . ولدعم خدمات الدفع والتحويلات المالية اليومية، يمكنك متابعة{" "}
               <Link
-                href="/ccp-calculator"
+                href="/categories/post"
                 className="text-primary font-bold hover:underline underline-offset-4 decoration-primary/40 inline-flex items-center gap-0.5"
               >
-                حاسبة رصيد ومستحقات CCP بريد الجزائر
+                خدمات بريد الجزائر والحساب البريدي الجاري ECCP
               </Link>
               ، والاطلاع على{" "}
               <Link

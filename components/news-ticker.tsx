@@ -10,10 +10,18 @@ interface NewsItem {
   date: string;
 }
 
+const defaultNews: NewsItem[] = [
+  { title: "تحديث دليل سكنات عدل 3 وشروط الاستفادة لسنة 2026", link: "/articles/aadl3-calculator-guide-2026", date: "2026" },
+  { title: "تعديل مدة عطلة الأمومة إلى 150 يوماً بنسبة تعويض 100% وفق القانون 25-08", link: "/articles/cnas-maternite-guide-2026", date: "2026" },
+  { title: "دليل استخراج شهادة الميلاد الرقمية S12 عبر البوابة الوطنية للحالة المدنية", link: "/document-guide", date: "2026" },
+  { title: "دليل مسابقات التوظيف والشبكة الاستدلالية لرواتب الوظيف العمومي", link: "/articles/rappel-calculator-guide-2026", date: "2026" },
+  { title: "شرح أشطر فاتورة سونلغاز للكهرباء والغاز وطريقة الدفع الإلكتروني", link: "/articles/sonelgaz-calculator-guide-2026", date: "2026" },
+];
+
 export function NewsTicker() {
   const { language, dir } = useLanguage();
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [news, setNews] = useState<NewsItem[]>(defaultNews);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchNews() {
@@ -25,7 +33,6 @@ export function NewsTicker() {
               const parsed = JSON.parse(cached);
               if (Array.isArray(parsed) && parsed.length > 0) {
                 setNews(parsed);
-                setLoading(false);
                 return;
               }
             } catch {}

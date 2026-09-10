@@ -63,14 +63,6 @@ export default function CVBuilderPage() {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "DZD"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.92",
-        "bestRating": "5",
-        "worstRating": "1",
-        "ratingCount": "1820",
-        "reviewCount": "1540"
       }
     },
     {

@@ -52,14 +52,6 @@ export default function DocumentAssistantPage() {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "DZD"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "bestRating": "5",
-      "worstRating": "1",
-      "ratingCount": "980",
-      "reviewCount": "840"
     }
   };
 
@@ -220,14 +212,12 @@ export default function DocumentAssistantPage() {
           </div>
         </div>
 
-        {/* تقييمات قوقل ومراجعات المجتمع للمساعد الذكي */}
+        {/* آراء وتجارب المجتمع للمساعد الذكي */}
         <div className="container mx-auto px-4 mt-20 max-w-4xl">
           <CommunityComments
             serviceId="document-assistant"
             serviceTitle="المساعد الذكي لصياغة الوثائق والطلبات الإدارية"
             itemType="SoftwareApplication"
-            initialRatingCount={980}
-            initialAvgRating={4.8}
           />
         </div>
       </main>

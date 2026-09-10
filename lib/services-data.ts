@@ -639,7 +639,7 @@ export const serviceCategories: ServiceCategory[] = [
     color: "from-blue-600 to-indigo-700",
     officialSite: "https://www.mfa.gov.dz/ar",
     phone: "+213 21 50 45 45",
-    descriptionAr: "خدمات وزارة الشؤون الخارجية والجالية الوطنية بالخارج: فضاء المغتربين، محاكي شهادة CCR وجمركة السيارات، منصة الأبوستيل (Apostille)، استخراج 12S، ومواعيد القنصليات الجزائرية.",
+    descriptionAr: "خدمات وزارة الشؤون الخارجية والجالية الوطنية بالخارج: فضاء المغتربين، دليل شهادة CCR وجمركة السيارات، منصة الأبوستيل (Apostille)، استخراج 12S، ومواعيد القنصليات الجزائرية.",
     usageGuides: [
       {
         title: "شروط وملف شهادة تغيير الإقامة (CCR) للجالية",
@@ -663,7 +663,7 @@ export const serviceCategories: ServiceCategory[] = [
       }
     ],
     services: [
-      { name: { ar: "محاكي شهادة CCR وجمركة سيارات المغتربين", en: "CCR Vehicle Customs Simulator (Diaspora)" }, url: "https://www.raqmanadz.com/ccr-calculator" },
+      { name: { ar: "دليل الجمارك لشهادة تغيير الإقامة CCR", en: "Customs Guide for CCR Exemption (Diaspora)" }, url: "https://www.douane.gov.dz" },
       { name: { ar: "بوابة الأبوستيل الوطنية للتصديق الإلكتروني", en: "National E-Apostille Legalization Portal" }, url: "https://www.apostille.gov.dz" },
       { name: { ar: "حجز مواعيد القنصليات وجواز السفر البيومتري", en: "Consulate Appointments & Biometric Passport" }, url: "https://prestations.interieur.gov.dz/ministere/" },
       { name: { ar: "سكنات الترقوي العمومي LPP للجالية (بالعملة الصعبة)", en: "Diaspora LPP Housing Portal (Foreign Currency)" }, url: "https://www.enpi.dz" },

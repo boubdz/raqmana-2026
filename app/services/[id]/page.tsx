@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer";
 import { ServiceToolbarBar } from "@/components/service-toolbar-bar";
 import { CommunityComments } from "@/components/community-comments";
 import { InstantShareButton } from "@/components/instant-share-button";
-import { CcpCalculator } from "@/components/ccp-calculator";
+import { LegalDisclaimerBox } from "@/components/legal-disclaimer-box";
 import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -78,7 +78,7 @@ const categoryNamesAr: Record<string, string> = {
 const highConvertingServiceMetadata: Record<string, { title: string; description: string; keywords?: string[] }> = {
   "الاطلاع-على-رصيد-ccp-موقع-eccp": {
     title: "كشف رصيد الحساب البريدي الجاري CCP بريد الجزائر 2026 🇩🇿 — الاطلاع على الرصيد والمفتاح عبر ECCP وبريدي موب ⚡",
-    description: "رابط كشف رصيد حسابك البريدي CCP عبر موقع eccp.poste.dz الرسمي وتطبيق بريدي موب BaridiMob، حاسبة مفتاح Clé CCP ورمز RIP، وكشف العمليات المالية بالبطاقة الذهبية ⚡💳",
+    description: "رابط كشف رصيد حسابك البريدي CCP عبر موقع eccp.poste.dz الرسمي وتطبيق بريدي موب BaridiMob، استخراج شهادة الحساب البريدي RIP، وكشف العمليات المالية بالبطاقة الذهبية ⚡💳",
     keywords: ["ccp", "cle ccp", "كشف رصيد ccp", "حساب مفتاح ccp", "eccp poste dz", "بريد الجزائر ccp", "رصيد ccp بالهاتف", "بريدي موب كشف الرصيد", "rip ccp"],
   },
   "دفع-حقوق-الإيواء-progres": {
@@ -118,7 +118,7 @@ const highConvertingServiceMetadata: Record<string, { title: string; description
   },
   "محاكاة-فاتورتك-sonelgaz": {
     title: "محاكاة فاتورة سونلغاز 2026 ⚡🇩🇿 — حساب استهلاك الكهرباء والغاز أونلاين بدقة (Sonelgaz)",
-    description: "أداة محاكاة فاتورتي سونلغاز الرسمية: احسب قيمة استهلاك الكهرباء والغاز للشطر الأول والثاني والثالث، تفاصيل الرسوم والضرائب، وتوقع مبلغ الفاتورة بدقة تامة ⚡",
+    description: "أداة محاكاة فاتورتي سونلغاز التقديرية: احسب قيمة استهلاك الكهرباء والغاز للشطر الأول والثاني والثالث، تفاصيل الرسوم والضرائب، وتوقع مبلغ الفاتورة بدقة تامة ⚡",
     keywords: ["محاكاة فاتورتي", "محاكاة فاتورة سونلغاز", "حساب فاتورة الكهرباء والغاز الجزائر", "sonelgaz calcul facture", "طاقتي سونلغاز"],
   },
   "التسجيل-في-منحة-البطالة-minha": {
@@ -159,7 +159,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const enriched = getEnrichedServiceContent(service);
   const customMeta = highConvertingServiceMetadata[service.id];
 
-  const title = customMeta?.title || `${service.name.ar} 2026 — رابط المنصة والشروط والدليل الرسمي | رقمنة`;
+  const title = customMeta?.title || `${service.name.ar} 2026 — رابط الدخول والشروط ودليل الاستخدام | رقمنة`;
   const description = customMeta?.description || `${service.name.ar} (${domain}): ${enriched.detailedDescription.slice(0, 150)}... الشروط، خطوات الاستخدام، ورابط الدخول المباشر.`;
 
   return {
@@ -359,7 +359,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      منصة رسمية معتمدة 2026
+                      دليل استرشادي مستقل 2026
                     </span>
                   </div>
 
@@ -430,13 +430,6 @@ export default async function ServiceDetailPage({ params }: Props) {
               <InstantShareButton title={service.name.ar} url={service.url} compact />
             </div>
           </div>
-
-          {/* Embed CcpCalculator if this service is related to CCP / ECCP */}
-          {(service.id.includes("ccp") || service.id.includes("eccp") || service.name.ar.includes("CCP") || service.name.ar.includes("رصيد")) && (
-            <div className="my-6">
-              <CcpCalculator />
-            </div>
-          )}
 
           {/* Detailed Editorial Description */}
           <div className="p-6 sm:p-8 rounded-3xl border border-border/60 bg-card space-y-6">
@@ -637,6 +630,14 @@ export default async function ServiceDetailPage({ params }: Props) {
             />
           </div>
 
+          {/* Legal Disclaimer Box */}
+          <LegalDisclaimerBox
+            toolName={`دليل استخدام ${service.name.ar}`}
+            officialEntity={enriched.governingBody}
+            legalReference="النصوص التشريعية والمراسيم المنشورة في الجريدة الرسمية للجمهورية الجزائرية"
+            lastVerifiedDate="سبتمبر 2026"
+            sourceUrl={service.url}
+          />
         </div>
       </main>
 

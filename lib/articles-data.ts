@@ -26,78 +26,78 @@ export const articles: Article[] = [
   },
   {
     id: "baridimob-blocked",
-    title: { ar: "حل مشكلة حساب بريدي موب المقيد (Blocked)", en: "Fix BaridiMob Account Blocked" },
+    title: { ar: "حل مشكلة حساب بريدي موب المقيد (Compte Bloqué) في الجزائر", en: "Fix BaridiMob Account Blocked or Restricted" },
     category: "post",
     summary: { 
-      ar: "ماذا تفعل إذا توقف تطبيق بريدي موب عن العمل أو ظهرت رسالة 'حساب مقيد'؟", 
-      en: "What to do if your BaridiMob account is restricted or blocked?" 
+      ar: "دليل شامل لأسباب تجميد حساب بريدي موب وكيفية رفع التقييد وإعادة التفعيل خطوة بخطوة.", 
+      en: "Comprehensive guide to unblocking a restricted BaridiMob account and reactivating mobile services." 
     },
     content: { 
-      ar: "1. تأكد من تحديث التطبيق لآخر نسخة من المتجر الرسمي. 2. إذا كنت خارج الجزائر، فالتطبيق معطل حالياً لأسباب أمنية. 3. إذا تكرر الخطأ، يجب التوجه لمكتب البريد لربط رقم الهاتف مجدداً (إجراء أمني 2026). 4. تجنب استخدام VPN عند فتح التطبيق.", 
-      en: "1. Update to the latest official version. 2. If abroad, service is restricted for security. 3. Visit a post office to re-verify your phone number. 4. Disable VPN before using the app." 
+      ar: "تُعد رسالة 'حساب مقيد' (Compte Restreint / Bloqué) في تطبيق بريدي موب إجراءً أمنياً احترازياً يتخذه بريد الجزائر لحماية أرصدة الزبائن. نستعرض أسباب الحظر والحلول العملية:\n\n### أولاً: الأسباب الشائعة لحظر الحساب:\n1. **إدخال كلمة المرور أو رمز 3D-Secure خطأ 3 مرات متتالية:** يؤدي ذلك إلى قفل الحساب فورياً لمنع محاولات الاختراق.\n2. **محاولة الولوج من شبكات اتصال خارجية أو عناوين غير محلية:** تطبق خوادم بريد الجزائر تدابير حماية متقدمة تمنع الاتصالات غير المصرح بها لحماية أرصدة المواطنين من القرصنة.\n3. **تغيير شريحة الهاتف SIM أو نقلها لهاتف جديد:** عند تغيير رقم الهاتف المسجل دون تحيينه عبر الصراف الآلي، يتم تعليق الحساب لمطابقة الهوية.\n4. **تجاوز سقف التحويل اليومي:** تجاوز حد 200,000 دج في اليوم أو إجراء تحويلات متتالية مشبوهة.\n\n### ثانياً: خطوات رفع التقييد وإعادة التفعيل:\n1. **الاتصال المباشر عبر شبكة الهاتف المحلية:** تأكد من الاتصال عبر شبكة الهاتف النقال الوطنية المباشرة (4G/5G) دون وسائط توجيه اتصال، لضمان التعرف النظامي على موقع الاتصال.\n2. **تحديث رقم الهاتف عبر الصراف الآلي (GAB):** توجه لأقرب موزع آلي لبريد الجزائر، أدخل بطاقتك الذهبية والرمز السري، اختر 'خدمات الهاتف النقال' ثم 'تأكيد رقم الهاتف'.\n3. **الاتصال بمركز النداء 1530:** اتصل بخدمة الزبائن لبريد الجزائر وقدم رقم البطاقة الذهبية ورقم الحساب CCP لإعادة تصفير محاولات الدخول الخاطئة.\n4. **زيارة مكتب البريد في الحالات المستعصية:** في حال استمرار التجميد، توجه لمكتب البريد مصحوباً ببطاقة الهوية البيومترية وصك مشطوب وملء استمارة تسوية الحساب الرقمي.", 
+      en: "A restricted BaridiMob account is a security measure taken by Algerie Poste to protect funds. Common causes include: 3 wrong PIN/OTP entries, connection attempts from unrecognized foreign networks, or switching SIM cards without ATM verification. To resolve: connect directly through your local national mobile network (4G/5G), re-verify phone number at any ATM (GAB) under mobile services, call Algerie Poste support at 1530, or visit a post branch with your ID and voided cheque." 
     },
-    source: "بريد الجزائر / مجموعات تقنية",
-    tags: ["بريدي موب", "حلول", "بريد"]
+    source: "مؤسسة بريد الجزائر — مركز خدمة الزبائن (1530) وموقع poste.dz",
+    tags: ["بريدي موب", "حلول", "بريد الجزائر", "البطاقة الذهبية", "خدمات مالية"]
   },
   {
     id: "aadl3-nin-error",
-    title: { ar: "خطأ في رقم التعريف الوطني (NIN) في عدل 3", en: "NIN Error in AADL 3 Registration" },
+    title: { ar: "حل مشكلة خطأ رقم التعريف الوطني (NIN) في التسجيل بسكنات عدل 3", en: "Fix NIN Error in AADL 3 Registration" },
     category: "housing",
     summary: { 
-      ar: "حلول تقنية عند ظهور رسالة 'رقم التعريف خاطئ' أثناء التسجيل.", 
-      en: "Technical solutions for 'Invalid NIN' error during AADL 3 registration." 
+      ar: "كيفية تصحيح أخطاء عدم تطابق رقم التعريف الوطني وتفادي رفض التسجيل في منصة عدل 3.", 
+      en: "How to resolve National Identification Number (NIN) validation errors in AADL 3 registration portal." 
     },
     content: { 
-      ar: "1. تأكد من كتابة الـ 18 رقماً كاملة دون فواصل. 2. إذا كنت مسجلاً سابقاً في عدل 1 أو 2، فقد يرفض النظام طلبك آلياً. 3. جرب التسجيل في أوقات خارج الذروة (بعد الفجر). 4. في حال استمرار المشكلة، اتصل بالرقم الأخضر 3040 لتصحيح البيانات.", 
-      en: "1. Enter all 18 digits without spaces. 2. Previous AADL 1/2 subscribers may be auto-rejected. 3. Register during off-peak hours (dawn). 4. Call 3040 if the data mismatch persists." 
+      ar: "يواجه بعض المكتتبين رسالة خطأ تفيد بأن 'رقم التعريف الوطني خاطئ' أو 'غير مطابق' أثناء التسجيل في منصة عدل 3. إليك خطوات المعالجة والحلول التقنية المعتمدة:\n\n### أسباب الخطأ الأكثر شيوعاً:\n1. **كتابة أرقام خاطئة أو إدخال مسافات:** يتكون رقم NIN من 18 رقماً يجب كتابتها بدقة باللغة اللاتينية دون أي مسافات أو فواصل.\n2. **عدم تطابق بيانات الحالة المدنية:** التحقق الآلي يتم عبر قاعدة بيانات وزارة الداخلية، وأي اختلاف بين تاريخ الميلاد المسجل والوثيقة البيومترية يسبب رفض الاستمارة.\n3. **وجود ملف سابق في عدل 1 أو عدل 2:** إذا كان المكتتب أو زوجه مسجلاً سابقاً في برامج سكنية، قد يقوم النظام بفرز الطلب آلياً.\n\n### خطوات حل المشكلة:\n1. **التأكد من رقم NIN المطبوع:** استخرج الرقم من بطاقة التعريف الوطنية البيومترية (المتواجد أسفل الصورة مباشرة) أو من الصفحة الأولى لجواز السفر البيومتري.\n2. **استخدام متصفح حديث في أوقات خارج الذروة:** التسجيل في الصباح الباكر أو في المساء لتفادي بطء الاستجابة مع سيرفرات الحالة المدنية.\n3. **الاتصال بالرقم الأخضر لوكالة عدل (3040):** للإبلاغ عن مشكلة عدم تطابق البيانات وتصحيحها في المنظومة الرقمية.", 
+      en: "NIN mismatch errors occur during AADL 3 registration due to incorrect 18-digit entry, formatting spaces, civil registry data mismatches, or previous subscriptions. Ensure the 18 digits match your biometric ID card, input digits without spaces, use a modern browser during off-peak hours, or contact AADL support at 3040." 
     },
-    source: "وكالة عدل / صفحة المكتتبين",
-    tags: ["عدل 3", "NIN", "سكن"]
+    source: "وكالة تحسين السكن وتطويره (AADL) — الرقم الأخضر 3040",
+    tags: ["عدل 3", "NIN", "سكنات عدل", "حلول تقنية"]
   },
   {
     id: "minha-suspended",
-    title: { ar: "أسباب تعليق منحة البطالة وكيفية استرجاعها", en: "Minha Suspension Reasons & Recovery" },
+    title: { ar: "أسباب تعليق منحة البطالة (Suspension Minha) وإجراءات استرجاعها 2026", en: "Minha Suspension Causes and Reactivation Guide 2026" },
     category: "employment",
     summary: { 
-      ar: "لماذا تحولت حالة منحتك إلى 'موقوفة' (Suspendu)؟", 
-      en: "Why is your unemployment grant status 'Suspended'?" 
+      ar: "شرح قانوني مفصل لأسباب توقيف صب منحة البطالة لدى ANEM والملف المطلوب لإعادة التفعيل.", 
+      en: "Detailed legal explanation of ANEM unemployment grant suspensions and required reactivation procedures." 
     },
     content: { 
-      ar: "1. امتلاك سجل تجاري أو بطاقة حرفي (حتى لو كانت قديمة). 2. عدم الالتحاق بالتكوين المهني بعد استدعائك. 3. انتساب الزوج(ة) لمنظومة الضمان الاجتماعي براتب يتجاوز الحد. 4. الحل: التوجه لملحقة ANEM مع 'شهادة عدم انتساب' (Non-Affiliation) لإعادة التفعيل.", 
-      en: "1. Owning a commercial record or artisan card. 2. Not attending mandatory vocational training. 3. Spouse earning above the social security threshold. 4. Solution: Visit ANEM with a 'Non-Affiliation' certificate to reactivate." 
+      ar: "تخضع منحة البطالة (18,000 دج) لنظام رقابة ومطابقة دورية آلية بين الوكالة الوطنية للتشغيل وصناديق الضمان الاجتماعي والسجل التجاري. نوضح هنا الحالات القانونية للتعليق وكيفية تقديم الطعن:\n\n### أهم أسباب تعليق الصرف:\n1. **الانتساب إلى هيئات الضمان الاجتماعي (CNAS / CASNOS):** أي تصريح بالعمل كأجير أو غير أجير، حتى وإن كان مؤقتاً، يسقط صفة الباحث عن عمل تلقائياً.\n2. **بلوغ سن الـ 40 سنة:** تنص الشروط التنظيمية على أن المنحة موجهة للفئة العمرية بين 19 و 40 سنة، وتتوقف آلياً عند بلوغ هذا السن.\n3. **عدم تجديد بطاقة طالب العمل عبر 'وسيط أونلاين':** تجديد التسجيل إلزامي كل 6 أشهر، وإهماله يؤدي إلى تعليق المنحة مؤقتاً.\n4. **الغياب عن التكوين المهني الإلزامي:** في حال توجيه المستفيد لدورة تأهيلية لدى مركز التكوين وعدم الالتحاق دون مبرر شرعي.\n5. **امتلاك سجل تجاري أو بطاقة حرفي نشطة:** حتى لو لم يتم ممارسة النشاط فعلياً، يجب شطب السجل رسمياً.\n\n### كيفية رفع التعليق والطعن:\n1. **استخراج شهادة عدم الانتساب:** استخراج الوثيقة من فضاء الهناء CNAS وبوابة ضمانكم CASNOS تثبت خلو الذمة.\n2. **تقديم ملف الطعن لدى ملحقة ANEM:** التوجه للملحقة المحلية للتشغيل التابع لها المعني مصحوباً بالوثائق المبررة وإيداع استمارة إعادة النظر في أجل لا يتعدى 15 يوماً.", 
+      en: "The Algerian unemployment grant (Minha) is automatically audited against social security and commerce registries. Common causes for suspension include social security affiliation (CNAS/CASNOS), turning 40, failing to renew Wassit registration every 6 months, or missing mandatory vocational training. To appeal: obtain non-affiliation certificates and visit your local ANEM agency with supporting documents." 
     },
-    source: "الوكالة الوطنية للتشغيل / فيسبوك",
-    tags: ["منحة البطالة", "ANEM", "حلول"]
+    source: "الوكالة الوطنية للتشغيل (ANEM) — وزارة العمل والتشغيل والضمان الاجتماعي",
+    tags: ["منحة البطالة", "ANEM", "وسيط اونلاين", "التشغيل", "حلول"]
   },
   {
     id: "eccp-otp-not-received",
-    title: { ar: "حل مشكلة عدم وصول رمز التأكيد (OTP)", en: "Fix OTP Not Received in ECCP" },
+    title: { ar: "حل مشكلة عدم وصول رمز التأكيد (OTP SMS) في منصة ECCP والبطاقة الذهبية", en: "Fix OTP SMS Delays for ECCP and Edahabia" },
     category: "post",
     summary: { 
-      ar: "خطوات حل تأخر وصول رسائل التأكيد عند طلب البطاقة الذهبية.", 
-      en: "Steps to fix SMS confirmation code delays for Edahabia requests." 
+      ar: "خطوات حل تأخر وصول رسائل التأكيد عبر الهاتف عند طلب البطاقة الذهبية أو التحويل المالي.", 
+      en: "Troubleshooting guide for SMS verification code delays during Edahabia card requests and online transactions." 
     },
     content: { 
-      ar: "1. تأكد أن رقم الهاتف مرتبط رسمياً بالحساب (خدمة Notification SMS). 2. جرب تغيير المتصفح أو حذف ملفات الكوكيز. 3. تأكد من عدم امتلاء ذاكرة الرسائل في هاتفك. 4. الأفضل استخدام شريحة 'موبيليس' لضمان سرعة الوصول مقارنة بالمتعاملين الآخرين.", 
-      en: "1. Ensure the number is officially linked via 'Notification SMS'. 2. Switch browsers or clear cookies. 3. Check if your phone's SMS storage is full. 4. Mobilis SIMs typically receive ECCP codes faster." 
+      ar: "يُعتبر رمز التحقق لمرة واحدة (OTP) خطوة الأمان الأساسية في معاملات بريد الجزائر عبر الإنترنت. إذا لم يصلك الرمز، اتبع الخطوات التالية:\n\n1. **التأكد من ربط رقم الهاتف بالبطاقة الذهبية:** يجب أن يكون رقم هاتفك مربوطاً بخدمة الرسائل القصيرة في مكتب البريد أو عبر الصراف الآلي (GAB).\n2. **التحقق من عدم حظر أرقام الخدمات القصيرة (Shortcodes):** تأكد من إعدادات تطبيق الرسائل في هاتفك أنه لا يصنف رسائل بريد الجزائر (AlgeriePoste) كرسائل غير مرغوب فيها (Spam).\n3. **إعادة تشغيل الهاتف أو التبديل لوضع الطيران:** يساعد ذلك في إعادة الاتصال بأقرب برج إرسال وتفريغ قائمة انتظار الرسائل القصيرة.\n4. **تفضيل شبكة موبيليس للخدمات المالية:** تشير التجارب الميدانية إلى أن شرائح Mobilis تستقبل رموز البريد بأعلى سرعة نظراً للتكامل المباشر مع خوادم بريد الجزائر.", 
+      en: "If OTP codes fail to arrive: ensure your phone is officially linked via ATM, check that shortcode SMS are not blocked as spam in your phone settings, toggle airplane mode to refresh network connection, or use Mobilis SIM cards which offer the fastest delivery integration with Algerie Poste." 
     },
-    source: "بريد الجزائر / مجتمع التقنية",
-    tags: ["البطاقة الذهبية", "بريد", "OTP"]
+    source: "مؤسسة بريد الجزائر — مديرية الرقمنة والخدمات المالية",
+    tags: ["البطاقة الذهبية", "بريد الجزائر", "OTP", "ECCP"]
   },
   {
     id: "sonelgaz-online-payment",
-    title: { ar: "دليل دفع فاتورة سونلغاز بالبطاقة الذهبية", en: "Pay Sonelgaz Bill with Edahabia" },
+    title: { ar: "دليل دفع فاتورة سونلغاز بالبطاقة الذهبية والبطاقة البنكية CIB", en: "Pay Sonelgaz Electricity and Gas Bill Online" },
     category: "tech",
     summary: { 
-      ar: "كيفية تسديد فواتير الكهرباء والغاز من منزلك عبر الإنترنت.", 
-      en: "How to pay your electricity and gas bills online from home." 
+      ar: "شرح تفصيلي لتسديد فواتير الكهرباء والغاز من منزلك عبر بوابة الدفع الإلكتروني واستخراج الوصل.", 
+      en: "Step-by-step guide to paying Sonelgaz electricity and gas bills online using Edahabia or CIB cards." 
     },
     content: { 
-      ar: "1. ادخل لموقع baridinet.poste.dz/sonelgaz. 2. أدخل رقم الفاتورة ورمز EBB المكون من 3 أرقام. 3. أدخل مبلغ الفاتورة بدقة. 4. أدخل معلومات البطاقة الذهبية وأكد العملية برمز الرسالة القصيرة. ستتلقى وصلاً رقمياً فورياً.", 
-      en: "1. Visit baridinet.poste.dz/sonelgaz. 2. Enter bill number and 3-digit EBB code. 3. Enter the exact amount. 4. Input Edahabia card details and confirm via SMS. You will receive an instant digital receipt." 
+      ar: "يُتيح مجمع سونلغاز بالتعاون مع بريد الجزائر وبنك الجزائر خدمة الدفع الإلكتروني لفواتير استهلاك الطاقة على مدار 24 ساعة دون أي عمولات إضافية:\n\n### خطوات الدفع بالبطاقة الذهبية عبر الإنترنت:\n1. **الدخول إلى بوابة الدفع:** الولوج مباشرة إلى الرابط الرسمي (baridinet.poste.dz/sonelgaz).\n2. **إدخال بيانات الفاتورة:** نقل 'رقم الفاتورة' ورمز 'EBB' المكون من 3 أرقام والمطبوع في أعلى الفاتورة الورقية بدقة.\n3. **تأكيد المبلغ:** إدخال المبلغ الإجمالي المستحق بالدينار الجزائري.\n4. **إدخال بيانات البطاقة الذهبية:** كتابة الرقم المكون من 16 خانة، تاريخ انتهاء الصلاحية، ورمز CVV2 الموجود خلف البطاقة.\n5. **تأكيد العملية:** إدخال رمز الأمان المرسل عبر SMS وتنزيل وصل السداد الرقمي بصيغة PDF والاحتفاظ به كإثبات قانوني.", 
+      en: "Sonelgaz bill payment is available 24/7 via baridinet.poste.dz/sonelgaz. Enter your bill number, the 3-digit EBB code found on the paper bill, input the total amount, enter your Edahabia/CIB card details, confirm with the SMS OTP code, and download your official digital payment receipt." 
     },
-    source: "سونلغاز / بريد الجزائر",
-    tags: ["سونلغاز", "فاتورة", "دفع"]
+    source: "مجمع سونلغاز وبريد الجزائر — بوابة الدفع الإلكتروني المعتمدة",
+    tags: ["سونلغاز", "فاتورة", "دفع إلكتروني", "البطاقة الذهبية"]
   },
   {
     id: "license-points-2026",

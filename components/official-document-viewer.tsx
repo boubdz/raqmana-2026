@@ -31,7 +31,7 @@ export function OfficialDocumentViewer({
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
-                إرسالية رسمية موثقة 📜
+                نسخة إعلامية توضيحية 📜
               </span>
               <span className="text-xs text-muted-foreground">{dateStr}</span>
             </div>

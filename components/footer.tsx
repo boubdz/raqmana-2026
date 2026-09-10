@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useLanguage } from "@/contexts/language-context";
 import Link from "next/link";
 import { ExternalLink, ArrowUpRight, Check, Loader2 } from "lucide-react";
-import ViewsCounter from "@/components/ViewsCounter";
 import { SocialLinks } from "@/components/SocialLinks";
 
 // ── Newsletter Form ──────────────────────────────────────────────────────────
@@ -125,12 +124,12 @@ export function Footer() {
             ))}
           </nav>
 
-          {/* Newsletter / Last Update Section */}
-          <div className="mb-16 flex flex-col items-center gap-6">
+            {/* Newsletter / Last Update Section */}
+          <div className="mb-12 flex flex-col items-center gap-6">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-black/5 dark:border-white/5 bg-black/[0.01] dark:bg-white/[0.01]">
-              <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              <span className="text-[10px] font-black uppercase tracking-widest opacity-60">
-                {language === 'ar' ? 'آخر تحديث: مايو 2026' : 'Last Updated: May 2026'}
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-widest opacity-80">
+                {language === 'ar' ? 'آخر تدقيق قانوني ومطابقة: سبتمبر 2026' : 'Audited & Verified: September 2026'}
               </span>
             </div>
             
@@ -142,16 +141,18 @@ export function Footer() {
             </div>
           </div>
 
+          {/* تنبيه قانوني صريح لحماية المستهلك (وفق القانون الجزائري 09-03) */}
+          <div className="w-full max-w-4xl mb-12 p-4 rounded-2xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 text-center text-xs text-muted-foreground leading-relaxed">
+            <p>
+              {language === 'ar'
+                ? '⚠️ إخلاء مسؤولية قانوني: منصة "رقمنة" دليل إعلامي وتقني مستقل يهدف إلى تسهيل استخدام الخدمات الرقمية للمواطنين، ولا تمثل أي جهة حكومية أو بنكية رسمية. المرجع القانوني النهائي هو النصوص التشريعية المنشورة في الجريدة الرسمية للجمهورية الجزائرية والجهات الإدارية المختصة (CNAS, DGI, بريد الجزائر...). الأدلة والحاسبات ذات طابع استرشادي فقط.'
+                : '⚠️ Legal Disclaimer: "Raqmana" is an independent informational guide designed to help citizens navigate digital services. It does not represent any government agency or banking institution. Official authority resides solely with the Algerian Official Gazette and relevant state bodies. Guides and calculators provide non-binding estimates.'}
+            </p>
+          </div>
+
           {/* Social & Utilities Row */}
           <div className="mb-16 flex flex-wrap items-center justify-center gap-8 border-y border-black/[0.08] dark:border-white/[0.08] py-10 w-full max-w-4xl">
             <SocialLinks />
-            <div className="h-4 w-px bg-black/10 dark:bg-white/10 hidden md:block" />
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-foreground/75 dark:text-foreground/85">
-                {language === 'ar' ? 'إجمالي الزيارات' : 'Total Views'}
-              </span>
-              <ViewsCounter />
-            </div>
             <div className="h-4 w-px bg-black/10 dark:bg-white/10 hidden md:block" />
             <Link 
               href="/feedback" 

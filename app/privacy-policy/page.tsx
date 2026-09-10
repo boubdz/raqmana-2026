@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { ChevronLeft, ShieldCheck, Lock, Eye, Cookie, FileText, UserCheck, Mail, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'سياسة الخصوصية الرسمية — معايير حماية البيانات وملفات تعريف الارتباط | رقمنة الجزائر 2026',
-  description: 'سياسة الخصوصية الرسمية لبوابة رقمنة الجزائر 2026. بيان شامل حول ملفات تعريف الارتباط، إعلانات Google AdSense، وحماية بيانات الزوار وفق أعلى المعايير.',
+  title: 'سياسة الخصوصية — معايير حماية البيانات وملفات تعريف الارتباط | رقمنة الجزائر 2026',
+  description: 'سياسة الخصوصية لبوابة رقمنة الجزائر 2026. بيان شامل حول ملفات تعريف الارتباط، إعلانات Google AdSense، وحماية بيانات الزوار وفق أعلى المعايير القانونية.',
   alternates: {
     canonical: 'https://www.raqmanadz.com/privacy-policy',
   },
@@ -147,14 +147,14 @@ export default function PrivacyPolicyPage() {
             <section className="space-y-4 border-t border-border/60 pt-8">
               <h2 className="text-2xl font-black text-foreground flex items-center gap-3">
                 <Eye className="h-6 w-6 text-emerald-500" />
-                <span>4. سرية العمليات التفاعلية (الحاسبات ومولد السيرة الذاتية)</span>
+                <span>4. سرية العمليات التفاعلية (صانع السيرة الذاتية والمساعد الذكي للوثائق)</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed text-base">
-                تعتمد أدوات الموقع التفاعلية (مثل حاسبة أجور الوظيف العمومي، محاكي أقساط سكنات عدل 3، حاسبة سونلغاز، حاسبة CCP، وصانع السيرة الذاتية CV Maker) على تقنيات التشغيل المحلي من طرف العميل (Client-Side JavaScript):
+                تعتمد أدوات الموقع التفاعلية (مثل صانع السيرة الذاتية CV Maker، والمساعد الذكي للوثائق والطلبات الإدارية) على تقنيات التشغيل المحلي من طرف العميل (Client-Side JavaScript):
               </p>
               <ul className="space-y-2 list-disc pr-6 text-muted-foreground text-base">
-                <li>لا يتم إرسال أرقام الرواتب، التقديرات، أو المعلومات المدخلة في حاسباتنا إلى أي خوادم خارجية.</li>
-                <li>تتم المعالجة والحسابات الرياضية داخل متصفح جهازك فوراً.</li>
+                <li>لا يتم تخزين السير الذاتية أو النصوص والبيانات الشخصية المدخلة في خوادمنا ولا مشاركتها مع أي طرف ثالث.</li>
+                <li>تتم معالجة وتوليد المستندات وملفات PDF محلياً داخل متصفح جهازك فوراً.</li>
                 <li>لا نطلب إدخال أي رقم هوية بيومتري (NIN) ولا أرقام سرية مصرفية، بل نحيلك للروابط الرسمية المعتمدة (.dz).</li>
               </ul>
             </section>

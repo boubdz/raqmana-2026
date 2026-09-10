@@ -21,18 +21,11 @@ import {
   FileDown,
   UserCheck,
   Bot,
-  Calculator,
   Wrench,
   Activity,
   Layers,
   Sparkles,
-  BookOpen,
-  Wallet,
-  Building2,
-  Coins,
-  Zap,
-  Baby,
-  Car
+  BookOpen
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -148,69 +141,6 @@ export function Header() {
                   <div className="flex flex-col">
                     <span>{language === "ar" ? "دليل تكوين الملفات الإدارية" : "Document Dossier Guide"}</span>
                     <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "ملفات السكن، الفلاحة، والرخص" : "Requirements & Dossiers"}</span>
-                  </div>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/ccp-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
-                  <Calculator className="w-4 h-4 text-yellow-500" />
-                  <div className="flex flex-col">
-                    <span>{language === "ar" ? "حاسبة سحب الرصيد CCP" : "CCP Calculator"}</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "حساب الرصيد القابل للسحب" : "Calculate Net Withdrawals"}</span>
-                  </div>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/salary-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
-                  <Wallet className="w-4 h-4 text-emerald-500" />
-                  <div className="flex flex-col">
-                    <span>{language === "ar" ? "حاسبة أجور الوظيف العمومي" : "Salary Calculator"}</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "حساب الراتب الصافي والمردودية" : "Net Salary & Bonuses 2026"}</span>
-                  </div>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/aadl-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
-                  <Building2 className="w-4 h-4 text-emerald-600" />
-                  <div className="flex flex-col">
-                    <span>{language === "ar" ? "محاكي أقساط عدل 3 (AADL)" : "AADL 3 Calculator"}</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "الأشطر الخمسة والقسط الشهري" : "Installments & 5 Tranches"}</span>
-                  </div>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/rappel-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
-                  <Coins className="w-4 h-4 text-yellow-500" />
-                  <div className="flex flex-col">
-                    <span>{language === "ar" ? "حاسبة الرّابيل (مخلفات الترقية)" : "Rappel Calculator"}</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "حساب الأثر الرجعي للدرجات" : "Promotions & Retroactive Pay"}</span>
-                  </div>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/sonelgaz-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
-                  <Zap className="w-4 h-4 text-amber-500" />
-                  <div className="flex flex-col">
-                    <span>{language === "ar" ? "حاسبة فاتورة سونلغاز" : "Sonelgaz Calculator"}</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "تقدير استهلاك الكهرباء والغاز" : "Electricity & Gas Bill 2026"}</span>
-                  </div>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/cnas-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
-                  <Baby className="w-4 h-4 text-pink-500" />
-                  <div className="flex flex-col">
-                    <span>{language === "ar" ? "حاسبة عطلة الأمومة (كناس)" : "CNAS Maternity & Leave"}</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "التعويض اليومي 100% وتاريخ العودة" : "Maternity & Sick Leave 100%"}</span>
-                  </div>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/ccr-calculator" className="flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer font-bold text-xs">
-                  <Car className="w-4 h-4 text-blue-500" />
-                  <div className="flex flex-col">
-                    <span>{language === "ar" ? "محاكي جمركة CCR (الجالية)" : "CCR Customs Simulator"}</span>
-                    <span className="text-[10px] text-muted-foreground font-normal">{language === "ar" ? "إعفاء سيارات المغتربين والملف" : "Diaspora Car Customs 2026"}</span>
                   </div>
                 </Link>
               </DropdownMenuItem>
@@ -376,69 +306,6 @@ export function Header() {
                 >
                   <FileText className="w-4 h-4 text-amber-500 flex-shrink-0" />
                   <span>{language === "ar" ? "دليل تكوين الملفات" : "Document Dossiers"}</span>
-                </Link>
-
-                <Link
-                  href="/ccp-calculator"
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Calculator className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                  <span>{language === "ar" ? "حاسبة سحب CCP" : "CCP Calculator"}</span>
-                </Link>
-
-                <Link
-                  href="/salary-calculator"
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Wallet className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  <span>{language === "ar" ? "حاسبة أجور الوظيف العمومي" : "Salary Calculator"}</span>
-                </Link>
-
-                <Link
-                  href="/aadl-calculator"
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Building2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                  <span>{language === "ar" ? "محاكي أقساط عدل 3 (AADL)" : "AADL 3 Calculator"}</span>
-                </Link>
-
-                <Link
-                  href="/rappel-calculator"
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Coins className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                  <span>{language === "ar" ? "حاسبة الرّابيل (مخلفات الترقية)" : "Rappel Calculator"}</span>
-                </Link>
-
-                <Link
-                  href="/sonelgaz-calculator"
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Zap className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                  <span>{language === "ar" ? "حاسبة فاتورة سونلغاز" : "Sonelgaz Calculator"}</span>
-                </Link>
-
-                <Link
-                  href="/cnas-calculator"
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Baby className="w-4 h-4 text-pink-500 flex-shrink-0" />
-                  <span>{language === "ar" ? "حاسبة عطلة الأمومة والتعويضات (CNAS)" : "CNAS Maternity & Leave"}</span>
-                </Link>
-
-                <Link
-                  href="/ccr-calculator"
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 text-foreground font-bold text-xs"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Car className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                  <span>{language === "ar" ? "محاكي جمركة CCR (الجالية بالخارج)" : "CCR Customs Simulator (Diaspora)"}</span>
                 </Link>
 
                 <Link

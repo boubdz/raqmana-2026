@@ -7,7 +7,7 @@ import {
   Bot,
   Sparkles,
   ChevronRight,
-  Calculator,
+  Activity,
   FileDown,
   UserCheck,
   FileText,
@@ -24,10 +24,10 @@ export function HeroSection() {
 
   const quickActionCards = [
     {
-      title: language === "ar" ? "حاسبة سحب CCP" : "CCP Calculator",
-      subtitle: language === "ar" ? "حساب الرصيد القابل للسحب" : "Net Withdrawal",
-      href: "/ccp-calculator",
-      icon: Calculator,
+      title: language === "ar" ? "حالة الخدمات الرقمية" : "Services Status",
+      subtitle: language === "ar" ? "متابعة عمل المواقع والمنصات" : "Live Platform Status",
+      href: "/status",
+      icon: Activity,
       color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
     },
     {

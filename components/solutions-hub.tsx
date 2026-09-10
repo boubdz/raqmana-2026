@@ -45,8 +45,8 @@ export function SolutionsHub() {
           </h2>
           <p className="text-xl text-muted-foreground font-medium mb-12">
             {language === "ar" 
-              ? "مقالات مختصرة مستوحاة من المصادر الرسمية ومجتمعات التقنية لمساعدتك في حل مشاكلك الرقمية فوراً." 
-              : "Concise guides sourced from official portals and tech communities to help you fix digital issues instantly."}
+              ? "أدلة وإرشادات عملية مستندة إلى المواقع والبيانات الإدارية العامة لمساعدتك في الاستخدام الصحيح للخدمات الرقمية." 
+              : "Practical guides based on public administrative instructions and service portals to assist you with digital platforms."}
           </p>
 
           <div className="relative max-w-2xl mx-auto group">

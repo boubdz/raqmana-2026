@@ -52,13 +52,13 @@ export function OfficialDownloadBox({ template }: Props) {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-2">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>وثائق رسمية أصلية معتمدة 2026</span>
+              <span>نماذج واستمارات إدارية للتحميل 2026</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-foreground">
-              خيارات تنزيل واستخراج الوثيقة الرسمية
+              خيارات تنزيل واستخراج الاستمارة الإدارية
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              حمل الاستمارة مباشرة بصيغتها الرسمية المعتمدة لدى {template.governingMinistry}.
+              حمل الاستمارة بصيغة PDF قابلة للطباعة الخاصة بـ {template.governingMinistry}.
             </p>
           </div>
 

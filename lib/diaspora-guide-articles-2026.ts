@@ -70,14 +70,13 @@ export const guideCcrDouaneAlgerie2026Article: SeoArticle = {
         "Étape 5 — Dédouanement et immatriculation en Algérie : Présentation physique au bureau de douane d'entrée, contrôle physique du véhicule et de la cargaison, émission du bon de sortie et de la déclaration de douane (D10), permettant ensuite l'obtention de la carte grise définitive algérienne auprès de la daïra ou de la wilaya de résidence."
     },
     {
-      heading: "7. Le simulateur interactif CCR de Raqmana : calculez votre exonération",
+      heading: "7. Recommandations officielles pour préparer votre dossier de franchise",
       content:
-        "Pour éviter les mauvaises surprises financières et vérifier l'éligibilité de votre véhicule avant d'engager des frais d'achat ou de transport, la plateforme Raqmana a mis au point le premier [Simulateur CCR Douane Algérie 2026](/ccr-calculator).\n\n" +
-        "Cet outil ergonomique et gratuit vous permet en quelques clics :\n" +
-        "• De basculer entre l'affichage en langue française ou arabe.\n" +
-        "• De vérifier instantanément la conformité de votre durée de résidence et de votre motorisation (essence 2000cc, diesel 2500cc).\n" +
-        "• D'estimer le montant exact des économies fiscales réalisées grâce à la franchise douanière.\n" +
-        "• De cocher vos pièces administratives dans une checklist interactive pour vous assurer que votre dossier consulaire est complet à 100% avant votre rendez-vous."
+        "Pour éviter les mauvaises surprises financières et vérifier l'éligibilité de votre véhicule avant d'engager des frais d'achat ou de transport, veillez à respecter scrupuleusement la réglementation douanière :\n\n" +
+        "• Vérifier la conformité de votre durée de résidence consulaire ininterrompue (3 ans minimum).\n" +
+        "• Respecter les plafonds de cylindrée (essence inférieure ou égale à 2000cc, diesel inférieure ou égale à 2500cc).\n" +
+        "• Préparer l'inventaire chiffré et détaillé de vos effets personnels et mobiliers avec visa consulaire.\n" +
+        "• Vous assurer que votre dossier consulaire est complet avant de quitter le pays d'accueil."
     },
     {
       heading: "8. Foire Aux Questions (FAQ) sur le CCR et la douane algérienne",
@@ -93,12 +92,6 @@ export const guideCcrDouaneAlgerie2026Article: SeoArticle = {
     }
   ],
   registrationRequiredSites: [
-    {
-      name: "Simulateur CCR Douane Algérie (Plateforme Raqmana)",
-      url: "https://www.raqmanadz.com/ccr-calculator",
-      requirements:
-        "Outil de simulation interactif bilingue (français/arabe) pour calculer l'éligibilité légale, les économies de dédouanement et générer la checklist des pièces consulaires.",
-    },
     {
       name: "Direction Générale des Douanes Algériennes (Portail Officiel)",
       url: "https://www.douane.gov.dz",
@@ -197,12 +190,6 @@ export const apostilleAlgerieGuideConsulatFrance2026Article: SeoArticle = {
       url: "https://prestations.interieur.gov.dz/ministere/",
       requirements:
         "Service en ligne de demande de l'acte de naissance spécial 12S et suivi de la fabrication du passeport biométrique pour les Algériens de l'étranger.",
-    },
-    {
-      name: "Simulateur CCR et Dédouanement Véhicule (Raqmana)",
-      url: "https://www.raqmanadz.com/ccr-calculator",
-      requirements:
-        "Simulateur officiel de calcul des droits de douane et conditions d'exonération pour le retour définitif des expatriés algériens.",
     }
   ]
 };

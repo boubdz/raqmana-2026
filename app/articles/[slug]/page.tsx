@@ -67,8 +67,8 @@ const highConvertingArticleMetadata: Record<string, { title: string; description
     description: "كيفية قراءة وفهم فاتورة سونلغاز للكهرباء والغاز (54M و 23M): أسعار الأشطر، الضرائب الثابتة، تحويل الغاز للوحدات الحرارية، ونصائح تفادي الشطر الرابع ⚡💡",
   },
   'cnas-maternite-guide-2026': {
-    title: "عطلة الأمومة والتعويضات اليومية CNAS 2026 🇩🇿 — تعويض 98 يوماً والإعفاء الضريبي IRG",
-    description: "دليل عطلة الأمومة للمرأة العاملة في الجزائر 2026: أحكام القانون 83-11، حساب الأجر اليومي 100%، الإعفاء من ضريبة IRG المادة 68، وملف كناس 🤰⚡",
+    title: "عطلة الأمومة والتعويضات اليومية CNAS وفق القانون 25-08 🇩🇿 — تعويض 150 يوماً والإعفاء الضريبي IRG",
+    description: "دليل عطلة الأمومة للمرأة العاملة في الجزائر وفق القانون 25-08: رفع المدة إلى 150 يوماً (5 أشهر)، حساب الأجر اليومي 100%، الإعفاء من IRG، وملف كناس 🤰⚡",
   },
   'guide-ccr-douane-algerie-2026': {
     title: "Guide Complet CCR Douane Algérie 2026 🇩🇿 — Dédouanement Véhicule, Conditions et Simulateur",
@@ -190,7 +190,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = highConv ? highConv.title : `${shortTitle} | رقمنة الجزائر`;
   // وصف مخصص لكل مقال (أول 155 حرف من المقدمة بعد تنظيفها)
   const cleanIntro = (article.introduction || '').replace(/[\n\r]+/g, ' ').replace(/\s+/g, ' ').trim();
-  const description = highConv ? highConv.description : (cleanIntro.substring(0, 155) || `${shortTitle} — الدليل الرسمي والإجراءات الكاملة في الجزائر 2026 ⚡`);
+  const description = highConv ? highConv.description : (cleanIntro.substring(0, 155) || `${shortTitle} — الدليل الشامل والإجراءات الكاملة في الجزائر 2026 ⚡`);
 
   return {
     title,
@@ -357,14 +357,12 @@ export default async function ArticlePage({ params }: Props) {
                 {article.title}
               </h1>
 
-              {/* Social Proof Toolbar */}
+              {/* Action Toolbar */}
               <div className="mb-8 max-w-md">
                 <ServiceToolbarBar
                   serviceId={`article_${realSlug || slug}`}
                   serviceTitle={article.title}
                   url={`/articles/${realSlug || slug}`}
-                  initialViews={54200}
-                  initialRating={4.8}
                 />
               </div>
               

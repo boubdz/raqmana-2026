@@ -87,7 +87,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-foreground">أدوات مساعدة رقمية</h3>
               <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-                حاسبة رسوم الحساب البريدي الجاري CCP، مولد السيرة الذاتية المهنية (CV Maker)، ومساعد الوثائق الذكي لتسهيل تجهيز الملفات قبل التوجه للمكاتب والإدارات.
+                مولد السيرة الذاتية المهنية (CV Maker)، المساعد الذكي للوثائق والطلبات الإدارية، ودليل الوثائق والنماذج الرسمية لتسهيل تجهيز الملفات قبل التوجه للمكاتب والإدارات.
               </p>
             </div>
 
