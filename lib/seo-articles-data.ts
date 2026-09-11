@@ -9,7 +9,6 @@ import {
 } from './trend-articles-2026';
 import {
   aadl3CalculatorGuide2026Article,
-  rappelCalculatorGuide2026Article,
   sonelgazCalculatorGuide2026Article,
   cnasMaterniteGuide2026Article,
 } from './tools-guide-articles-2026';
@@ -2914,7 +2913,6 @@ const awlya_ibtidai_2026Article: SeoArticle = {
 export const seoArticles: Record<string, SeoArticle> = {
   // أدلة ومقالات الأدوات والحاسبات الرقمية الأكثر طلباً 2026 🇩🇿🔥
   'aadl3-calculator-guide-2026': aadl3CalculatorGuide2026Article,
-  'rappel-calculator-guide-2026': rappelCalculatorGuide2026Article,
   'sonelgaz-calculator-guide-2026': sonelgazCalculatorGuide2026Article,
   'cnas-maternite-guide-2026': cnasMaterniteGuide2026Article,
 

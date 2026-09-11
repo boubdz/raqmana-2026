@@ -14,7 +14,7 @@ const defaultNews: NewsItem[] = [
   { title: "تحديث دليل سكنات عدل 3 وشروط الاستفادة لسنة 2026", link: "/articles/aadl3-calculator-guide-2026", date: "2026" },
   { title: "تعديل مدة عطلة الأمومة إلى 150 يوماً بنسبة تعويض 100% وفق القانون 25-08", link: "/articles/cnas-maternite-guide-2026", date: "2026" },
   { title: "دليل استخراج شهادة الميلاد الرقمية S12 عبر البوابة الوطنية للحالة المدنية", link: "/document-guide", date: "2026" },
-  { title: "دليل مسابقات التوظيف والشبكة الاستدلالية لرواتب الوظيف العمومي", link: "/articles/rappel-calculator-guide-2026", date: "2026" },
+  { title: "دليل خدمات البطاقة الذهبية وتطبيق بريدي موب وتفعيل الحسابات", link: "/articles/carte-edahabia-guide-2026", date: "2026" },
   { title: "شرح أشطر فاتورة سونلغاز للكهرباء والغاز وطريقة الدفع الإلكتروني", link: "/articles/sonelgaz-calculator-guide-2026", date: "2026" },
 ];
 

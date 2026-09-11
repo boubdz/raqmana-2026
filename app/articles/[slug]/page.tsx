@@ -10,7 +10,6 @@ import { CommunityComments } from "@/components/community-comments";
 import { ServiceToolbarBar } from "@/components/service-toolbar-bar";
 import { LegalDisclaimerBox } from "@/components/legal-disclaimer-box";
 
-import { OfficialDocumentViewer } from "@/components/official-document-viewer";
 import { ArticleContentRenderer } from "@/components/article-content-renderer";
 
 type Props = {
@@ -58,10 +57,6 @@ const highConvertingArticleMetadata: Record<string, { title: string; description
   'aadl3-calculator-guide-2026': {
     title: "حساب أقساط سكنات عدل 3 لعام 2026 🇩🇿 — الأشطر، القسط الشهري، الكفيل وإعانة CNL",
     description: "دليل حساب أقساط سكنات عدل 3 الرسمي: تفكيك الأشطر الخمسة (38%)، مدة السداد لسن 70 سنة، شروط الكفيل (Garand)، وخصم إعانة الصندوق الوطني للسكن CNL 🏢⚡",
-  },
-  'rappel-calculator-guide-2026': {
-    title: "حساب الرّابيل ومخلفات الترقية في الأجور 2026 🇩🇿 — الأثر الرجعي وفارق المردودية",
-    description: "طريقة حساب مخلفات الترقية في الدرجة (الرّابيل) لموظفي الوظيف العمومي في الجزائر: وتائر الترقية، فارق المردودية الفصلي، والإعفاء الضريبي بالدينار 💰⚡",
   },
   'sonelgaz-calculator-guide-2026': {
     title: "قراءة وفهم فاتورة سونلغاز 2026 🇩🇿 — شرح أشطر الكهرباء والغاز وتفادي الشطر الرابع",
@@ -386,15 +381,7 @@ export default async function ArticlePage({ params }: Props) {
                 <ArticleContentRenderer content={article.introduction} />
               </div>
 
-              {/* Official Communiqué Document Viewer */}
-              {((article.officialDocumentUrl && !article.officialDocumentUrl.includes("og-image.png")) || (article as any).officialImage) && (
-                <OfficialDocumentViewer
-                  imageUrl={article.officialDocumentUrl || (article as any).officialImage}
-                  title={article.title}
-                  sourceMinistry={(article as any).sourceMinistry || "وزارة التربية الوطنية / الهيئات الرسمية"}
-                  dateStr={(article as any).dateStr || "2026"}
-                />
-              )}
+
               
               <div className="space-y-12">
                 {article.sections.map((section: any, index: number) => (
