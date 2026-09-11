@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { serviceCategories, ServiceLink } from "@/lib/services-data";
 
 export const revalidate = 86400; // Cache for 24 hours on Edge CDN
+export const runtime = "edge";
 
 // كلمات الاستبعاد: الرياضة، الترفيه، السياسة الدولية
 const EXCLUDE_KEYWORDS = [

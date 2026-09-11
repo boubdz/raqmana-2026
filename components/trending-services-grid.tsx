@@ -143,12 +143,13 @@ export function TrendingServicesGrid() {
     async function fetchGoogleTrends() {
       try {
         if (typeof window !== 'undefined') {
-          const cached = sessionStorage.getItem('raqmana_trends_cache');
+          const cached = localStorage.getItem('raqmana_trends_cache_v2');
           if (cached) {
             try {
-              const parsed = JSON.parse(cached);
-              if (parsed?.success) {
-                applyTrendsData(parsed);
+              const { data: cachedData, timestamp } = JSON.parse(cached);
+              // 6 hours TTL (21600000 ms)
+              if (cachedData?.success && Date.now() - timestamp < 21600000) {
+                applyTrendsData(cachedData);
                 setIsLoading(false);
                 return;
               }
@@ -162,7 +163,7 @@ export function TrendingServicesGrid() {
           applyTrendsData(data);
           if (typeof window !== 'undefined') {
             try {
-              sessionStorage.setItem('raqmana_trends_cache', JSON.stringify(data));
+              localStorage.setItem('raqmana_trends_cache_v2', JSON.stringify({ data, timestamp: Date.now() }));
             } catch {}
           }
         }
