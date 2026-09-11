@@ -142,6 +142,16 @@ const highConvertingServiceMetadata: Record<string, { title: string; description
     description: "رابط تمديد وتجديد بطاقة طلب العمل عبر وسيط أونلاين wassitonline كل 6 أشهر للحفاظ على استمرار صب منحة البطالة وتجنب تعليق الحساب ⚡",
     keywords: ["تجديد طلب العمل 2026", "تمديد طلب العمل", "البوانتاج منحة البطالة", "wassitonline anem dz", "تجديد منحة البطالة"],
   },
+  "جباية-تيك-jibayatic": {
+    title: "جباية تيك Jibayatic 2026 🇩🇿 — رابط التصريح الجبائي الإلكتروني G50 والضرائب",
+    description: "رابط بوابة جباية تيك jibayatic.mf.gov.dz: دليل التصريح الجبائي الإلكتروني G50، دفع الضرائب والرسوم عن بعد، واستخراج جدول الضرائب NIF ⚡",
+    keywords: ["جباية تيك", "jibayatic", "التصريح الجبائي g50", "ضرائب الجزائر", "جدول الضرائب", "nif"],
+  },
+  "جباية-تيك-jibayatic-jibayatic": {
+    title: "جباية تيك Jibayatic 2026 🇩🇿 — رابط التصريح الجبائي الإلكتروني G50 والضرائب",
+    description: "رابط بوابة جباية تيك jibayatic.mf.gov.dz: دليل التصريح الجبائي الإلكتروني G50، دفع الضرائب والرسوم عن بعد، واستخراج جدول الضرائب NIF ⚡",
+    keywords: ["جباية تيك", "jibayatic", "التصريح الجبائي g50", "ضرائب الجزائر", "جدول الضرائب", "nif"],
+  },
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -170,8 +180,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const enriched = getEnrichedServiceContent(service);
   const customMeta = highConvertingServiceMetadata[service.id];
 
+  let snippet = enriched.detailedDescription;
+  if (snippet.length > 150) {
+    const lastSpace = snippet.lastIndexOf(" ", 150);
+    snippet = snippet.slice(0, lastSpace > 100 ? lastSpace : 150).trim();
+  }
+
   const title = customMeta?.title || `${service.name.ar} 2026 — رابط الدخول والشروط ودليل الاستخدام | رقمنة`;
-  const description = customMeta?.description || `${service.name.ar} (${domain}): ${enriched.detailedDescription.slice(0, 150)}... الشروط، خطوات الاستخدام، ورابط الدخول المباشر.`;
+  const description = customMeta?.description || `${service.name.ar} (${domain}): ${snippet}... الشروط، خطوات الاستخدام، ورابط الدخول المباشر.`;
 
   return {
     title,
