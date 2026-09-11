@@ -70,17 +70,9 @@ const highConvertingArticleMetadata: Record<string, { title: string; description
     title: "عطلة الأمومة والتعويضات اليومية CNAS وفق القانون 25-08 🇩🇿 — تعويض 150 يوماً والإعفاء الضريبي IRG",
     description: "دليل عطلة الأمومة للمرأة العاملة في الجزائر وفق القانون 25-08: رفع المدة إلى 150 يوماً (5 أشهر)، حساب الأجر اليومي 100%، الإعفاء من IRG، وملف كناس 🤰⚡",
   },
-  'guide-ccr-douane-algerie-2026': {
-    title: "Guide Complet CCR Douane Algérie 2026 🇩🇿 — Dédouanement Véhicule, Conditions et Simulateur",
-    description: "Tout savoir sur le CCR en Algérie (Art. 202) : conditions de 3 ans, cylindrée max 2000cc/2500cc, plafond 10 millions DZD, dossier consulaire et simulateur d'exonération 🚗⚡",
-  },
-  'apostille-algerie-guide-consulat-france-2026': {
-    title: "Apostille Algérie en Ligne 2026 🇩🇿 — Guide Démarches, Acte 12S et Mairies de France",
-    description: "Guide officiel de l'Apostille en Algérie (apostille.gov.dz) : légalisation des actes d'état civil pour les mairies françaises, acte 12S et démarches consulaires 🌍⚡",
-  },
   'algerie-banque-carte-visa-devise-2026': {
     title: "فتح حساب بالعملة الصعبة وبطاقة فيزا في الجزائر 2026 🇩🇿 — دليل البنوك والشراء من الإنترنت",
-    description: "كيفية فتح حساب بنكي باليورو في الجزائر (BNA, BADR, البركة)، استخراج بطاقة فيزا كارد للشراء من الإنترنت وتفعيل بايبال، وأفضل البدائل الرقمية 💳⚡",
+    description: "دليل فتح حساب بنكي باليورو في البنوك الجزائرية (BNA, BADR, البركة)، استخراج بطاقة فيزا للشراء من الإنترنت وتفعيل بايبال، وإرشادات الأمان المالي 💳⚡",
   },
   'anem-minha-2026': {
     title: "سيت منحة البطالة 2026 🇩🇿 — رابط تسجيل وتجديد منحة البطالة minha.anem.dz فضاء طالب العمل",
@@ -103,8 +95,8 @@ const highConvertingArticleMetadata: Record<string, { title: string; description
     description: "رابط وزارة التكوين والتعليم المهنيين mfep.gov.dz ومنصة takwin.dz مهنتي: اختيار التخصصات بالشهادة أو بدونها، شروط القبول والتسجيل 🎓⚡",
   },
   'cnas-chifa-2026': {
-    title: "موقع الهناء للضمان الاجتماعي CNAS 2026 🇩🇿 — بطاقة الشفاء الرقمية 2.0 وشهادة الانتساب",
-    description: "رابط موقع وتطبيق فضاء الهناء elhanaa.cnas.dz: تفعيل بطاقة الشفاء، استخراج شهادة الانتساب، متابعة التعويضات، وعطل المرض أونلاين ⚡🏥",
+    title: "موقع الهناء للضمان الاجتماعي CNAS 2026 🇩🇿 — بطاقة الشفاء الرقمية وتطبيق الشفاء وشهادة الانتساب",
+    description: "رابط موقع وتطبيق فضاء الهناء elhanaa.cnas.dz: تفعيل بطاقة الشفاء الرقمية، استخراج شهادة الانتساب، متابعة التعويضات، وعطل المرض أونلاين ⚡🏥",
   },
   retirement: {
     title: "متابعة ملف التقاعد CNR 2026 🇩🇿 — تطبيق تقاعدي، حساب المعاش، وتجديد الشهادة السنوية",

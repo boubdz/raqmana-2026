@@ -64,7 +64,17 @@ const nextConfig = {
       { source: '/categories/complaint.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/request.html', destination: '/document-assistant', permanent: true },
       { source: '/categories/orientation', destination: '/categories/university', permanent: true },
-      { source: '/categories/:slug.html', destination: '/categories/:slug', permanent: true },
+      // ✅ 301 Redirects for Deleted Calculators to their respective Official Guides (Zero 404s for social traffic)
+      { source: '/aadl-calculator', destination: '/articles/aadl3-calculator-guide-2026', permanent: true },
+      { source: '/cnas-calculator', destination: '/articles/cnas-maternite-guide-2026', permanent: true },
+      { source: '/salary-calculator', destination: '/document-guide', permanent: true },
+      { source: '/ccp-calculator', destination: '/categories/post', permanent: true },
+      { source: '/sonelgaz-calculator', destination: '/articles/sonelgaz-calculator-guide-2026', permanent: true },
+      { source: '/ccr-calculator', destination: '/categories/foreignAffairs', permanent: true },
+      { source: '/articles/guide-ccr-douane-algerie-2026', destination: '/categories/foreignAffairs', permanent: true },
+      { source: '/articles/apostille-algerie-guide-consulat-france-2026', destination: '/categories/foreignAffairs', permanent: true },
+      { source: '/terms', destination: '/terms-of-service', permanent: true },
+      { source: '/privacy', destination: '/privacy-policy', permanent: true },
       // ✅ 301 Redirects for duplicate article/category routes to resolve Google Search Console Duplicate Canonical issue
       { source: '/articles/youth', destination: '/categories/youth', permanent: true },
       { source: '/articles/banking', destination: '/categories/banking', permanent: true },

@@ -127,7 +127,7 @@ export default function OGImage() {
           </div>
 
           <div style={{ color: '#9ca3af', fontSize: '22px', fontWeight: 400, marginTop: '8px' }}>
-            267+ خدمة حكومية • روابط مباشرة • بدون إعلانات
+            267+ خدمة حكومية • روابط مباشرة • دليل معلوماتي مستقل
           </div>
         </div>
 

@@ -72,6 +72,17 @@ const categoryNamesAr: Record<string, string> = {
   investment: "الاستثمار (AAPI)",
   agriculture: "الفلاحة والموارد المائية",
   insurance: "التأمين وإعادة التأمين",
+  police: "الأمن الوطني",
+  elections: "الانتخابات",
+  culture: "الثقافة والفنون",
+  tourism: "السياحة",
+  water: "الموارد المائية",
+  industry: "الصناعة",
+  environment: "البيئة",
+  media: "الإعلام والاتصال",
+  finance: "البنوك والمالية",
+  concours: "مسابقات التوظيف",
+  "mosbakat-toudif": "مسابقات التوظيف",
 };
 
 // خرائط ميتاداتا مستهدفة بأعلى معدل نقر وتحويل للخدمات الأكثر بحثاً في Google الجزائر

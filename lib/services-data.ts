@@ -666,7 +666,6 @@ export const serviceCategories: ServiceCategory[] = [
       { name: { ar: "دليل الجمارك لشهادة تغيير الإقامة CCR", en: "Customs Guide for CCR Exemption (Diaspora)" }, url: "https://www.douane.gov.dz" },
       { name: { ar: "بوابة الأبوستيل الوطنية للتصديق الإلكتروني", en: "National E-Apostille Legalization Portal" }, url: "https://www.apostille.gov.dz" },
       { name: { ar: "حجز مواعيد القنصليات وجواز السفر البيومتري", en: "Consulate Appointments & Biometric Passport" }, url: "https://prestations.interieur.gov.dz/ministere/" },
-      { name: { ar: "سكنات الترقوي العمومي LPP للجالية (بالعملة الصعبة)", en: "Diaspora LPP Housing Portal (Foreign Currency)" }, url: "https://www.enpi.dz" },
       { name: { ar: "بوابة التصديق الإلكتروني (الغرفة الوطنية للموثقين)", en: "Notary E-Apostille Portal" }, url: "https://apostille.hcn.dz/" },
       { name: { ar: "كاتب الدولة للجالية بالخارج والممثليات القنصلية", en: "Diaspora Affairs & Algerian Embassies" }, url: "https://www.mfa.gov.dz/ar/contact" },
     ],
