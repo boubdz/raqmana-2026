@@ -111,7 +111,7 @@ export default function AboutPage() {
             <ul className="space-y-4 text-muted-foreground text-base sm:text-lg">
               <li className="flex items-start gap-3">
                 <span className="h-2 w-2 rounded-full bg-primary mt-2.5 shrink-0" />
-                <span><strong>التحقق من المصادر الرسمية:</strong> جميع المعلومات والمواعيد تُستقى حصرياً من الجريدة الرسمية، المواقع الوزارية، والمناشير الوزارية المشتركة.</span>
+                <span><strong>التحقق من المصادر الرسمية:</strong> جميع المعلومات والشروحات تُستقى وتُلخّص من المواقع والمنصات الوزارية الرسمية (.dz) والبيانات العمومية المعتمدة للمواطنين.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="h-2 w-2 rounded-full bg-primary mt-2.5 shrink-0" />
@@ -119,7 +119,7 @@ export default function AboutPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="h-2 w-2 rounded-full bg-primary mt-2.5 shrink-0" />
-                <span><strong>التحديث المستمر:</strong> مراجعة دورية للمقالات لضمان مطابقتها لأحدث المراسيم التنفيذية والتنظيمات الإدارية لعام 2026.</span>
+                <span><strong>التحديث المستمر:</strong> مراجعة دورية للمحتوى لضمان مطابقته لأحدث التحديثات الرقمية والإجراءات الإدارية لعام 2026.</span>
               </li>
             </ul>
           </div>

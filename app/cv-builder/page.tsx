@@ -250,9 +250,6 @@ export default function CVBuilderPage() {
             <CommunityComments
               serviceId="cv-builder"
               serviceTitle="صانع السيرة الذاتية الجزائرية (CV Maker)"
-              itemType="SoftwareApplication"
-              initialRatingCount={1820}
-              initialAvgRating={4.92}
             />
           </div>
 

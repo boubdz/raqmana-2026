@@ -346,7 +346,6 @@ export default async function TemplateDetailPage({ params }: Props) {
         serviceId={`template-${template.slug}`}
         serviceTitle={template.title}
         categoryId={template.sectorId}
-        itemType="DigitalDocument"
       />
 
       <Footer />

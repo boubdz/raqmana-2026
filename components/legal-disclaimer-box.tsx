@@ -15,7 +15,7 @@ interface LegalDisclaimerBoxProps {
 export function LegalDisclaimerBox({
   toolName = "هذه الأداة الاسترشادية",
   officialEntity = "المصالح والهيئات الحكومية المختصة",
-  legalReference = "النصوص التشريعية والمراسيم التنفيذية المنشورة في الجريدة الرسمية للجمهورية الجزائرية",
+  legalReference = "البوابات والمنصات الرقمية الرسمية للجهات المعنية (.dz) والبيانات العامة المتاحة",
   lastVerifiedDate = "سبتمبر 2026",
   sourceUrl,
   className = "",
@@ -27,25 +27,25 @@ export function LegalDisclaimerBox({
     >
       <div className="flex items-center gap-2.5 text-amber-700 dark:text-amber-400 font-bold text-sm sm:text-base">
         <Scale className="w-5 h-5 flex-shrink-0" />
-        <h3>إخلاء مسؤولية قانونية وتوضيح المرجعية الرسمية</h3>
+        <h3>إخلاء مسؤولية قانونية وتوضيح المرجعية</h3>
       </div>
 
       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-        المعلومات والحسابات الصادرة عن {toolName} هي <strong>تقديرات استرشادية مستقلة</strong> تهدف لمساعدة المواطنين على تقدير وفهم آليات الحساب، ولا تُعتبر وثيقة إدارية ملزمة أو قراراً رسمياً ولا تغني عن الاستشارة المباشرة لمصالح {officialEntity}. المرجع النهائي في كافة الحقوق والالتزامات هو النصوص القانونية وقرارات الجهات المعنية.
+        المعلومات الواردة في {toolName} هي <strong>معلومات إرشادية مستقلة</strong> جُمعت ولُخِّصت من المواقع والمنصات الرقمية العامة عبر الإنترنت لتسهيل فهم الإجراءات الإدارية، ولا تُعتبر وثيقة رسمية ولا تغني عن المراجعة المباشرة لمصالح {officialEntity}. المرجع الأول والرسمي دائماً هو المنصات والمصالح التابعة للجهة المعنية.
       </p>
 
       <div className="pt-3 border-t border-amber-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[11px] text-muted-foreground font-medium">
         <div className="flex items-start sm:items-center gap-1.5">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5 sm:mt-0" />
           <span>
-            <strong className="text-foreground">السند القانوني: </strong>
+            <strong className="text-foreground">المصدر المرجعي: </strong>
             {legalReference}
           </span>
         </div>
 
         <div className="flex items-center gap-4 flex-shrink-0">
           <span>
-            آخر مراجعة تشريعية: <strong className="text-foreground">{lastVerifiedDate}</strong>
+            آخر مراجعة وتحديث: <strong className="text-foreground">{lastVerifiedDate}</strong>
           </span>
           {sourceUrl && (
             <a

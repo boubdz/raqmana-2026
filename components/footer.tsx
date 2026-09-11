@@ -145,8 +145,8 @@ export function Footer() {
           <div className="w-full max-w-4xl mb-12 p-4 rounded-2xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 text-center text-xs text-muted-foreground leading-relaxed">
             <p>
               {language === 'ar'
-                ? '⚠️ إخلاء مسؤولية قانوني: منصة "رقمنة" دليل إعلامي وتقني مستقل يهدف إلى تسهيل استخدام الخدمات الرقمية للمواطنين، ولا تمثل أي جهة حكومية أو بنكية رسمية. المرجع القانوني النهائي هو النصوص التشريعية المنشورة في الجريدة الرسمية للجمهورية الجزائرية والجهات الإدارية المختصة (CNAS, DGI, بريد الجزائر...). الأدلة والحاسبات ذات طابع استرشادي فقط.'
-                : '⚠️ Legal Disclaimer: "Raqmana" is an independent informational guide designed to help citizens navigate digital services. It does not represent any government agency or banking institution. Official authority resides solely with the Algerian Official Gazette and relevant state bodies. Guides and calculators provide non-binding estimates.'}
+                ? '⚠️ إخلاء مسؤولية قانوني: منصة "رقمنة" دليل إعلامي وتقني مستقل يهدف إلى تسهيل استخدام الخدمات الرقمية للمواطنين، ولا تمثل أي جهة حكومية أو بنكية رسمية. المعلومات مجمّعة ومبسّطة من البوابات الرقمية والمصادر العامة، والمرجع الرسمي النهائي دائماً هو المنصات والمصالح الإدارية المختصة. الأدلة والحاسبات ذات طابع استرشادي فقط.'
+                : '⚠️ Legal Disclaimer: "Raqmana" is an independent informational guide designed to help citizens navigate digital services. It does not represent any government agency or banking institution. All information is compiled and simplified from public official portals. Guides and calculators provide non-binding informational estimates.'}
             </p>
           </div>
 

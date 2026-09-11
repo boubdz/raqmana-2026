@@ -111,9 +111,14 @@ export default async function ArticlesPage() {
                   {article.introduction}
                 </p>
                 
-                <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mt-auto">
-                  <span>قراءة المقال</span>
-                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:scale-110" />
+                <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border/40 pt-4 mt-auto">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                    📅 سبتمبر 2026
+                  </span>
+                  <div className="flex items-center gap-1.5 text-primary font-bold text-xs uppercase tracking-wider">
+                    <span>قراءة الدليل</span>
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
                 </div>
               </Link>
             ))}

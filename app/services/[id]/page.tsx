@@ -26,6 +26,8 @@ import {
   Coins,
   Building2,
   Users,
+  UserCheck,
+  ArrowLeft,
 } from "lucide-react";
 
 type Props = {
@@ -447,6 +449,22 @@ export default async function ServiceDetailPage({ params }: Props) {
               </div>
             </div>
 
+            {/* Editorial Meta & Date Badge */}
+            <div className="flex flex-wrap items-center gap-2.5 py-3 border-y border-border/40 text-xs text-muted-foreground my-4">
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-1.5 font-bold text-foreground hover:text-primary transition-colors bg-muted/70 px-3 py-1.5 rounded-full border border-border/60"
+                title="تعرف على هيئة تحرير رقمنة الجزائر"
+              >
+                <UserCheck className="w-3.5 h-3.5 text-primary" />
+                <span>إعداد: فريق تحرير رقمنة</span>
+              </Link>
+
+              <div className="inline-flex items-center gap-2 font-medium bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 px-3.5 py-1.5 rounded-full border border-emerald-500/20 text-xs font-semibold">
+                <span>📅 نُشر: سبتمبر 2026 | 🔄 آخر مراجعة وتحديث : سبتمبر 2026.</span>
+              </div>
+            </div>
+
             {/* Toolbar: Views, Ratings, Report */}
             <div className="mt-6 pt-4 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-4">
               <ServiceToolbarBar
@@ -657,11 +675,49 @@ export default async function ServiceDetailPage({ params }: Props) {
             />
           </div>
 
+          {/* Transparency & Editorial Integrity Box */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-muted/30 border border-border/70 space-y-4">
+            <div className="flex items-center gap-3 border-b border-border/40 pb-3">
+              <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-base text-foreground">
+                  ميثاق الشفافية وهيئة التحرير
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  منصة رقمنة الجزائر 2026 — دليل معلوماتي واستشاري مستقل
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              تم جمع وتنسيق هذا المحتوى من طرف <strong>فريق منصة رقمنة الجزائر</strong> بالاعتماد على البوابات الرقمية الحكومية المتاحة (.dz) والأدلة الإرشادية والبيانات العامة المنشورة للمواطنين. نحن منصة معلوماتية مستقلة تهدف لتسهيل فهم الإجراءات والوصول للخدمات، ولا نمثل أي جهة حكومية أو بنكية.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs">
+              <Link
+                href="/about"
+                className="font-bold text-primary hover:underline inline-flex items-center gap-1"
+              >
+                <span>معايير النشر والمصداقية في رقمنة</span>
+                <ArrowLeft className="w-3.5 h-3.5" />
+              </Link>
+
+              <Link
+                href="/contact"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                الإبلاغ عن معلومة تحتاج لتحديث ✉️
+              </Link>
+            </div>
+          </div>
+
           {/* Legal Disclaimer Box */}
           <LegalDisclaimerBox
             toolName={`دليل استخدام ${service.name.ar}`}
             officialEntity={enriched.governingBody}
-            legalReference="النصوص التشريعية والمراسيم المنشورة في الجريدة الرسمية للجمهورية الجزائرية"
+            legalReference="البوابات والمنصات الرقمية الرسمية المعتمدة (.dz) والبيانات الإدارية العامة"
             lastVerifiedDate="سبتمبر 2026"
             sourceUrl={service.url}
           />

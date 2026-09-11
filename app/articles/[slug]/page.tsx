@@ -2,12 +2,13 @@ import { getAllArticlesMerged } from "@/lib/custom-articles-store";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
-import { ChevronLeft, ArrowLeft, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ChevronLeft, ArrowLeft, ArrowUpRight, CheckCircle2, UserCheck, Calendar, ShieldCheck, Building2 } from "lucide-react";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ArticleShare } from "@/components/article-share";
 import { Metadata } from "next";
 import { CommunityComments } from "@/components/community-comments";
 import { ServiceToolbarBar } from "@/components/service-toolbar-bar";
+import { LegalDisclaimerBox } from "@/components/legal-disclaimer-box";
 
 import { OfficialDocumentViewer } from "@/components/official-document-viewer";
 import { ArticleContentRenderer } from "@/components/article-content-renderer";
@@ -349,6 +350,29 @@ export default async function ArticlePage({ params }: Props) {
                 {article.title}
               </h1>
 
+              {/* Editorial Meta & Date Badge */}
+              <div className="flex flex-wrap items-center gap-2.5 py-3 border-y border-border/50 text-xs text-muted-foreground my-6">
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-1.5 font-bold text-foreground hover:text-primary transition-colors bg-muted/70 px-3 py-1.5 rounded-full border border-border/60"
+                  title="تعرف على هيئة تحرير رقمنة الجزائر"
+                >
+                  <UserCheck className="w-3.5 h-3.5 text-primary" />
+                  <span>إعداد: فريق تحرير رقمنة</span>
+                </Link>
+
+                <div className="inline-flex items-center gap-2 font-medium bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 px-3.5 py-1.5 rounded-full border border-emerald-500/20 text-xs font-semibold">
+                  <span>📅 نُشر: سبتمبر 2026 | 🔄 آخر مراجعة وتحديث : سبتمبر 2026.</span>
+                </div>
+
+                {(article as any).sourceMinistry && (
+                  <div className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground mr-auto">
+                    <Building2 className="w-3.5 h-3.5 text-primary/70" />
+                    <span>المصدر: {(article as any).sourceMinistry}</span>
+                  </div>
+                )}
+              </div>
+
               {/* Action Toolbar */}
               <div className="mb-8 max-w-md">
                 <ServiceToolbarBar
@@ -439,6 +463,55 @@ export default async function ArticlePage({ params }: Props) {
                   </div>
                 </div>
               )}
+
+              {/* Transparency & Editorial Integrity Box */}
+              <div className="mt-14 p-6 sm:p-8 rounded-3xl bg-muted/30 border border-border/70 space-y-4">
+                <div className="flex items-center gap-3 border-b border-border/40 pb-3">
+                  <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-base text-foreground">
+                      ميثاق الشفافية وهيئة التحرير
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      منصة رقمنة الجزائر 2026 — دليل معلوماتي واستشاري مستقل
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  تم جمع وتنسيق هذا المحتوى من طرف <strong>فريق منصة رقمنة الجزائر</strong> بالاعتماد على البوابات الرقمية الحكومية المتاحة (.dz) والأدلة الإرشادية والبيانات العامة المنشورة للمواطنين. نحن منصة معلوماتية مستقلة تهدف لتسهيل فهم الإجراءات والوصول للخدمات، ولا نمثل أي جهة حكومية أو بنكية.
+                </p>
+
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs">
+                  <Link
+                    href="/about"
+                    className="font-bold text-primary hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>معايير النشر والمصداقية في رقمنة</span>
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                  </Link>
+
+                  <Link
+                    href="/contact"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    الإبلاغ عن معلومة تحتاج لتحديث ✉️
+                  </Link>
+                </div>
+              </div>
+
+              {/* Legal Disclaimer Box */}
+              <div className="mt-6 mb-8">
+                <LegalDisclaimerBox
+                  toolName={`دليل: ${article.title.replace(/^📋\s*/, '')}`}
+                  officialEntity={(article as any).sourceMinistry || "الهيئات والوزارات الجزائرية المختصة"}
+                  legalReference="البوابات والمنصات الرقمية الرسمية المعتمدة (.dz) والبيانات الإدارية العامة"
+                  lastVerifiedDate="سبتمبر 2026"
+                  sourceUrl={article.officialDocumentUrl}
+                />
+              </div>
 
               {/* Share Component */}
               <ArticleShare title={article.title} />

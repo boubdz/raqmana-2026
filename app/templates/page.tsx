@@ -118,7 +118,6 @@ export default function TemplatesPage() {
         serviceId="templates-center"
         serviceTitle="الاستمارات والنماذج الرسمية حسب القطاعات"
         categoryId="employment"
-        itemType="WebPage"
       />
 
       <Footer />
