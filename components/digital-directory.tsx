@@ -99,6 +99,7 @@ export function DigitalDirectory() {
 
               <a 
                 href={`tel:${contact.number}`}
+                rel="nofollow"
                 className="flex items-center justify-between w-full h-14 px-6 rounded-2xl bg-[#1a1a1a] dark:bg-white text-white dark:text-black font-black text-xl tracking-[0.2em] hover:scale-[1.02] active:scale-95 transition-all"
               >
                 <span>{contact.number}</span>

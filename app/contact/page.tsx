@@ -91,7 +91,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">البريد الإلكتروني للتحرير والدعم</h3>
-                      <a href="mailto:contact@raqmanadz.com" className="text-base font-bold text-foreground hover:text-primary transition-colors dir-ltr block text-right">
+                      <a href="mailto:contact@raqmanadz.com" rel="nofollow" className="text-base font-bold text-foreground hover:text-primary transition-colors dir-ltr block text-right">
                         contact@raqmanadz.com
                       </a>
                     </div>

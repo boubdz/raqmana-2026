@@ -198,7 +198,7 @@ export default function PrivacyPolicyPage() {
               <div className="p-5 rounded-2xl bg-muted/40 border border-border flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
                   <span className="text-xs font-bold text-muted-foreground block">البريد الإلكتروني المعتمد للخصوصية والدعم:</span>
-                  <a href="mailto:contact@raqmanadz.com" className="text-base font-bold text-foreground hover:text-primary transition-colors dir-ltr block text-right">
+                  <a href="mailto:contact@raqmanadz.com" rel="nofollow" className="text-base font-bold text-foreground hover:text-primary transition-colors dir-ltr block text-right">
                     contact@raqmanadz.com
                   </a>
                 </div>

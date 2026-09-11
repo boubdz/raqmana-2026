@@ -134,7 +134,7 @@ export default function TermsOfServicePage() {
                 نحتفظ بالحق في تعديل هذه الشروط في أي وقت لتواكب التحديثات القانونية والتقنية. وتعتبر التعديلات نافذة فور نشرها على هذه الصفحة.
               </p>
               <div className="pt-2 text-sm text-muted-foreground">
-                للاستفسار حول شروط الاستخدام، يمكنك مراسلتنا عبر: <a href="mailto:contact@raqmanadz.com" className="text-primary font-bold hover:underline">contact@raqmanadz.com</a>.
+                للاستفسار حول شروط الاستخدام، يمكنك مراسلتنا عبر: <a href="mailto:contact@raqmanadz.com" rel="nofollow" className="text-primary font-bold hover:underline">contact@raqmanadz.com</a>.
               </div>
             </section>
 

@@ -723,7 +723,7 @@ export default async function CategoryPage({ params }: Props) {
                     {category.phone && (
                       <div className="space-y-3">
                         <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">الرقم المباشر</p>
-                        <a href={`tel:${category.phone}`} className="flex items-center gap-4 bg-[#1a1a1a] dark:bg-white text-white dark:text-black p-5 rounded-2xl hover:scale-[1.02] transition-transform">
+                        <a href={`tel:${category.phone}`} rel="nofollow" className="flex items-center gap-4 bg-[#1a1a1a] dark:bg-white text-white dark:text-black p-5 rounded-2xl hover:scale-[1.02] transition-transform">
                           <Phone className="h-5 w-5" />
                           <span className="text-2xl font-black tracking-[0.2em]">{category.phone}</span>
                         </a>

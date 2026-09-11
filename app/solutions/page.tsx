@@ -6,6 +6,9 @@ import { SolutionsHub } from "@/components/solutions-hub";
 export const metadata: Metadata = {
   title: "مركز الحلول الذكية — رقمنة الجزائر",
   description: "مركز الحلول الذكية للمشاكل التقنية والخدمات الرقمية في الجزائر. حلول للمشاكل الشائعة في منصات بريدي موب، عدل، الخدمة العمومية والمنصات الحكومية.",
+  alternates: {
+    canonical: "https://www.raqmanadz.com/solutions",
+  },
 };
 
 export default function SolutionsPage() {

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'إخلاء المسؤولية | بوابة رقمنة الجزائر 2026',
   description: 'بيان إخلاء المسؤولية القانونية وتوضيح الاستقلالية لمنصة رقمنة الجزائر 2026.',
   alternates: {
-    canonical: '/disclaimer',
+    canonical: 'https://www.raqmanadz.com/disclaimer',
   },
 };
 

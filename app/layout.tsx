@@ -73,7 +73,6 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://www.raqmanadz.com'),
   alternates: {
-    canonical: '/',
     languages: {
       'ar': '/',
       'en': '/en',

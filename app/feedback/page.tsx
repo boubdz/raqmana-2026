@@ -111,7 +111,7 @@ export default function FeedbackPage() {
                 <div>
                   <h2 className="text-2xl font-black text-foreground mb-1">نموذج تقييم المنصة</h2>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    نقرأ جميع الرسائل الواردة بعناية فائقة. يمكنك أيضاً مراسلتنا مباشرة عبر <a href="mailto:contact@raqmanadz.com" className="text-primary font-bold hover:underline">contact@raqmanadz.com</a>
+                    نقرأ جميع الرسائل الواردة بعناية فائقة. يمكنك أيضاً مراسلتنا مباشرة عبر <a href="mailto:contact@raqmanadz.com" rel="nofollow" className="text-primary font-bold hover:underline">contact@raqmanadz.com</a>
                   </p>
                 </div>
 

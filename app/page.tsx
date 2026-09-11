@@ -9,12 +9,20 @@ import { SeoGuideSection } from "@/components/seo-guide-section";
 import { TrendingServicesGrid } from "@/components/trending-services-grid";
 import { Footer } from "@/components/footer";
 
+import type { Metadata } from "next";
+
 // Dynamic imports for below-the-fold components
 const SeasonalEvents = dynamic(() => import("@/components/seasonal-events").then(m => m.SeasonalEvents));
 const SolutionsHub = dynamic(() => import("@/components/solutions-hub").then(m => m.SolutionsHub));
 const DigitalDirectory = dynamic(() => import("@/components/digital-directory").then(m => m.DigitalDirectory));
 const CommunityComments = dynamic(() => import("@/components/community-comments").then(m => m.CommunityComments));
 const AIChatbot = dynamic(() => import("@/components/ai-chatbot").then(m => m.AIChatbot));
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://www.raqmanadz.com",
+  },
+};
 
 export default function Home() {
   // ✅ ItemList — يُدرج جميع الأقسام ويعطي غوغل فهرساً كاملاً للمحتوى

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'من نحن — عن منصة رقمنة الجزائر 2026 | الدليل الشامل للخدمات والرقمنة',
   description: 'تعرف على بوابة رقمنة الجزائر 2026، المنصة الرائدة والمستقلة لتسهيل الوصول إلى كافة الخدمات والوثائق الإدارية ومسابقات التوظيف في الجزائر.',
   alternates: {
-    canonical: '/about',
+    canonical: 'https://www.raqmanadz.com/about',
   },
 };
 

@@ -10,6 +10,9 @@ import { CommunityComments } from "@/components/community-comments";
 export const metadata: Metadata = {
   title: "أدلة المعاملات الرقمية في الجزائر 2026 | رقمنة الجزائر",
   description: "شروحات مفصلة وأدلة عملية لكل المنصات الرقمية الحكومية: التسجيل، الوثائق، خطوات التسجيل وحلول المشاكل الإدارية في الجزائر 2026.",
+  alternates: {
+    canonical: "https://www.raqmanadz.com/articles",
+  },
 };
 
 // تمديد الكاش إلى 24 ساعة لحماية باقة Vercel من إعادة البناء المتكررة (ISR)

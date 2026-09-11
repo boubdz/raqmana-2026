@@ -79,7 +79,7 @@ const fallbackTrendingList: TrendingItem[] = [
     subtitleAr: "تتبع الحساب الجاري ECCP، طلب الإدبي، ودفع الفواتير بالبطاقة الذهبية",
     url: "https://eccp.poste.dz/commande-edahabia",
     categorySlug: "/categories/post",
-    relatedArticleSlug: "/articles/epaiement-cib-edahabia-guide",
+    relatedArticleSlug: "/articles/carte-edahabia-guide-2026",
     badgeText: "💳 بريد الجزائر",
     badgeVariant: "updated",
     categoryName: "بريد الجزائر",
