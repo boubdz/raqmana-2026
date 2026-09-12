@@ -1,11 +1,11 @@
 name: 🤖 Raqmana News & Trends Autopilot
 
 on:
-  schedule:
-    # تشغيل مجدول على مدار اليوم
-    - cron: '0 8,14,20 * * *'
+  # ⛔ تم تعطيل الجدولة التلقائية مؤقتاً لحماية موارد Vercel
+  # schedule:
+  #   - cron: '0 8,14,20 * * *'
 
-  # تشغيل يدوي مخصص من واجهة GitHub Actions
+  # تشغيل يدوي فقط من واجهة GitHub Actions عند الحاجة
   workflow_dispatch:
     inputs:
       job_type:
@@ -64,13 +64,14 @@ jobs:
           NODE_ENV: production
         run: node scripts/news-automation/indexing-process.js
 
-      - name: '💾 حفظ ونشر المقالات في Git'
+      - name: '💾 حفظ ونشر المقالات في Git (معطل)'
         run: |
-          git config user.name "Raqmana News Bot"
-          git config user.email "bot@raqmanadz.com"
-          git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
-          git diff --staged --quiet || git commit -m "🔥 auto: Trending articles $(date +'%Y-%m-%d %H:%M')"
-          git push || echo "لا توجد تغييرات لرفعها"
+          echo "⛔ تم تعطيل الرفع التلقائي إلى Git لمنع إطلاق نشرات على Vercel"
+          # git config user.name "Raqmana News Bot"
+          # git config user.email "bot@raqmanadz.com"
+          # git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
+          # git diff --staged --quiet || git commit -m "🔥 auto: Trending articles $(date +'%Y-%m-%d %H:%M') [skip ci]"
+          # git push || echo "لا توجد تغييرات لرفعها"
 
   # ════════════════════════════════════════════════════════════
   # JOB 2 — الأخبار الحكومية الرسمية
@@ -111,13 +112,14 @@ jobs:
           NODE_ENV: production
         run: node scripts/news-automation/indexing-process.js
 
-      - name: '💾 حفظ ونشر المقالات في Git'
+      - name: '💾 حفظ ونشر المقالات في Git (معطل)'
         run: |
-          git config user.name "Raqmana News Bot"
-          git config user.email "bot@raqmanadz.com"
-          git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
-          git diff --staged --quiet || git commit -m "🏛 auto: Official news articles $(date +'%Y-%m-%d %H:%M')"
-          git push || echo "لا توجد تغييرات لرفعها"
+          echo "⛔ تم تعطيل الرفع التلقائي إلى Git لمنع إطلاق نشرات على Vercel"
+          # git config user.name "Raqmana News Bot"
+          # git config user.email "bot@raqmanadz.com"
+          # git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
+          # git diff --staged --quiet || git commit -m "🏛 auto: Official news articles $(date +'%Y-%m-%d %H:%M') [skip ci]"
+          # git push || echo "لا توجد تغييرات لرفعها"
 
   # ════════════════════════════════════════════════════════════
   # JOB 3 — المواقع الحكومية الثانوية Tier 2
@@ -157,10 +159,11 @@ jobs:
           NODE_ENV: production
         run: node scripts/news-automation/indexing-process.js
 
-      - name: '💾 حفظ ونشر المقالات في Git'
+      - name: '💾 حفظ ونشر المقالات في Git (معطل)'
         run: |
-          git config user.name "Raqmana News Bot"
-          git config user.email "bot@raqmanadz.com"
-          git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
-          git diff --staged --quiet || git commit -m "🌙 auto: Tier2 daily articles $(date +'%Y-%m-%d')"
-          git push || echo "لا توجد تغييرات لرفعها"
+          echo "⛔ تم تعطيل الرفع التلقائي إلى Git لمنع إطلاق نشرات على Vercel"
+          # git config user.name "Raqmana News Bot"
+          # git config user.email "bot@raqmanadz.com"
+          # git add lib/custom-articles-data.json public/auto-news-sitemap.xml scripts/news-automation/history.json || true
+          # git diff --staged --quiet || git commit -m "🌙 auto: Tier2 daily articles $(date +'%Y-%m-%d') [skip ci]"
+          # git push || echo "لا توجد تغييرات لرفعها"
