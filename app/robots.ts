@@ -6,16 +6,16 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        // 1. روبوتات محركات البحث المعتمدة ومراجعي Google AdSense (سماح كامل)
-        userAgent: [
-          'Googlebot',
-          'Mediapartners-Google',
-          'AdsBot-Google',
-          'Bingbot',
-          'msnbot',
-        ],
+        // 1. محركات البحث الرئيسية (فهرسة كاملة وسماح لجميع المحتويات والخدمات)
+        userAgent: ['Googlebot', 'Bingbot', 'msnbot'],
         allow: ['/'],
         disallow: ['/api/', '/private/', '/_next/static/media/', '/OneSignalSDKWorker.js', '/OneSignalSDKUpdaterWorker.js'],
+      },
+      {
+        // 2. روبوتات مراجعة إعلانات Google AdSense (تركيز الزحف حصراً على المقالات والمحتوى التحريري وتجنب صفحات القوالب السريعة)
+        userAgent: ['AdsBot-Google', 'Mediapartners-Google'],
+        allow: ['/articles/', '/document-guide/', '/categories/', '/about', '/contact', '/privacy-policy', '/terms-of-service'],
+        disallow: ['/services/', '/api/', '/private/', '/_next/static/media/'],
       },
       {
         // 2. حظر روبوتات جمع البيانات الشرهة والذكاء الاصطناعي لحماية باقة Vercel

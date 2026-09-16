@@ -215,13 +215,13 @@ export default function RootLayout({
           <LanguageProvider>
             {children}
 
-            {/* Google AdSense Ad Loader — MUST be in <body>, lazyOnload only works outside <head> in Next.js App Router */}
+            {/* Google AdSense Ad Loader — afterInteractive ensures instant detection by Google AdsBot review crawlers */}
             <Script
               id="google-adsense"
               async
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4993823133823424"
               crossOrigin="anonymous"
-              strategy="lazyOnload"
+              strategy="afterInteractive"
             />
 
             {/* Google Analytics — lazyOnload + async */}

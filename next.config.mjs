@@ -76,6 +76,7 @@ const nextConfig = {
       { source: '/terms', destination: '/terms-of-service', permanent: true },
       { source: '/privacy', destination: '/privacy-policy', permanent: true },
       { source: '/articles/epaiement-cib-edahabia-guide', destination: '/articles/carte-edahabia-guide-2026', permanent: true },
+      { source: '/articles/auto--p-4344-mt1ysvnw', destination: '/articles', permanent: true },
       // ✅ 301 Redirects for duplicate article/category routes to resolve Google Search Console Duplicate Canonical issue
       { source: '/articles/youth', destination: '/categories/youth', permanent: true },
       { source: '/articles/banking', destination: '/categories/banking', permanent: true },

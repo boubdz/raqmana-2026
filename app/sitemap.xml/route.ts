@@ -13,6 +13,10 @@ export async function GET() {
     <lastmod>${now}</lastmod>
   </sitemap>
   <sitemap>
+    <loc>${baseUrl}/article-sitemap.xml</loc>
+    <lastmod>${now}</lastmod>
+  </sitemap>
+  <sitemap>
     <loc>${baseUrl}/category-sitemap.xml</loc>
     <lastmod>${now}</lastmod>
   </sitemap>
@@ -26,10 +30,6 @@ export async function GET() {
   </sitemap>
   <sitemap>
     <loc>${baseUrl}/template-sitemap.xml</loc>
-    <lastmod>${now}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>${baseUrl}/article-sitemap.xml</loc>
     <lastmod>${now}</lastmod>
   </sitemap>
 </sitemapindex>`;
